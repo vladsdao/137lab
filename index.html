@@ -7,18 +7,50 @@
 <meta name="description" content="Energy management solutions for founders and creators. Applying metaphysics into practice.">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;overflow:hidden;background:#000}
-.wrap{width:100%;height:100%;display:flex;flex-direction:column}
-.pdf{flex:1;width:100%;border:none}
+html,body{width:100%;height:100%;background:#000}
+
+/* Desktop: full iframe */
+@media (min-width:769px) {
+  body{overflow:hidden}
+  .wrap{width:100%;height:100%;display:flex;flex-direction:column}
+  .pdf{flex:1;width:100%;border:none}
+  .mobile{display:none}
+}
+
+/* Mobile: link to PDF */
+@media (max-width:768px) {
+  .pdf{display:none}
+  body{overflow:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center}
+  .wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1}
+  .mobile{display:flex;flex-direction:column;align-items:center;gap:32px}
+  .m-num{font-family:'Courier New',monospace;font-size:72px;color:#fff;letter-spacing:0.06em;line-height:0.9}
+  .m-word{font-family:'Courier New',monospace;font-size:24px;color:#fff;letter-spacing:0.5em;margin-right:-0.5em}
+  .m-rule{width:1px;height:30px;background:#444}
+  .m-desc{font-family:'Courier New',monospace;font-size:9px;color:#666;letter-spacing:0.2em;text-transform:uppercase;line-height:2.2}
+  .m-btn{display:inline-block;font-family:'Courier New',monospace;font-size:10px;color:#999;letter-spacing:0.15em;text-transform:uppercase;text-decoration:none;border:0.5px solid #333;padding:14px 28px;transition:all 0.2s}
+  .m-btn:hover{color:#fff;border-color:#666}
+}
+
 .bar{height:36px;min-height:36px;background:#000;display:flex;align-items:center;justify-content:center;gap:24px;font-family:'Courier New',monospace;font-size:10px;letter-spacing:0.15em;color:#666}
 .bar a{color:#999;text-decoration:none;letter-spacing:0.15em;transition:color 0.2s}
 .bar a:hover{color:#fff}
 .bar span{color:#333}
+
+@media (max-width:768px) {
+  .bar{position:fixed;bottom:0;left:0;right:0;height:44px}
+}
 </style>
 </head>
 <body>
 <div class="wrap">
   <iframe class="pdf" src="137lab.pdf" type="application/pdf"></iframe>
+  <div class="mobile">
+    <div class="m-num">137</div>
+    <div class="m-word">Lab</div>
+    <div class="m-rule"></div>
+    <div class="m-desc">Energy Management Solutions<br>for Founders and Creators</div>
+    <a class="m-btn" href="137lab.pdf" target="_blank">Open Presentation</a>
+  </div>
   <div class="bar">
     <a href="mailto:vladsdao@gmail.com">vladsdao@gmail.com</a>
     <span>&middot;</span>
