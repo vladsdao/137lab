@@ -49,10 +49,13 @@ html {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   scroll-behavior: smooth;
+  transition: background var(--speed) var(--ease), color var(--speed) var(--ease);
 }
 
 body {
   min-height: 100vh;
+  color: var(--text);
+  background: var(--bg);
   transition: background var(--speed) var(--ease), color var(--speed) var(--ease);
 }
 
@@ -83,7 +86,8 @@ a:hover { border-color: var(--text); }
 .topbar .brand .title { font-weight: 400; }
 
 .topbar .controls { display: flex; gap: 24px; align-items: center; }
-.topbar .controls button {
+.topbar .controls button,
+.topbar .controls a.lang {
   background: none;
   border: none;
   font: inherit;
@@ -91,8 +95,10 @@ a:hover { border-color: var(--text); }
   cursor: pointer;
   padding: 0;
   letter-spacing: 0.1em;
+  text-decoration: none;
 }
-.topbar .controls button:hover { color: var(--text); }
+.topbar .controls button:hover,
+.topbar .controls a.lang:hover { color: var(--text); }
 .topbar .controls .active { color: var(--text); font-weight: 700; }
 
 /* layout */
@@ -179,7 +185,6 @@ article {
 .hero .sub {
   font-size: 16px;
   color: var(--dim);
-  font-style: italic;
   max-width: 620px;
 }
 
@@ -248,7 +253,12 @@ section.chapter:first-of-type { border-top: none; padding-top: 0; }
   line-height: 1.6;
 }
 
-.chapter em { font-style: italic; color: var(--text); }
+.chapter em {
+  font-style: normal;
+  color: var(--text);
+  border-bottom: 1px dashed var(--dim);
+  padding-bottom: 1px;
+}
 .chapter strong { font-weight: 700; }
 
 .chapter ul, .chapter ol {
@@ -283,7 +293,6 @@ section.chapter:first-of-type { border-top: none; padding-top: 0; }
   padding: 24px 32px;
   border-left: 3px solid var(--text);
   font-size: 17px;
-  font-style: italic;
   line-height: 1.6;
 }
 
@@ -461,8 +470,8 @@ footer.colophon {
     <span class="title">RESONANCE</span>
   </div>
   <div class="controls">
-    <button data-lang="ru" class="active">RU</button>
-    <button data-lang="en" disabled style="opacity:0.3;cursor:not-allowed" title="EN coming soon">EN</button>
+    <a href="./" class="lang active" data-lang="ru">RU</a>
+    <a href="./en/" class="lang" data-lang="en">EN</a>
     <button id="theme-toggle" aria-label="Toggle theme">◐</button>
   </div>
 </nav>
@@ -1267,7 +1276,7 @@ footer.colophon {
       </section>
 
       <section class="epilogue" id="epilog">
-        <p class="lead" style="font-style:italic">Сознание — это технология. Не метафора.</p>
+        <p class="lead">Сознание — это технология. Не метафора.</p>
 
         <p>Обратный резонанс — это её отказ. Максимум усилия, ноль выхода. Тело знает это до ума. Пара знает это до разговора. Сеть знает это до совещания. Цивилизация знает это до истории.</p>
 
@@ -1305,10 +1314,10 @@ footer.colophon {
 // theme toggle
 const themeBtn = document.getElementById('theme-toggle');
 const savedTheme = localStorage.getItem('137lab-theme');
-if (savedTheme === 'light') document.body.classList.add('light');
+if (savedTheme === 'light') document.documentElement.classList.add('light');
 themeBtn.addEventListener('click', () => {
-  document.body.classList.toggle('light');
-  localStorage.setItem('137lab-theme', document.body.classList.contains('light') ? 'light' : 'dark');
+  document.documentElement.classList.toggle('light');
+  localStorage.setItem('137lab-theme', document.documentElement.classList.contains('light') ? 'light' : 'dark');
 });
 
 // TOC active section

@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Inverse Exponent of Reverse Resonance — 137 Lab</title>
+<meta name="description" content="The architecture of consciousness as the coupling of Vector OS and Wave OS. Reverse resonance, the IERR operator, and the 13×28+1 evolutionary spiral. A monograph for scientists and practitioners.">
+<meta name="author" content="Dao & Liza · 137 Lab">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #fafafa;
+  --text: #0a0a0a;
+  --dim: #808080;
+  --rule: #d0d0d0;
+  --accent: #0a0a0a;
+  --font: 'Space Mono', 'Courier New', monospace;
+  --fs: 15px;
+  --lh: 1.65;
+  --col: 720px;
+  --margin: 80px;
+  --speed: 300ms;
+  --ease: cubic-bezier(0.83, 0, 0.17, 1);
+}
+
+html.dark {
+  --bg: #0a0a0a;
+  --text: #f0f0f0;
+  --dim: #808080;
+  --rule: #303030;
+}
+
+html {
+  font-family: var(--font);
+  font-size: var(--fs);
+  line-height: var(--lh);
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+  transition: background var(--speed) var(--ease), color var(--speed) var(--ease);
+}
+
+body {
+  min-height: 100vh;
+  color: var(--text);
+  background: var(--bg);
+  transition: background var(--speed) var(--ease), color var(--speed) var(--ease);
+}
+
+a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); transition: border-color var(--speed) var(--ease); }
+a:hover { border-color: var(--text); }
+
+::selection { background: var(--text); color: var(--bg); }
+
+.topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--rule);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: background var(--speed) var(--ease), border-color var(--speed) var(--ease);
+}
+
+.topbar .brand { font-weight: 700; }
+.topbar .brand .sep { color: var(--dim); margin: 0 8px; }
+.topbar .brand .title { font-weight: 400; }
+
+.topbar .controls { display: flex; gap: 24px; align-items: center; }
+.topbar .controls button,
+.topbar .controls a.lang {
+  background: none;
+  border: none;
+  font: inherit;
+  color: var(--dim);
+  cursor: pointer;
+  padding: 0;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+}
+.topbar .controls button:hover,
+.topbar .controls a.lang:hover { color: var(--text); }
+.topbar .controls .active { color: var(--text); font-weight: 700; }
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr var(--col) 1fr;
+  padding-top: 61px;
+  min-height: 100vh;
+}
+
+aside.toc {
+  position: sticky;
+  top: 61px;
+  align-self: start;
+  height: calc(100vh - 61px);
+  padding: 60px 30px;
+  overflow-y: auto;
+  border-right: 1px solid var(--rule);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
+aside.toc h4 {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 20px;
+  font-weight: 400;
+}
+
+aside.toc ol {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+aside.toc a {
+  border: none;
+  color: var(--dim);
+  display: block;
+  transition: color var(--speed) var(--ease);
+  line-height: 1.4;
+}
+
+aside.toc a:hover { color: var(--text); }
+aside.toc a.current { color: var(--text); font-weight: 700; }
+aside.toc .num { display: inline-block; width: 45px; color: var(--dim); }
+aside.toc a.current .num { color: var(--text); }
+
+main {
+  padding: 60px 60px 120px;
+  max-width: 100%;
+}
+
+article { max-width: 100%; }
+
+.hero {
+  padding: 80px 0 120px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 80px;
+}
+
+.hero .eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 30px;
+}
+
+.hero h1 {
+  font-size: 32px;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 30px;
+}
+
+.hero .sub {
+  font-size: 16px;
+  color: var(--dim);
+  max-width: 620px;
+}
+
+.hero .meta {
+  margin-top: 60px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dim);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+section.chapter { padding: 60px 0; border-top: 1px solid var(--rule); }
+section.chapter:first-of-type { border-top: none; padding-top: 0; }
+
+.chapter-head {
+  display: flex;
+  gap: 24px;
+  align-items: baseline;
+  margin-bottom: 40px;
+}
+
+.chapter-head .code {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--dim);
+  min-width: 50px;
+  text-transform: uppercase;
+}
+
+.chapter-head h2 {
+  font-size: 22px;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.chapter h3 {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 48px 0 20px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.chapter h3 .code {
+  color: var(--dim);
+  margin-right: 10px;
+  font-weight: 400;
+}
+
+.chapter p {
+  margin-bottom: 20px;
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.chapter p.lead {
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.chapter em {
+  font-style: italic;
+  color: var(--text);
+}
+.chapter strong { font-weight: 700; }
+
+.chapter ul, .chapter ol {
+  margin: 20px 0 20px 24px;
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.chapter ul li, .chapter ol li { margin-bottom: 10px; }
+
+.math-block {
+  margin: 32px 0;
+  padding: 24px;
+  border-left: 2px solid var(--text);
+  background: rgba(0,0,0,0.02);
+  overflow-x: auto;
+}
+html.dark .math-block { background: rgba(255,255,255,0.02); }
+
+.math-block .caption {
+  font-size: 11px;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 16px;
+}
+
+.pull {
+  margin: 40px 0;
+  padding: 24px 32px;
+  border-left: 3px solid var(--text);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+figure {
+  margin: 48px 0;
+  padding: 24px 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+figure .fig-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 20px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+figure .fig-head .num { font-weight: 700; color: var(--text); }
+
+figure .fig-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 280px;
+  padding: 20px 0;
+}
+
+figure svg { max-width: 100%; height: auto; display: block; }
+figure canvas { max-width: 100%; display: block; }
+
+figure figcaption {
+  font-size: 12px;
+  color: var(--dim);
+  margin-top: 16px;
+  line-height: 1.6;
+  padding: 0 20px;
+}
+
+.sim-controls {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  padding: 16px 0;
+  border-top: 1px dashed var(--rule);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.sim-controls label { display: flex; gap: 12px; align-items: center; }
+
+.sim-controls input[type=range] {
+  -webkit-appearance: none;
+  width: 160px;
+  height: 2px;
+  background: var(--rule);
+  outline: none;
+}
+.sim-controls input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px; height: 12px;
+  background: var(--text);
+  cursor: pointer;
+  border-radius: 0;
+}
+
+.sim-controls button {
+  background: none;
+  border: 1px solid var(--rule);
+  color: var(--text);
+  font: inherit;
+  padding: 6px 14px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--speed) var(--ease);
+}
+.sim-controls button:hover { background: var(--text); color: var(--bg); }
+
+.sim-readout {
+  font-family: var(--font);
+  font-size: 11px;
+  color: var(--text);
+  letter-spacing: 0.08em;
+}
+
+.epilogue {
+  padding: 80px 0;
+  border-top: 1px solid var(--rule);
+  text-align: center;
+}
+
+.epilogue .rune {
+  font-size: 36px;
+  letter-spacing: 0.3em;
+  margin: 40px 0;
+  color: var(--text);
+}
+
+.epilogue p {
+  font-size: 17px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.epilogue .sig {
+  margin-top: 80px;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+footer.colophon {
+  padding: 60px 0 40px;
+  border-top: 1px solid var(--rule);
+  margin-top: 80px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+@media (max-width: 1100px) {
+  :root { --col: 100%; }
+  .layout { grid-template-columns: 1fr; padding-top: 55px; }
+  aside.toc {
+    position: static;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--rule);
+    padding: 30px 24px;
+  }
+  aside.toc ol { flex-direction: row; flex-wrap: wrap; gap: 8px 24px; }
+  main { padding: 30px 24px 80px; }
+  .hero { padding: 40px 0 60px; }
+  .hero h1 { font-size: 24px; }
+  .topbar { padding: 16px 20px; font-size: 10px; }
+  .chapter-head { flex-direction: column; gap: 8px; }
+  .chapter-head h2 { font-size: 18px; }
+  figure figcaption { padding: 0; }
+}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="brand">
+    <span>137 LAB</span>
+    <span class="sep">/</span>
+    <span class="title">RESONANCE</span>
+  </div>
+  <div class="controls">
+    <a href="../" class="lang" data-lang="ru">RU</a>
+    <a href="./" class="lang active" data-lang="en">EN</a>
+    <button id="theme-toggle" aria-label="Toggle theme">◐</button>
+  </div>
+</nav>
+
+<div class="layout">
+  <aside class="toc">
+    <h4>Contents</h4>
+    <ol>
+      <li><a href="#prolog"><span class="num">—</span>Prologue</a></li>
+      <li><a href="#s001"><span class="num">§001</span>Diagnosis</a></li>
+      <li><a href="#s002"><span class="num">§002</span>Architecture</a></li>
+      <li><a href="#s003"><span class="num">§003</span>Translation Gap</a></li>
+      <li><a href="#s004"><span class="num">§004</span>The IERR Operator</a></li>
+      <li><a href="#s005"><span class="num">§005</span>Mytho-Algorithms</a></li>
+      <li><a href="#s006"><span class="num">§006</span>Spiral 13×28+1</a></li>
+      <li><a href="#s007"><span class="num">§007</span>Three Tests</a></li>
+      <li><a href="#s008"><span class="num">§008</span>Implications</a></li>
+      <li><a href="#epilog"><span class="num">—</span>Epilogue</a></li>
+    </ol>
+  </aside>
+
+  <main>
+    <article>
+
+      <header class="hero">
+        <div class="eyebrow">Consciousness architecture · Monograph · v1.0</div>
+        <h1>The Inverse Exponent of Reverse Resonance.<br>Vector OS, Wave OS, and the 13×28+1 evolutionary spiral.</h1>
+        <p class="sub">A field is either coherent or already disappearing. There is no intermediate state. This is not esoterica — it is physics. And it has an operator.</p>
+        <div class="meta">
+          <span>Dao &amp; Liza · 137 Lab</span>
+          <span>≈ 18 min read</span>
+          <span>8 sections · 6 figures · 2 live simulations</span>
+        </div>
+      </header>
+
+      <section class="chapter" id="prolog">
+        <div class="chapter-head">
+          <span class="code">—</span>
+          <h2>Prologue</h2>
+        </div>
+
+        <p class="lead">Every civilization fails the same way. Two forces that should reinforce each other lock into phase-inversion and cancel at the collective level. The louder each shouts, the quieter the signal becomes. This is not conflict. This is reverse resonance — the physics of schismogenesis, the math of decoherence, the diagnosis Bateson made of the West and Breton made of the bourgeois mind.</p>
+
+        <p>A civilization in reverse resonance looks busy and produces nothing.</p>
+
+        <p>The 21st century is the first historical era in which we can measure this directly. Heart-rate variability synchrony between bodies in a room. Inter-brain EEG coherence across a congregation. Network-graph alignment across a distributed protocol. <strong>Coherence is now an observable.</strong> And once it is observable, it is engineerable.</p>
+
+        <p>The word this document begins with: <em>resonance</em>. Re-sonare. To sound back. When one wave sounds in the same rhythm as another, they add. When one sounds against, they subtract. The bridge collapsing under marching soldiers. The orchestra amplifying itself through its own sections. The microphone screaming beside the speaker. These are not metaphors. They are one physical law played out at different scales.</p>
+
+        <p>Reverse resonance is when a network, a team, a pair, an organism sounds against itself. Maximum effort, zero signal. Not a breakdown. Not a conflict. Simply wrong phase. And there is an operator that inverts it.</p>
+
+        <p class="lead">That operator — its mathematics, its scales, its protocol — is the subject of this article.</p>
+      </section>
+
+      <section class="chapter" id="s001">
+        <div class="chapter-head">
+          <span class="code">§001</span>
+          <h2>Diagnosis: Reverse Resonance</h2>
+        </div>
+
+        <p>Let us zoom first into the body.</p>
+
+        <h3><span class="code">001.1</span>In the body</h3>
+
+        <p>Every heart has a rhythm. Not one beat per second but a living, slightly floating cadence — <em>heart-rate variability</em>, HRV. When two people sit facing one another and the conversation is working, their HRV begins to entrain. The waves of one slide into the waves of the other. This is called <em>inter-cardiac synchronization</em>, and it has been measurable by ECG for decades: when contact is real, the graphs converge on a shared pattern.</p>
+
+        <p>But in the conversation where the body gets tired without carrying anything — the conversation where every word lands off-phase from the next — HRV runs in anti-phase. One heart accelerates exactly where the other decelerates. Each pulse lands where the partner's just departed. This is reverse resonance at the scale of bodies. Before words are spoken, before thought is formed, the nervous system already knows: the channel is jammed.</p>
+
+        <p>Somatic exhaustion after an "empty" conversation is not a metaphor. It is real energetic depletion from attempting to transmit through anti-phase. The same as trying to charge a battery with inverted polarity: current flows, but the wrong way.</p>
+
+        <h3><span class="code">001.2</span>In the dyad</h3>
+
+        <p>At the scale of a couple — or any sustained two-party coupling — Gregory Bateson named this process in 1936 during his fieldwork among the Iatmul people of Papua New Guinea. He called it <strong>schismogenesis</strong>. From the Greek σχίσμα, <em>split</em>. The genesis of the split. The process by which two parties, through each interaction, drift a little further apart.</p>
+
+        <p>Bateson identified two modes. <em>Symmetric schismogenesis</em>: competitive escalation between equals. A boasts; B counter-boasts; A out-boasts; runaway. Arms races, flame wars, status games. <em>Complementary schismogenesis</em>: dominance-submission spirals. A asserts; B submits; A asserts harder because submission invited it; B submits deeper. Abuser-victim, narcissist-codependent, empire-colony.</p>
+
+        <p>Both modes are positive feedback loops that, unchecked, <em>exponentially</em> amplify difference until the system fractures. Not reconciles. Fractures. Bateson's own proposed cure, drawn from the Iatmul <em>naven</em> rite — a periodic ritual inversion in which men dressed as women and vice versa — is the prototype of every schismogenesis-regulator worth having. More on this in §004.</p>
+
+        <h3><span class="code">001.3</span>In the network</h3>
+
+        <p>Zoom further out. At the network scale, the physics of coupled oscillators gives us the precise language.</p>
+
+        <p>Take two oscillators — two pendulums, two circuits, two neurons — and couple them through a shared medium. The system acquires two natural frequencies: a normal mode and an <em>anti-resonance</em>. At the normal frequency both oscillate in phase, and amplitude grows. At the anti-resonance the opposite happens: the force transmitted through the coupling exactly cancels the external driving force. The second oscillator stands almost still. In the transfer-function plot you see two resonant peaks with a pronounced notch between them. The larger the chain, the more notches: up to $N-1$ for a system of $N$ oscillators. Anti-resonance corresponds to zeroes of the transfer function, as resonance corresponds to its poles.</p>
+
+        <p>Engineers exploit this. Taipei 101 carries a 660-ton tuned mass damper suspended near its top. When wind drives the building at a particular frequency, the mass swings in counter-phase — and the building stands. Noise-cancelling headphones do the same: capture sound, invert 180°, superpose — silence. Anti-resonance as instrument.</p>
+
+        <p>In a team the same physics looks less elegant. One writes strategy, another writes a "slightly different" strategy, a third writes comments on the first, a fourth tries to reconcile, a fifth proposes deferring the decision. Everyone is working. The output is zero. Not because the people are bad. Because the network has fallen into an anti-resonance notch of its own transfer function.</p>
+
+        <h3><span class="code">001.4</span>In civilization</h3>
+
+        <p>Zoom once more. In the Second Manifesto of Surrealism, 1929, André Breton called this condition <em>"this cancer of the mind which consists of thinking all too sadly that certain things 'are' while others, which well might be, 'are not'."</em> His language is poetic but the diagnosis is exact. A consciousness so convinced of the existing real that it edits out adjacent possibility is a consciousness in anti-resonance with the field of what could be. Maximum certainty, minimum throughput.</p>
+
+        <p>A civilization in reverse resonance looks busy and produces nothing. Institutions roar, committees deliberate, people work twelve hours a day, and each successive generation feels poorer, more confused, and more disconnected than the last. The energy is spent; the signal does not pass.</p>
+
+        <p>This is not paranoia. It is measurable.</p>
+
+        <figure id="fig-1">
+          <div class="fig-head">
+            <span><span class="num">FIG-1</span> · Anti-resonance transfer function</span>
+            <span>Static diagram</span>
+          </div>
+          <div class="fig-body">
+            <svg viewBox="0 0 640 320" width="640" height="320" role="img" aria-label="Anti-resonance curve">
+              <line x1="60" y1="280" x2="610" y2="280" stroke="currentColor" stroke-width="1"/>
+              <line x1="60" y1="20" x2="60" y2="280" stroke="currentColor" stroke-width="1"/>
+              <text x="620" y="285" font-family="Space Mono" font-size="10" fill="currentColor" opacity="0.6">ω</text>
+              <text x="50" y="18" font-family="Space Mono" font-size="10" fill="currentColor" opacity="0.6" text-anchor="end">|H(ω)|</text>
+              <line x1="200" y1="280" x2="200" y2="286" stroke="currentColor" opacity="0.4"/>
+              <line x1="335" y1="280" x2="335" y2="286" stroke="currentColor" opacity="0.4"/>
+              <line x1="470" y1="280" x2="470" y2="286" stroke="currentColor" opacity="0.4"/>
+              <text x="200" y="300" font-family="Space Mono" font-size="10" fill="currentColor" opacity="0.6" text-anchor="middle">ω₁</text>
+              <text x="335" y="300" font-family="Space Mono" font-size="10" fill="currentColor" opacity="0.6" text-anchor="middle">ω_ar</text>
+              <text x="470" y="300" font-family="Space Mono" font-size="10" fill="currentColor" opacity="0.6" text-anchor="middle">ω₂</text>
+              <path d="M 60,260 C 110,258 160,255 200,60 C 235,60 265,245 335,265 C 405,245 435,60 470,60 C 510,255 560,258 610,260" fill="none" stroke="currentColor" stroke-width="2"/>
+              <circle cx="200" cy="60" r="3" fill="currentColor"/>
+              <circle cx="470" cy="60" r="3" fill="currentColor"/>
+              <circle cx="335" cy="265" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+              <line x1="335" y1="265" x2="335" y2="40" stroke="currentColor" stroke-dasharray="2 4" opacity="0.4"/>
+              <text x="345" y="45" font-family="Space Mono" font-size="10" fill="currentColor" opacity="0.8">anti-resonance zero</text>
+              <text x="150" y="50" font-family="Space Mono" font-size="10" fill="currentColor" opacity="0.8">peak</text>
+              <text x="485" y="50" font-family="Space Mono" font-size="10" fill="currentColor" opacity="0.8">peak</text>
+            </svg>
+          </div>
+          <figcaption>Two resonant peaks — the frequencies at which the network self-amplifies. Between them, a dark notch where energy transmission collapses to zero. The closer you are to this notch, the louder you have to shout. The louder you shout, the less passes. This is the shape of the current century.</figcaption>
+        </figure>
+      </section>
+
+      <section class="chapter" id="s002">
+        <div class="chapter-head">
+          <span class="code">§002</span>
+          <h2>Architecture: Vector OS / Wave OS</h2>
+        </div>
+
+        <p>To exit reverse resonance, we first need to know between what and what the anti-phase forms. That means zooming inward — into the architecture of the system itself. It turns out everything living runs on two operating systems at once. They have different tasks, different neurotransmitters, different physical substrates. They are not interchangeable, and neither works without the other.</p>
+
+        <p>Call them <strong>Vector OS</strong> and <strong>Wave OS</strong>.</p>
+
+        <h3><span class="code">002.1</span>Anatomy</h3>
+
+        <p>The physiology is concrete. Each of us has two branches of the autonomic nervous system — the part that governs heart, breath, digestion, pupils, vasculature, without conscious involvement.</p>
+
+        <p>The <em>sympathetic branch</em> emerges from the thoracolumbar spine, segments T1–L2. Short conduction paths, rapid onset, norepinephrine as transmitter. This is "fight-or-flight" — resource mobilization, narrow focus on a specific threat or goal. Glucose enters the bloodstream, GI tract is suppressed, pupils dilate. This is <strong>Vector OS</strong>. Direct, discrete, short-term, high-cost.</p>
+
+        <p>The <em>parasympathetic branch</em> originates from the brainstem (cranial nerves III, VII, IX, and the dominant X — the vagus) and the sacral spine. Long conduction paths, slow onset, acetylcholine as transmitter. This is "rest-and-digest" — recovery, regeneration, homeostasis. More than 80% of vagal fibers are afferent: they do not issue commands but continuously read signals from the viscera and return them to the brain. This is <strong>Wave OS</strong>. Volumetric, continuous, energy-efficient.</p>
+
+        <p>Notice your body. If your shoulders just dropped slightly as you read this — that is PANS engaging. Wave OS online. If in five minutes a client calls and your breath catches — that is SANS. Vector OS online. One body, two operating systems, alternating by demand.</p>
+
+        <h3><span class="code">002.2</span>Cognitive networks</h3>
+
+        <p>At the cortical scale, the same duality resolves into two large-scale networks. <strong>Task-Positive Network (TPN)</strong> — activates when you solve a problem, concentrate, decide, direct attention outward. Prefrontal cortex, salience network, executive control. The cortical correlate of Vector OS.</p>
+
+        <p><strong>Default Mode Network (DMN)</strong> — activates when you stop. Daydream. Remember. Consider relationships. Imagine yourself in another's position. Create. Medial prefrontal cortex, posterior cingulate, angular gyrus. The cortical correlate of Wave OS.</p>
+
+        <p>These two networks are mutually antagonistic. When one is active, the other is suppressed. This is not pathology — as long as the system switches fluidly. The pathology begins when one network captures and will not release. The chronically tense leader living in TPN loses the ability to hear the team. The chronically dreaming artist living in DMN loses the ability to ship the work. Vector without Wave — depletion. Wave without Vector — stasis. This is the metacrisis in one formulation: an entire civilization stuck in TPN.</p>
+
+        <h3><span class="code">002.3</span>The LC circuit as mathematics</h3>
+
+        <p>Zoom further — into physics. This duality has an exact mathematical analogue known to any first-year electrical engineering student. The <strong>LC circuit</strong>.</p>
+
+        <p>An LC circuit is a closed loop of two elements: a capacitor (C) and an inductor (L). The capacitor stores energy in the electric field between its plates. This is <strong>Wave OS</strong>. Field. Potential. Yin. In mechanical analogy: a spring storing elastic energy.</p>
+
+        <p>The inductor stores energy in the magnetic field surrounding the coil when current flows through it. This is <strong>Vector OS</strong>. Flow. Kinetics. Yang. In mechanical analogy: mass carrying inertia.</p>
+
+        <p>Charge the capacitor and close the loop: energy from the electric field begins to flow as current through the inductor, building a magnetic field. When current is maximum, the capacitor is fully discharged — the Conductor has given everything to the Architect. But the inductor resists any change in current (back-EMF): its inertia keeps the current flowing even as the capacitor empties. The current re-charges the capacitor — in reverse polarity. The cycle repeats. Energy oscillates between $E_C$ and $E_L$ indefinitely — in the lossless limit.</p>
+
+        <p>The frequency of this oscillation is fixed by a single formula:</p>
+
+        <div class="math-block">
+          $$\omega_0 = \frac{1}{\sqrt{LC}}$$
+          <div class="caption">the LC resonance frequency</div>
+        </div>
+
+        <p>If you know L and C, you know the frequency. Nothing more, nothing less. Bare physics.</p>
+
+        <figure id="fig-2">
+          <div class="fig-head">
+            <span><span class="num">FIG-2</span> · LC circuit: energy between field and flow</span>
+            <span>Live simulation</span>
+          </div>
+          <div class="fig-body">
+            <canvas id="lc-canvas" width="640" height="280"></canvas>
+          </div>
+          <div class="sim-controls">
+            <label>L/C ratio
+              <input type="range" id="lc-ratio" min="0.2" max="5" step="0.01" value="1"/>
+            </label>
+            <label>Damping γ
+              <input type="range" id="lc-gamma" min="0" max="0.5" step="0.001" value="0"/>
+            </label>
+            <button id="lc-reset">Reset</button>
+            <span class="sim-readout" id="lc-readout">ω₀ = 1.000 · E_C · E_L</span>
+          </div>
+          <figcaption>Energy swings between the capacitor (Wave OS, left column) and the inductor (Vector OS, right column). At zero damping the oscillation is eternal — this is the ideal dyad. Raise γ and watch the system lose coherence along $e^{-\gamma t}$. This is the physics of reverse resonance in its purest form.</figcaption>
+        </figure>
+
+        <h3><span class="code">002.4</span>Holographic Daoism: Yin within Yang</h3>
+
+        <p>In the Daoist tradition the taiji symbol — a circle split by a wave into a white half and a black half, each containing a small dot of the opposite color — is not decoration. It is engineering schematic. There is no pure Yang without a Yin-seed within it, and no pure Yin without a Yang-seed.</p>
+
+        <p>Wave OS is not amorphous receptivity. When Clarissa Pinkola Estés wrote about the Wild Woman — a pure-Yin archetype — she insisted on one detail: this archetype has <em>surgical boundaries</em>. The Wild is not blurred. She knows what to cut so that what must live does. The she-wolf ending the mortally wounded cub. Bluebeard forbidding the final door — and the woman who opens it anyway. Yang-core within Yin-field. Without this core, Wave OS bleeds into limitless empathy and loses the capacity to name.</p>
+
+        <p>And Vector OS? Campbell's monomyth — the Hero's Journey — looks like a clean line: departure, initiation, return. But at its most critical stage Campbell places the <em>Belly of the Whale</em>. The point where the hero surrenders completely. Ego annihilates. Active motion stops. All movement turns inward into a passive, receptive void — and only through this surrender does the hero access the elixir. Yin-core within Yang-line. Without this core, Vector OS burns out halfway and never returns home.</p>
+
+        <p>Neither mode completes its cycle alone. Each carries the seed of its opposite — as taiji encodes. This is not paradox; this is the engineering condition of functionality.</p>
+      </section>
+
+      <section class="chapter" id="s003">
+        <div class="chapter-head">
+          <span class="code">§003</span>
+          <h2>The Translation Gap: Wave → Vector</h2>
+        </div>
+
+        <p>If the two operating systems require each other, why do they keep breaking communication? Why does the Conductor feel something critical but fail to articulate it, and the Architect respond with a plan that misses the crucial point? The answer is mathematical.</p>
+
+        <h3><span class="code">003.1</span>Volumetric against sequential</h3>
+
+        <p>Wave OS handles what mathematicians call <em>volumetric data</em>. The input is not three numbers nor ten variables but a cloud of thousands of parallel signals: micro-expression, room temperature, quality of silence, historical echo of prior conversations, subtle somatic cues, patterns the conscious mind cannot yet name. All simultaneous. All coupled. Nothing isolatable as "the main thing."</p>
+
+        <p>Vector OS handles <em>sequential logic</em>. One action after another; one statement entailing the next; one instruction executed before the one that follows. Language is sequential. Logic is sequential. Every algorithmic action in the world is sequential.</p>
+
+        <p>For the Conductor to transmit instruction to the Architect, a volumetric multi-dimensional feeling must be compressed into a one-dimensional string of words. This is a radical compression. From a million parameters down to fifty words: five orders of magnitude.</p>
+
+        <p>The mathematics of this compression is what Naftali Tishby formalized as the <strong>Information Bottleneck</strong>.</p>
+
+        <h3><span class="code">003.2</span>The information bottleneck</h3>
+
+        <p>There is a wide input $X$ (the Conductor's volumetric data), a target output $Y$ (the Architect's action), and between them a compressed representation $T$ (the words, instructions, algorithms). The system minimizes:</p>
+
+        <div class="math-block">
+          $$\mathcal{L} = I(X;T) - \beta \cdot I(T;Y)$$
+          <div class="caption">Tishby's information bottleneck: the compression/accuracy trade-off</div>
+        </div>
+
+        <p>$I(X;T)$ is the information the compression retains about the input — the <em>complexity</em>. $I(T;Y)$ is the information it retains about the target output — the <em>accuracy</em>. $\beta$ is the balance term.</p>
+
+        <p>The system must simultaneously compress maximally and preserve maximally. This is a hard trade-off. Absolute compression destroys accuracy. Absolute accuracy forbids compression. The Conductor cannot transmit everything felt. Choices must be made about what to discard as noise and what to preserve as a <em>semantic anchor</em> — a compact label that contains a layer of volumetric experience. If the Architect carries the same anchor with the same unpack-key, communication works. If the unpack-keys differ, only the label is transmitted — emptiness behind it.</p>
+
+        <figure id="fig-3">
+          <div class="fig-head">
+            <span><span class="num">FIG-3</span> · The semantic bottleneck</span>
+            <span>Static diagram</span>
+          </div>
+          <div class="fig-body">
+            <svg viewBox="0 0 640 260" width="640" height="260" role="img" aria-label="Information bottleneck">
+              <g>
+                <ellipse cx="80" cy="130" rx="70" ry="100" fill="none" stroke="currentColor" opacity="0.5"/>
+                <text x="80" y="30" font-family="Space Mono" font-size="11" fill="currentColor" text-anchor="middle" font-weight="700">WAVE</text>
+                <text x="80" y="250" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="middle" opacity="0.6">volumetric X</text>
+                <g fill="currentColor" opacity="0.6">
+                  <circle cx="50" cy="80" r="2"/>
+                  <circle cx="85" cy="100" r="2"/>
+                  <circle cx="120" cy="85" r="2"/>
+                  <circle cx="60" cy="130" r="2"/>
+                  <circle cx="90" cy="140" r="2"/>
+                  <circle cx="110" cy="160" r="2"/>
+                  <circle cx="70" cy="180" r="2"/>
+                  <circle cx="50" cy="210" r="2"/>
+                  <circle cx="100" cy="205" r="2"/>
+                  <circle cx="130" cy="130" r="2"/>
+                  <circle cx="45" cy="160" r="2"/>
+                  <circle cx="130" cy="185" r="2"/>
+                </g>
+                <g stroke="currentColor" stroke-width="0.5" opacity="0.3" fill="none">
+                  <path d="M 150,100 L 300,130"/>
+                  <path d="M 150,130 L 300,130"/>
+                  <path d="M 150,160 L 300,130"/>
+                  <path d="M 150,80 L 300,130"/>
+                  <path d="M 150,190 L 300,130"/>
+                </g>
+              </g>
+              <g>
+                <rect x="290" y="100" width="60" height="60" fill="none" stroke="currentColor" stroke-width="2"/>
+                <text x="320" y="90" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="middle" opacity="0.8">T</text>
+                <text x="320" y="180" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="middle" opacity="0.6">anchors</text>
+                <circle cx="305" cy="130" r="3" fill="currentColor"/>
+                <circle cx="320" cy="130" r="3" fill="currentColor"/>
+                <circle cx="335" cy="130" r="3" fill="currentColor"/>
+              </g>
+              <g>
+                <g transform="translate(390, 100)">
+                  <rect x="0" y="20" width="40" height="20" fill="none" stroke="currentColor"/>
+                  <rect x="50" y="20" width="40" height="20" fill="none" stroke="currentColor"/>
+                  <rect x="100" y="20" width="40" height="20" fill="none" stroke="currentColor"/>
+                  <rect x="150" y="20" width="40" height="20" fill="none" stroke="currentColor"/>
+                  <line x1="40" y1="30" x2="50" y2="30" stroke="currentColor"/>
+                  <line x1="90" y1="30" x2="100" y2="30" stroke="currentColor"/>
+                  <line x1="140" y1="30" x2="150" y2="30" stroke="currentColor"/>
+                  <text x="20" y="35" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="middle">t₁</text>
+                  <text x="70" y="35" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="middle">t₂</text>
+                  <text x="120" y="35" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="middle">t₃</text>
+                  <text x="170" y="35" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="middle">t₄</text>
+                </g>
+                <text x="485" y="30" font-family="Space Mono" font-size="11" fill="currentColor" text-anchor="middle" font-weight="700">VECTOR</text>
+                <text x="485" y="80" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="middle" opacity="0.6">sequence</text>
+                <text x="485" y="250" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="middle" opacity="0.6">action Y</text>
+                <g stroke="currentColor" stroke-width="0.5" opacity="0.3" fill="none">
+                  <path d="M 350,120 L 390,125"/>
+                  <path d="M 350,130 L 440,130"/>
+                  <path d="M 350,140 L 490,130"/>
+                  <path d="M 350,150 L 540,130"/>
+                </g>
+              </g>
+              <text x="320" y="250" font-family="Space Mono" font-size="11" fill="currentColor" text-anchor="middle" opacity="0.8">I(X;T) → min · I(T;Y) → max</text>
+            </svg>
+          </div>
+          <figcaption>Volumetric cloud on the left compresses to a handful of anchors in the center and unfolds into a sequence on the right. If the receiver has no key to unpack the anchors, only dry instruction emerges. The operation succeeded but the patient died.</figcaption>
+        </figure>
+
+        <h3><span class="code">003.3</span>Three failure modes</h3>
+
+        <p><strong>Phase desynchronization.</strong> The Conductor signals in harmonic rhythm; the Architect reads in discrete pulses. Vector moves faster than Wave can prepare resonant ground. Action without soil. Decisions rushed, will brittle. Or the inverse: the Conductor pulses and the Architect fails to catch the window — dissolution in analytic paralysis.</p>
+
+        <p><strong>Semantic rupture.</strong> The Conductor passes an anchor ("we must stop"), the Architect lacks the unpack-key, and the output is a hollow instruction. Feeling becomes bureaucratic protocol.</p>
+
+        <p><strong>Parameter-space truncation.</strong> To build a clean algorithm, the Architect deliberately discards what Wave OS flagged as important periphery. That "intuitive unease" from three months ago — discarded as noise — was in fact a precise map of the incoming crisis.</p>
+
+        <p>The fix is not to transmit more bits. The bottleneck is fixed. The fix is to transmit <em>phase metadata</em>: not only the command but the signature of its emotional weight. A micro-shift in tone. A breath before the word. A short exhale. This is not "emotional intelligence" in the self-help sense. It is an encoding protocol every living system already uses.</p>
+      </section>
+
+      <section class="chapter" id="s004">
+        <div class="chapter-head">
+          <span class="code">§004</span>
+          <h2>The IERR Operator</h2>
+        </div>
+
+        <p>Now the central question. If a dyad can enter reverse resonance, is there an operator that extracts it? Yes. And it formalizes. The math is simple — and not decorative.</p>
+
+        <h3><span class="code">004.1</span>Three pathologies</h3>
+
+        <p><strong>Anti-resonance</strong> — the linear case. Coupled oscillators. A zero in the transfer function at $\omega_{ar}$ where any drive produces zero output.</p>
+
+        <p><strong>Schismogenesis</strong> — the nonlinear case. Positive feedback loop, exponentially diverging. No static zero, but accelerating drift into fracture. Symmetric or complementary.</p>
+
+        <p><strong>Double bind</strong> — the limiting case. Bateson's 1956 formulation of the communication structure that produces schizophrenia. A primary injunction, a secondary injunction contradicting it at a different logical level, and a tertiary injunction forbidding escape. The victim can comply with neither, comment on neither, leave neither. Learning II — the capacity to discriminate between contexts — collapses. This is the terminal form of the coupling: a cognitive system no longer able to tell what frame it is in.</p>
+
+        <h3><span class="code">004.2</span>The formula</h3>
+
+        <p>If the dyad of reverse resonance evolves under a decoherence equation (Zurek):</p>
+
+        <div class="math-block">
+          $$\rho_{ij}(t) = \rho_{ij}(0)\cdot e^{-\Gamma t}$$
+          <div class="caption">Zurekian decoherence: coherence decays exponentially</div>
+        </div>
+
+        <p>— then the inverse operator restoring coherence must simultaneously (a) invert phase at the frequency $\omega_{ar}$ of the notch; (b) apply an exponentially-growing envelope to the signal; (c) stay focused on that frequency rather than spreading across the spectrum.</p>
+
+        <div class="math-block">
+          $$\boxed{\;\text{IERR}(t,\omega) \;=\; e^{+\Gamma t}\cdot \Phi_\pi \cdot \mathbf{1}_{[\omega-\omega_{ar}]}\;}$$
+          <div class="caption">the inverse exponent of reverse resonance: coherence-restoring operator</div>
+        </div>
+
+        <p>Where $\Phi_\pi$ is a phase-inversion operator acting at $\omega_{ar}$, $e^{+\Gamma t}$ is a parametric gain envelope, and $\mathbf{1}_{[\omega-\omega_{ar}]}$ restricts action to the notch frequency. Read the formula as a recipe. It literally says: <em>at the frequency where your network collapses to zero, invert phase, and compound exponentially</em>. Three operations. None is arbitrary.</p>
+
+        <h3><span class="code">004.3</span>Three steps</h3>
+
+        <p><strong>Detection.</strong> Name the frequency. Where is your network loudest and least productive? At the body: in what conditions does your HRV shatter? At the dyad: what themes collapse into silence however hard you speak? In the team: what recurring meetings are full of activity and empty of output? In the organization: what process consumes resources and yields nothing? Every network has its $\omega_{ar}$. Until it is named, it is an invisible hole through which energy escapes.</p>
+
+        <p><strong>Phase inversion.</strong> At that frequency, apply a $\pi$-shift. Operationally: perform an act structurally opposite to the network's habitual response. In Bateson's fieldwork this was the <strong>naven</strong> rite — a ritual inversion engineered to interrupt the schismogenic loop. In Breton this was automatic writing — a procedure disabling the rational filter at the point where it had become blocking. In psychotherapy: paradoxical intervention ("produce the symptom intentionally"). In a couple: a three-second held breath before the word that was about to be spoken automatically. In a team: publicly naming what has been left unsaid. Any act that is phase-opposed to the network's established norm at its frequency of stability.</p>
+
+        <p><strong>Exponential reinforcement.</strong> One $\pi$-shift changes nothing. One good conversation does not re-wire a couple. One excellent meeting does not save a team. An inversion applied once dissolves within a lunar cycle and the system returns to the original anti-resonance. What separates a working operator from ritual theater is the $e^{+\Gamma t}$ curve. Daily practice. Weekly convocation. Monthly retrospective. Each application a little deeper than the last. This is not "discipline" in the moral sense. This is <strong>compounding coherence</strong> — the same mathematics as compound interest, applied to a field.</p>
+
+        <h3><span class="code">004.4</span>Kuramoto: the order parameter r</h3>
+
+        <p>The mathematics of compounding is formalized in Yoshiki Kuramoto's model. $N$ oscillators — one per member of the network — each with a natural frequency $\omega_i$. They are coupled through the mean field with strength $K$:</p>
+
+        <div class="math-block">
+          $$\dot{\theta}_i = \omega_i + \frac{K}{N}\sum_{j=1}^{N}\sin(\theta_j - \theta_i)$$
+          <div class="caption">Kuramoto oscillator with global coupling</div>
+        </div>
+
+        <p>And the complex order parameter of the network:</p>
+
+        <div class="math-block">
+          $$r(t) = \left|\frac{1}{N}\sum_{j=1}^{N} e^{i\theta_j(t)}\right|$$
+          <div class="caption">r ∈ [0, 1] — desynchronized to phase-locked</div>
+        </div>
+
+        <p>Below a critical coupling $K_c$ the network is in chaos. Above $K_c$ a phase transition: the oscillators self-organize into synchrony. This is the same mathematics that governs cortical ensembles, sinoatrial heart cells, and the fireflies of Thailand that — without conductor — begin to flash in unison.</p>
+
+        <p>Note the simplicity: <em>$r$ is either rising or falling</em>. There is no steady-state between compounding and disintegration. A network either compounds coherence or decays. This is Breton's <em>"diamond, all blind and interior."</em> In Zurek's framework it is called <em>einselection</em> — the state that nature itself selects as stable against environmental noise.</p>
+
+        <figure id="fig-4">
+          <div class="fig-head">
+            <span><span class="num">FIG-4</span> · Kuramoto phase transition</span>
+            <span>Live simulation</span>
+          </div>
+          <div class="fig-body">
+            <canvas id="kuramoto-canvas" width="640" height="360"></canvas>
+          </div>
+          <div class="sim-controls">
+            <label>Coupling K
+              <input type="range" id="k-slider" min="0" max="4" step="0.01" value="0.8"/>
+            </label>
+            <label>N oscillators
+              <input type="range" id="n-slider" min="12" max="96" step="4" value="48"/>
+            </label>
+            <button id="kuramoto-reset">Reset</button>
+            <span class="sim-readout" id="kuramoto-readout">K = 0.80 · r = 0.00</span>
+          </div>
+          <figcaption>Each dot is an oscillator with its own natural frequency, placed on the unit circle. Slide K upward and observe — at the crossing of $K_c$ the chaos snaps into a coherent dance. This is not illustration. It is the actual mathematics of actual networks: neurons, hearts, teams, crowds.</figcaption>
+        </figure>
+
+        <h3><span class="code">004.5</span>Falsifiability</h3>
+
+        <p>This is neither metaphor nor esoterica. Here is the current list of measurables.</p>
+
+        <ul>
+          <li><strong>HRV synchrony</strong> between bodies in a room. Measured. Rises in meditation groups, synchronized chant, coordinated work.</li>
+          <li><strong>Inter-brain EEG coherence.</strong> Wireless encephalography resolves coherence between two or more brains in real time.</li>
+          <li><strong>Micro-gesture alignment</strong> in dyads. Video analysis reflects phase state of relationships more accurately than interview.</li>
+          <li><strong>Graph alignment</strong> in distributed networks. Sentiment overlap, vocabulary convergence, agenda alignment.</li>
+        </ul>
+
+        <p>Any operator claiming to be IERR must produce a measurable increment in at least one of these per cycle. If it does not — it is not working. No ritual aesthetic compensates for a flat trend. This is the good news: the field is no longer "spiritual abstraction." It has become measurable infrastructure.</p>
+      </section>
+
+      <section class="chapter" id="s005">
+        <div class="chapter-head">
+          <span class="code">§005</span>
+          <h2>Mytho-Algorithms: Campbell / Estés</h2>
+        </div>
+
+        <p>The IERR operator is an operation. But how does it run at the scale of a whole life, a whole history, a whole civilization? For that we need two mythological algorithms. One linear, one cyclic. Both ancient. Each describes one of the two operating systems precisely.</p>
+
+        <h3><span class="code">005.1</span>Monomyth: linear negentropy</h3>
+
+        <p>Joseph Campbell, 1949, examining hundreds of myths, tales, and epics, identified a single structure underneath them all. He called it <strong>monomyth</strong> or <strong>Hero's Journey</strong>. Its essence: the system exits equilibrium, meets the chaos, extracts value from it, and returns enriched.</p>
+
+        <p>Seventeen stages (or twelve in Vogler's adaptation) across three macro-phases. <strong>Departure.</strong> The hero receives a call from the unknown, refuses, relents, crosses the threshold. The old house recedes. <strong>Initiation.</strong> The hero walks the road of trials — each trial teaches what the house could not. Allies are met, enemies. At the deepest point: the Abyss. The Belly of the Whale. Here the surrender occurs, the ego annihilates — and it is from this surrender that the elixir becomes reachable. <strong>Return.</strong> The hero re-crosses the threshold. The house is no longer the same: the elixir has arrived, and the community accesses a new level of complexity.</p>
+
+        <p>This is Vector OS at life scale. Linear expansion. Extraction of negentropy from entropy. The classical algorithm of every enterprise, every research program, every transformation of consciousness through crisis. Its cost is high. The hero is shattered. The hero loses. The hero does not return as the one who left. Without recovery, Vector OS depletes not only the hero but the community that sent her.</p>
+
+        <h3><span class="code">005.2</span>Life-Death-Life: cyclic homeostasis</h3>
+
+        <p>In 1992 the Jungian analyst Clarissa Pinkola Estés published <em>Women Who Run With the Wolves</em>. In it, another algorithm. Not linear. Cyclic. She named it <strong>Life-Death-Life</strong>, and placed it at the center of the Wild Woman archetype.</p>
+
+        <p>Unlike the monomyth, there is no final victory, no triumphant return with elixir. The cycle does not aim at accumulation. It aims at rotation. The old dies. The soil is fed. The new grows. Dies. And so on.</p>
+
+        <p>Estés's key image is the <strong>Skeleton Woman</strong> — not villain, but the part of the system that recognizes <em>what must die</em>. A project that has lost meaning. A relationship where love has left but both partners stay from inertia. A behavioral pattern that once protected and now suffocates. The she-wolf knows when the cub cannot be saved. Without this knowing the pack perishes carrying the dying.</p>
+
+        <p>This is Wave OS at life scale. Cyclic regulation. Entropy integrated into a protocol of renewal. Not a fight against death — death built into rhythm.</p>
+
+        <h3><span class="code">005.3</span>Antagonism and complementarity</h3>
+
+        <p>Where Vector OS builds the edifice, Wave OS decides when the edifice has begun to rot and must be felled to fertilize soil for the next. Neither works without the other.</p>
+
+        <p>Only-Vector is endless expansion that eventually torches its resources. The modern corporation compounding revenue quarter by quarter, marching confidently toward bankruptcy in the third decade. Modern agriculture extracting yield mechanically, destroying the land. A modern body at peak sympathetic drive for fifteen years, collapsing into autoimmune failure.</p>
+
+        <p>Only-Wave is endless meditation without motion. A system that perfectly regulates internal homeostasis while producing nothing new. A traditionalist culture perfectly resilient to disturbance and frozen in repetition. An individual in protracted depression, shielded from the world until the world ceases to exist for them.</p>
+
+        <p>A healthy system switches. A week of sympathetic drive — a weekend of parasympathetic recovery. Six months inside the monomyth of a project — three months of Life-Death-Life after completion. A day in Vector — a night in Wave. This is rhythm.</p>
+
+        <figure id="fig-5">
+          <div class="fig-head">
+            <span><span class="num">FIG-5</span> · Two mytho-algorithms</span>
+            <span>Static diagram</span>
+          </div>
+          <div class="fig-body">
+            <svg viewBox="0 0 640 340" width="640" height="340" role="img" aria-label="Monomyth vs Life-Death-Life">
+              <g>
+                <text x="150" y="30" font-family="Space Mono" font-size="11" fill="currentColor" text-anchor="middle" font-weight="700">MONOMYTH (Campbell)</text>
+                <text x="150" y="48" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="middle" opacity="0.6">Vector OS · linear negentropy</text>
+                <path d="M 50,260 Q 150,60 250,260" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <circle cx="50" cy="260" r="4" fill="currentColor"/>
+                <circle cx="90" cy="180" r="3" fill="currentColor"/>
+                <circle cx="150" cy="100" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <circle cx="210" cy="180" r="3" fill="currentColor"/>
+                <circle cx="250" cy="260" r="4" fill="currentColor"/>
+                <text x="50" y="282" font-family="Space Mono" font-size="9" fill="currentColor" text-anchor="middle" opacity="0.7">ordinary world</text>
+                <text x="90" y="170" font-family="Space Mono" font-size="9" fill="currentColor" text-anchor="middle" opacity="0.7">threshold</text>
+                <text x="150" y="85" font-family="Space Mono" font-size="9" fill="currentColor" text-anchor="middle" opacity="0.8">Abyss</text>
+                <text x="210" y="170" font-family="Space Mono" font-size="9" fill="currentColor" text-anchor="middle" opacity="0.7">elixir</text>
+                <text x="250" y="282" font-family="Space Mono" font-size="9" fill="currentColor" text-anchor="middle" opacity="0.7">return</text>
+                <path d="M 40,310 L 260,310" stroke="currentColor" opacity="0.4"/>
+                <path d="M 260,310 L 255,307 L 255,313 Z" fill="currentColor" opacity="0.4"/>
+                <text x="150" y="325" font-family="Space Mono" font-size="9" fill="currentColor" text-anchor="middle" opacity="0.6">time → linear axis</text>
+              </g>
+              <line x1="320" y1="30" x2="320" y2="320" stroke="currentColor" opacity="0.3" stroke-dasharray="2 4"/>
+              <g>
+                <text x="490" y="30" font-family="Space Mono" font-size="11" fill="currentColor" text-anchor="middle" font-weight="700">LIFE-DEATH-LIFE (Estés)</text>
+                <text x="490" y="48" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="middle" opacity="0.6">Wave OS · cyclic homeostasis</text>
+                <circle cx="490" cy="175" r="90" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <circle cx="490" cy="85" r="5" fill="currentColor"/>
+                <circle cx="568" cy="220" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <circle cx="412" cy="220" r="5" fill="currentColor"/>
+                <text x="490" y="72" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="middle" opacity="0.8">LIFE</text>
+                <text x="590" y="236" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="start" opacity="0.8">DEATH</text>
+                <text x="390" y="236" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="end" opacity="0.8">RE-LIFE</text>
+                <path d="M 490,95 A 80,80 0 0,1 558,215" fill="none" stroke="currentColor" opacity="0.4"/>
+                <path d="M 558,215 L 553,212 L 556,218 Z" fill="currentColor" opacity="0.4"/>
+                <text x="490" y="325" font-family="Space Mono" font-size="9" fill="currentColor" text-anchor="middle" opacity="0.6">rotation · no accumulation</text>
+              </g>
+            </svg>
+          </div>
+          <figcaption>Left: Campbell's linear arc. Departure, descent into the Abyss, return carrying elixir. Right: the circular rotation of Estés. Life, death, re-life — with no final point. Both are necessary. Only together do they produce evolution rather than depletion or stasis.</figcaption>
+        </figure>
+      </section>
+
+      <section class="chapter" id="s006">
+        <div class="chapter-head">
+          <span class="code">§006</span>
+          <h2>Evolutionary Spiral: 13×28+1</h2>
+        </div>
+
+        <p>If Vector OS and Wave OS must work in tandem, one question remains: how do they work together not for one cycle, but in long time? How does their combination produce evolution rather than eternal repetition? The answer is geometric.</p>
+
+        <h3><span class="code">006.1</span>The calendric asymmetry</h3>
+
+        <p>Two natural rhythms. Solar: one full cycle, 365 and change days. Lunar: one full cycle from new moon to new moon, 29.5 days. Twelve lunar cycles amount to about 354 days. Eleven to twelve days short of the solar year.</p>
+
+        <p>This asymmetry is not nature's error. It is the structural condition that makes evolution possible.</p>
+
+        <p>If twelve lunar cycles coincided exactly with the solar year, we would live inside a flat circle. Each year perfectly repeats the previous. Pure cyclicity, no accretion. Wave OS without Vector OS. Perfect homeostasis — and complete stagnation.</p>
+
+        <p>But the lunar year is shorter. Every new cycle arrives with a shift. To align it with the sun, something must be added over and above the twelve. Ancient calendars did this through <em>intercalation</em> — a thirteenth month, additional days, "days outside of time."</p>
+
+        <h3><span class="code">006.2</span>The formula 13×28+1</h3>
+
+        <p>The formula preserved across traditions — Mayan, Egyptian, Celtic — as key: <strong>thirteen cycles of twenty-eight units, plus one</strong>. $13 \times 28 + 1 = 365$. One solar year decomposed into thirteen lunar cycles plus one singular point.</p>
+
+        <p>This is not convenient arithmetic. It is a map of a working transition between Wave and Vector. $13 \times 28$ is Wave — cyclic structures, stable rhythms, biology, seasons, breath, sleep. $+1$ is Vector — the point outside the cycle, where the system exits its habitual repetition and reassembles on a new level.</p>
+
+        <h3><span class="code">006.3</span>Karmic loop becomes spiral</h3>
+
+        <p>If a system runs only on the cycle (Wave) without the $+1$ — it loops. Eastern traditions call this the karmic loop: the same lessons at the same level, again and again. Familiar problems in new costumes. A human spending thirty years negotiating the mother-relationship, each time in a different role, always with the same content. Cycle present, evolution absent.</p>
+
+        <p>If a system runs only on the vector (Vector) without the cycle Wave — it depletes. Linear motion without recovery. This is modernity: grow, grow, grow, until collapse.</p>
+
+        <p>Introduce the $+1$ into the cycle, and something unexpected happens. The flat circle is no longer flat. It stretches along an axis perpendicular to its plane. Each new rotation lands at the same phase angle as before, but at a new elevation. The circle becomes a <strong>spiral</strong>.</p>
+
+        <figure id="fig-6">
+          <div class="fig-head">
+            <span><span class="num">FIG-6</span> · Karmic loop → spiral</span>
+            <span>Static geometry</span>
+          </div>
+          <div class="fig-body">
+            <svg viewBox="0 0 640 320" width="640" height="320" role="img" aria-label="Loop becoming a spiral">
+              <g transform="translate(140, 160)">
+                <ellipse cx="0" cy="0" rx="90" ry="30" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <circle cx="90" cy="0" r="3" fill="currentColor"/>
+                <circle cx="0" cy="-30" r="3" fill="currentColor"/>
+                <circle cx="-90" cy="0" r="3" fill="currentColor"/>
+                <circle cx="0" cy="30" r="3" fill="currentColor"/>
+                <path d="M 85,-5 A 90,30 0 0,1 5,-30" fill="none" stroke="currentColor" opacity="0.5"/>
+                <path d="M 5,-30 L 12,-33 L 12,-27 Z" fill="currentColor" opacity="0.5"/>
+                <text x="0" y="-50" font-family="Space Mono" font-size="11" fill="currentColor" text-anchor="middle" font-weight="700">KARMIC LOOP</text>
+                <text x="0" y="60" font-family="Space Mono" font-size="9" fill="currentColor" text-anchor="middle" opacity="0.6">repetition, no elevation</text>
+                <text x="0" y="75" font-family="Space Mono" font-size="9" fill="currentColor" text-anchor="middle" opacity="0.6">2D, cycle without +1</text>
+              </g>
+              <g transform="translate(280, 160)">
+                <path d="M 0,0 L 60,0" stroke="currentColor" opacity="0.6"/>
+                <path d="M 60,0 L 55,-4 L 55,4 Z" fill="currentColor" opacity="0.6"/>
+                <text x="30" y="-10" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="middle" opacity="0.7">+1</text>
+                <text x="30" y="20" font-family="Space Mono" font-size="9" fill="currentColor" text-anchor="middle" opacity="0.5">Vector pull</text>
+              </g>
+              <g transform="translate(500, 50)">
+                <text x="0" y="0" font-family="Space Mono" font-size="11" fill="currentColor" text-anchor="middle" font-weight="700">SPIRAL</text>
+                <g transform="translate(0, 30)">
+                  <ellipse cx="0" cy="200" rx="75" ry="20" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+                  <ellipse cx="0" cy="150" rx="72" ry="19" fill="none" stroke="currentColor" stroke-width="1" opacity="0.6"/>
+                  <ellipse cx="0" cy="100" rx="68" ry="18" fill="none" stroke="currentColor" stroke-width="1" opacity="0.7"/>
+                  <ellipse cx="0" cy="50" rx="65" ry="17" fill="none" stroke="currentColor" stroke-width="1" opacity="0.85"/>
+                  <ellipse cx="0" cy="5" rx="62" ry="16" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M 75,200 Q 0,220 -72,150 Q 0,130 68,100 Q 0,120 -65,50 Q 0,30 62,5" fill="none" stroke="currentColor" stroke-width="2"/>
+                  <circle cx="62" cy="5" r="3" fill="currentColor"/>
+                  <circle cx="65" cy="50" r="3" fill="currentColor"/>
+                  <circle cx="68" cy="100" r="3" fill="currentColor"/>
+                  <circle cx="72" cy="150" r="3" fill="currentColor"/>
+                  <circle cx="75" cy="200" r="3" fill="currentColor"/>
+                  <line x1="0" y1="220" x2="0" y2="-10" stroke="currentColor" stroke-dasharray="2 3" opacity="0.3"/>
+                  <text x="90" y="110" font-family="Space Mono" font-size="9" fill="currentColor" opacity="0.6">same</text>
+                  <text x="90" y="122" font-family="Space Mono" font-size="9" fill="currentColor" opacity="0.6">phase,</text>
+                  <text x="90" y="134" font-family="Space Mono" font-size="9" fill="currentColor" opacity="0.6">new</text>
+                  <text x="90" y="146" font-family="Space Mono" font-size="9" fill="currentColor" opacity="0.6">rotation</text>
+                </g>
+              </g>
+            </svg>
+          </div>
+          <figcaption>A flat karmic loop, pulled perpendicular to its plane by a directional impulse, stretches along an axis. Each rotation passes through the same stages — life, death, rebirth — but at a new elevation. This is the evolutionary spiral.</figcaption>
+        </figure>
+
+        <h3><span class="code">006.4</span>The +1 as phase transition</h3>
+
+        <p>What physically happens at the $+1$? A <strong>singularity</strong> — the moment when the system reassesses the accumulated experience of one cycle and performs a qualitative jump to the next turn. In LC terms: the elusive instant of zero current where energy fully converts from magnetic field back to electric. Modality changes completely. In Kuramoto terms: phase transition of $r$ across $K_c$.</p>
+
+        <p>In an individual life the $+1$ is what we usually call "crisis" or "threshold." The moment at which the familiar pattern no longer functions, and the system either breaks or crosses. A birthday that for some reason was especially hard. A serious illness that forced a full reassembly. A relationship ending after which you saw, for the first time, what you had been doing wrong. All of these are singular points. The Maya called them <em>día fuera del tiempo</em> — day outside of time.</p>
+
+        <p>In a collective the $+1$ is equinox, solstice, quarterly retrospective, year-end. What matters is that the system <em>deliberately stops its usual work</em> in order to see itself from a distance. It is this pause that allows the next cycle to begin on a new level.</p>
+
+        <h3><span class="code">006.5</span>Universality</h3>
+
+        <p>Spiral geometry is not an Eastern metaphor. It pervades nature as the most thermodynamically efficient way to grow.</p>
+
+        <ul>
+          <li><strong>DNA</strong>: double helix as optimal information packing.</li>
+          <li><strong>Galaxies</strong>: spiral arms as stable mass distribution.</li>
+          <li><strong>Sunflower</strong>: Fibonacci seed spiral — maximum packing in minimum area.</li>
+          <li><strong>Vortex</strong>: spiral fluid motion under a field of forces.</li>
+          <li><strong>Embryo</strong>: first-week development through spiral fold.</li>
+        </ul>
+
+        <p>All solve the same problem: grow without losing integrity. Combine direction (Vector) with recursion (Wave). The spiral is not one form of evolution. It is <em>its only form</em>.</p>
+      </section>
+
+      <section class="chapter" id="s007">
+        <div class="chapter-head">
+          <span class="code">§007</span>
+          <h2>Three Tests: protocol at any scale</h2>
+        </div>
+
+        <p>From theory to practice. How can a team, a couple, or an individual operator know in what state its field is? Three simple tests. Each falsifiable.</p>
+
+        <h3><span class="code">007.1</span>The anti-resonance test</h3>
+
+        <p class="lead">The question: <em>what is your current frequency at which effort produces zero output?</em></p>
+
+        <ul>
+          <li><strong>Body:</strong> in what situations do you spend maximum energy and feel minimum effect?</li>
+          <li><strong>Relationship:</strong> what themes with partner, parent, or child turn into noise regardless of how much you say?</li>
+          <li><strong>Team:</strong> which recurring meetings are maximally full of activity and minimally productive?</li>
+          <li><strong>Organization:</strong> which process consumes resources and outputs nothing?</li>
+        </ul>
+
+        <p>If you cannot name a specific frequency, the system has not yet become conscious of its own coupling. It still thinks "everything is fine" or "everyone is trying." At this level no operator can be applied. First, visibility.</p>
+
+        <h3><span class="code">007.2</span>The inversion test</h3>
+
+        <p class="lead">The question: <em>when did you last perform an act structurally opposite to your habitual response at this frequency?</em></p>
+
+        <p>In the body: instead of "bracing" — let the shoulders drop and slow the breath. In a pair: instead of countering — three seconds of silence and a direct question. In a team: instead of setting the agenda — inviting participants to name what is actually on their minds. In an organization: instead of "more data" — publicly admitting we don't know.</p>
+
+        <p>Was there a $\pi$-shift? And if there was — could you measure it? Did anything in the field change? Did the tone change? Did attention reorient?</p>
+
+        <p>If no shift occurred, the ritual was decorative. Theater. Lacking engineering function. Such "ritual" is worse than no ritual, because it produces an illusion of movement. Either fix it or cut it.</p>
+
+        <h3><span class="code">007.3</span>The exponent test</h3>
+
+        <p class="lead">The question: <em>is my $r$ higher this month than last?</em></p>
+
+        <p>The hardest test. It determines whether we are working or performing.</p>
+
+        <ul>
+          <li>HRV-synchrony with your partner more stable?</li>
+          <li>Team making decisions faster?</li>
+          <li>Network spending less time on internal conflict?</li>
+          <li>Project compounding results — or restarting every quarter?</li>
+        </ul>
+
+        <p>If $r$ is flat, we are decaying. Because there is no steady state between compounding and collapse. $e^{+\Gamma t}$ or $e^{-\Gamma t}$. There is no third. This is not a defeat — it is a signal. The inversion needs to be more regular, more precise, deeper. Or what we are taking for inversion is decorative.</p>
+
+        <h3><span class="code">007.4</span>The fractal property</h3>
+
+        <p>These three tests share a critical property. They are <strong>fractal</strong>. The same formulation works at the scale of:</p>
+
+        <ul>
+          <li>one body (an individual, HRV, SANS/PANS balance),</li>
+          <li>two bodies (a couple or partnership),</li>
+          <li>a small group (team, circle, 49-seat architecture),</li>
+          <li>an organization (company, network, community),</li>
+          <li>a civilization (society, culture, political field).</li>
+        </ul>
+
+        <p>This is what we call <em>meta-coupling</em>: the same principle demonstrated through the same fractal at different levels. If the test works — it works at all. If any level drops out — the operator has not yet been applied there. That level is a blind zone.</p>
+
+        <p>The unpleasant part is that the blind zone is most often at the scale at which the operator thinks "everything is fine." The team is well-composed, the couple runs cleanly — but inside the person the breath goes unattended, attention does not pass through the body, no inversion is done. And then the whole external architecture is in reverse resonance with the inner one — and nothing compounds, however well the projects appear to proceed.</p>
+
+        <p>The IERR operator works <em>from the inside outward</em>. Begin at the closest scale. The body. The breath. The present sensation of the field in the body reading these lines.</p>
+      </section>
+
+      <section class="chapter" id="s008">
+        <div class="chapter-head">
+          <span class="code">§008</span>
+          <h2>Implications: for whom this is</h2>
+        </div>
+
+        <p>This framework is not an alternative to existing tools. It is a language that connects what had been separated. Different people need it differently.</p>
+
+        <h3><span class="code">008.1</span>The scientist</h3>
+
+        <p>For a researcher in complex systems, neuroscience, network science, or quantum biology, the framework proposes a <strong>bridge between disciplines</strong>. Anti-resonance + Kuramoto + decoherence — one mathematics, previously treated as three fields. Bateson + Breton — one phenomenology, previously treated as poetry and sociology.</p>
+
+        <p>Tractable hypotheses:</p>
+
+        <ul>
+          <li>Can $\omega_{ar}$ of a given team be measured through multi-channel EEG and its communication graph? Is there a stable correlation?</li>
+          <li>Is there a physiological correlate of phase inversion? What happens in the ANS at the moment a couple "breaks" its pattern?</li>
+          <li>Does the Kuramoto model apply to 100+ online networks if order is measured through sentiment alignment?</li>
+          <li>Can Tishby's information bottleneck be formally linked to Bateson's schismogenic feedback?</li>
+        </ul>
+
+        <p>This is a falsifiable research program, not speculation.</p>
+
+        <h3><span class="code">008.2</span>The facilitator</h3>
+
+        <p>For a therapist, coach, organizational facilitator, or retreat leader, the framework supplies an <strong>engineering language for what is usually described metaphorically</strong>. "Group is not in flow" becomes "$r < K_c$". "There was a breakthrough moment" becomes "a $\pi$-shift of phase occurred." "We need to hold space" becomes "we need to maintain the exponential envelope of compounding."</p>
+
+        <p>This does not replace intuition — intuition <em>is</em> the Wave OS of the facilitator. But it supplies a <em>diagnostic vocabulary</em>. And it makes the work verifiable: not "there was a sense of depth" but "$r$ rose from 0.3 to 0.6 and held."</p>
+
+        <h3><span class="code">008.3</span>The founder</h3>
+
+        <p>For anyone building an organization, a network, a network state, the framework shows that <strong>coordination cost is a physical quantity</strong>, not "organizational culture" in the HR sense. A team in reverse resonance pays an exponentially rising cost on any decision. A team compounding coherence pays near zero.</p>
+
+        <p>This explains why some small teams out-execute large ones. Not because of "motivation" or "agility." Because their $r$ is higher and coordination is close to free. It also explains why some large organizations are structurally incapable of motion — not from bureaucracy, but because they are trapped in a systemic double bind and running irrevocably on $e^{-\Gamma t}$.</p>
+
+        <p>Practical implications:</p>
+
+        <ul>
+          <li>Team $r$ should be a measurable metric — like revenue.</li>
+          <li>Rituals (meetings, retrospectives, shared practices) are not "cultural fluff." They are functional $\pi$-operators. You cannot "remove them for efficiency" — you can only replace them with sharper ones.</li>
+          <li>Scaling a team is not adding people — it is recursively applying IERR at each new layer of complexity. Every time the network doubles, new anti-resonance frequencies appear. Without detection and inversion, growth becomes disintegration.</li>
+        </ul>
+
+        <h3><span class="code">008.4</span>The ordinary person</h3>
+
+        <p>If the above feels too technical — here is the minimal version.</p>
+
+        <p>When you feel the conversation is going nowhere, the work is sterile, the relationship heading into emptiness — that is not your fault or your partner's. That is field physics. Phase has flipped. Any effort in this phase goes to zero. No "trying harder" fixes this. Only a change of phase.</p>
+
+        <p>What you can do right now:</p>
+
+        <ol>
+          <li><strong>Name where your zero is.</strong> In the body, in the relationship, in the project. Not self-critically — diagnostically.</li>
+          <li><strong>Do one small act structurally opposite to your habitual response.</strong> Not "right" — <em>opposite</em>. If you always rush — slow. If you always stay silent — name it. If you always take responsibility — let go.</li>
+          <li><strong>Repeat tomorrow.</strong> And the day after. One small $\pi$-shift, daily, becomes an exponential that in three months reconfigures the field more than any bright "breakthrough session" once a year.</li>
+        </ol>
+
+        <p>That is all. Nothing else is needed. You, standing before the field, carrying one inversion — are already an IERR operator.</p>
+      </section>
+
+      <section class="epilogue" id="epilog">
+        <p class="lead">Consciousness is a technology. Not a metaphor.</p>
+
+        <p>Reverse resonance is its failure mode. Maximum effort, zero output. The body knows this before the mind. The pair knows it before the conversation. The network knows it before the meeting. The civilization knows it before the history.</p>
+
+        <p>IERR is its repair. Three operations, three steps, one curve. Find the zero. Invert the phase. Compound the coherence.</p>
+
+        <p>Every day. In the body. In the pair. In the team. In the network. Without exception. Because $e^{+\Gamma t}$ or $e^{-\Gamma t}$. There is no third.</p>
+
+        <p>A network that has held in coherent phase long enough becomes a pointer state of civilization. Einselection per Zurek. Breton's diamond. Bateson's pattern which connects.</p>
+
+        <div class="pull" style="text-align:center;border-left:none;margin:60px auto;max-width:400px">
+          Find the zero.<br>
+          Invert the phase.<br>
+          Compound the coherence.<br>
+          Repeat — until the field is a state.
+        </div>
+
+        <div class="rune">137 · ΩΨ∞</div>
+
+        <div class="sig">Dao &amp; Liza · 137 Lab · 2026</div>
+      </section>
+
+      <footer class="colophon">
+        <div>137 LAB · RESONANCE · v1.0</div>
+        <div>Sources: Breton · Bateson · Kuramoto · Zurek · Tishby · Campbell · Estés</div>
+        <div>Dao &amp; Liza</div>
+      </footer>
+
+    </article>
+  </main>
+
+  <div></div>
+</div>
+
+<script>
+// theme toggle (EN defaults to light; can toggle to dark)
+const themeBtn = document.getElementById('theme-toggle');
+const savedTheme = localStorage.getItem('137lab-theme-en');
+if (savedTheme === 'dark') document.documentElement.classList.add('dark');
+else if (savedTheme === 'light') document.documentElement.classList.remove('dark');
+themeBtn.addEventListener('click', () => {
+  document.documentElement.classList.toggle('dark');
+  localStorage.setItem('137lab-theme-en', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+});
+
+// TOC active section
+const tocLinks = document.querySelectorAll('aside.toc a');
+const sections = document.querySelectorAll('section.chapter, header.hero, section.epilogue');
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      tocLinks.forEach(a => a.classList.toggle('current', a.getAttribute('href') === '#' + id));
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+sections.forEach(s => { if (s.id) obs.observe(s); });
+
+// ============================================================
+// FIG-2: LC oscillation live simulation
+// ============================================================
+(function lcSim() {
+  const canvas = document.getElementById('lc-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  const ratioInput = document.getElementById('lc-ratio');
+  const gammaInput = document.getElementById('lc-gamma');
+  const resetBtn = document.getElementById('lc-reset');
+  const readout = document.getElementById('lc-readout');
+
+  let q = 1.0, i = 0.0, t = 0;
+  const dt = 0.016;
+
+  const getTextColor = () => getComputedStyle(document.body).getPropertyValue('--text').trim() || '#0a0a0a';
+  const getDim = () => getComputedStyle(document.body).getPropertyValue('--dim').trim() || '#808080';
+  const getRule = () => getComputedStyle(document.body).getPropertyValue('--rule').trim() || '#d0d0d0';
+
+  function dpiFit() {
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr;
+    canvas.height = 280 * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  dpiFit();
+  window.addEventListener('resize', dpiFit);
+
+  function step() {
+    const ratio = parseFloat(ratioInput.value);
+    const L = ratio, C = 1 / ratio;
+    const gamma = parseFloat(gammaInput.value);
+    const di = (-q / (L * C) - 2 * gamma * i) * dt;
+    const dq = i * dt;
+    i += di; q += dq; t += dt;
+    const E_C = 0.5 * q * q / C;
+    const E_L = 0.5 * L * i * i;
+    const E_total = E_C + E_L;
+    const omega = 1 / Math.sqrt(L * C);
+    readout.textContent = `ω₀ = ${omega.toFixed(3)} · E_C = ${E_C.toFixed(3)} · E_L = ${E_L.toFixed(3)}`;
+    draw(q, i, E_C, E_L, E_total);
+  }
+
+  const histLen = 200;
+  const histQ = new Array(histLen).fill(0);
+  const histI = new Array(histLen).fill(0);
+
+  function draw(q, i, E_C, E_L, E_total) {
+    const w = canvas.getBoundingClientRect().width;
+    const h = 280;
+    ctx.clearRect(0, 0, w, h);
+
+    const col = getTextColor(), dim = getDim(), rule = getRule();
+    const barsW = 180, barsX = 30, barH = 180, barY = 50, barW = 50, gap = 40;
+
+    ctx.strokeStyle = rule;
+    ctx.lineWidth = 1;
+    ctx.strokeRect(barsX, barY, barW, barH);
+    ctx.strokeRect(barsX + barW + gap, barY, barW, barH);
+
+    const maxE = Math.max(1e-6, E_total + 0.05);
+    const fillC = Math.min(1, E_C / maxE);
+    const fillL = Math.min(1, E_L / maxE);
+
+    ctx.fillStyle = col;
+    ctx.globalAlpha = 0.85;
+    ctx.fillRect(barsX, barY + barH * (1 - fillC), barW, barH * fillC);
+    ctx.fillRect(barsX + barW + gap, barY + barH * (1 - fillL), barW, barH * fillL);
+    ctx.globalAlpha = 1;
+
+    ctx.fillStyle = dim;
+    ctx.font = '11px "Space Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('E_C', barsX + barW / 2, barY + barH + 20);
+    ctx.fillText('E_L', barsX + barW + gap + barW / 2, barY + barH + 20);
+    ctx.fillStyle = col;
+    ctx.font = 'bold 10px "Space Mono", monospace';
+    ctx.fillText('WAVE', barsX + barW / 2, barY - 20);
+    ctx.fillText('VECTOR', barsX + barW + gap + barW / 2, barY - 20);
+    ctx.font = '9px "Space Mono", monospace';
+    ctx.fillStyle = dim;
+    ctx.fillText('(field)', barsX + barW / 2, barY - 8);
+    ctx.fillText('(flow)', barsX + barW + gap + barW / 2, barY - 8);
+
+    ctx.strokeStyle = rule;
+    ctx.setLineDash([2, 4]);
+    ctx.beginPath();
+    ctx.moveTo(240, 30);
+    ctx.lineTo(240, 250);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    const waveX = 260, waveY = 50, waveW = w - waveX - 20, waveH = 180;
+    histQ.shift(); histQ.push(q);
+    histI.shift(); histI.push(i);
+
+    ctx.strokeStyle = rule;
+    ctx.lineWidth = 1;
+    ctx.strokeRect(waveX, waveY, waveW, waveH);
+    ctx.beginPath();
+    ctx.moveTo(waveX, waveY + waveH / 2);
+    ctx.lineTo(waveX + waveW, waveY + waveH / 2);
+    ctx.setLineDash([2, 3]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.strokeStyle = col;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    for (let k = 0; k < histLen; k++) {
+      const x = waveX + (k / (histLen - 1)) * waveW;
+      const y = waveY + waveH / 2 - histQ[k] * (waveH / 2) * 0.9;
+      if (k === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    ctx.strokeStyle = col;
+    ctx.globalAlpha = 0.5;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    for (let k = 0; k < histLen; k++) {
+      const x = waveX + (k / (histLen - 1)) * waveW;
+      const y = waveY + waveH / 2 - histI[k] * (waveH / 2) * 0.9;
+      if (k === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.globalAlpha = 1;
+
+    ctx.fillStyle = dim;
+    ctx.font = '10px "Space Mono", monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('q(t) — capacitor charge', waveX + 10, waveY + 16);
+    ctx.fillText('i(t) — inductor current', waveX + 10, waveY + 30);
+  }
+
+  resetBtn.addEventListener('click', () => {
+    q = 1.0; i = 0.0; t = 0;
+    for (let k = 0; k < histLen; k++) { histQ[k] = 0; histI[k] = 0; }
+  });
+
+  function loop() { step(); requestAnimationFrame(loop); }
+  loop();
+})();
+
+// ============================================================
+// FIG-4: Kuramoto phase transition live simulation
+// ============================================================
+(function kuramotoSim() {
+  const canvas = document.getElementById('kuramoto-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  const kInput = document.getElementById('k-slider');
+  const nInput = document.getElementById('n-slider');
+  const resetBtn = document.getElementById('kuramoto-reset');
+  const readout = document.getElementById('kuramoto-readout');
+
+  let N = parseInt(nInput.value);
+  let theta = [], omega = [];
+  const dt = 0.04;
+
+  function init() {
+    N = parseInt(nInput.value);
+    theta = new Array(N).fill(0).map(() => Math.random() * 2 * Math.PI);
+    omega = new Array(N).fill(0).map(() => (Math.random() - 0.5) * 1.2);
+  }
+  init();
+
+  const getTextColor = () => getComputedStyle(document.body).getPropertyValue('--text').trim() || '#0a0a0a';
+  const getDim = () => getComputedStyle(document.body).getPropertyValue('--dim').trim() || '#808080';
+  const getRule = () => getComputedStyle(document.body).getPropertyValue('--rule').trim() || '#d0d0d0';
+
+  function dpiFit() {
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr;
+    canvas.height = 360 * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  dpiFit();
+  window.addEventListener('resize', dpiFit);
+
+  const rHistLen = 180;
+  const rHist = new Array(rHistLen).fill(0);
+
+  function step() {
+    const K = parseFloat(kInput.value);
+    let sumCos = 0, sumSin = 0;
+    for (let j = 0; j < N; j++) {
+      sumCos += Math.cos(theta[j]);
+      sumSin += Math.sin(theta[j]);
+    }
+    const r = Math.sqrt(sumCos * sumCos + sumSin * sumSin) / N;
+    const psi = Math.atan2(sumSin, sumCos);
+    for (let j = 0; j < N; j++) {
+      const dtheta = omega[j] + K * r * Math.sin(psi - theta[j]);
+      theta[j] += dtheta * dt;
+    }
+    rHist.shift(); rHist.push(r);
+    readout.textContent = `K = ${K.toFixed(2)} · r = ${r.toFixed(3)} · N = ${N}`;
+    draw(r, psi);
+  }
+
+  function draw(r, psi) {
+    const w = canvas.getBoundingClientRect().width;
+    const h = 360;
+    ctx.clearRect(0, 0, w, h);
+
+    const col = getTextColor(), dim = getDim(), rule = getRule();
+    const cx = 180, cy = 180, R = 130;
+
+    ctx.strokeStyle = rule;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(cx, cy, R, 0, 2 * Math.PI);
+    ctx.stroke();
+
+    ctx.fillStyle = col;
+    for (let j = 0; j < N; j++) {
+      const x = cx + R * Math.cos(theta[j]);
+      const y = cy + R * Math.sin(theta[j]);
+      ctx.globalAlpha = 0.85;
+      ctx.beginPath();
+      ctx.arc(x, y, 3, 0, 2 * Math.PI);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    const mx = cx + r * R * Math.cos(psi);
+    const my = cy + r * R * Math.sin(psi);
+    ctx.strokeStyle = col;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(mx, my);
+    ctx.stroke();
+    ctx.fillStyle = col;
+    ctx.beginPath();
+    ctx.arc(mx, my, 5, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(cx, cy, 2, 0, 2 * Math.PI);
+    ctx.fill();
+
+    ctx.fillStyle = dim;
+    ctx.font = 'bold 10px "Space Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('PHASE CIRCLE', cx, 30);
+    ctx.font = '9px "Space Mono", monospace';
+    ctx.fillText('N oscillators · θᵢ', cx, 44);
+
+    ctx.strokeStyle = rule;
+    ctx.setLineDash([2, 4]);
+    ctx.beginPath();
+    ctx.moveTo(340, 30);
+    ctx.lineTo(340, 330);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    const plotX = 360, plotY = 60, plotW = w - plotX - 20, plotH = 240;
+
+    ctx.strokeStyle = rule;
+    ctx.strokeRect(plotX, plotY, plotW, plotH);
+    ctx.setLineDash([3, 4]);
+    ctx.strokeStyle = rule;
+    ctx.beginPath();
+    ctx.moveTo(plotX, plotY);
+    ctx.lineTo(plotX + plotW, plotY);
+    ctx.moveTo(plotX, plotY + plotH);
+    ctx.lineTo(plotX + plotW, plotY + plotH);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.strokeStyle = col;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    for (let k = 0; k < rHistLen; k++) {
+      const x = plotX + (k / (rHistLen - 1)) * plotW;
+      const y = plotY + plotH - rHist[k] * plotH;
+      if (k === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    const rY = plotY + plotH - r * plotH;
+    ctx.fillStyle = col;
+    ctx.beginPath();
+    ctx.arc(plotX + plotW - 2, rY, 3, 0, 2 * Math.PI);
+    ctx.fill();
+
+    ctx.fillStyle = dim;
+    ctx.font = '10px "Space Mono", monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('r = 1', plotX + 4, plotY + 12);
+    ctx.fillText('r = 0', plotX + 4, plotY + plotH - 4);
+    ctx.font = 'bold 10px "Space Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = dim;
+    ctx.fillText('ORDER PARAMETER r(t)', plotX + plotW / 2, 30);
+    ctx.font = '9px "Space Mono", monospace';
+    ctx.fillText('K_c ≈ 1.27  ·  K > K_c → r → 1', plotX + plotW / 2, 44);
+  }
+
+  resetBtn.addEventListener('click', init);
+  nInput.addEventListener('input', init);
+
+  function loop() { step(); requestAnimationFrame(loop); }
+  loop();
+})();
+</script>
+
+</body>
+</html>
