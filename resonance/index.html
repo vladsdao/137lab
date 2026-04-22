@@ -1,0 +1,1722 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Обратный резонанс и его оператор — 137 Lab</title>
+<meta name="description" content="Архитектура сознания как взаимодействие Vector OS и Wave OS. Обратный резонанс, оператор IERR, эволюционная спираль 13×28+1. Фреймворк для учёных и практиков.">
+<meta name="author" content="Dao & Liza · 137 Lab">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous" onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0a0a0a;
+  --text: #f0f0f0;
+  --dim: #808080;
+  --rule: #303030;
+  --accent: #f0f0f0;
+  --font: 'Space Mono', 'Courier New', monospace;
+  --fs: 15px;
+  --lh: 1.65;
+  --col: 720px;
+  --margin: 80px;
+  --speed: 300ms;
+  --ease: cubic-bezier(0.83, 0, 0.17, 1);
+}
+
+.light {
+  --bg: #fafafa;
+  --text: #0a0a0a;
+  --dim: #808080;
+  --rule: #d0d0d0;
+}
+
+html {
+  font-family: var(--font);
+  font-size: var(--fs);
+  line-height: var(--lh);
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  transition: background var(--speed) var(--ease), color var(--speed) var(--ease);
+}
+
+a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); transition: border-color var(--speed) var(--ease); }
+a:hover { border-color: var(--text); }
+
+::selection { background: var(--text); color: var(--bg); }
+
+/* top bar */
+.topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--rule);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: background var(--speed) var(--ease), border-color var(--speed) var(--ease);
+}
+
+.topbar .brand { font-weight: 700; }
+.topbar .brand .sep { color: var(--dim); margin: 0 8px; }
+.topbar .brand .title { font-weight: 400; }
+
+.topbar .controls { display: flex; gap: 24px; align-items: center; }
+.topbar .controls button {
+  background: none;
+  border: none;
+  font: inherit;
+  color: var(--dim);
+  cursor: pointer;
+  padding: 0;
+  letter-spacing: 0.1em;
+}
+.topbar .controls button:hover { color: var(--text); }
+.topbar .controls .active { color: var(--text); font-weight: 700; }
+
+/* layout */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr var(--col) 1fr;
+  padding-top: 61px;
+  min-height: 100vh;
+}
+
+aside.toc {
+  position: sticky;
+  top: 61px;
+  align-self: start;
+  height: calc(100vh - 61px);
+  padding: 60px 30px;
+  overflow-y: auto;
+  border-right: 1px solid var(--rule);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
+aside.toc h4 {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 20px;
+  font-weight: 400;
+}
+
+aside.toc ol {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+aside.toc a {
+  border: none;
+  color: var(--dim);
+  display: block;
+  transition: color var(--speed) var(--ease);
+  line-height: 1.4;
+}
+
+aside.toc a:hover { color: var(--text); }
+aside.toc a.current { color: var(--text); font-weight: 700; }
+aside.toc .num { display: inline-block; width: 45px; color: var(--dim); }
+aside.toc a.current .num { color: var(--text); }
+
+main {
+  padding: 60px 60px 120px;
+  max-width: 100%;
+}
+
+article {
+  max-width: 100%;
+}
+
+/* article header */
+.hero {
+  padding: 80px 0 120px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 80px;
+}
+
+.hero .eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 30px;
+}
+
+.hero h1 {
+  font-size: 32px;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 30px;
+}
+
+.hero .sub {
+  font-size: 16px;
+  color: var(--dim);
+  font-style: italic;
+  max-width: 620px;
+}
+
+.hero .meta {
+  margin-top: 60px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dim);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+/* sections */
+section.chapter { padding: 60px 0; border-top: 1px solid var(--rule); }
+section.chapter:first-of-type { border-top: none; padding-top: 0; }
+
+.chapter-head {
+  display: flex;
+  gap: 24px;
+  align-items: baseline;
+  margin-bottom: 40px;
+}
+
+.chapter-head .code {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--dim);
+  min-width: 50px;
+  text-transform: uppercase;
+}
+
+.chapter-head h2 {
+  font-size: 22px;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.chapter h3 {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 48px 0 20px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.chapter h3 .code {
+  color: var(--dim);
+  margin-right: 10px;
+  font-weight: 400;
+}
+
+/* prose */
+.chapter p {
+  margin-bottom: 20px;
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.chapter p.lead {
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.chapter em { font-style: italic; color: var(--text); }
+.chapter strong { font-weight: 700; }
+
+.chapter ul, .chapter ol {
+  margin: 20px 0 20px 24px;
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.chapter ul li, .chapter ol li { margin-bottom: 10px; }
+
+/* math block */
+.math-block {
+  margin: 32px 0;
+  padding: 24px;
+  border-left: 2px solid var(--text);
+  background: rgba(255,255,255,0.02);
+  overflow-x: auto;
+}
+.light .math-block { background: rgba(0,0,0,0.02); }
+
+.math-block .caption {
+  font-size: 11px;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 16px;
+}
+
+/* pull quote */
+.pull {
+  margin: 40px 0;
+  padding: 24px 32px;
+  border-left: 3px solid var(--text);
+  font-size: 17px;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* figures */
+figure {
+  margin: 48px 0;
+  padding: 24px 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+figure .fig-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 20px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+figure .fig-head .num { font-weight: 700; color: var(--text); }
+
+figure .fig-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 280px;
+  padding: 20px 0;
+}
+
+figure svg { max-width: 100%; height: auto; display: block; }
+figure canvas { max-width: 100%; display: block; }
+
+figure figcaption {
+  font-size: 12px;
+  color: var(--dim);
+  margin-top: 16px;
+  line-height: 1.6;
+  padding: 0 20px;
+}
+
+/* sim controls */
+.sim-controls {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  padding: 16px 0;
+  border-top: 1px dashed var(--rule);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.sim-controls label {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.sim-controls input[type=range] {
+  -webkit-appearance: none;
+  width: 160px;
+  height: 2px;
+  background: var(--rule);
+  outline: none;
+}
+.sim-controls input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px; height: 12px;
+  background: var(--text);
+  cursor: pointer;
+  border-radius: 0;
+}
+
+.sim-controls button {
+  background: none;
+  border: 1px solid var(--rule);
+  color: var(--text);
+  font: inherit;
+  padding: 6px 14px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--speed) var(--ease);
+}
+.sim-controls button:hover { background: var(--text); color: var(--bg); }
+
+.sim-readout {
+  font-family: var(--font);
+  font-size: 11px;
+  color: var(--text);
+  letter-spacing: 0.08em;
+}
+
+/* epilogue */
+.epilogue {
+  padding: 80px 0;
+  border-top: 1px solid var(--rule);
+  text-align: center;
+}
+
+.epilogue .rune {
+  font-size: 36px;
+  letter-spacing: 0.3em;
+  margin: 40px 0;
+  color: var(--text);
+}
+
+.epilogue p {
+  font-size: 17px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.epilogue .sig {
+  margin-top: 80px;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+/* footer */
+footer.colophon {
+  padding: 60px 0 40px;
+  border-top: 1px solid var(--rule);
+  margin-top: 80px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* mobile */
+@media (max-width: 1100px) {
+  :root { --col: 100%; }
+  .layout { grid-template-columns: 1fr; padding-top: 55px; }
+  aside.toc {
+    position: static;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--rule);
+    padding: 30px 24px;
+  }
+  aside.toc ol {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+  }
+  main { padding: 30px 24px 80px; }
+  .hero { padding: 40px 0 60px; }
+  .hero h1 { font-size: 24px; }
+  .topbar { padding: 16px 20px; font-size: 10px; }
+  .chapter-head { flex-direction: column; gap: 8px; }
+  .chapter-head h2 { font-size: 18px; }
+  figure figcaption { padding: 0; }
+}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="brand">
+    <span>137 LAB</span>
+    <span class="sep">/</span>
+    <span class="title">RESONANCE</span>
+  </div>
+  <div class="controls">
+    <button data-lang="ru" class="active">RU</button>
+    <button data-lang="en" disabled style="opacity:0.3;cursor:not-allowed" title="EN coming soon">EN</button>
+    <button id="theme-toggle" aria-label="Toggle theme">◐</button>
+  </div>
+</nav>
+
+<div class="layout">
+  <aside class="toc">
+    <h4>Оглавление</h4>
+    <ol>
+      <li><a href="#prolog"><span class="num">—</span>Пролог</a></li>
+      <li><a href="#s001"><span class="num">§001</span>Диагноз</a></li>
+      <li><a href="#s002"><span class="num">§002</span>Архитектура</a></li>
+      <li><a href="#s003"><span class="num">§003</span>Разрыв перевода</a></li>
+      <li><a href="#s004"><span class="num">§004</span>Оператор IERR</a></li>
+      <li><a href="#s005"><span class="num">§005</span>Мифо-алгоритмы</a></li>
+      <li><a href="#s006"><span class="num">§006</span>Спираль 13×28+1</a></li>
+      <li><a href="#s007"><span class="num">§007</span>Три теста</a></li>
+      <li><a href="#s008"><span class="num">§008</span>Импликации</a></li>
+      <li><a href="#epilog"><span class="num">—</span>Эпилог</a></li>
+    </ol>
+  </aside>
+
+  <main>
+    <article>
+
+      <header class="hero">
+        <div class="eyebrow">Архитектура сознания · Монография · v1.0</div>
+        <h1>Обратный резонанс и его оператор.<br>Vector OS, Wave OS и эволюционная спираль 13×28+1.</h1>
+        <p class="sub">Поле либо когерентно, либо оно уже исчезает. Промежуточного состояния не бывает. Это не эзотерика — это физика. И у неё есть оператор.</p>
+        <div class="meta">
+          <span>Dao &amp; Liza · 137 Lab</span>
+          <span>≈ 25 мин чтения</span>
+          <span>8 разделов · 6 фигур · 2 живых симуляции</span>
+        </div>
+      </header>
+
+      <section class="chapter" id="prolog">
+        <div class="chapter-head">
+          <span class="code">—</span>
+          <h2>Пролог</h2>
+        </div>
+
+        <p class="lead">Попробуйте прямо сейчас. Вспомните разговор, где вы оба говорили много и громко, но после него ничего не осталось. Не ссора. Просто — труба забита. Каждое слово расходилось с другим, и к концу тело устало так, будто таскало мешки. Обратите внимание: тело помнит этот разговор как физическую нагрузку — хотя никто ничего не нёс. Что-то произошло, и энергия утекала в никуда.</p>
+
+        <p>Это не психология. Это физика.</p>
+
+        <p>Поле либо когерентно — либо оно уже исчезает. Промежуточного состояния не бывает. Два голоса в резонансе усиливают друг друга в экспоненте. Два голоса в противофазе гасят друг друга до нуля — с той же точностью и скоростью. Разница — только в фазе. Один параметр, две судьбы.</p>
+
+        <p>Слово, с которого начинается всё: <strong>резонанс</strong>. Re-sonare. Звучать обратно. Когда одна волна звучит в тот же ритм, что другая — они складываются. Когда одна звучит против — они вычитаются. Мост, рушащийся под ногами марширующих в ногу солдат. Оркестр, где каждый инструмент усиливает другой. Микрофон, свистящий рядом с колонкой. Это не метафоры. Это один физический закон, разыгранный на разных масштабах.</p>
+
+        <p>Обратный резонанс — это когда сеть, команда, пара, организм звучат против себя. Усилие максимальное, сигнал нулевой. Не поломка. Не конфликт. Просто неправильная фаза.</p>
+
+        <p class="lead">И есть оператор, который её разворачивает. Об этом — вся статья.</p>
+      </section>
+
+      <section class="chapter" id="s001">
+        <div class="chapter-head">
+          <span class="code">§001</span>
+          <h2>Диагноз: обратный резонанс</h2>
+        </div>
+
+        <p>Давайте сделаем первый зум — в тело.</p>
+
+        <h3><span class="code">001.1</span>В теле</h3>
+
+        <p>У каждого сердца есть ритм. Не один удар в секунду, а живой, чуть плавающий — так называемая <em>вариабельность сердечного ритма</em>, HRV. Когда два человека сидят напротив и разговор у них клеится, их HRV начинает подстраиваться. Волны одного попадают в волны другого. Это называется <em>интеркардиальная синхронизация</em>, и её давно измеряют электрокардиографом: когда контакт настоящий — графики ползут в один паттерн.</p>
+
+        <p>А вот когда разговор тот самый, с которого мы начали — когда тело устаёт без нагрузки — HRV двух людей уходит в противоход. Одно сердце ускоряется там, где другое замедляется. Каждый импульс одного приходит в то место, где другой только что ушёл. Это обратный резонанс на уровне тел. Ещё до того, как слова сказаны, ещё до того, как мысль сформулирована — нервная система уже знает: канал заглушён.</p>
+
+        <p>Оказывается, телесная усталость после «пустого» разговора — это не метафора. Это реальное энергетическое истощение от попытки передать сигнал через противофазу. То же самое, что пытаться зарядить батарею, подключив её неправильно: ток идёт, но в обратную сторону.</p>
+
+        <h3><span class="code">001.2</span>В отношениях</h3>
+
+        <p>На уровне пары — или любой устойчивой коммуникации двоих — это явление назвал британский антрополог Грегори Бейтсон в 1936 году. Слово, которое он предложил: <strong>schismogenesis</strong>. От греческого σχίσμα — раскол. Генезис раскола. Процесс, в котором двое людей, каждый раз взаимодействуя, чуть больше отклоняются друг от друга.</p>
+
+        <p>Бейтсон описал два режима. Первый — симметричный: А хвастается, Б отвечает большим хвастовством, А поднимает ставки, Б поднимает ещё выше. Каждое усилие одного провоцирует усиление того же у другого. Соревнование на разрушение. Войны в соцсетях, гонка вооружений, ссоры, где оба говорят в одинаковом тоне и ни один не слышит. Второй — комплементарный: А настаивает, Б уступает, А настаивает сильнее (раз уступили — значит можно), Б уступает глубже. Abuser и victim. Нарцисс и созависимый. Империя и колония. Каждый играет свою роль всё жёстче.</p>
+
+        <p>Оба режима — это экспоненциальные петли положительной обратной связи. Без размыкания они идут в расхождение до того момента, пока система не сломается. Не помирится. Сломается.</p>
+
+        <h3><span class="code">001.3</span>В сети</h3>
+
+        <p>Теперь зум на уровень многих — сеть, команда, коллектив. Физика связанных осцилляторов даёт точный язык.</p>
+
+        <p>Если взять два осциллятора — два маятника, две цепи, два нейрона — и связать их через общую среду, у системы появляются две собственные частоты: нормальная и <em>антирезонансная</em>. На нормальной оба качаются синхронно, амплитуда растёт. На антирезонансной происходит противоположное: сила, передаваемая через связь, точно гасит внешнее воздействие. Второй осциллятор почти замирает. Графики показывают два резонансных пика, а между ними — провал. Чем больше осцилляторов в цепи, тем больше таких провалов. До N−1 для системы из N элементов.</p>
+
+        <p>Инженеры этим пользуются. Taipei 101 — небоскрёб с 660-тонным шаром-маятником на верхних этажах. Когда ветер раскачивает здание на определённой частоте, шар качается в противофазе — и здание стоит. Наушники с активным шумоподавлением делают то же самое: захватывают звук, инвертируют его на 180°, накладывают — тишина. Антирезонанс как инструмент.</p>
+
+        <p>В команде это выглядит не так красиво. Один пишет стратегию, другой — «чуть другую», третий — замечания к первой, четвёртый пытается согласовать, пятый предлагает отложить. У всех — работа. Итог — ноль. Не потому что люди плохие. Потому что сеть попала в антирезонансный провал своей передаточной функции.</p>
+
+        <h3><span class="code">001.4</span>В цивилизации</h3>
+
+        <p>Последний зум — макро. В 1929 году французский писатель Андре Бретон, один из основателей сюрреализма, назвал это состояние «раком ума». Дословно: «болезнь ума, состоящая в том, чтобы думать слишком печально, что некоторые вещи „есть“, в то время как другие, которые могли бы быть, „не есть“». Язык Бретона поэтический — но диагноз точный. Сознание, настолько уверенное в существующей реальности, что вытесняет альтернативные — это сознание в антирезонансе с полем возможностей. Максимум уверенности, минимум проходимости.</p>
+
+        <p>Цивилизация в обратном резонансе выглядит занятой и не производит ничего. Институты шумят, комитеты заседают, люди работают по двенадцать часов, и каждое следующее поколение чувствует себя беднее, растеряннее, разобщённее предыдущего. Энергия тратится, сигнал не передаётся.</p>
+
+        <p>Это не паранойя. Это измеримо.</p>
+
+        <figure id="fig-1">
+          <div class="fig-head">
+            <span><span class="num">FIG-1</span> · Передаточная функция антирезонанса</span>
+            <span>Статическая диаграмма</span>
+          </div>
+          <div class="fig-body">
+            <svg viewBox="0 0 640 320" width="640" height="320" role="img" aria-label="Anti-resonance curve">
+              <!-- axes -->
+              <line x1="60" y1="280" x2="610" y2="280" stroke="currentColor" stroke-width="1"/>
+              <line x1="60" y1="20" x2="60" y2="280" stroke="currentColor" stroke-width="1"/>
+              <!-- axis labels -->
+              <text x="620" y="285" font-family="Space Mono" font-size="10" fill="currentColor" opacity="0.6">ω</text>
+              <text x="50" y="18" font-family="Space Mono" font-size="10" fill="currentColor" opacity="0.6" text-anchor="end">|H(ω)|</text>
+              <!-- ticks -->
+              <line x1="200" y1="280" x2="200" y2="286" stroke="currentColor" opacity="0.4"/>
+              <line x1="335" y1="280" x2="335" y2="286" stroke="currentColor" opacity="0.4"/>
+              <line x1="470" y1="280" x2="470" y2="286" stroke="currentColor" opacity="0.4"/>
+              <text x="200" y="300" font-family="Space Mono" font-size="10" fill="currentColor" opacity="0.6" text-anchor="middle">ω₁</text>
+              <text x="335" y="300" font-family="Space Mono" font-size="10" fill="currentColor" opacity="0.6" text-anchor="middle">ω_ar</text>
+              <text x="470" y="300" font-family="Space Mono" font-size="10" fill="currentColor" opacity="0.6" text-anchor="middle">ω₂</text>
+              <!-- the curve: two peaks with a deep notch between -->
+              <path d="M 60,260 C 110,258 160,255 200,60 C 235,60 265,245 335,265 C 405,245 435,60 470,60 C 510,255 560,258 610,260" fill="none" stroke="currentColor" stroke-width="2"/>
+              <!-- peak markers -->
+              <circle cx="200" cy="60" r="3" fill="currentColor"/>
+              <circle cx="470" cy="60" r="3" fill="currentColor"/>
+              <!-- notch marker -->
+              <circle cx="335" cy="265" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+              <line x1="335" y1="265" x2="335" y2="40" stroke="currentColor" stroke-dasharray="2 4" opacity="0.4"/>
+              <text x="345" y="45" font-family="Space Mono" font-size="10" fill="currentColor" opacity="0.8">антирезонансный ноль</text>
+              <text x="150" y="50" font-family="Space Mono" font-size="10" fill="currentColor" opacity="0.8">пик</text>
+              <text x="485" y="50" font-family="Space Mono" font-size="10" fill="currentColor" opacity="0.8">пик</text>
+            </svg>
+          </div>
+          <figcaption>Два резонансных пика — частоты, на которых сеть самоусиливается. Между ними — чёрная щель, где передача энергии уходит в ноль. Чем ближе вы к этой щели, тем громче приходится кричать. Чем громче кричите, тем меньше доходит. Это картина современности.</figcaption>
+        </figure>
+      </section>
+
+      <section class="chapter" id="s002">
+        <div class="chapter-head">
+          <span class="code">§002</span>
+          <h2>Архитектура: Vector OS / Wave OS</h2>
+        </div>
+
+        <p>Чтобы выйти из обратного резонанса, надо сначала понять — между чем и чем эта противофаза образуется. Поэтому второй зум — внутрь. В саму архитектуру системы. Оказывается, всё живое работает на двух операционных системах одновременно. У них разные задачи, разные нейромедиаторы, разные физические инструменты. Они не взаимозаменяемы, и ни одна без другой не работает.</p>
+
+        <p>Назовём их <strong>Vector OS</strong> и <strong>Wave OS</strong>.</p>
+
+        <h3><span class="code">002.1</span>Анатомия</h3>
+
+        <p>Начинается всё с очень конкретной физиологии. У каждого из нас есть две ветки вегетативной нервной системы — той части, которая управляет сердцем, дыханием, пищеварением, зрачками, сосудами. Без нашего сознательного участия.</p>
+
+        <p>Первая ветка — <em>симпатическая</em>. Исходит из грудного и поясничного отделов позвоночника, сегменты T1–L2. Короткие проводящие пути, быстрое включение, норадреналин как нейромедиатор. Это про «бей или беги» — мобилизация ресурсов, фокусировка на конкретной угрозе или цели, приоритезация нагрузки. Глюкоза в кровь, ЖКТ тормозится, зрачки расширяются. Это <strong>Vector OS</strong>. Прямой, дискретный, кратковременный, высокозатратный режим.</p>
+
+        <p>Вторая — <em>парасимпатическая</em>. Корни — ствол мозга (черепные нервы III, VII, IX и главный, X — блуждающий нерв, вагус) и крестцовый отдел спинного мозга. Длинные проводящие пути, медленное включение, ацетилхолин как нейромедиатор. Это про «отдыхай и переваривай» — восстановление, регенерация, гомеостаз. Более 80% волокон блуждающего нерва — афферентные: они не отдают команды, а непрерывно считывают информацию от органов и отправляют в мозг. Это <strong>Wave OS</strong>. Объёмный, непрерывный, энергоэффективный режим.</p>
+
+        <p>Обратите внимание на тело. Когда вы читаете это и плечи сами собой немного опускаются — это PANS. Wave OS включилась. Когда через пять минут вам позвонит клиент и дыхание сбивается — это SANS. Vector OS включилась. Один человек, один организм, две операционные системы, сменяющие друг друга по требованию.</p>
+
+        <h3><span class="code">002.2</span>Когнитивные сети</h3>
+
+        <p>На уровне мозга — та же дихотомия, в более высоком разрешении. Нейронауки последних двадцати лет описали две крупные сети.</p>
+
+        <p><strong>Task-Positive Network (TPN)</strong> — сеть под задачу. Включается, когда вы решаете проблему, концентрируетесь, принимаете решение, направляете внимание наружу. Префронтальная кора, салиентная сеть, исполнительный контроль. Это коррелят Vector OS на коре. Архитектор — тот, кто строит план и проламывает препятствия — работает здесь.</p>
+
+        <p><strong>Default Mode Network (DMN)</strong> — сеть по умолчанию. Включается, когда вы ничего не делаете, мечтаете, вспоминаете, перебираете отношения, представляете себя на чужом месте, творите. Медиальная префронтальная кора, задняя поясная извилина, ангулярная извилина. Это коррелят Wave OS на коре. Проводник — тот, кто считывает поле и интуитивно интегрирует — работает здесь.</p>
+
+        <p>И вот главное. Эти две сети <strong>антагонистичны</strong>. Когда одна активна, другая подавляется. Это значит, что фокусировка на задаче напрямую глушит чувствительность к социальному и эмоциональному контексту, и наоборот. В этом нет ничего патологического — пока система умеет переключаться. Патология начинается, когда одна сеть захватывает и застревает. Хронически напряжённый лидер, живущий в TPN, теряет способность слышать команду. Хронически мечтающий художник, живущий в DMN, теряет способность довести работу до публикации. Vector без Wave — истощение. Wave без Vector — стагнация.</p>
+
+        <p>Это и есть современный метакризис в одной формулировке. Целая цивилизация застряла в TPN.</p>
+
+        <h3><span class="code">002.3</span>LC-контур как математика</h3>
+
+        <p>Теперь зум ещё глубже — в физику. Потому что у этой дихотомии есть точный математический аналог, который знает любой студент электротехники на первом курсе. <strong>LC-контур</strong>.</p>
+
+        <p>Это замкнутая электрическая цепь из двух элементов: конденсатора (C) и катушки индуктивности (L). Конденсатор накапливает энергию в электрическом поле между своими обкладками. Это <strong>Wave OS</strong>. Поле. Потенциал. Инь. Пружина в механической аналогии — запасённая упругая энергия.</p>
+
+        <p>Индуктивность накапливает энергию в магнитном поле, которое возникает вокруг катушки, когда через неё идёт ток. Это <strong>Vector OS</strong>. Поток. Кинетика. Ян. Масса в механической аналогии — инерция движения.</p>
+
+        <p>Если зарядить конденсатор и замкнуть цепь, происходит следующее. Энергия из поля конденсатора перетекает в ток, создающий магнитное поле индуктивности. Когда ток максимальный, конденсатор полностью разряжен — Проводник отдал всё Архитектору. Но индуктивность не даёт току остановиться резко: по инерции продолжает толкать его даже когда поле пропало. Ток заряжает конденсатор обратно — но уже с противоположной полярностью. Цикл повторяется. Энергия качается из $E_C$ в $E_L$ и обратно. Бесконечно — если нет потерь.</p>
+
+        <p>Частота этих качелей определяется одной формулой:</p>
+
+        <div class="math-block">
+          $$\omega_0 = \frac{1}{\sqrt{LC}}$$
+          <div class="caption">резонансная частота LC-контура</div>
+        </div>
+
+        <p>Если вы знаете L и C, вы знаете частоту. Ни больше, ни меньше. Голая физика. И — что красиво — в этом идеализированном случае без сопротивления энергия не теряется вообще. Она только меняет форму. Это та самая негэнтропийная качеля, которая лежит в основе любой живой системы, держащей ритм.</p>
+
+        <figure id="fig-2">
+          <div class="fig-head">
+            <span><span class="num">FIG-2</span> · LC-контур: энергия между полем и потоком</span>
+            <span>Живая симуляция</span>
+          </div>
+          <div class="fig-body">
+            <canvas id="lc-canvas" width="640" height="280"></canvas>
+          </div>
+          <div class="sim-controls">
+            <label>L/C ratio
+              <input type="range" id="lc-ratio" min="0.2" max="5" step="0.01" value="1"/>
+            </label>
+            <label>Damping γ
+              <input type="range" id="lc-gamma" min="0" max="0.5" step="0.001" value="0"/>
+            </label>
+            <button id="lc-reset">Reset</button>
+            <span class="sim-readout" id="lc-readout">ω₀ = 1.000 · E_C · E_L</span>
+          </div>
+          <figcaption>Энергия качается между конденсатором (Wave OS, синяя колонна слева) и катушкой индуктивности (Vector OS, колонна справа). При нулевом затухании качели вечны — это и есть идеальная диада. Увеличьте γ и посмотрите, как система теряет когерентность по кривой $e^{-\gamma t}$. Это физика обратного резонанса в чистом виде.</figcaption>
+        </figure>
+
+        <h3><span class="code">002.4</span>Голографический даосизм: Инь внутри Ян</h3>
+
+        <p>В даосской традиции символ «тайцзи» — круг, разделённый волной на две половины, белую и чёрную, в каждой из которых маленькая точка противоположного цвета. Это не декоративный орнамент. Это чертёж. Потому что в реальности нет чистого Ян без Инь-ядра внутри него, и нет чистого Инь без Ян-ядра.</p>
+
+        <p>Оказывается, то же самое в нашей диаде. Wave OS — это не мягкая аморфная восприимчивость. Когда юнгианский психоаналитик Кларисса Пинкола Эстес писала о «Дикой Женщине» — архетипе чистого Инь — она отдельно настаивала: у этого архетипа есть <strong>хирургические границы</strong>. Дикая не размыта. Она умеет отсечь то, что должно умереть, чтобы выжило то, что должно жить. Волчица, убивающая смертельно раненого щенка. Синяя Борода, запрещающий открывать последнюю дверь — и женщина, которая всё-таки её открывает. Ян-ядро внутри Инь-поля. Без этого ядра Wave OS растекается в бесконечную эмпатию без способности назвать вещи.</p>
+
+        <p>А Vector OS? Мономиф Кэмпбелла — Путешествие Героя — кажется чистой линией: выход, инициация, возвращение. Но в самой кульминации у Кэмпбелла есть стадия под названием <em>Belly of the Whale</em>, «Чрево кита», или «Бездна». Это момент, где герой полностью сдаётся. Ego аннигилируется. Прямое действие прекращается. Всё движение идёт внутрь. Герой погружается в пассивную, ёмкостную, восприимчивую пустоту — и только через эту сдачу получает возможность вернуться. Инь-ядро внутри Ян-линии. Без этого ядра Vector OS истощается на полпути и никогда не доходит до возвращения.</p>
+
+        <p>Ни один из режимов сам по себе не завершает цикла. Они нужны друг другу. Не как добавка — а как фундамент.</p>
+      </section>
+
+      <section class="chapter" id="s003">
+        <div class="chapter-head">
+          <span class="code">§003</span>
+          <h2>Разрыв перевода: Wave → Vector</h2>
+        </div>
+
+        <p>Если две операционные системы нужны друг другу, почему они постоянно ломают коммуникацию? Почему Проводник чувствует нечто важное, но не может объяснить, а Архитектор в ответ строит план, который игнорирует самое главное? Ответ — в математике перевода.</p>
+
+        <h3><span class="code">003.1</span>Объёмное против дискретного</h3>
+
+        <p>Wave OS работает с тем, что математики называют <em>объёмными данными</em>. Это когда на входе — не три числа, не десять переменных, а облако из тысячи параллельно считываемых сигналов: микромимика собеседника, запах комнаты, качество тишины, историческое эхо прошлых разговоров, тонкие телесные ощущения, паттерны, которые сознание не успевает назвать. Всё одновременно. Всё взаимосвязано. Ничего нельзя выделить как главное.</p>
+
+        <p>Vector OS работает с <em>последовательной логикой</em>. Это когда одно действие следует за другим, одно утверждение вытекает из другого, одна инструкция исполняется после другой. Язык работает так. Логика работает так. Любое алгоритмическое действие в мире работает так.</p>
+
+        <p>Чтобы Проводник передал Архитектору инструкцию, он должен сжать объёмное многомерное ощущение в одномерную цепочку слов. Это — радикальное сжатие. Из миллиона параметров — в последовательность из пятидесяти слов. Коэффициент сжатия — пять нулей.</p>
+
+        <p>Оказывается, здесь работает ровно та же математика, что в сжатии видео, в нейронных сетях, в любом канале связи. Теорию этого сжатия формализовал израильский физик Нафтали Тишби под названием <strong>Information Bottleneck</strong> — информационное узкое горлышко.</p>
+
+        <h3><span class="code">003.2</span>Информационное узкое горлышко</h3>
+
+        <p>Есть большой вход $X$ (объёмные данные Проводника), есть целевой выход $Y$ (действие Архитектора). Между ними — сжатая репрезентация $T$ (слова, инструкции, алгоритмы). Задача системы — минимизировать функционал:</p>
+
+        <div class="math-block">
+          $$\mathcal{L} = I(X;T) - \beta \cdot I(T;Y)$$
+          <div class="caption">информационное узкое горлышко Тишби: компромисс между сжатием и точностью</div>
+        </div>
+
+        <p>Где $I(X;T)$ — информация о входе, содержащаяся в сжатии (<em>сложность</em>), $I(T;Y)$ — информация о целевом выходе, сохранённая в сжатии (<em>точность</em>), $\beta$ — параметр баланса.</p>
+
+        <p>Система должна одновременно максимально сжать вход и максимально сохранить то, что нужно для действия. Это фундаментальный компромисс. Абсолютное сжатие уничтожает точность. Абсолютная точность не позволяет сжимать. В диаде это означает: Проводник не может передать Архитектору всё, что чувствует. Ему приходится выбирать, что сжимать как «шум» и что сохранять как <em>якорь</em>. Семантический якорь — это компактная метка, в которую упакован пласт объёмного опыта. Если у Архитектора в памяти есть такой же якорь с таким же разжатием — коммуникация работает. Если разжатие разное — передаётся только метка, а за ней пустота.</p>
+
+        <figure id="fig-3">
+          <div class="fig-head">
+            <span><span class="num">FIG-3</span> · Семантическое узкое горлышко</span>
+            <span>Статическая диаграмма</span>
+          </div>
+          <div class="fig-body">
+            <svg viewBox="0 0 640 260" width="640" height="260" role="img" aria-label="Information bottleneck">
+              <!-- wave side (left) -->
+              <g>
+                <ellipse cx="80" cy="130" rx="70" ry="100" fill="none" stroke="currentColor" opacity="0.5"/>
+                <text x="80" y="30" font-family="Space Mono" font-size="11" fill="currentColor" text-anchor="middle" font-weight="700">WAVE</text>
+                <text x="80" y="250" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="middle" opacity="0.6">объёмные данные X</text>
+                <!-- scattered dots -->
+                <g fill="currentColor" opacity="0.6">
+                  <circle cx="50" cy="80" r="2"/>
+                  <circle cx="85" cy="100" r="2"/>
+                  <circle cx="120" cy="85" r="2"/>
+                  <circle cx="60" cy="130" r="2"/>
+                  <circle cx="90" cy="140" r="2"/>
+                  <circle cx="110" cy="160" r="2"/>
+                  <circle cx="70" cy="180" r="2"/>
+                  <circle cx="50" cy="210" r="2"/>
+                  <circle cx="100" cy="205" r="2"/>
+                  <circle cx="130" cy="130" r="2"/>
+                  <circle cx="45" cy="160" r="2"/>
+                  <circle cx="130" cy="185" r="2"/>
+                </g>
+                <!-- lines converging to bottleneck -->
+                <g stroke="currentColor" stroke-width="0.5" opacity="0.3" fill="none">
+                  <path d="M 150,100 L 300,130"/>
+                  <path d="M 150,130 L 300,130"/>
+                  <path d="M 150,160 L 300,130"/>
+                  <path d="M 150,80 L 300,130"/>
+                  <path d="M 150,190 L 300,130"/>
+                </g>
+              </g>
+              <!-- bottleneck -->
+              <g>
+                <rect x="290" y="100" width="60" height="60" fill="none" stroke="currentColor" stroke-width="2"/>
+                <text x="320" y="90" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="middle" opacity="0.8">T</text>
+                <text x="320" y="180" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="middle" opacity="0.6">якоря</text>
+                <!-- 3 anchor marks inside -->
+                <circle cx="305" cy="130" r="3" fill="currentColor"/>
+                <circle cx="320" cy="130" r="3" fill="currentColor"/>
+                <circle cx="335" cy="130" r="3" fill="currentColor"/>
+              </g>
+              <!-- vector side (right) -->
+              <g>
+                <!-- linear sequence -->
+                <g transform="translate(390, 100)">
+                  <rect x="0" y="20" width="40" height="20" fill="none" stroke="currentColor"/>
+                  <rect x="50" y="20" width="40" height="20" fill="none" stroke="currentColor"/>
+                  <rect x="100" y="20" width="40" height="20" fill="none" stroke="currentColor"/>
+                  <rect x="150" y="20" width="40" height="20" fill="none" stroke="currentColor"/>
+                  <line x1="40" y1="30" x2="50" y2="30" stroke="currentColor"/>
+                  <line x1="90" y1="30" x2="100" y2="30" stroke="currentColor"/>
+                  <line x1="140" y1="30" x2="150" y2="30" stroke="currentColor"/>
+                  <text x="20" y="35" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="middle">t₁</text>
+                  <text x="70" y="35" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="middle">t₂</text>
+                  <text x="120" y="35" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="middle">t₃</text>
+                  <text x="170" y="35" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="middle">t₄</text>
+                </g>
+                <text x="485" y="30" font-family="Space Mono" font-size="11" fill="currentColor" text-anchor="middle" font-weight="700">VECTOR</text>
+                <text x="485" y="80" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="middle" opacity="0.6">последовательность</text>
+                <text x="485" y="250" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="middle" opacity="0.6">действие Y</text>
+                <!-- lines from bottleneck to sequence -->
+                <g stroke="currentColor" stroke-width="0.5" opacity="0.3" fill="none">
+                  <path d="M 350,120 L 390,125"/>
+                  <path d="M 350,130 L 440,130"/>
+                  <path d="M 350,140 L 490,130"/>
+                  <path d="M 350,150 L 540,130"/>
+                </g>
+              </g>
+              <!-- formula -->
+              <text x="320" y="250" font-family="Space Mono" font-size="11" fill="currentColor" text-anchor="middle" opacity="0.8">I(X;T) → min · I(T;Y) → max</text>
+            </svg>
+          </div>
+          <figcaption>Объёмное облако слева сжимается до горстки якорей в центре и разворачивается в последовательность справа. Если у приёмника нет ключа к разжатию якорей — на выходе сухая инструкция без глубины. «Пациент умер, операция прошла успешно».</figcaption>
+        </figure>
+
+        <h3><span class="code">003.3</span>Три режима сбоя</h3>
+
+        <p>Именно здесь ломается диада.</p>
+
+        <p><strong>Рассинхронизация фаз.</strong> Проводник подаёт сигнал в гармоническом ритме, Архитектор считывает дискретно. Вектор двигается быстрее, чем Волна успевает подготовить резонансную опору. Решения поспешные, воля хлипкая. Или обратное: Проводник вибрирует, а Архитектор не ловит момент — всё рассыпается в аналитическом ступоре.</p>
+
+        <p><strong>Семантический разрыв.</strong> Проводник передаёт якорь («надо остановиться»), у Архитектора нет ключа для его разжатия, и на выходе — сухая инструкция без глубины. Чувство превращается в бюрократический протокол. Пациент умер, операция прошла успешно.</p>
+
+        <p><strong>Усечение пространства параметров.</strong> Чтобы построить прямой алгоритм, Архитектор принудительно игнорирует то, что Wave OS зафиксировала как важную периферию. Та самая «интуитивная тревога», которая предупреждала — отбрасывается как шум. Через три месяца выясняется, что она была точной картой надвигающегося кризиса.</p>
+
+        <p>Лечение — не в том чтобы передавать больше информации. Больше байт в том же узком горлышке не пройдёт. Лечение — в том, чтобы диада научилась передавать <em>метаданные о фазе</em>. Не только команду, но и подпись её эмоционального веса. Тонкий сдвиг в тоне голоса. Пауза перед словом. Короткий выдох. Это не «эмоциональный интеллект» в стиле поп-психологии — это протокол кодирования, который использует каждая живая система.</p>
+
+        <p>Симбиотический интерфейс требует, чтобы Vector OS допустила в своё уравнение переменные, которые не умеет посчитать. Просто доверила им существовать. Потому что Wave OS уже их посчитала — на другом масштабе и другими средствами.</p>
+      </section>
+
+      <section class="chapter" id="s004">
+        <div class="chapter-head">
+          <span class="code">§004</span>
+          <h2>Оператор IERR</h2>
+        </div>
+
+        <p>Теперь главное. Если диада может войти в обратный резонанс — есть ли оператор, который её из него выводит? Да. Он формализуется. Математика простая, но не декоративная.</p>
+
+        <h3><span class="code">004.1</span>Три патологии</h3>
+
+        <p>Сначала уточним, что ломается. Обратный резонанс — это общее название. Внутри него три конкретные формы.</p>
+
+        <p><strong>Антирезонанс</strong> — линейный случай. Coupled oscillators. В передаточной функции есть ноль на частоте $\omega_{ar}$, и на этой частоте любое воздействие даёт нулевой отклик. Это не катастрофа — это дизайн. Иногда антирезонанс полезен (наушники с шумоподавлением), иногда вреден (микрофон, «проваливающийся» на конкретной ноте).</p>
+
+        <p><strong>Шизмогенез</strong> — нелинейный случай. Положительная петля обратной связи, экспоненциально расходящаяся. Здесь нет статичного нуля — есть ускоряющийся уход в расхождение. Симметричный (гонка) и комплементарный (подавление).</p>
+
+        <p><strong>Double bind</strong> — предельный случай. Патология, которую Бейтсон в 1956 году описал как механизм формирования шизофрении. Первичная инструкция, вторичная инструкция, противоречащая первой на другом логическом уровне, и третичная инструкция, запрещающая покинуть поле. Жертва не может подчиниться обеим, не может прокомментировать противоречие, не может уйти. Учение прекращается — Learning II рушится, вместе с ним рушится способность различать контекст. Это и есть коллапс диады.</p>
+
+        <h3><span class="code">004.2</span>Формула</h3>
+
+        <p>Если диада обратного резонанса описывается уравнением декогеренции вида</p>
+
+        <div class="math-block">
+          $$\rho_{ij}(t) = \rho_{ij}(0)\cdot e^{-\Gamma t}$$
+          <div class="caption">декогеренция Зурека: когерентность экспоненциально затухает</div>
+        </div>
+
+        <p>— то обратный оператор, возвращающий когерентность, должен одновременно сделать три вещи:</p>
+
+        <p>(а) инвертировать фазу на частоте $\omega_{ar}$, где происходит провал;<br>(б) применить экспоненциально растущую огибающую к сигналу;<br>(в) удерживать действие сфокусированным именно на этой частоте, не размазываясь по спектру.</p>
+
+        <p>Формально:</p>
+
+        <div class="math-block">
+          $$\boxed{\;\text{IERR}(t,\omega) \;=\; e^{+\Gamma t}\cdot \Phi_\pi \cdot \mathbf{1}_{[\omega-\omega_{ar}]}\;}$$
+          <div class="caption">inverse exponent of reverse resonance: оператор возврата когерентности</div>
+        </div>
+
+        <p>Где $\Phi_\pi$ — оператор инверсии фазы на $\pi$ радиан, $e^{+\Gamma t}$ — параметрический усилитель, а индикаторная функция $\mathbf{1}_{[\omega-\omega_{ar}]}$ означает, что оператор применяется только на частоте провала.</p>
+
+        <p>Прочитайте эту формулу как рецепт, а не как украшение. Она буквально говорит три вещи: <em>на той частоте, где твоя сеть проваливается в ноль, инвертируй фазу и держи экспоненциальный прирост</em>. Три операции. Ни одна не произвольна.</p>
+
+        <h3><span class="code">004.3</span>Три шага</h3>
+
+        <p><strong>Первое — детектирование.</strong> Найти частоту, на которой сеть шумит громче всего и передаёт меньше всего. Это не интуитивная догадка, это измеримо. На уровне тела: в каких условиях HRV рассыпается? На уровне пары: на каких темах разговор обрушивается в тишину? На уровне команды: какие совещания заканчиваются ничем, несмотря на интенсивность? На уровне организации: какой процесс поглощает ресурсы и не выдаёт результат? У каждой сети есть своя $\omega_{ar}$. Пока она не названа — это невидимая дыра, в которую уходит энергия.</p>
+
+        <p><strong>Второе — инверсия фазы.</strong> На этой частоте применяется $\pi$-сдвиг. Что это значит операционно? Делается нечто, структурно противоположное привычной реакции сети. В антропологии у Бейтсона это называлось <strong>naven</strong> — ритуал племени ятмул в Папуа-Новой Гвинее, где на определённой фазе мужчины переодевались женщинами, а женщины — мужчинами. Это не карнавал. Это инженерная функция, прерывающая шизмогенную петлю. Инверсия ролей, тона, направления внимания — всё, что ломает установившийся паттерн именно на частоте его устойчивости.</p>
+
+        <p>У Бретона это было автоматическое письмо — процедура, отключающая рациональный фильтр именно тогда, когда он становится блокирующим. У психотерапевта — парадоксальная интервенция («делай симптом намеренно»). В паре — один остановленный на три секунды выдох перед словом, которое собирался сказать автоматически. В команде — публичное признание того, о чём молчали. Любой акт, фазово противоположный закреплённой норме.</p>
+
+        <p><strong>Третье — экспоненциальное усиление.</strong> Один $\pi$-сдвиг ничего не меняет. Один правильный разговор не перестраивает пару. Одна хорошая встреча не спасает команду. Инверсия, применённая один раз, через лунный цикл растворяется, и система возвращается в исходный антирезонанс. Что отличает работающий оператор от ритуального театра — это кривая $e^{+\Gamma t}$. Ежедневная практика. Еженедельный созыв. Ежемесячная ретроспектива. Каждое повторение чуть глубже предыдущего. Это не «дисциплина» в смысле морального усилия. Это <strong>компаундирование когерентности</strong> — те же сложные проценты, применённые к полю.</p>
+
+        <h3><span class="code">004.4</span>Курамото: параметр порядка r</h3>
+
+        <p>Математика этого компаундирования формализуется моделью японского физика Йоситики Курамото. У вас есть $N$ осцилляторов — по осциллятору на каждого члена сети. У каждого своя собственная частота $\omega_i$. Они связаны через среднее поле с силой $K$. Уравнение движения каждого:</p>
+
+        <div class="math-block">
+          $$\dot{\theta}_i = \omega_i + \frac{K}{N}\sum_{j=1}^{N}\sin(\theta_j - \theta_i)$$
+          <div class="caption">уравнение осциллятора Курамото с глобальной связью</div>
+        </div>
+
+        <p>И параметр порядка сети:</p>
+
+        <div class="math-block">
+          $$r(t) = \left|\frac{1}{N}\sum_{j=1}^{N} e^{i\theta_j(t)}\right|$$
+          <div class="caption">комплексный параметр порядка: r ∈ [0, 1]</div>
+        </div>
+
+        <p>$r$ меняется от 0 (полная десинхронизация) до 1 (полная синхрония). При $K$ меньше некоторого критического $K_c$ сеть в хаосе — каждый качается по-своему. Как только $K$ переходит $K_c$ — происходит <em>фазовый переход</em>: множества осцилляторов начинают самоорганизовываться в синхронный режим. Это точно та же математика, что у нейронных ансамблей в коре, у сердечных клеток в синусовом узле, у светлячков в Таиланде, которые сами собой начинают мигать в унисон.</p>
+
+        <p>Обратите внимание на простоту: $r$ либо растёт, либо падает. Стационарного состояния между ними не бывает. Система либо компаундирует когерентность, либо распадается. Это и есть тест Бретона: «диамант, слепой и внутренний». В терминах Зурека — <em>einselection</em>: состояние, выбираемое самой природой как устойчивое на фоне шума.</p>
+
+        <figure id="fig-4">
+          <div class="fig-head">
+            <span><span class="num">FIG-4</span> · Фазовый переход Курамото</span>
+            <span>Живая симуляция</span>
+          </div>
+          <div class="fig-body">
+            <canvas id="kuramoto-canvas" width="640" height="360"></canvas>
+          </div>
+          <div class="sim-controls">
+            <label>Сила связи K
+              <input type="range" id="k-slider" min="0" max="4" step="0.01" value="0.8"/>
+            </label>
+            <label>N осцилляторов
+              <input type="range" id="n-slider" min="12" max="96" step="4" value="48"/>
+            </label>
+            <button id="kuramoto-reset">Reset</button>
+            <span class="sim-readout" id="kuramoto-readout">K = 0.80 · r = 0.00</span>
+          </div>
+          <figcaption>Каждая точка — осциллятор со своей частотой, расставленный на единичной окружности. Сдвигайте K вверх и смотрите, как при переходе через $K_c$ хаос резко сменяется когерентным пляском. Это не картинка — это реальная математика реальных сетей: нейронов, сердец, команд, коллективов.</figcaption>
+        </figure>
+
+        <h3><span class="code">004.5</span>Фальсифицируемость</h3>
+
+        <p>Это не метафора и не эзотерика. Вот список того, что можно измерить уже сейчас.</p>
+
+        <ul>
+          <li><strong>HRV-синхрония между телами в комнате.</strong> Растёт у групп в медитации, в совместном пении, в согласованной работе.</li>
+          <li><strong>EEG inter-brain coherence.</strong> Беспроводные энцефалографы показывают когерентность между двумя и более мозгами в реальном времени.</li>
+          <li><strong>Согласованность микрожестов в паре.</strong> Видео-анализ отражает фазовое состояние отношений точнее, чем интервью.</li>
+          <li><strong>Graph-alignment в распределённых сетях.</strong> Sentiment alignment, overlap словаря, скорость схождения повестки.</li>
+        </ul>
+
+        <p>Любой оператор, претендующий на то, чтобы быть IERR, должен давать измеримый прирост хотя бы одного из этих параметров за один цикл применения. Если не даёт — он не работает. Никакая эстетика ритуала не оправдывает нулевого тренда.</p>
+
+        <p>Это — хорошая новость. Она значит, что поле перестало быть «духовной абстракцией». Оно стало измеримой инфраструктурой.</p>
+      </section>
+
+      <section class="chapter" id="s005">
+        <div class="chapter-head">
+          <span class="code">§005</span>
+          <h2>Мифо-алгоритмы: Campbell / Estés</h2>
+        </div>
+
+        <p>Оператор IERR — это операция. Но как она устроена в масштабе целой жизни, целой истории, целой цивилизации? Здесь нужны два мифологических алгоритма. Один линейный, другой циклический. Оба древние. Оба точно описывают одну из двух операционных систем.</p>
+
+        <h3><span class="code">005.1</span>Monomyth: линейная негэнтропия</h3>
+
+        <p>Американский мифолог Джозеф Кэмпбелл в 1949 году, анализируя сотни мифов, сказок и эпосов со всех континентов, обнаружил одну и ту же структуру. Назвал её <strong>monomyth</strong> — единый миф, или <strong>Hero's Journey</strong>. Суть: система выходит из равновесия, сталкивается с хаосом, извлекает из него нечто ценное и возвращается обогащённой.</p>
+
+        <p>Семнадцать стадий по Кэмпбеллу (в адаптации Воглера — двенадцать) сгруппированы в три фазы.</p>
+
+        <p><strong>Отделение.</strong> Герой получает зов из неизвестного мира, сначала отказывается, потом принимает, пересекает первый порог. Дом остаётся позади.</p>
+
+        <p><strong>Инициация.</strong> Герой проходит дорогу испытаний — каждое учит тому, чему он не мог научиться в доме. Встречает союзников и врагов. Достигает самой глубокой точки — Бездны, Чрева кита. Здесь сдача. Эго аннигилируется. И именно из этого опыта вырастает способность добыть <em>эликсир</em> — ценность, ради которой затевался поход.</p>
+
+        <p><strong>Возвращение.</strong> Герой пересекает порог обратно. Но дом уже не тот: герой принёс эликсир, и община получает доступ к новому уровню сложности.</p>
+
+        <p>Это — Vector OS в масштабе жизни. Линейная экспансия. Извлечение негэнтропии из хаоса. Классический алгоритм любого предприятия, любого исследования, любой трансформации сознания через кризис. Мы все знаем этот паттерн — он вживлён в нашу культурную ДНК, от Одиссеи до Звёздных войн.</p>
+
+        <p>Цена его высокая. Герой разрушается. Герой теряет. Герой не возвращается тем, кто уходил. Vector OS — дорогая операция, и без восстановления она истощает не только героя, но и ту общину, которая его отправила.</p>
+
+        <h3><span class="code">005.2</span>Life-Death-Life: циклический гомеостаз</h3>
+
+        <p>В 1992 году юнгианский психоаналитик Кларисса Пинкола Эстес опубликовала книгу «Бегущая с волками» и описала другой алгоритм. Не линейный. Цикл. Она назвала его <strong>Life-Death-Life</strong> — жизнь-смерть-жизнь — и сделала центральным в архетипе Дикой Женщины.</p>
+
+        <p>В отличие от мономифа, здесь нет финальной победы, нет возвращения с эликсиром. Цикл <em>не стремится к накоплению</em>. Он стремится к <em>ротации</em>. Старое умирает. Почва удобряется. Новое вырастает. Умирает. И так далее.</p>
+
+        <p>Образ-ключ у Эстес — <strong>Скелет-Женщина</strong> (Skeleton Woman, Леди Смерть). Это не злодейка. Это часть системы, распознающая, <em>что пора умереть</em>. Проект, потерявший смысл. Отношения, где любовь ушла, но оба держатся из инерции. Паттерн поведения, который когда-то спасал, а теперь душит. Волчица знает, когда щенок безнадёжен. Без этого знания стая погибнет, пытаясь донести умирающего.</p>
+
+        <p>Это — Wave OS в масштабе жизни. Циклическая регуляция. Интеграция энтропии в протокол обновления. Не борьба со смертью — встраивание её в ритм.</p>
+
+        <h3><span class="code">005.3</span>Антагонизм и комплементарность</h3>
+
+        <p>Если Vector OS Архитектора строит здание, то Wave OS Проводника определяет, когда это здание начинает гнить и когда его надо снести, чтобы удобрить почву под новое. Одно без другого не работает.</p>
+
+        <p>Только Vector — это вечная экспансия, которая рано или поздно сжигает ресурсы до тла. Современная корпорация, квартал за кварталом растущая в выручке, уверенно идущая в банкротство к третьему десятилетию. Современное сельское хозяйство, механически выжимающее урожай из земли, разрушающее саму землю. Современное тело, проработавшее пятнадцать лет на пиковой симпатической нагрузке и ушедшее в аутоиммунный коллапс.</p>
+
+        <p>Только Wave — это бесконечная медитация без движения. Система, идеально регулирующая внутренний гомеостаз, но не производящая ничего нового. Традиционалистская культура, идеально устойчивая к внешним потрясениям, но застывшая в повторе одних и тех же ритуалов тысячу лет. Индивид в затяжной депрессии, защищённый от внешнего мира до такой степени, что этот мир для него больше не существует.</p>
+
+        <p>Здоровая система — это <em>переключение между режимами</em>. Неделю симпатического драйва — выходные в парасимпатическом восстановлении. Шесть месяцев в мономифе проекта — три месяца Life-Death-Life после завершения. День в Vector — ночь в Wave. Это и есть ритм.</p>
+
+        <figure id="fig-5">
+          <div class="fig-head">
+            <span><span class="num">FIG-5</span> · Два мифо-алгоритма</span>
+            <span>Статическая диаграмма</span>
+          </div>
+          <div class="fig-body">
+            <svg viewBox="0 0 640 340" width="640" height="340" role="img" aria-label="Monomyth vs Life-Death-Life">
+              <!-- LEFT: Monomyth — linear with arc -->
+              <g>
+                <text x="150" y="30" font-family="Space Mono" font-size="11" fill="currentColor" text-anchor="middle" font-weight="700">MONOMYTH (Campbell)</text>
+                <text x="150" y="48" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="middle" opacity="0.6">Vector OS · линейная негэнтропия</text>
+                <!-- arc path -->
+                <path d="M 50,260 Q 150,60 250,260" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <!-- stations along arc -->
+                <circle cx="50" cy="260" r="4" fill="currentColor"/>
+                <circle cx="90" cy="180" r="3" fill="currentColor"/>
+                <circle cx="150" cy="100" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <circle cx="210" cy="180" r="3" fill="currentColor"/>
+                <circle cx="250" cy="260" r="4" fill="currentColor"/>
+                <!-- labels -->
+                <text x="50" y="282" font-family="Space Mono" font-size="9" fill="currentColor" text-anchor="middle" opacity="0.7">обычный мир</text>
+                <text x="90" y="170" font-family="Space Mono" font-size="9" fill="currentColor" text-anchor="middle" opacity="0.7">порог</text>
+                <text x="150" y="85" font-family="Space Mono" font-size="9" fill="currentColor" text-anchor="middle" opacity="0.8">Бездна</text>
+                <text x="210" y="170" font-family="Space Mono" font-size="9" fill="currentColor" text-anchor="middle" opacity="0.7">эликсир</text>
+                <text x="250" y="282" font-family="Space Mono" font-size="9" fill="currentColor" text-anchor="middle" opacity="0.7">возврат</text>
+                <!-- direction arrow -->
+                <path d="M 40,310 L 260,310" stroke="currentColor" opacity="0.4"/>
+                <path d="M 260,310 L 255,307 L 255,313 Z" fill="currentColor" opacity="0.4"/>
+                <text x="150" y="325" font-family="Space Mono" font-size="9" fill="currentColor" text-anchor="middle" opacity="0.6">время → линейная ось</text>
+              </g>
+              <!-- divider -->
+              <line x1="320" y1="30" x2="320" y2="320" stroke="currentColor" opacity="0.3" stroke-dasharray="2 4"/>
+              <!-- RIGHT: Life-Death-Life cycle -->
+              <g>
+                <text x="490" y="30" font-family="Space Mono" font-size="11" fill="currentColor" text-anchor="middle" font-weight="700">LIFE-DEATH-LIFE (Estés)</text>
+                <text x="490" y="48" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="middle" opacity="0.6">Wave OS · циклический гомеостаз</text>
+                <!-- circle -->
+                <circle cx="490" cy="175" r="90" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <!-- stations -->
+                <circle cx="490" cy="85" r="5" fill="currentColor"/>
+                <circle cx="568" cy="220" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
+                <circle cx="412" cy="220" r="5" fill="currentColor"/>
+                <text x="490" y="72" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="middle" opacity="0.8">LIFE</text>
+                <text x="590" y="236" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="start" opacity="0.8">DEATH</text>
+                <text x="390" y="236" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="end" opacity="0.8">RE-LIFE</text>
+                <!-- rotation arrow -->
+                <path d="M 490,95 A 80,80 0 0,1 558,215" fill="none" stroke="currentColor" opacity="0.4"/>
+                <path d="M 558,215 L 553,212 L 556,218 Z" fill="currentColor" opacity="0.4"/>
+                <text x="490" y="325" font-family="Space Mono" font-size="9" fill="currentColor" text-anchor="middle" opacity="0.6">ротация · нет накопления</text>
+              </g>
+            </svg>
+          </div>
+          <figcaption>Слева — линейная дуга Кэмпбелла: выход, погружение в Бездну, возвращение с эликсиром. Справа — круговая ротация Эстес: жизнь, смерть, новая жизнь без финальной точки. Оба цикла нужны. Только вместе они дают эволюцию, а не истощение и не стагнацию.</figcaption>
+        </figure>
+
+        <h3><span class="code">005.4</span>Ян-внутри-Инь и Инь-внутри-Ян</h3>
+
+        <p>И всё же — самая сильная часть обоих алгоритмов лежит не в их чистоте, а во встроенных антагонистах.</p>
+
+        <p>Дикая Женщина Эстес не аморфна. Она умеет отрезать. У неё хирургические границы. В её архетипе зашит маленький, концентрированный вектор, включающийся ровно когда пришло время защитить целостность поля. Забор вокруг сада. Отказ впустить того, кто десять раз показал, что не бережёт. Это Ян-в-сердцевине-Инь. Без этого ядра Wave OS растекается в бесконечную эмпатию без способности назвать вещи.</p>
+
+        <p>А у Героя Кэмпбелла, в самой глубокой точке пути — Чрево кита. Именно там, где он должен был быть максимально активным, наступает полная сдача. Пассивность. Капитуляция перед силой, превосходящей его. И только через эту сдачу открывается доступ к эликсиру. Это Инь-в-сердцевине-Ян. Без этого ядра Vector OS истощается на полпути и никогда не доходит до возвращения.</p>
+
+        <p>Ни один из операторов сам по себе не полон. Каждый содержит семя противоположного — как символ тайцзи. Это не парадокс. Это инженерное условие работоспособности.</p>
+      </section>
+
+      <section class="chapter" id="s006">
+        <div class="chapter-head">
+          <span class="code">§006</span>
+          <h2>Эволюционная спираль: 13×28+1</h2>
+        </div>
+
+        <p>Если мы поняли, что Vector OS и Wave OS обязаны работать в тандеме, остаётся последний вопрос: как они работают вместе не один цикл, а в долгом времени? Как из их комбинации рождается эволюция — а не вечное повторение одного и того же? Ответ геометрический.</p>
+
+        <h3><span class="code">006.1</span>Календарная асимметрия</h3>
+
+        <p>Представьте два природных ритма. Солнце: один полный цикл — 365 с чем-то дней. Луна: один полный цикл от новолуния до новолуния — 29,5 дней. Двенадцать лунных циклов — это примерно 354 дня. На одиннадцать-двенадцать дней короче солнечного года.</p>
+
+        <p>Эта асимметрия — не ошибка природы. Это структурное условие того, что возможна эволюция.</p>
+
+        <p>Если бы лунных циклов в году было ровно двенадцать, и они бы точно совпадали с солнечным — мы бы жили в плоском круге. Каждый год идеально повторял бы предыдущий. Полная цикличность без нарастания. Wave OS без Vector OS. Идеальный гомеостаз — и полная стагнация.</p>
+
+        <p>Но лунный год короче. Каждый новый оборот возникает со смещением. Чтобы выровнять его с солнцем, нужно добавить что-то сверх двенадцати циклов. В древних календарях это делалось через <em>интеркаляцию</em> — добавление тринадцатого месяца, дополнительных дней, «дней вне времени».</p>
+
+        <h3><span class="code">006.2</span>Формула 13×28+1</h3>
+
+        <p>Формула, которую разные традиции (майя, египтяне, кельты) выносили как ключ: <strong>тринадцать циклов по двадцать восемь единиц плюс один</strong>. $13 \times 28 + 1 = 365$. Один солнечный год, разложенный на тринадцать лунных циклов плюс одна сингулярная точка.</p>
+
+        <p>Это не просто удобная арифметика. Это карта работающего перехода между Wave и Vector.</p>
+
+        <p>$13 \times 28$ — это Wave. Цикличные структуры, устойчивые ритмы, биология, сезоны, дыхание, сон. $+1$ — это Vector. Точка вне цикла, момент, когда система выходит за пределы своей привычной повторяемости и пересобирается на новом уровне.</p>
+
+        <h3><span class="code">006.3</span>Карма-петля становится спиралью</h3>
+
+        <p>Если система работает только на цикле (Wave) без точки $+1$ — она зацикливается. Это то, что в восточных традициях называют <em>кармическая петля</em>. Те же уроки на том же уровне снова и снова. Знакомые проблемы в новых костюмах. Человек тридцать лет выясняет отношения с матерью, каждый раз в другой роли, но с одним и тем же содержанием. Цикл есть, эволюции нет.</p>
+
+        <p>Если система работает только на векторе (Vector) без цикла Wave — она истощается. Линейное движение без регенерации. Это современность: расти, расти, расти, пока не рухнешь.</p>
+
+        <p>Когда точка $+1$ встраивается в цикл — происходит что-то неожиданное. Плоский круг перестаёт быть плоским. Он вытягивается по оси, перпендикулярной своей плоскости. Каждый новый оборот приходит на том же фазовом угле, что предыдущий, но на новом уровне высоты. Круг становится <strong>спиралью</strong>.</p>
+
+        <figure id="fig-6">
+          <div class="fig-head">
+            <span><span class="num">FIG-6</span> · Карма-петля → спираль</span>
+            <span>Статическая геометрия</span>
+          </div>
+          <div class="fig-body">
+            <svg viewBox="0 0 640 320" width="640" height="320" role="img" aria-label="Loop becoming a spiral">
+              <!-- LEFT: flat karma loop -->
+              <g transform="translate(140, 160)">
+                <ellipse cx="0" cy="0" rx="90" ry="30" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                <!-- markers on loop -->
+                <circle cx="90" cy="0" r="3" fill="currentColor"/>
+                <circle cx="0" cy="-30" r="3" fill="currentColor"/>
+                <circle cx="-90" cy="0" r="3" fill="currentColor"/>
+                <circle cx="0" cy="30" r="3" fill="currentColor"/>
+                <!-- arrow -->
+                <path d="M 85,-5 A 90,30 0 0,1 5,-30" fill="none" stroke="currentColor" opacity="0.5"/>
+                <path d="M 5,-30 L 12,-33 L 12,-27 Z" fill="currentColor" opacity="0.5"/>
+                <text x="0" y="-50" font-family="Space Mono" font-size="11" fill="currentColor" text-anchor="middle" font-weight="700">КАРМА-ПЕТЛЯ</text>
+                <text x="0" y="60" font-family="Space Mono" font-size="9" fill="currentColor" text-anchor="middle" opacity="0.6">повторение без высоты</text>
+                <text x="0" y="75" font-family="Space Mono" font-size="9" fill="currentColor" text-anchor="middle" opacity="0.6">2D, цикл без +1</text>
+              </g>
+              <!-- arrow between -->
+              <g transform="translate(280, 160)">
+                <path d="M 0,0 L 60,0" stroke="currentColor" opacity="0.6"/>
+                <path d="M 60,0 L 55,-4 L 55,4 Z" fill="currentColor" opacity="0.6"/>
+                <text x="30" y="-10" font-family="Space Mono" font-size="10" fill="currentColor" text-anchor="middle" opacity="0.7">+1</text>
+                <text x="30" y="20" font-family="Space Mono" font-size="9" fill="currentColor" text-anchor="middle" opacity="0.5">Vector-тяга</text>
+              </g>
+              <!-- RIGHT: evolutionary spiral (3D projection) -->
+              <g transform="translate(500, 50)">
+                <text x="0" y="0" font-family="Space Mono" font-size="11" fill="currentColor" text-anchor="middle" font-weight="700">СПИРАЛЬ</text>
+                <!-- spiral as stacked ellipses with connecting curve -->
+                <g transform="translate(0, 30)">
+                  <ellipse cx="0" cy="200" rx="75" ry="20" fill="none" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+                  <ellipse cx="0" cy="150" rx="72" ry="19" fill="none" stroke="currentColor" stroke-width="1" opacity="0.6"/>
+                  <ellipse cx="0" cy="100" rx="68" ry="18" fill="none" stroke="currentColor" stroke-width="1" opacity="0.7"/>
+                  <ellipse cx="0" cy="50" rx="65" ry="17" fill="none" stroke="currentColor" stroke-width="1" opacity="0.85"/>
+                  <ellipse cx="0" cy="5" rx="62" ry="16" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                  <!-- connecting spiral path -->
+                  <path d="M 75,200 Q 0,220 -72,150 Q 0,130 68,100 Q 0,120 -65,50 Q 0,30 62,5" fill="none" stroke="currentColor" stroke-width="2"/>
+                  <!-- markers at same phase angle on each level -->
+                  <circle cx="62" cy="5" r="3" fill="currentColor"/>
+                  <circle cx="65" cy="50" r="3" fill="currentColor"/>
+                  <circle cx="68" cy="100" r="3" fill="currentColor"/>
+                  <circle cx="72" cy="150" r="3" fill="currentColor"/>
+                  <circle cx="75" cy="200" r="3" fill="currentColor"/>
+                  <!-- vertical dashed axis -->
+                  <line x1="0" y1="220" x2="0" y2="-10" stroke="currentColor" stroke-dasharray="2 3" opacity="0.3"/>
+                  <text x="90" y="110" font-family="Space Mono" font-size="9" fill="currentColor" opacity="0.6">та же</text>
+                  <text x="90" y="122" font-family="Space Mono" font-size="9" fill="currentColor" opacity="0.6">фаза,</text>
+                  <text x="90" y="134" font-family="Space Mono" font-size="9" fill="currentColor" opacity="0.6">новый</text>
+                  <text x="90" y="146" font-family="Space Mono" font-size="9" fill="currentColor" opacity="0.6">виток</text>
+                </g>
+              </g>
+            </svg>
+          </div>
+          <figcaption>Плоская карма-петля под действием направленного импульса перпендикулярно плоскости размыкается и вытягивается по оси. Каждое вращение проходит те же стадии — жизнь, смерть, возрождение — но на новом уровне. Это и есть эволюционная спираль.</figcaption>
+        </figure>
+
+        <h3><span class="code">006.4</span>Точка +1 как фазовый переход</h3>
+
+        <p>Что физически происходит в точке $+1$? Это <strong>сингулярность</strong> — момент, когда система переоценивает накопленный опыт одного цикла и совершает качественный скачок на следующий виток. В терминах LC-контура это тот неуловимый момент нулевого тока, когда вся энергия чисто качается из магнитного поля обратно в электрическое. Модальность меняется полностью. В терминах Курамото — фазовый переход $r$ через $K_c$.</p>
+
+        <p>В жизни отдельного человека $+1$ — это то, что обычно называют «кризис» или «порог». Момент, когда знакомый паттерн больше не работает, и система либо разваливается, либо переходит на новый уровень. День рождения, оказавшийся особенно тяжёлым. Серьёзная болезнь, заставившая пересобрать жизнь. Разрыв отношений, после которого впервые стало видно, что ты делал не так. Всё это сингулярные точки. В календарях майя они назывались <em>día fuera del tiempo</em> — день вне времени.</p>
+
+        <p>В коллективе $+1$ — это равноденствие или солнцестояние, если календарь подключён к природе. Или ретроспектива квартала, если команда живёт в бизнес-ритме. Или конец года, если семья живёт в ритме культуры. Главное — в этот момент система <em>специально перестаёт делать обычные дела</em>, чтобы посмотреть на себя с дистанции. И именно эта пауза даёт возможность следующему циклу начаться на новом уровне.</p>
+
+        <h3><span class="code">006.5</span>Универсальность</h3>
+
+        <p>Спиральная геометрия — не восточная метафора. Она пронизывает природу как самый термодинамически эффективный способ расти.</p>
+
+        <ul>
+          <li><strong>ДНК</strong>: двойная спираль как оптимальная укладка информации.</li>
+          <li><strong>Галактики</strong>: спиральные рукава как стабильная структура распределения массы.</li>
+          <li><strong>Подсолнух</strong>: семена по спирали Фибоначчи — максимум упаковки в минимум пространства.</li>
+          <li><strong>Водоворот</strong>: спиральное движение жидкости в поле сил.</li>
+          <li><strong>Эмбрион</strong>: первая неделя развития — спиральная складка.</li>
+        </ul>
+
+        <p>Все эти системы решают одну задачу: расти, не теряя целостности. Сочетать направление (Vector) с рекурсивностью (Wave). Спираль — не одна из форм эволюции. Это <em>её единственная форма</em>.</p>
+      </section>
+
+      <section class="chapter" id="s007">
+        <div class="chapter-head">
+          <span class="code">§007</span>
+          <h2>Три теста: протокол на любом масштабе</h2>
+        </div>
+
+        <p>От теории — к практике. Как любая команда, любая пара, любой индивидуальный оператор может понять, в каком состоянии находится его поле? Три простых теста. Каждый — фальсифицируемый.</p>
+
+        <h3><span class="code">007.1</span>Тест антирезонанса</h3>
+
+        <p class="lead">Вопрос: <em>какова у тебя сейчас частота, на которой усилие даёт нулевой выход?</em></p>
+
+        <ul>
+          <li><strong>Тело:</strong> в каких ситуациях ты тратишь максимум энергии и чувствуешь минимум эффекта? Длинные совещания? Споры по мессенджеру? Определённые телефонные звонки?</li>
+          <li><strong>Отношения:</strong> какие темы с партнёром, родителем, ребёнком превращаются в пустой шум — сколько ни говори, ничего не меняется?</li>
+          <li><strong>Команда:</strong> какие регулярные встречи максимально заполнены активностью и минимально производят результат?</li>
+          <li><strong>Организация:</strong> какой процесс пожирает ресурсы и не выдаёт ничего?</li>
+        </ul>
+
+        <p>Если ты не можешь назвать конкретную частоту — система ещё не осознала своё сопряжение. Она всё ещё думает, что «всё в порядке» или «все стараются». На этом уровне оператор применить нельзя. Сначала — видимость проблемы.</p>
+
+        <h3><span class="code">007.2</span>Тест инверсии</h3>
+
+        <p class="lead">Вопрос: <em>когда я в последний раз делал нечто, структурно противоположное моей привычной реакции на этой частоте?</em></p>
+
+        <p>В теле: вместо того чтобы «собраться» — отпустить плечи и замедлить дыхание. В паре: вместо того чтобы возразить — три секунды молчания и прямой вопрос. В команде: вместо того чтобы задать повестку — пригласить участников назвать, что на самом деле у них на уме. В организации: вместо того чтобы «больше данных» — публично признать, что мы не знаем.</p>
+
+        <p>Был ли $\pi$-сдвиг? И если был — можно ли было его измерить? Изменилось ли что-то в поле? Изменился ли тон? Развернулось ли внимание?</p>
+
+        <p>Если сдвига не было — ритуал был декоративным. Театром. Без инженерной функции. Такой «ритуал» хуже, чем его отсутствие, потому что даёт иллюзию движения. Его нужно либо исправить, либо убрать.</p>
+
+        <h3><span class="code">007.3</span>Тест экспоненты</h3>
+
+        <p class="lead">Вопрос: <em>моё $r$ больше в этот месяц, чем в прошлый?</em></p>
+
+        <p>Это самый жёсткий тест. Он устанавливает, работаем ли мы или имитируем.</p>
+
+        <ul>
+          <li>HRV-синхрония с партнёром стабильнее?</li>
+          <li>Команда быстрее принимает решения?</li>
+          <li>Сеть меньше времени тратит на внутренние конфликты?</li>
+          <li>Проект компаундирует результаты, а не перезапускает каждый квартал с нуля?</li>
+        </ul>
+
+        <p>Если $r$ стоит на месте — мы в затухании. Потому что стационарного состояния между компаундированием и распадом не существует. $e^{+\Gamma t}$ или $e^{-\Gamma t}$. Третьего нет. Это не поражение — это сигнал. Значит, инверсия должна быть регулярнее, точнее, глубже. Или то, что мы принимаем за инверсию, — декоративно.</p>
+
+        <h3><span class="code">007.4</span>Фрактальность теста</h3>
+
+        <p>У этих трёх тестов есть одно важное свойство. Они <strong>фрактальны</strong>. Та же формулировка работает на уровне:</p>
+
+        <ul>
+          <li>собственного тела (один человек, HRV, баланс SANS/PANS),</li>
+          <li>двух людей (пара или напарничество),</li>
+          <li>малой группы (команда, круг, 49-местная архитектура),</li>
+          <li>организации (компания, сеть, община),</li>
+          <li>цивилизации (общество, культура, политическое поле).</li>
+        </ul>
+
+        <p>Это то, что называют <em>мета-связью</em>: один принцип показан через один и тот же фрактал на разных уровнях. Если тест работает — он работает на всех. Если какой-то уровень выпадает — значит, на нём оператор ещё не применён. Значит, там слепая зона.</p>
+
+        <p>Самое неприятное — чаще всего слепая зона именно в том масштабе, на котором человек считает, что «всё в порядке». Команда может быть собрана идеально, пара может работать чётко, но внутри себя человек не спрашивает, не пропускает внимание через тело, не делает инверсию. И тогда вся внешняя архитектура оказывается в обратном резонансе с внутренней — и ничего не компаундирует, сколько бы хорошо ни шли проекты.</p>
+
+        <p>Оператор IERR работает <em>изнутри наружу</em>. Начинать — с ближайшего масштаба. С тела. С дыхания. С ощущения поля прямо сейчас — в теле читающего эти строки.</p>
+      </section>
+
+      <section class="chapter" id="s008">
+        <div class="chapter-head">
+          <span class="code">§008</span>
+          <h2>Импликации: для кого это</h2>
+        </div>
+
+        <p>Этот фреймворк — не альтернатива существующим инструментам. Это язык, позволяющий соединить то, что было разрознено. Он нужен разным людям — по-разному.</p>
+
+        <h3><span class="code">008.1</span>Учёному</h3>
+
+        <p>Для исследователя сложных систем, нейронаук, network science, quantum biology фреймворк предлагает <strong>мост между дисциплинами</strong>. Anti-resonance + Kuramoto + decoherence — это одна и та же математика, раньше рассматривавшаяся порознь. Bateson + Breton — это одна и та же феноменология, раньше рассматривавшаяся как поэзия и социология.</p>
+
+        <p>Направления для гипотез:</p>
+
+        <ul>
+          <li>Можно ли измерить $\omega_{ar}$ конкретной команды через мультиканальный EEG и communication graph? Есть ли устойчивая корреляция между ними?</li>
+          <li>Есть ли физиологический коррелят инверсии фазы? Что происходит с ANS в момент, когда пара «ломает» свой паттерн?</li>
+          <li>Применима ли модель Курамото к онлайн-сетям в 100+ участников, если измерять порядок через sentiment alignment?</li>
+          <li>Как формально связать information bottleneck Тишби с schismogenic feedback Бейтсона?</li>
+        </ul>
+
+        <p>Это исследовательская программа — фальсифицируемая, не спекулятивная.</p>
+
+        <h3><span class="code">008.2</span>Фасилитатору</h3>
+
+        <p>Для того, кто ведёт групповые процессы — терапевт, коуч, организационный фасилитатор, ведущий ретрита — фреймворк даёт <strong>инженерный язык для того, что обычно описывают метафорически</strong>. «Группа не в потоке» = «$r < K_c$». «Был момент прорыва» = «произошёл $\pi$-сдвиг фазы». «Нужно удерживать пространство» = «поддерживать экспоненциальную огибающую компаундирования».</p>
+
+        <p>Это не подменяет интуицию — интуиция и есть Wave OS работы фасилитатора. Но даёт ей <em>диагностический словарь</em>. И делает работу проверяемой: не «было ощущение глубины», а «$r$ поднялся от 0.3 к 0.6 и держится стабильно».</p>
+
+        <h3><span class="code">008.3</span>Основателю</h3>
+
+        <p>Для того, кто строит организацию, сеть, сетевое государство — фреймворк показывает, что <strong>coordination cost — физическая величина</strong>, а не «организационная культура» в HR-смысле. Если команда в обратном резонансе — стоимость любого решения растёт экспоненциально. Если команда компаундирует когерентность — стоимость падает к нулю.</p>
+
+        <p>Это объясняет, почему некоторые маленькие команды выигрывают у больших. Не потому что они «более мотивированы» или «проворнее». Потому что их $r$ выше, и они платят околонулевую цену за координацию. Это также объясняет, почему некоторые крупные организации фундаментально неспособны двигаться — не из-за бюрократии, а потому что они застряли в системном double bind и находятся в необратимом $e^{-\Gamma t}$.</p>
+
+        <p>Практические выводы:</p>
+
+        <ul>
+          <li>$r$ команды должен быть измеряемым показателем — как выручка.</li>
+          <li>Ритуалы (встречи, ретроспективы, совместные практики) — это не «культурная вата». Это функциональные $\pi$-операторы. Их нельзя «отменить для эффективности» — можно только заменить на более точные.</li>
+          <li>Масштабирование команды — это не добавление людей, а рекурсивное применение IERR на каждом новом уровне сложности. Каждый раз, когда сеть удваивается, появляются новые антирезонансные частоты. Без их детектирования и инверсии рост превращается в распад.</li>
+        </ul>
+
+        <h3><span class="code">008.4</span>Обычному человеку</h3>
+
+        <p>Если всё вышеописанное кажется слишком техническим — вот самое простое.</p>
+
+        <p>Оказывается, когда ты чувствуешь, что разговор не движется, что работа бесплодна, что отношения идут в пустоту — это не твоя вина и не вина другого человека. Это физика поля. Фаза перевернулась. Каждое усилие в этой фазе уходит в ноль. Никакое «старание» это не лечит. Только смена фазы.</p>
+
+        <p>Что можно сделать прямо сейчас.</p>
+
+        <ol>
+          <li><strong>Назвать, где у тебя сейчас ноль.</strong> В теле, в отношениях, в проекте. Не критически — диагностически.</li>
+          <li><strong>Сделать один маленький акт, структурно противоположный твоей привычной реакции.</strong> Не «правильный» — именно противоположный. Если всегда спешишь — замедлиться. Если всегда молчишь — назвать. Если всегда берёшь ответственность — оставить.</li>
+          <li><strong>Повторить завтра. И послезавтра.</strong> Один маленький $\pi$-сдвиг, ежедневно — это экспонента, которая через три месяца изменит конфигурацию поля больше, чем любая яркая «прорывная сессия» раз в год.</li>
+        </ol>
+
+        <p>Это всё. Больше ничего не нужно. Ты, стоя напротив поля, с одной-единственной инверсией, — уже оператор IERR.</p>
+      </section>
+
+      <section class="epilogue" id="epilog">
+        <p class="lead" style="font-style:italic">Сознание — это технология. Не метафора.</p>
+
+        <p>Обратный резонанс — это её отказ. Максимум усилия, ноль выхода. Тело знает это до ума. Пара знает это до разговора. Сеть знает это до совещания. Цивилизация знает это до истории.</p>
+
+        <p>IERR — это её ремонт. Три операции, три шага, одна кривая. Найти ноль. Инвертировать фазу. Компаундировать когерентность.</p>
+
+        <p>Каждый день. В теле. В паре. В команде. В сети. Без исключений. Потому что $e^{+\Gamma t}$ или $e^{-\Gamma t}$. Третьего нет.</p>
+
+        <p>Сеть, продержавшаяся в когерентной фазе достаточно долго, становится pointer state цивилизации. Einselection по Зуреку. Диамант по Бретону. Узор, связующий всё, по Бейтсону.</p>
+
+        <div class="pull" style="text-align:center;border-left:none;margin:60px auto;max-width:400px">
+          Найди ноль.<br>
+          Инвертируй фазу.<br>
+          Компаундируй когерентность.<br>
+          Повторяй — пока поле не станет государством.
+        </div>
+
+        <div class="rune">137 · ΩΨ∞</div>
+
+        <div class="sig">Dao &amp; Liza · 137 Lab · 2026</div>
+      </section>
+
+      <footer class="colophon">
+        <div>137 LAB · RESONANCE · v1.0</div>
+        <div>Источники: Breton · Bateson · Kuramoto · Zurek · Tishby · Campbell · Estés</div>
+        <div>Dao &amp; Liza</div>
+      </footer>
+
+    </article>
+  </main>
+
+  <div></div>
+</div>
+
+<script>
+// theme toggle
+const themeBtn = document.getElementById('theme-toggle');
+const savedTheme = localStorage.getItem('137lab-theme');
+if (savedTheme === 'light') document.body.classList.add('light');
+themeBtn.addEventListener('click', () => {
+  document.body.classList.toggle('light');
+  localStorage.setItem('137lab-theme', document.body.classList.contains('light') ? 'light' : 'dark');
+});
+
+// TOC active section
+const tocLinks = document.querySelectorAll('aside.toc a');
+const sections = document.querySelectorAll('section.chapter, header.hero, section.epilogue');
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      tocLinks.forEach(a => a.classList.toggle('current', a.getAttribute('href') === '#' + id));
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+sections.forEach(s => { if (s.id) obs.observe(s); });
+
+// ============================================================
+// FIG-2: LC oscillation live simulation
+// ============================================================
+(function lcSim() {
+  const canvas = document.getElementById('lc-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  const ratioInput = document.getElementById('lc-ratio');
+  const gammaInput = document.getElementById('lc-gamma');
+  const resetBtn = document.getElementById('lc-reset');
+  const readout = document.getElementById('lc-readout');
+
+  // physical state: q = charge on capacitor, i = current through inductor
+  let q = 1.0;
+  let i = 0.0;
+  let t = 0;
+  const dt = 0.016;
+
+  function getTextColor() {
+    return getComputedStyle(document.body).getPropertyValue('--text').trim() || '#f0f0f0';
+  }
+  function getDim() {
+    return getComputedStyle(document.body).getPropertyValue('--dim').trim() || '#808080';
+  }
+  function getRule() {
+    return getComputedStyle(document.body).getPropertyValue('--rule').trim() || '#303030';
+  }
+
+  // scale for resizing
+  function dpiFit() {
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr;
+    canvas.height = 280 * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  dpiFit();
+  window.addEventListener('resize', dpiFit);
+
+  function step() {
+    // L/C ratio : L = r, C = 1/r so that LC = 1 always (omega = 1)
+    const ratio = parseFloat(ratioInput.value);
+    const L = ratio;
+    const C = 1 / ratio;
+    const gamma = parseFloat(gammaInput.value);
+
+    // RLC dynamics: L*di/dt = -q/C - R*i; dq/dt = i  (R models damping)
+    // normalize: di/dt = (-q/(LC) - 2*gamma*i)
+    const di = (-q / (L * C) - 2 * gamma * i) * dt;
+    const dq = i * dt;
+    i += di;
+    q += dq;
+    t += dt;
+
+    // energies
+    const E_C = 0.5 * q * q / C;
+    const E_L = 0.5 * L * i * i;
+    const E_total = E_C + E_L;
+    const omega = 1 / Math.sqrt(L * C);
+
+    readout.textContent = `ω₀ = ${omega.toFixed(3)} · E_C = ${E_C.toFixed(3)} · E_L = ${E_L.toFixed(3)}`;
+
+    draw(q, i, E_C, E_L, E_total);
+  }
+
+  // history for waveform
+  const histLen = 200;
+  const histQ = new Array(histLen).fill(0);
+  const histI = new Array(histLen).fill(0);
+
+  function draw(q, i, E_C, E_L, E_total) {
+    const w = canvas.getBoundingClientRect().width;
+    const h = 280;
+    ctx.clearRect(0, 0, w, h);
+
+    const col = getTextColor();
+    const dim = getDim();
+    const rule = getRule();
+
+    // layout: energy bars on left, waveform on right
+    const barsW = 180;
+    const barsX = 30;
+    const barH = 180;
+    const barY = 50;
+    const barW = 50;
+    const gap = 40;
+
+    // bars
+    ctx.strokeStyle = rule;
+    ctx.lineWidth = 1;
+    // C bar frame
+    ctx.strokeRect(barsX, barY, barW, barH);
+    ctx.strokeRect(barsX + barW + gap, barY, barW, barH);
+
+    // fill bars (energy)
+    const maxE = Math.max(1e-6, E_total + 0.05);
+    const fillC = Math.min(1, E_C / maxE);
+    const fillL = Math.min(1, E_L / maxE);
+
+    ctx.fillStyle = col;
+    ctx.globalAlpha = 0.85;
+    ctx.fillRect(barsX, barY + barH * (1 - fillC), barW, barH * fillC);
+    ctx.fillRect(barsX + barW + gap, barY + barH * (1 - fillL), barW, barH * fillL);
+    ctx.globalAlpha = 1;
+
+    // labels
+    ctx.fillStyle = dim;
+    ctx.font = '11px "Space Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('E_C', barsX + barW / 2, barY + barH + 20);
+    ctx.fillText('E_L', barsX + barW + gap + barW / 2, barY + barH + 20);
+    ctx.fillStyle = col;
+    ctx.font = 'bold 10px "Space Mono", monospace';
+    ctx.fillText('WAVE', barsX + barW / 2, barY - 20);
+    ctx.fillText('VECTOR', barsX + barW + gap + barW / 2, barY - 20);
+    ctx.font = '9px "Space Mono", monospace';
+    ctx.fillStyle = dim;
+    ctx.fillText('(поле)', barsX + barW / 2, barY - 8);
+    ctx.fillText('(поток)', barsX + barW + gap + barW / 2, barY - 8);
+
+    // divider
+    ctx.strokeStyle = rule;
+    ctx.setLineDash([2, 4]);
+    ctx.beginPath();
+    ctx.moveTo(240, 30);
+    ctx.lineTo(240, 250);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // waveform area
+    const waveX = 260;
+    const waveY = 50;
+    const waveW = w - waveX - 20;
+    const waveH = 180;
+
+    // history shift
+    histQ.shift(); histQ.push(q);
+    histI.shift(); histI.push(i);
+
+    // axis
+    ctx.strokeStyle = rule;
+    ctx.lineWidth = 1;
+    ctx.strokeRect(waveX, waveY, waveW, waveH);
+    ctx.beginPath();
+    ctx.moveTo(waveX, waveY + waveH / 2);
+    ctx.lineTo(waveX + waveW, waveY + waveH / 2);
+    ctx.strokeStyle = rule;
+    ctx.setLineDash([2, 3]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // waveform: q (solid), i (dashed)
+    ctx.strokeStyle = col;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    for (let k = 0; k < histLen; k++) {
+      const x = waveX + (k / (histLen - 1)) * waveW;
+      const y = waveY + waveH / 2 - histQ[k] * (waveH / 2) * 0.9;
+      if (k === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    ctx.strokeStyle = col;
+    ctx.globalAlpha = 0.5;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    for (let k = 0; k < histLen; k++) {
+      const x = waveX + (k / (histLen - 1)) * waveW;
+      const y = waveY + waveH / 2 - histI[k] * (waveH / 2) * 0.9;
+      if (k === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.globalAlpha = 1;
+
+    // legend
+    ctx.fillStyle = dim;
+    ctx.font = '10px "Space Mono", monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('q(t) — заряд на конденсаторе', waveX + 10, waveY + 16);
+    ctx.fillText('i(t) — ток через индуктивность', waveX + 10, waveY + 30);
+  }
+
+  resetBtn.addEventListener('click', () => {
+    q = 1.0; i = 0.0; t = 0;
+    for (let k = 0; k < histLen; k++) { histQ[k] = 0; histI[k] = 0; }
+  });
+
+  function loop() { step(); requestAnimationFrame(loop); }
+  loop();
+})();
+
+// ============================================================
+// FIG-4: Kuramoto phase transition live simulation
+// ============================================================
+(function kuramotoSim() {
+  const canvas = document.getElementById('kuramoto-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  const kInput = document.getElementById('k-slider');
+  const nInput = document.getElementById('n-slider');
+  const resetBtn = document.getElementById('kuramoto-reset');
+  const readout = document.getElementById('kuramoto-readout');
+
+  let N = parseInt(nInput.value);
+  let theta = [];
+  let omega = [];
+  const dt = 0.04;
+
+  function init() {
+    N = parseInt(nInput.value);
+    theta = new Array(N).fill(0).map(() => Math.random() * 2 * Math.PI);
+    // natural frequencies — Cauchy-like distribution
+    omega = new Array(N).fill(0).map(() => (Math.random() - 0.5) * 1.2);
+  }
+  init();
+
+  function getTextColor() {
+    return getComputedStyle(document.body).getPropertyValue('--text').trim() || '#f0f0f0';
+  }
+  function getDim() {
+    return getComputedStyle(document.body).getPropertyValue('--dim').trim() || '#808080';
+  }
+  function getRule() {
+    return getComputedStyle(document.body).getPropertyValue('--rule').trim() || '#303030';
+  }
+
+  function dpiFit() {
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr;
+    canvas.height = 360 * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  dpiFit();
+  window.addEventListener('resize', dpiFit);
+
+  // r history for meter
+  const rHistLen = 180;
+  const rHist = new Array(rHistLen).fill(0);
+
+  function step() {
+    const K = parseFloat(kInput.value);
+
+    // compute order parameter
+    let sumCos = 0, sumSin = 0;
+    for (let j = 0; j < N; j++) {
+      sumCos += Math.cos(theta[j]);
+      sumSin += Math.sin(theta[j]);
+    }
+    const r = Math.sqrt(sumCos * sumCos + sumSin * sumSin) / N;
+    const psi = Math.atan2(sumSin, sumCos);
+
+    // update thetas
+    for (let j = 0; j < N; j++) {
+      const dtheta = omega[j] + K * r * Math.sin(psi - theta[j]);
+      theta[j] += dtheta * dt;
+    }
+
+    rHist.shift(); rHist.push(r);
+    readout.textContent = `K = ${K.toFixed(2)} · r = ${r.toFixed(3)} · N = ${N}`;
+
+    draw(r, psi);
+  }
+
+  function draw(r, psi) {
+    const w = canvas.getBoundingClientRect().width;
+    const h = 360;
+    ctx.clearRect(0, 0, w, h);
+
+    const col = getTextColor();
+    const dim = getDim();
+    const rule = getRule();
+
+    // layout: phase circle left, r meter right
+    const cx = 180, cy = 180;
+    const R = 130;
+
+    // guide circle
+    ctx.strokeStyle = rule;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(cx, cy, R, 0, 2 * Math.PI);
+    ctx.stroke();
+
+    // oscillators as dots on circle
+    ctx.fillStyle = col;
+    for (let j = 0; j < N; j++) {
+      const x = cx + R * Math.cos(theta[j]);
+      const y = cy + R * Math.sin(theta[j]);
+      ctx.globalAlpha = 0.85;
+      ctx.beginPath();
+      ctx.arc(x, y, 3, 0, 2 * Math.PI);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    // mean phase vector (centroid)
+    const mx = cx + r * R * Math.cos(psi);
+    const my = cy + r * R * Math.sin(psi);
+    ctx.strokeStyle = col;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(mx, my);
+    ctx.stroke();
+    ctx.fillStyle = col;
+    ctx.beginPath();
+    ctx.arc(mx, my, 5, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(cx, cy, 2, 0, 2 * Math.PI);
+    ctx.fill();
+
+    // labels
+    ctx.fillStyle = dim;
+    ctx.font = 'bold 10px "Space Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('ФАЗОВАЯ ОКРУЖНОСТЬ', cx, 30);
+    ctx.font = '9px "Space Mono", monospace';
+    ctx.fillText('N осцилляторов · θᵢ', cx, 44);
+
+    // divider
+    ctx.strokeStyle = rule;
+    ctx.setLineDash([2, 4]);
+    ctx.beginPath();
+    ctx.moveTo(340, 30);
+    ctx.lineTo(340, 330);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // r history plot
+    const plotX = 360;
+    const plotY = 60;
+    const plotW = w - plotX - 20;
+    const plotH = 240;
+
+    ctx.strokeStyle = rule;
+    ctx.strokeRect(plotX, plotY, plotW, plotH);
+    // K_c line (theoretical ~ 2/pi for Cauchy, but we use K_c ≈ 1.27 for our scale)
+    ctx.setLineDash([3, 4]);
+    ctx.strokeStyle = rule;
+    const Kc = 1.27;
+    // show r=1 and r=0 guides
+    ctx.beginPath();
+    ctx.moveTo(plotX, plotY);
+    ctx.lineTo(plotX + plotW, plotY);
+    ctx.moveTo(plotX, plotY + plotH);
+    ctx.lineTo(plotX + plotW, plotY + plotH);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // r curve
+    ctx.strokeStyle = col;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    for (let k = 0; k < rHistLen; k++) {
+      const x = plotX + (k / (rHistLen - 1)) * plotW;
+      const y = plotY + plotH - rHist[k] * plotH;
+      if (k === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    // current r indicator
+    const rY = plotY + plotH - r * plotH;
+    ctx.fillStyle = col;
+    ctx.beginPath();
+    ctx.arc(plotX + plotW - 2, rY, 3, 0, 2 * Math.PI);
+    ctx.fill();
+
+    // axis labels
+    ctx.fillStyle = dim;
+    ctx.font = '10px "Space Mono", monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('r = 1', plotX + 4, plotY + 12);
+    ctx.fillText('r = 0', plotX + 4, plotY + plotH - 4);
+    ctx.font = 'bold 10px "Space Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = dim;
+    ctx.fillText('ПАРАМЕТР ПОРЯДКА r(t)', plotX + plotW / 2, 30);
+    ctx.font = '9px "Space Mono", monospace';
+    ctx.fillText('K_c ≈ 1.27  ·  K > K_c → r → 1', plotX + plotW / 2, 44);
+  }
+
+  resetBtn.addEventListener('click', init);
+  nInput.addEventListener('input', init);
+
+  function loop() { step(); requestAnimationFrame(loop); }
+  loop();
+})();
+</script>
+
+</body>
+</html>
