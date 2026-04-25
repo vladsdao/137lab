@@ -3,59 +3,1003 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>137 Lab — Energy Management Solutions</title>
-<meta name="description" content="Energy management solutions for founders and creators. Applying metaphysics into practice.">
+<title>137 Lab — Resonance Engine of the New Paradigm</title>
+<meta name="description" content="Meta-systemic architecture of consciousness. The mechanics of resonant holiness and symbiosis at the intersection of spirituality and technology. The laboratory of Dao &amp; Liza.">
+
+<link rel="icon" type="image/png" href="./icons/favicon-32x32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;background:#000}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* Desktop: full iframe */
-@media (min-width:769px) {
-  body{overflow:hidden}
-  .wrap{width:100%;height:100%;display:flex;flex-direction:column}
-  .pdf{flex:1;width:100%;border:none}
-  .mobile{display:none}
+:root {
+  --bg: #fff;
+  --ink: #000;
+  --rule: #000;
+  --dim: rgba(0,0,0,0.45);
+  --dim2: rgba(0,0,0,0.18);
+  --font: 'Space Mono', ui-monospace, 'Courier New', monospace;
+  --fs: 13px;
+  --lh: 1.6;
+  --rail-w: 280px;
+  --speed: 240ms;
+  --ease: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
-/* Mobile: link to PDF */
-@media (max-width:768px) {
-  .pdf{display:none}
-  body{overflow:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;text-align:center}
-  .wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1}
-  .mobile{display:flex;flex-direction:column;align-items:center;gap:32px}
-  .m-num{font-family:'Courier New',monospace;font-size:72px;color:#fff;letter-spacing:0.06em;line-height:0.9}
-  .m-word{font-family:'Courier New',monospace;font-size:24px;color:#fff;letter-spacing:0.5em;margin-right:-0.5em}
-  .m-rule{width:1px;height:30px;background:#444}
-  .m-desc{font-family:'Courier New',monospace;font-size:9px;color:#666;letter-spacing:0.2em;text-transform:uppercase;line-height:2.2}
-  .m-btn{display:inline-block;font-family:'Courier New',monospace;font-size:10px;color:#999;letter-spacing:0.15em;text-transform:uppercase;text-decoration:none;border:0.5px solid #333;padding:14px 28px;transition:all 0.2s}
-  .m-btn:hover{color:#fff;border-color:#666}
+html {
+  font-family: var(--font);
+  font-size: var(--fs);
+  line-height: var(--lh);
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-.bar{height:36px;min-height:36px;background:#000;display:flex;align-items:center;justify-content:center;gap:24px;font-family:'Courier New',monospace;font-size:10px;letter-spacing:0.15em;color:#666}
-.bar a{color:#999;text-decoration:none;letter-spacing:0.15em;transition:color 0.2s}
-.bar a:hover{color:#fff}
-.bar span{color:#333}
+body { min-height: 100vh; }
+a { color: inherit; text-decoration: none; }
+a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+::selection { background: var(--ink); color: var(--bg); }
 
-@media (max-width:768px) {
-  .bar{position:fixed;bottom:0;left:0;right:0;height:44px}
+.shell {
+  display: grid;
+  grid-template-columns: var(--rail-w) 1fr;
+  min-height: 100vh;
+}
+
+.rail {
+  border-right: 1px solid var(--rule);
+  padding: 28px 24px;
+  position: sticky; top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex; flex-direction: column;
+  gap: 36px;
+}
+.rail::-webkit-scrollbar { width: 0; }
+
+.brand-mark {
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: 0.18em;
+}
+
+.brand-line {
+  margin-top: 12px;
+  font-size: 11px;
+  line-height: 1.55;
+  color: var(--ink);
+  max-width: 220px;
+}
+
+.brand-coord {
+  margin-top: 14px;
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.rail-label {
+  font-size: 9.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--dim);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 4px;
+}
+
+.rail-emblem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+}
+.rail-emblem img {
+  width: 96px; height: 96px;
+  object-fit: contain;
+  opacity: 0.85;
+}
+.rail-emblem .emblem-caption {
+  font-size: 8.5px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--dim);
+}
+
+.index { list-style: none; }
+.index li { padding: 5px 0; }
+.index a {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+}
+.index a:hover { text-decoration: none; }
+.index a:hover .ix-name { text-decoration: underline; text-underline-offset: 3px; }
+.ix-num { color: var(--dim); font-weight: 700; }
+.ix-name { color: var(--ink); }
+
+.enter-cta {
+  margin-top: auto;
+  display: flex; flex-direction: column; gap: 14px;
+  padding-top: 22px;
+  border-top: 1px solid var(--rule);
+}
+.enter-cta a.enter {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase;
+}
+.enter-cta a.enter:hover { text-decoration: none; }
+.enter-cta a.enter:hover .arr { transform: translateY(2px); }
+.arr { transition: transform var(--speed) var(--ease); display: inline-block; }
+
+.lang-toggle { font-size: 10px; letter-spacing: 0.22em; color: var(--dim); }
+.lang-toggle .current { color: var(--ink); font-weight: 700; }
+
+.content {
+  padding: 72px 80px 0;
+  max-width: 880px;
+}
+
+.masthead {
+  display: flex; flex-direction: column; gap: 18px;
+  padding-bottom: 56px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 64px;
+}
+.masthead-kick {
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--dim);
+  font-weight: 700;
+}
+.masthead-title {
+  font-size: 38px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.04;
+  max-width: 680px;
+}
+.masthead-sub {
+  font-size: 14.5px;
+  font-weight: 400;
+  font-style: italic;
+  color: rgba(0,0,0,0.7);
+  max-width: 600px;
+  line-height: 1.55;
+}
+.masthead-by {
+  font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--dim); font-weight: 700;
+  padding-top: 8px;
+}
+
+.block { padding: 64px 0 72px; border-top: 1px solid var(--rule); }
+.block:first-of-type { border-top: 0; padding-top: 0; }
+
+.block-code {
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--dim);
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+.block-code span { color: var(--ink); }
+
+.block-num {
+  font-size: 56px;
+  line-height: 0.92;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin-bottom: 14px;
+}
+
+.block-en {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--dim);
+  margin-bottom: 10px;
+}
+
+.block-title {
+  font-size: 28px;
+  line-height: 1.14;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  margin-bottom: 28px;
+  max-width: 640px;
+}
+.block-title--sub {
+  font-size: 21px;
+  margin-top: 36px;
+  margin-bottom: 18px;
+}
+
+.block p {
+  max-width: 660px;
+  margin-bottom: calc(var(--lh) * 1em);
+  font-size: 13.5px;
+  line-height: 1.75;
+}
+.block p:last-child { margin-bottom: 0; }
+
+.block p.lede {
+  font-size: 15.5px;
+  font-style: italic;
+  color: rgba(0,0,0,0.78);
+  max-width: 640px;
+  line-height: 1.55;
+}
+
+.block p.stmt {
+  font-weight: 700;
+  font-size: 14.5px;
+  line-height: 1.5;
+  border-left: 2px solid var(--ink);
+  padding: 4px 0 4px 20px;
+  margin: 32px 0;
+  max-width: 660px;
+}
+
+.block .triad {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin: 8px 0 22px;
+  color: var(--ink);
+}
+
+/* ── personal block (Founders) ── */
+.founders { margin-top: 28px; }
+.founder {
+  border-top: 1px solid var(--rule);
+  padding: 28px 0 32px;
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+.founder:last-of-type { border-bottom: 1px solid var(--rule); }
+
+.founder-photo {
+  aspect-ratio: 1 / 1;
+  border: 1px solid var(--rule);
+  background: repeating-linear-gradient(135deg, transparent 0 18px, rgba(0,0,0,0.045) 18px 19px);
+  position: relative;
+  overflow: hidden;
+}
+.founder-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.founder-photo::after {
+  content: 'PORTRAIT';
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  font-size: 9px; letter-spacing: 0.24em;
+  color: var(--dim); font-weight: 700;
+  pointer-events: none;
+}
+.founder-photo:has(img)::after { display: none; }
+
+.founder-name {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  margin-bottom: 4px;
+}
+.founder-role {
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--dim);
+  margin-bottom: 16px;
+}
+.founder-voice {
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.65;
+  color: rgba(0,0,0,0.82);
+}
+
+.location-note {
+  margin-top: 36px;
+  padding: 20px 24px;
+  border: 1px solid var(--rule);
+  background: #fafaf7;
+  font-size: 12.5px;
+  line-height: 1.6;
+  display: flex; flex-wrap: wrap; gap: 10px 28px;
+  align-items: baseline;
+}
+.location-note .loc-label {
+  font-size: 9.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--dim);
+  white-space: nowrap;
+}
+.location-note p { margin: 0; max-width: none; font-size: 12.5px; line-height: 1.55; }
+.location-note p i { font-style: italic; color: var(--dim); }
+
+/* offerings 2×2 grid */
+.give-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin: 36px 0 24px;
+}
+.give-item {
+  border-top: 2px solid var(--ink);
+  padding-top: 14px;
+}
+.give-num {
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--dim);
+  margin-bottom: 4px;
+}
+.give-en {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.give-name {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  margin-bottom: 10px;
+  line-height: 1.18;
+}
+.give-body {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: rgba(0,0,0,0.78);
+}
+
+.target-label {
+  font-size: 10px; letter-spacing: 0.24em;
+  text-transform: uppercase; font-weight: 700;
+  color: var(--dim);
+  margin: 32px 0 12px;
+}
+.pillset { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0 28px; }
+.pill {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  border: 1px solid var(--ink);
+  padding: 5px 10px;
+  white-space: nowrap;
+}
+
+.phases {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 36px;
+}
+.phase { border-top: 2px solid var(--ink); padding-top: 16px; }
+.phase-num { font-size: 10px; letter-spacing: 0.22em; font-weight: 700; color: var(--dim); margin-bottom: 8px; }
+.phase-name {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.003em;
+  margin-bottom: 4px;
+  line-height: 1.15;
+}
+.phase-en {
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 12px;
+}
+.phase p { font-size: 12px; line-height: 1.6; max-width: none; margin-bottom: 0.8em; }
+.phase p:last-of-type { margin-bottom: 0; }
+.phase-meta {
+  margin-top: 16px;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+  font-weight: 700;
+}
+
+.field-card {
+  margin-top: 64px;
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--ink);
+  padding: 32px 36px 36px;
+  background: #fafaf7;
+}
+.field-card .fc-tag {
+  font-size: 9.5px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--dim);
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.field-card h4 {
+  font-size: 22px;
+  letter-spacing: -0.005em;
+  line-height: 1.18;
+  margin-bottom: 18px;
+  font-weight: 700;
+}
+.field-card p { max-width: none; font-size: 13px; line-height: 1.7; margin-bottom: 14px; }
+.field-card p:last-child { margin-bottom: 0; }
+.field-card p.fc-stmt {
+  font-weight: 700;
+  font-style: normal;
+  border-left: 2px solid var(--ink);
+  padding: 4px 0 4px 18px;
+  margin: 18px 0;
+  line-height: 1.5;
+}
+
+.block--inverse {
+  background: #000; color: #fff;
+  margin: 96px -80px 0;
+  padding: 88px 80px 96px;
+  border-top: 0;
+}
+.block--inverse .block-code { color: rgba(255,255,255,0.45); }
+.block--inverse .block-code span { color: #fff; }
+.block--inverse p { color: rgba(255,255,255,0.86); }
+.block--inverse p.stmt { border-left-color: #fff; color: #fff; }
+
+.coordinate {
+  font-size: 88px; font-weight: 700; line-height: 1;
+  letter-spacing: -0.04em;
+  margin: 32px 0 8px;
+}
+.coordinate small {
+  font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
+  font-weight: 700; display: block; margin-top: 10px;
+  color: rgba(255,255,255,0.5);
+}
+.coordinate-title {
+  font-size: 28px; font-weight: 700;
+  letter-spacing: -0.005em;
+  margin-bottom: 22px;
+  line-height: 1.14;
+  color: #fff;
+}
+
+.form-wrap {
+  background: #000; color: #fff;
+  margin: 0 -80px;
+  padding: 0 80px 96px;
+}
+.form-head {
+  font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase;
+  color: rgba(255,255,255,0.7); font-weight: 700;
+  padding: 32px 0 16px;
+  border-top: 1px solid rgba(255,255,255,0.25);
+}
+.form-title {
+  font-size: 36px; line-height: 1.08;
+  font-weight: 700; letter-spacing: -0.018em;
+  margin-bottom: 18px;
+  max-width: 640px;
+}
+.form-lede {
+  font-size: 14.5px;
+  font-style: italic;
+  color: rgba(255,255,255,0.92);
+  max-width: 600px;
+  line-height: 1.55;
+  margin-bottom: 18px;
+}
+.form-stmt {
+  font-weight: 700;
+  font-size: 14.5px;
+  line-height: 1.5;
+  border-left: 2px solid #fff;
+  padding: 4px 0 4px 20px;
+  margin: 24px 0 36px;
+  max-width: 600px;
+  color: #fff;
+}
+.form-intro { font-size: 13px; color: rgba(255,255,255,0.85); max-width: 540px; margin-bottom: 40px; }
+
+form.entry { display: flex; flex-direction: column; gap: 28px; max-width: 620px; }
+.field { display: flex; flex-direction: column; gap: 8px; }
+.field label {
+  font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+  font-weight: 700; color: rgba(255,255,255,0.7);
+}
+.field label .req { color: #fff; margin-left: 4px; }
+.field label .opt { color: rgba(255,255,255,0.5); margin-left: 4px; font-weight: 400; }
+
+.field input, .field textarea, .field select {
+  font-family: var(--font);
+  font-size: 14px;
+  color: #fff;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.45);
+  padding: 8px 0 10px;
+  outline: none;
+  transition: border-color var(--speed) var(--ease);
+  resize: vertical;
+}
+.field input::placeholder, .field textarea::placeholder { color: rgba(255,255,255,0.55); }
+.field input:focus, .field textarea:focus, .field select:focus { border-bottom-color: #fff; }
+.field textarea { min-height: 90px; }
+.field-hint { font-size: 11px; color: rgba(255,255,255,0.6); font-style: italic; line-height: 1.5; }
+
+.topic-options { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.topic-chip {
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  font-weight: 700;
+  padding: 7px 12px;
+  color: rgba(255,255,255,0.85);
+  border: 1px solid rgba(255,255,255,0.5);
+  cursor: pointer; user-select: none;
+  transition: border var(--speed), background var(--speed), color var(--speed);
+}
+.topic-chip.on, .topic-chip:hover {
+  border-color: #fff; background: #fff; color: #000;
+}
+
+button.submit {
+  margin-top: 12px;
+  background: #fff; color: #000;
+  border: 0;
+  padding: 18px 28px;
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 16px;
+  align-self: flex-start;
+  transition: transform var(--speed) var(--ease);
+}
+button.submit:hover { transform: translateX(4px); }
+button.submit::after { content: "→"; display: inline-block; transition: transform var(--speed) var(--ease); }
+button.submit:hover::after { transform: translateX(4px); }
+
+.consent { font-size: 11px; color: rgba(255,255,255,0.6); max-width: 540px; line-height: 1.55; }
+
+.form-foot {
+  margin-top: 72px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(255,255,255,0.25);
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  flex-wrap: wrap; gap: 20px;
+}
+
+@media (max-width: 1024px) {
+  .shell { grid-template-columns: 1fr; }
+  .rail {
+    position: static; height: auto;
+    border-right: 0; border-bottom: 1px solid var(--rule);
+    padding: 24px;
+  }
+  .content { padding: 40px 28px 0; }
+  .block--inverse { margin: 80px -28px 0; padding: 64px 28px 72px; }
+  .form-wrap { margin: 0 -28px; padding: 0 28px 80px; }
+  .phases { grid-template-columns: 1fr; }
+  .give-grid { grid-template-columns: 1fr; }
+  .founder { grid-template-columns: 120px 1fr; gap: 20px; }
+}
+
+@media (max-width: 600px) {
+  .founder { grid-template-columns: 1fr; gap: 16px; }
+  .founder-photo { max-width: 180px; }
+}
+
+@media (max-width: 520px) {
+  .masthead-title { font-size: 30px; }
+  .block-num { font-size: 44px; }
+  .coordinate { font-size: 64px; }
+  .block-title { font-size: 24px; }
+  .form-title { font-size: 26px; }
+  .content { padding: 32px 20px 0; }
+  .block--inverse { margin: 64px -20px 0; padding: 56px 20px 64px; }
+  .form-wrap { margin: 0 -20px; padding: 0 20px 64px; }
 }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <iframe class="pdf" src="137lab.pdf" type="application/pdf"></iframe>
-  <div class="mobile">
-    <div class="m-num">137</div>
-    <div class="m-word">Lab</div>
-    <div class="m-rule"></div>
-    <div class="m-desc">Energy Management Solutions<br>for Founders and Creators</div>
-    <a class="m-btn" href="137lab.pdf" target="_blank">Open Presentation</a>
-  </div>
-  <div class="bar">
-    <a href="mailto:vladsdao@gmail.com">vladsdao@gmail.com</a>
-    <span>&middot;</span>
-    <span>137lab.xyz</span>
-  </div>
+
+<div class="shell">
+
+  <!-- ═══════════════════ RAIL ═══════════════════ -->
+  <aside class="rail">
+    <div class="brand">
+      <div class="brand-mark">137 LAB</div>
+      <div class="brand-line">Resonance engine<br>of the new paradigm.</div>
+      <div class="brand-coord">1/137 · Fine-structure</div>
+    </div>
+
+    <div>
+      <div class="rail-label">Index</div>
+      <ul class="index">
+        <li><a href="#b01"><span class="ix-num">01</span><span class="ix-name">Manifesto</span></a></li>
+        <li><a href="#b02"><span class="ix-num">02</span><span class="ix-name">Founders · context</span></a></li>
+        <li><a href="#b03"><span class="ix-num">03</span><span class="ix-name">Symbiosis · the shift</span></a></li>
+        <li><a href="#b04"><span class="ix-num">04</span><span class="ix-name">Synergy Protocol</span></a></li>
+        <li><a href="#b05"><span class="ix-num">05</span><span class="ix-name">Resonance Framework</span></a></li>
+        <li><a href="#b06"><span class="ix-num">06</span><span class="ix-name">Family</span></a></li>
+        <li><a href="#b07"><span class="ix-num">07</span><span class="ix-name">Holy Business</span></a></li>
+        <li><a href="#b08"><span class="ix-num">08</span><span class="ix-name">Integration architecture</span></a></li>
+        <li><a href="#b09"><span class="ix-num">09</span><span class="ix-name">Why 137</span></a></li>
+      </ul>
+    </div>
+
+    <div class="enter-cta">
+      <a class="enter" href="#enter">Enter the Laboratory <span class="arr">↓</span></a>
+      <div class="lang-toggle">
+        <span class="current">EN</span> / <a href="./ru.html">RU</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════ MAIN ═══════════════════ -->
+  <main class="content">
+
+    <header class="masthead">
+      <div class="masthead-kick">137 Lab · 2026</div>
+      <h1 class="masthead-title">Meta-systemic architecture of consciousness.</h1>
+      <p class="masthead-sub">The mechanics of resonant holiness and symbiosis at the intersection of spirituality and technology.</p>
+      <div class="masthead-by">Dao &amp; Liza</div>
+    </header>
+
+    <!-- ═══ Block 01 — Manifesto ═══ -->
+    <section class="block" id="b01">
+      <div class="block-code">[ Block <span>01</span> ] — Essence &amp; Manifesto</div>
+      <div class="block-num">01</div>
+      <div class="block-en">Metaphysics Applied to the Game of Life</div>
+      <h2 class="block-title">Techno-hermeticism and quantum advantage.</h2>
+
+      <p>Techno-hermeticism is our authored approach: it accounts simultaneously for the wave and vector nature of reality in any practical solution. Energy management and the symbiotic interaction model open an extended range of non-local consciousness.</p>
+
+      <p class="lede">This is applied metaphysics for post-conventional minds — an entirely new playing field for creativity and the realisation of any intent.</p>
+
+      <h3 class="block-title block-title--sub">2026 — Game Over.</h3>
+      <p>Accept the end of the old paradigm if you intend to enter the new world. There is no point continuing to fight for life by the rules of a departing era. Success of any kind in the new era requires deep deconstruction of the inner foundation. A full update of the operating system of consciousness — and the resonant mindset — is the key.</p>
+      <p>We are not offering you another business model or productivity tool. We offer a chance to revise the very architecture of your personality, organisation, or community — to step onto an entirely different level of throughput, clarity, and ease.</p>
+    </section>
+
+    <!-- ═══ Block 02 — Founders ═══ -->
+    <section class="block" id="b02">
+      <div class="block-code">[ Block <span>02</span> ] — Context</div>
+      <div class="block-num">02</div>
+      <div class="block-en">Founders</div>
+      <h2 class="block-title">Hi, we are Dao and Liza — founders of 137 Lab.</h2>
+
+      <div class="founders">
+        <div class="founder">
+          <div class="founder-photo">
+            <img src="dao.jpg" alt="Dao" />
+          </div>
+          <div class="founder-meta">
+            <div class="founder-name">Dao</div>
+            <div class="founder-role">Director of Enlightenment</div>
+            <p class="founder-voice">I'm a philosopher, visionary, psychonaut, and innovator at the intersection of spirituality, science, technology, and creativity. I treat inspiration as a technology — and unlocking creative potential in people is my passion. I have an enlightenment experience and research synergy as a practical framework integrated into business, family, and a new kind of community. I create avant-garde transformational experience through digital-shaman rituals at Trip.me. Star family connector.</p>
+          </div>
+        </div>
+        <div class="founder">
+          <div class="founder-photo">
+            <img src="liza.jpg" alt="Liza" />
+          </div>
+          <div class="founder-meta">
+            <div class="founder-name">Liza</div>
+            <div class="founder-role">Mother of Meta-systems</div>
+            <p class="founder-voice">I work with consciousness as a meta-system, studying its architecture and translating spirituality and magic into precise science. I can solve any task, for any person, in any field, at any complexity — working at the levels where consciousness creates reality. On one condition: that the person is ready for transformation. The paradigm shift from parasitic to symbiotic at planetary scale is my main driver.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="location-note">
+        <div class="loc-label">[ Visits ]</div>
+        <p>We are happy to welcome guests at our home. <i>45 minutes from Lisbon · Sintra · ultra-private estate.</i></p>
+      </div>
+
+      <p style="margin-top: 36px;">For the past 3.5 years we have been focused on researching how people interact at the level of collective consciousness. Roughly speaking — it's a psycho-emotional internet for the subconscious, in which we build custom technological solutions.</p>
+
+      <p>The evolution of consciousness, in our understanding, is first of all <b>a game and an irony</b>. Outside any dogma or ideology, we can deliver complex abstract concepts from ancient sources even to the most pragmatic mind — creating a transformational experience in a comfortable atmosphere. No meditation, no yoga, no asceticism — just scientific perspective as technology.</p>
+
+      <p>137 Lab, for us, is a point of contact with the personalities who share our values and are ready to receive and apply the resource we hold. Our programmes are always individual work, with particular attention to each request.</p>
+
+      <p class="stmt">We gather people in whom this idea already resonates. And we give four things.</p>
+
+      <div class="give-grid">
+        <div class="give-item">
+          <div class="give-num">i</div>
+          <div class="give-en">Knowledge &amp; Transformation</div>
+          <div class="give-name">Knowledge &amp; Transformation</div>
+          <div class="give-body">Architecture, methods, engineering of consciousness as technology. Releasing tension, restoring inner balance, inspiration, tuning the inner symbiosis.</div>
+        </div>
+        <div class="give-item">
+          <div class="give-num">ii</div>
+          <div class="give-en">Family &amp; Community</div>
+          <div class="give-name">Family &amp; Community</div>
+          <div class="give-body">Symbiosis in close relationships. Family as the resonance engine of quantum success — the environment in which all of this lives and amplifies.</div>
+        </div>
+        <div class="give-item">
+          <div class="give-num">iii</div>
+          <div class="give-en">State</div>
+          <div class="give-name">State of Consciousness</div>
+          <div class="give-body">A spiritual practice that runs in the background through co-tuning of energy exchange in a unified resonance network. The inner medium from which everything begins. Without it, nothing else holds.</div>
+        </div>
+        <div class="give-item">
+          <div class="give-num">iiii</div>
+          <div class="give-en">Business</div>
+          <div class="give-name">Holy Business</div>
+          <div class="give-body">Tuning a business to resonate with its founder, and adapting to the post-labour economy. Synergy, energy management, working with community or team through an egregore.</div>
+        </div>
+      </div>
+
+      <p class="stmt">The density of emotional energy that comes through plugging into the resonance network is a position. From it, creativity, influence, and exchange unfold through the common field of unified awareness.</p>
+
+      <p class="lede">We work individually with people who share our mission of shifting the existing paradigm at planetary scale.</p>
+    </section>
+
+    <!-- ═══ Block 03 — Symbiosis · The Shift ═══ -->
+    <section class="block" id="b03">
+      <div class="block-code">[ Block <span>03</span> ] — The Shift</div>
+      <div class="block-num">03</div>
+      <div class="block-en">Symbiosis · The Shift</div>
+      <h2 class="block-title">From competition — to symbiosis.</h2>
+
+      <p class="lede">We don't treat a human being as an isolated task. We pursue a change of operating model — from the consumerist, competitive regime to a symbiotic and creative one.</p>
+
+      <p>The main vector — to rewrite the code of the industries that everyday reality stands on. That's where the deepest habits of mind are encoded.</p>
+
+      <div class="target-label">Target industries</div>
+      <div class="pillset">
+        <span class="pill">Nutrition</span>
+        <span class="pill">Medicine</span>
+        <span class="pill">Education</span>
+        <span class="pill">Marketing</span>
+        <span class="pill">Fashion</span>
+        <span class="pill">Leisure</span>
+        <span class="pill">Dual perception</span>
+      </div>
+    </section>
+
+    <!-- ═══ Block 04 — Synergy Protocol ═══ -->
+    <section class="block" id="b04">
+      <div class="block-code">[ Block <span>04</span> ] — Perspective I</div>
+      <div class="block-num">04</div>
+      <div class="block-en">Synergy Protocol</div>
+      <h2 class="block-title">Consciousness upgrade.</h2>
+
+      <div class="triad">Mind · Soul · Body</div>
+
+      <p>Real change arrives only when the system is in balance. Our aim — to build absolute synergy in the main alchemical triad: <b>Mind — Soul — Body</b> (thoughts, feelings, actions).</p>
+      <p>The ordinary mind often runs in a state of inner split: logic fights intuition, tension blocks relaxation. This conflict produces background friction that consumes most of your force.</p>
+      <p class="stmt">Synergy Protocol removes the resistance.</p>
+      <p>By dismantling destructive subconscious patterns and tuning the inner sources of energy, we shift consciousness into superconductivity mode. You stop spending resource on internal struggle and acquire the Creator Mindset — a state in which you simply catch the wave of natural synchronicity and inspiration.</p>
+    </section>
+
+    <!-- ═══ Block 05 — Resonance Framework ═══ -->
+    <section class="block" id="b05">
+      <div class="block-code">[ Block <span>05</span> ] — Perspective II</div>
+      <div class="block-num">05</div>
+      <div class="block-en">Resonance Framework</div>
+      <h2 class="block-title">Fine-tuning the mindset.</h2>
+
+      <p>We treat consciousness as a frontier technology, and your mindset as a precision instrument that requires jeweller's calibration.</p>
+      <p>Modern leaders often get stuck in the phase of hard achievement, forgetting deep restoration and intuitive reading of reality. Trying to move on willpower alone is maximum effort at zero result.</p>
+      <p class="stmt">Energy Management is the art of steering your states.</p>
+      <p>We help you find the points where your energy leaks into the void and rebuild the inner algorithms. Phases of intense, precise action begin to alternate organically with phases of deep replenishment. You step out of closed loops and start operating beyond your usual limits.</p>
+    </section>
+
+    <!-- ═══ Block 06 — Family Engine ═══ -->
+    <section class="block" id="b06">
+      <div class="block-code">[ Block <span>06</span> ] — Perspective III</div>
+      <div class="block-num">06</div>
+      <div class="block-en">Family Engine</div>
+      <h2 class="block-title">Family as resonance engine.</h2>
+
+      <p>The old paradigm holds that grand success requires compromise — sacrificing personal life. Choosing one over the other is a fundamental error of energy management.</p>
+      <p>We treat family not as a zone of compromise but as the core of your system. It's your <b>Primary Engine</b>, powering creativity and business. Your main battery — digesting stress, restoring force. If there is hidden tension at home, conflict, or unsaid things — your energy simply drains into the void.</p>
+
+      <p>We work with the family as a whole unit — through individual and pair sessions. By removing dissonance and building resonance inside the system, you see the result instantly, after the very first session.</p>
+
+      <div class="triad">Coupling · Decoupling</div>
+
+      <p>Using the Coupling &amp; Decoupling protocols, we fine-tune relationships so they sound in absolute unison. Sometimes a connection needs careful repair and synchronisation. Sometimes — a clean and honest completion.</p>
+      <p class="stmt">Relationships brought into true resonance stop consuming your resource. They become a reactor generating clean energy for your outer expansion.</p>
+
+      <h3 class="block-title block-title--sub">Sexual energy &amp; children.</h3>
+      <p>An enormous source of energy and inspiration is the release of sexual blocks and traces of past traumas affecting orgasm and the expression of desire in women. Men — increase sensitivity, arousal, and the duration of the act.</p>
+      <p>We also help with raising children and preserving their creative potential during growth — protecting them from toxic influences and the suppression of the existing system.</p>
+      <p class="lede">This is our favourite domain — one in which people literally bloom right in front of us.</p>
+    </section>
+
+    <!-- ═══ Block 07 — Holy Business ═══ -->
+    <section class="block" id="b07">
+      <div class="block-code">[ Block <span>07</span> ] — Perspective IV</div>
+      <div class="block-num">07</div>
+      <div class="block-en">Holy Business · Synergy Economy</div>
+      <h2 class="block-title">Business &amp; teams: the synergy economy.</h2>
+
+      <p>For three hundred years the formula of success held steady: sharper analysis, better strategy, faster execution. Today the model is failing. Companies don't die from competition — they die from internal friction and coordination costs. When a team is out of sync, the cost of any decision rises exponentially.</p>
+      <p>Your work is a natural extension of your consciousness. We move business out of the classical management paradigm into the paradigm of <b>Energy Management</b>.</p>
+      <p class="stmt">When a team resonates on one frequency, an Egregore forms — the company's collective super-mind.</p>
+      <p>Communication losses fall to zero. The level of trust renders micromanagement redundant. Decisions that once took months to align are made intuitively and crystallise in hours.</p>
+      <p>Your task narrows to one thing: sustaining energy exchange with the people and projects that actually reflect your essence.</p>
+    </section>
+
+    <!-- ═══ Block 08 — Integration Architecture ═══ -->
+    <section class="block" id="b08">
+      <div class="block-code">[ Block <span>08</span> ] — Process</div>
+      <div class="block-num">08</div>
+      <div class="block-en">Integration Architecture</div>
+      <h2 class="block-title">Integration architecture.</h2>
+
+      <p>We don't build dependency on mentors or long therapies. Our goal is structural repair of your inner architecture. When it is sound — it runs and scales on its own.</p>
+
+      <div class="phases">
+        <div class="phase">
+          <div class="phase-num">Phase 01</div>
+          <div class="phase-name">Diagnostic</div>
+          <div class="phase-en">Diagnostic</div>
+          <p>One session, up to three hours. A structural X-ray of your current reality. Direct reading of the consciousness field and the patterns operating beneath your awareness.</p>
+          <p>You leave with a clear map of your situation drawn with engineering precision. Often this one session is enough — the rest falls into place.</p>
+          <div class="phase-meta">≤ 3 hours</div>
+        </div>
+        <div class="phase">
+          <div class="phase-num">Phase 02</div>
+          <div class="phase-name">Architecture Design</div>
+          <div class="phase-en">Architecture Design</div>
+          <p>Every engagement is unique. Based on the diagnostic we draft a precise plan: from rebuilding personal settings to calibrating partnerships and systems design for teams.</p>
+          <p>We define the minimum effective intervention — no more, no less.</p>
+          <div class="phase-meta">Custom</div>
+        </div>
+        <div class="phase">
+          <div class="phase-num">Phase 03</div>
+          <div class="phase-name">Integration</div>
+          <div class="phase-en">Integration</div>
+          <p>Inner shifts inevitably surface in the outer world. New patterns stabilise (about 13 days on average) and begin producing measurable results automatically.</p>
+          <p>Quality of decisions, depth of relationships, growth of business.</p>
+          <div class="phase-meta">~ 13 days</div>
+        </div>
+      </div>
+
+      <div class="field-card">
+        <div class="fc-tag">Feature · Biological Blockchain</div>
+        <h4>The Field · The Resonance Network</h4>
+        <p>For those ready to go further, we open access to the Field of Unified Consciousness — a psycho-emotional internet in which spirituality operates as a resonance technology of the collective field.</p>
+        <p>The individual mind is amplified many times over by people sounding on the same frequency. A steady level of energy and a steady state of consciousness for every participant is sustained in the background — without separate practice, without carving out an hour a day.</p>
+        <p class="fc-stmt">An environment in which transformation happens against the backdrop of life itself.</p>
+      </div>
+    </section>
+
+    <!-- ═══ Block 09 — Why 137 (inverse) ═══ -->
+    <section class="block block--inverse" id="b09">
+      <div class="block-code">[ Block <span>09</span> ] — Why 137</div>
+      <div class="coordinate">1/137<small>Fine-Structure Constant</small></div>
+
+      <h2 class="coordinate-title">A coordinate, not a brand.</h2>
+
+      <p>In physics, the fine-structure constant (1/137) defines the boundary of interaction between Light and Matter. It is the foundational layer of reality. We chose this coordinate because we work precisely here — at the point where invisible states, thoughts, and energy crystallise into physical form.</p>
+      <p class="stmt">Change the base code — and everything built on top of it reassembles itself.</p>
+      <p>137 is not a brand. It's a coordinate. You don't need more information. You already feel it. The starting point is a diagnostic session. No hidden commitments. Just one conversation that will show you the architecture of your life.</p>
+    </section>
+
+    <!-- ═══ FORM ═══ -->
+    <section class="form-wrap" id="enter">
+      <div class="form-head">[ Enter the Laboratory ]</div>
+      <h2 class="form-title">Leave your starting point.</h2>
+      <p class="form-lede">We can solve a problem for any person, at any scale, in any field — working on the foundational layers of consciousness, where reality itself is encoded.</p>
+      <p class="form-stmt">The only requirement is your readiness for real transformation.</p>
+      <p class="form-intro">One conversation. No obligations beyond it. We respond within 72 hours.</p>
+
+      <form class="entry" name="137lab-entry-en" method="POST" action="https://formsubmit.co/vladsdao@gmail.com">
+        <input type="hidden" name="_subject" value="137 Lab · New inquiry (EN)">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="https://137lab.xyz/thanks.html">
+        <input type="hidden" name="_honey" style="display:none">
+        <input type="hidden" name="_autoresponse" value="We received your starting point. We will reach out within 72 hours. — Dao &amp; Liza, 137 Lab.">
+        <p style="position:absolute;left:-9999px" aria-hidden="true"><label>Do not fill: <input name="bot-field"></label></p>
+
+        <div class="field">
+          <label>Name <span class="req">*</span></label>
+          <input type="text" name="name" required autocomplete="name" placeholder="How should we call you">
+        </div>
+
+        <div class="field">
+          <label>E-mail <span class="req">*</span></label>
+          <input type="email" name="email" required autocomplete="email" placeholder="you@domain.com">
+        </div>
+
+        <div class="field">
+          <label>Telegram / WhatsApp <span class="opt">optional</span></label>
+          <input type="text" name="messenger" autocomplete="off" placeholder="@username or +1...">
+        </div>
+
+        <div class="field">
+          <label>Request domain</label>
+          <div class="topic-options" role="radiogroup">
+            <div class="topic-chip" data-topic="consciousness" role="radio" tabindex="0">Consciousness</div>
+            <div class="topic-chip" data-topic="family" role="radio" tabindex="0">Family</div>
+            <div class="topic-chip" data-topic="business" role="radio" tabindex="0">Business</div>
+            <div class="topic-chip" data-topic="paradigm" role="radio" tabindex="0">Paradigm</div>
+          </div>
+          <input type="hidden" name="topic" id="topic-input" value="">
+        </div>
+
+        <div class="field">
+          <label>Your request <span class="req">*</span></label>
+          <textarea name="request" rows="4" required placeholder="Put into words the state or question you arrive with. Short is fine — one or two sentences. The point is not to describe neatly, but to name the thing beneath the task."></textarea>
+          <div class="field-hint">Hint: write about the state you are in, and what you sense underneath it. Not about the problem — about what stands behind it.</div>
+        </div>
+
+        <button class="submit" type="submit">Begin process</button>
+
+        <p class="consent">By submitting you agree to a single contact from us through the channels provided. Data is not shared with third parties.</p>
+      </form>
+
+      <footer class="form-foot">
+        <div>137 Lab · Dao &amp; Liza</div>
+        <div>vladsdao@gmail.com</div>
+        <div>© 2022—2026</div>
+      </footer>
+    </section>
+
+  </main>
 </div>
+
+<script>
+(function() {
+  const chips = document.querySelectorAll('.topic-chip');
+  const hidden = document.getElementById('topic-input');
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chips.forEach(c => c.classList.remove('on'));
+      chip.classList.add('on');
+      hidden.value = chip.dataset.topic;
+    });
+    chip.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); chip.click(); }
+    });
+  });
+})();
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href');
+    if (id.length > 1) {
+      const target = document.querySelector(id);
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    }
+  });
+});
+</script>
+
 </body>
 </html>

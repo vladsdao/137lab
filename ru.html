@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>137 Lab — Резонансный двигатель новой парадигмы</title>
+<meta name="description" content="Мета-системная архитектура сознания. Механика резонансной святости и симбиоз на стыке духовности и технологий. Лаборатория Дао и Лизы.">
+
+<link rel="icon" type="image/png" href="./icons/favicon-32x32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #fff;
+  --ink: #000;
+  --rule: #000;
+  --dim: rgba(0,0,0,0.45);
+  --dim2: rgba(0,0,0,0.18);
+  --font: 'Space Mono', ui-monospace, 'Courier New', monospace;
+  --fs: 13px;
+  --lh: 1.6;
+  --rail-w: 280px;
+  --speed: 240ms;
+  --ease: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+html {
+  font-family: var(--font);
+  font-size: var(--fs);
+  line-height: var(--lh);
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body { min-height: 100vh; }
+a { color: inherit; text-decoration: none; }
+a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+::selection { background: var(--ink); color: var(--bg); }
+
+/* ──────────── LAYOUT ──────────── */
+.shell {
+  display: grid;
+  grid-template-columns: var(--rail-w) 1fr;
+  min-height: 100vh;
+}
+
+/* ──────────── RAIL ──────────── */
+.rail {
+  border-right: 1px solid var(--rule);
+  padding: 28px 24px;
+  position: sticky; top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex; flex-direction: column;
+  gap: 36px;
+}
+.rail::-webkit-scrollbar { width: 0; }
+
+.brand-mark {
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: 0.18em;
+}
+
+.brand-line {
+  margin-top: 12px;
+  font-size: 11px;
+  line-height: 1.55;
+  color: var(--ink);
+  max-width: 220px;
+}
+
+.brand-coord {
+  margin-top: 14px;
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.rail-label {
+  font-size: 9.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--dim);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 4px;
+}
+
+.rail-emblem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+}
+.rail-emblem img {
+  width: 96px; height: 96px;
+  object-fit: contain;
+  opacity: 0.85;
+}
+.rail-emblem .emblem-caption {
+  font-size: 8.5px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--dim);
+}
+
+/* block index nav */
+.index { list-style: none; }
+.index li { padding: 5px 0; }
+.index a {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+}
+.index a:hover { text-decoration: none; }
+.index a:hover .ix-name { text-decoration: underline; text-underline-offset: 3px; }
+.ix-num { color: var(--dim); font-weight: 700; }
+.ix-name { color: var(--ink); }
+
+.enter-cta {
+  margin-top: auto;
+  display: flex; flex-direction: column; gap: 14px;
+  padding-top: 22px;
+  border-top: 1px solid var(--rule);
+}
+.enter-cta a.enter {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase;
+}
+.enter-cta a.enter:hover { text-decoration: none; }
+.enter-cta a.enter:hover .arr { transform: translateY(2px); }
+.arr { transition: transform var(--speed) var(--ease); display: inline-block; }
+
+.lang-toggle { font-size: 10px; letter-spacing: 0.22em; color: var(--dim); }
+.lang-toggle .current { color: var(--ink); font-weight: 700; }
+
+/* ──────────── CONTENT ──────────── */
+.content {
+  padding: 72px 80px 0;
+  max-width: 880px;
+}
+
+/* masthead */
+.masthead {
+  display: flex; flex-direction: column; gap: 18px;
+  padding-bottom: 56px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 64px;
+}
+.masthead-kick {
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--dim);
+  font-weight: 700;
+}
+.masthead-title {
+  font-size: 38px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.04;
+  max-width: 680px;
+}
+.masthead-sub {
+  font-size: 14.5px;
+  font-weight: 400;
+  font-style: italic;
+  color: rgba(0,0,0,0.7);
+  max-width: 600px;
+  line-height: 1.55;
+}
+.masthead-by {
+  font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--dim); font-weight: 700;
+  padding-top: 8px;
+}
+
+/* block */
+.block { padding: 64px 0 72px; border-top: 1px solid var(--rule); }
+.block:first-of-type { border-top: 0; padding-top: 0; }
+
+.block-code {
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--dim);
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+.block-code span { color: var(--ink); }
+
+.block-num {
+  font-size: 56px;
+  line-height: 0.92;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin-bottom: 14px;
+}
+
+.block-en {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--dim);
+  margin-bottom: 10px;
+}
+
+.block-title {
+  font-size: 28px;
+  line-height: 1.14;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  margin-bottom: 28px;
+  max-width: 640px;
+}
+.block-title--sub {
+  font-size: 21px;
+  margin-top: 36px;
+  margin-bottom: 18px;
+}
+
+.block p {
+  max-width: 660px;
+  margin-bottom: calc(var(--lh) * 1em);
+  font-size: 13.5px;
+  line-height: 1.75;
+}
+.block p:last-child { margin-bottom: 0; }
+
+.block p.lede {
+  font-size: 15.5px;
+  font-style: italic;
+  color: rgba(0,0,0,0.78);
+  max-width: 640px;
+  line-height: 1.55;
+}
+
+.block p.stmt {
+  font-weight: 700;
+  font-size: 14.5px;
+  line-height: 1.5;
+  border-left: 2px solid var(--ink);
+  padding: 4px 0 4px 20px;
+  margin: 32px 0;
+  max-width: 660px;
+}
+
+.block .triad {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin: 8px 0 22px;
+  color: var(--ink);
+}
+
+.feature {
+  margin-top: 40px;
+  padding: 22px 26px;
+  border: 1px solid var(--rule);
+  background: #fafaf7;
+  font-size: 13px;
+  line-height: 1.65;
+}
+.feature .feat-tag {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--dim);
+  margin-bottom: 6px;
+}
+
+/* ── personal block (Founders) ── */
+.founders { margin-top: 28px; }
+.founder {
+  border-top: 1px solid var(--rule);
+  padding: 28px 0 32px;
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+.founder:last-of-type { border-bottom: 1px solid var(--rule); }
+
+.founder-photo {
+  aspect-ratio: 1 / 1;
+  border: 1px solid var(--rule);
+  background: repeating-linear-gradient(135deg, transparent 0 18px, rgba(0,0,0,0.045) 18px 19px);
+  position: relative;
+  overflow: hidden;
+}
+.founder-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.founder-photo::after {
+  content: 'PORTRAIT';
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  font-size: 9px; letter-spacing: 0.24em;
+  color: var(--dim); font-weight: 700;
+  pointer-events: none;
+}
+.founder-photo:has(img)::after { display: none; }
+
+.founder-meta {}
+.founder-name {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  margin-bottom: 4px;
+}
+.founder-role {
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--dim);
+  margin-bottom: 16px;
+}
+.founder-voice {
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.65;
+  color: rgba(0,0,0,0.82);
+}
+
+/* location card */
+.location-note {
+  margin-top: 36px;
+  padding: 20px 24px;
+  border: 1px solid var(--rule);
+  background: #fafaf7;
+  font-size: 12.5px;
+  line-height: 1.6;
+  display: flex; flex-wrap: wrap; gap: 10px 28px;
+  align-items: baseline;
+}
+.location-note .loc-label {
+  font-size: 9.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--dim);
+  white-space: nowrap;
+}
+.location-note p { margin: 0; max-width: none; font-size: 12.5px; line-height: 1.55; }
+.location-note p i { font-style: italic; color: var(--dim); }
+
+/* offerings 2×2 grid */
+.give-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin: 36px 0 24px;
+}
+.give-item {
+  border-top: 2px solid var(--ink);
+  padding-top: 14px;
+}
+.give-num {
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--dim);
+  margin-bottom: 4px;
+}
+.give-en {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.give-name {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  margin-bottom: 10px;
+  line-height: 1.18;
+}
+.give-body {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: rgba(0,0,0,0.78);
+}
+
+/* industry pills */
+.target-label {
+  font-size: 10px; letter-spacing: 0.24em;
+  text-transform: uppercase; font-weight: 700;
+  color: var(--dim);
+  margin: 32px 0 12px;
+}
+.pillset { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0 28px; }
+.pill {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  border: 1px solid var(--ink);
+  padding: 5px 10px;
+  white-space: nowrap;
+}
+
+/* phase 3-col */
+.phases {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 36px;
+}
+.phase { border-top: 2px solid var(--ink); padding-top: 16px; }
+.phase-num { font-size: 10px; letter-spacing: 0.22em; font-weight: 700; color: var(--dim); margin-bottom: 8px; }
+.phase-name {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.003em;
+  margin-bottom: 4px;
+  line-height: 1.15;
+}
+.phase-en {
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 12px;
+}
+.phase p { font-size: 12px; line-height: 1.6; max-width: none; margin-bottom: 0.8em; }
+.phase p:last-of-type { margin-bottom: 0; }
+.phase-meta {
+  margin-top: 16px;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+  font-weight: 700;
+}
+
+.field-card {
+  margin-top: 64px;
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--ink);
+  padding: 32px 36px 36px;
+  background: #fafaf7;
+}
+.field-card .fc-tag {
+  font-size: 9.5px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--dim);
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.field-card h4 {
+  font-size: 22px;
+  letter-spacing: -0.005em;
+  line-height: 1.18;
+  margin-bottom: 18px;
+  font-weight: 700;
+}
+.field-card p { max-width: none; font-size: 13px; line-height: 1.7; margin-bottom: 14px; }
+.field-card p:last-child { margin-bottom: 0; }
+.field-card p.fc-stmt {
+  font-weight: 700;
+  font-style: normal;
+  border-left: 2px solid var(--ink);
+  padding: 4px 0 4px 18px;
+  margin: 18px 0;
+  line-height: 1.5;
+}
+
+/* ── inverse final ── */
+.block--inverse {
+  background: #000; color: #fff;
+  margin: 96px -80px 0;
+  padding: 88px 80px 96px;
+  border-top: 0;
+}
+.block--inverse .block-code { color: rgba(255,255,255,0.45); }
+.block--inverse .block-code span { color: #fff; }
+.block--inverse p { color: rgba(255,255,255,0.86); }
+.block--inverse p.stmt { border-left-color: #fff; color: #fff; }
+
+.coordinate {
+  font-size: 88px; font-weight: 700; line-height: 1;
+  letter-spacing: -0.04em;
+  margin: 32px 0 8px;
+}
+.coordinate small {
+  font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
+  font-weight: 700; display: block; margin-top: 10px;
+  color: rgba(255,255,255,0.5);
+}
+.coordinate-title {
+  font-size: 28px; font-weight: 700;
+  letter-spacing: -0.005em;
+  margin-bottom: 22px;
+  line-height: 1.14;
+  color: #fff;
+}
+
+/* ── form ── */
+.form-wrap {
+  background: #000; color: #fff;
+  margin: 0 -80px;
+  padding: 0 80px 96px;
+}
+.form-head {
+  font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase;
+  color: rgba(255,255,255,0.7); font-weight: 700;
+  padding: 32px 0 16px;
+  border-top: 1px solid rgba(255,255,255,0.25);
+}
+.form-title {
+  font-size: 36px; line-height: 1.08;
+  font-weight: 700; letter-spacing: -0.018em;
+  margin-bottom: 18px;
+  max-width: 640px;
+}
+.form-lede {
+  font-size: 14.5px;
+  font-style: italic;
+  color: rgba(255,255,255,0.92);
+  max-width: 600px;
+  line-height: 1.55;
+  margin-bottom: 18px;
+}
+.form-stmt {
+  font-weight: 700;
+  font-size: 14.5px;
+  line-height: 1.5;
+  border-left: 2px solid #fff;
+  padding: 4px 0 4px 20px;
+  margin: 24px 0 36px;
+  max-width: 600px;
+  color: #fff;
+}
+.form-intro { font-size: 13px; color: rgba(255,255,255,0.85); max-width: 540px; margin-bottom: 40px; }
+
+form.entry { display: flex; flex-direction: column; gap: 28px; max-width: 620px; }
+.field { display: flex; flex-direction: column; gap: 8px; }
+.field label {
+  font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+  font-weight: 700; color: rgba(255,255,255,0.7);
+}
+.field label .req { color: #fff; margin-left: 4px; }
+.field label .opt { color: rgba(255,255,255,0.5); margin-left: 4px; font-weight: 400; }
+
+.field input, .field textarea, .field select {
+  font-family: var(--font);
+  font-size: 14px;
+  color: #fff;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.45);
+  padding: 8px 0 10px;
+  outline: none;
+  transition: border-color var(--speed) var(--ease);
+  resize: vertical;
+}
+.field input::placeholder, .field textarea::placeholder { color: rgba(255,255,255,0.55); }
+.field input:focus, .field textarea:focus, .field select:focus { border-bottom-color: #fff; }
+.field textarea { min-height: 90px; }
+.field-hint { font-size: 11px; color: rgba(255,255,255,0.6); font-style: italic; line-height: 1.5; }
+
+.topic-options { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.topic-chip {
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  font-weight: 700;
+  padding: 7px 12px;
+  color: rgba(255,255,255,0.85);
+  border: 1px solid rgba(255,255,255,0.5);
+  cursor: pointer; user-select: none;
+  transition: border var(--speed), background var(--speed), color var(--speed);
+}
+.topic-chip.on, .topic-chip:hover {
+  border-color: #fff; background: #fff; color: #000;
+}
+
+button.submit {
+  margin-top: 12px;
+  background: #fff; color: #000;
+  border: 0;
+  padding: 18px 28px;
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 16px;
+  align-self: flex-start;
+  transition: transform var(--speed) var(--ease);
+}
+button.submit:hover { transform: translateX(4px); }
+button.submit::after { content: "→"; display: inline-block; transition: transform var(--speed) var(--ease); }
+button.submit:hover::after { transform: translateX(4px); }
+
+.consent { font-size: 11px; color: rgba(255,255,255,0.6); max-width: 540px; line-height: 1.55; }
+
+.form-foot {
+  margin-top: 72px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(255,255,255,0.25);
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  flex-wrap: wrap; gap: 20px;
+}
+
+/* responsive */
+@media (max-width: 1024px) {
+  .shell { grid-template-columns: 1fr; }
+  .rail {
+    position: static; height: auto;
+    border-right: 0; border-bottom: 1px solid var(--rule);
+    padding: 24px;
+  }
+  .content { padding: 40px 28px 0; }
+  .block--inverse { margin: 80px -28px 0; padding: 64px 28px 72px; }
+  .form-wrap { margin: 0 -28px; padding: 0 28px 80px; }
+  .phases { grid-template-columns: 1fr; }
+  .give-grid { grid-template-columns: 1fr; }
+  .founder { grid-template-columns: 120px 1fr; gap: 20px; }
+}
+
+@media (max-width: 600px) {
+  .founder { grid-template-columns: 1fr; gap: 16px; }
+  .founder-photo { max-width: 180px; }
+}
+
+@media (max-width: 520px) {
+  .masthead-title { font-size: 30px; }
+  .block-num { font-size: 44px; }
+  .coordinate { font-size: 64px; }
+  .block-title { font-size: 24px; }
+  .form-title { font-size: 26px; }
+  .content { padding: 32px 20px 0; }
+  .block--inverse { margin: 64px -20px 0; padding: 56px 20px 64px; }
+  .form-wrap { margin: 0 -20px; padding: 0 20px 64px; }
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ═══════════════════ RAIL ═══════════════════ -->
+  <aside class="rail">
+    <div class="brand">
+      <div class="brand-mark">137 LAB</div>
+      <div class="brand-line">Резонансный двигатель<br>новой парадигмы.</div>
+      <div class="brand-coord">1/137 · Fine-structure</div>
+    </div>
+
+    <div>
+      <div class="rail-label">Index</div>
+      <ul class="index">
+        <li><a href="#b01"><span class="ix-num">01</span><span class="ix-name">Manifesto</span></a></li>
+        <li><a href="#b02"><span class="ix-num">02</span><span class="ix-name">Founders · context</span></a></li>
+        <li><a href="#b03"><span class="ix-num">03</span><span class="ix-name">Symbiosis · the shift</span></a></li>
+        <li><a href="#b04"><span class="ix-num">04</span><span class="ix-name">Synergy Protocol</span></a></li>
+        <li><a href="#b05"><span class="ix-num">05</span><span class="ix-name">Resonance Framework</span></a></li>
+        <li><a href="#b06"><span class="ix-num">06</span><span class="ix-name">Family</span></a></li>
+        <li><a href="#b07"><span class="ix-num">07</span><span class="ix-name">Holy Business</span></a></li>
+        <li><a href="#b08"><span class="ix-num">08</span><span class="ix-name">Integration architecture</span></a></li>
+        <li><a href="#b09"><span class="ix-num">09</span><span class="ix-name">Why 137</span></a></li>
+      </ul>
+    </div>
+
+    <div class="enter-cta">
+      <a class="enter" href="#enter">Войти в лабораторию <span class="arr">↓</span></a>
+      <div class="lang-toggle">
+        <a href="./">EN</a> / <span class="current">RU</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════ MAIN ═══════════════════ -->
+  <main class="content">
+
+    <header class="masthead">
+      <div class="masthead-kick">137 Lab · 2026</div>
+      <h1 class="masthead-title">Мета-системная архитектура сознания.</h1>
+      <p class="masthead-sub">Механика резонансной святости и симбиоз на стыке духовности и технологий.</p>
+      <div class="masthead-by">Dao &amp; Liza</div>
+    </header>
+
+    <!-- ═══ Block 01 — Manifesto ═══ -->
+    <section class="block" id="b01">
+      <div class="block-code">[ Блок <span>01</span> ] — Суть и манифест</div>
+      <div class="block-num">01</div>
+      <div class="block-en">Metaphysics Applied to the Game of Life</div>
+      <h2 class="block-title">Техно-герметизм и квантовое преимущество.</h2>
+
+      <p>Техно-герметизм — наш авторский подход, который учитывает одновременно волновую и векторную природу реальности в создании любых практических решений. Энергетический менеджмент и симбиотическая модель взаимодействия открывают расширенный диапазон возможностей нелокального сознания.</p>
+
+      <p class="lede">Это прикладная метафизика для пост-конвенциональных умов — абсолютно новое поле игры для творчества и реализации любых замыслов.</p>
+
+      <h3 class="block-title block-title--sub">2026 — Game Over.</h3>
+      <p>Примите конец старой парадигмы — если хотите войти в новый мир. Нет смысла продолжать бороться за жизнь по правилам уходящей эпохи. Успех любого рода в новой эре требует глубокой деконструкции внутреннего фундамента. Полное обновление операционной системы Сознания и резонансный майндсет — это ключ.</p>
+      <p>Мы не предлагаем вам ещё одну бизнес-модель или инструмент продуктивности. Мы предлагаем пересмотреть саму архитектуру вашей личности, организации или сообщества — чтобы выйти на совершенно иной уровень пропускной способности, ясности и лёгкости.</p>
+    </section>
+
+    <!-- ═══ Block 02 — Founders ═══ -->
+    <section class="block" id="b02">
+      <div class="block-code">[ Блок <span>02</span> ] — Контекст</div>
+      <div class="block-num">02</div>
+      <div class="block-en">Founders</div>
+      <h2 class="block-title">Привет, мы Дао и Лиза — основатели 137 Lab.</h2>
+
+      <div class="founders">
+        <div class="founder">
+          <div class="founder-photo">
+            <img src="dao.jpg" alt="Dao" />
+          </div>
+          <div class="founder-meta">
+            <div class="founder-name">Дао</div>
+            <div class="founder-role">Режиссёр Просветления</div>
+            <p class="founder-voice">Я философ, визионер, психонавт и инноватор с фокусом в точке пересечения духовности, науки, технологий и творчества. Я воспринимаю вдохновение как технологию, а раскрытие творческого потенциала в людях — моя страсть. Имею опыт просветления, исследую синергию как практический фреймворк, интегрируемый в бизнес, семью, сообщества нового типа. Создаю авангардный трансформационный опыт в диджитал-шаман ритуалах Trip.me. Star family connector.</p>
+          </div>
+        </div>
+        <div class="founder">
+          <div class="founder-photo">
+            <img src="liza.jpg" alt="Liza" />
+          </div>
+          <div class="founder-meta">
+            <div class="founder-name">Лиза</div>
+            <div class="founder-role">Мать Мета-систем</div>
+            <p class="founder-voice">Я работаю с сознанием как с мета-системой, исследуя его архитектуру и переводя духовность и магию в точную науку. Могу решить любую задачу, любого человека, в любой области и любой сложности — работая на уровнях, где Сознание создаёт реальность. При одном условии: если человек готов к трансформации. Сдвиг парадигмы от паразитарной к симбиотической на планетарном уровне — мой главный драйвер.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="location-note">
+        <div class="loc-label">[ Visits ]</div>
+        <p>Мы рады принимать гостей у нас дома. <i>45 минут от Лиссабона · Sintra · ultra-private estate.</i></p>
+      </div>
+
+      <p style="margin-top: 36px;">Последние 3,5 года мы сфокусировались на исследовании моделей взаимодействия людей на уровне коллективного сознания. Грубо выражаясь — это психо-эмоциональный интернет для подсознания, в котором мы создаём кастомные технологические решения.</p>
+
+      <p>Эволюция Сознания в нашем понимании — это прежде всего <b>игра и ирония</b>. Вне всяких догм и идеологий мы можем донести сложные абстрактные концепции из древних источников даже самому прагматичному разуму, создавая трансформационный опыт в уютной атмосфере. Без медитаций, йоги, аскез — только научная перспектива как технология.</p>
+
+      <p>137 Lab для нас — точка контакта с теми личностями, которые разделяют наши ценности и готовы принять и применить тот ресурс, которым мы обладаем. Наши программы — это всегда индивидуальная работа с особым вниманием к каждому запросу.</p>
+
+      <p class="stmt">Мы собираем людей, в которых эта идея уже звучит. И даём четыре вещи.</p>
+
+      <div class="give-grid">
+        <div class="give-item">
+          <div class="give-num">i</div>
+          <div class="give-en">Knowledge &amp; Transformation</div>
+          <div class="give-name">Знания и Трансформация</div>
+          <div class="give-body">Архитектура, методы, инженерия сознания как технология. Снять напряжение, восстановить внутренний баланс, вдохновить, настроить внутренний симбиоз.</div>
+        </div>
+        <div class="give-item">
+          <div class="give-num">ii</div>
+          <div class="give-en">Family &amp; Community</div>
+          <div class="give-name">Семья и Сообщество</div>
+          <div class="give-body">Симбиоз в близких отношениях. Семья — как резонансный двигатель квантового успеха и среда, в которой всё это живёт и усиливается.</div>
+        </div>
+        <div class="give-item">
+          <div class="give-num">iii</div>
+          <div class="give-en">State</div>
+          <div class="give-name">Состояние Сознания</div>
+          <div class="give-body">Духовная практика, которая работает на бэкграунде за счёт со-настройки энергообмена в единой резонансной сети. Внутренняя среда, с которой всё начинается. Без неё остальное не держится.</div>
+        </div>
+        <div class="give-item">
+          <div class="give-num">iiii</div>
+          <div class="give-en">Business</div>
+          <div class="give-name">Holy Business</div>
+          <div class="give-body">Настроить бизнес звучать в лад с фаундером и помочь адаптироваться к пост-трудовой экономике. Синергия, энергетический менеджмент, работа с сообществом или командой через эгрегор.</div>
+        </div>
+      </div>
+
+      <p class="stmt">Плотность эмоциональной энергии, приходящая через подключение к резонансной сети, — это позиция. Из неё разворачиваются творчество, влияние и взаимодействие через общее поле единого осознания.</p>
+
+      <p class="lede">Мы индивидуально работаем с теми, кто разделяет нашу миссию смены существующей парадигмы на планетарном уровне.</p>
+    </section>
+
+    <!-- ═══ Block 03 — Symbiosis · The Shift ═══ -->
+    <section class="block" id="b03">
+      <div class="block-code">[ Блок <span>03</span> ] — Сдвиг</div>
+      <div class="block-num">03</div>
+      <div class="block-en">Symbiosis · The Shift</div>
+      <h2 class="block-title">От конкуренции — к симбиозу.</h2>
+
+      <p class="lede">Мы не работаем с человеком как с изолированной задачей. Мы преследуем смену операционной модели — от потребительского, конкурирующего режима к симбиотическому и творческому подходу.</p>
+
+      <p>Главный вектор — переписать код индустрий, на которых стоит повседневная реальность. Именно там закодированы самые глубокие привычки мышления.</p>
+
+      <div class="target-label">Индустрии-цели</div>
+      <div class="pillset">
+        <span class="pill">Питание</span>
+        <span class="pill">Медицина</span>
+        <span class="pill">Образование</span>
+        <span class="pill">Маркетинг</span>
+        <span class="pill">Мода</span>
+        <span class="pill">Досуг</span>
+        <span class="pill">Дуальное восприятие</span>
+      </div>
+    </section>
+
+    <!-- ═══ Block 04 — Synergy Protocol ═══ -->
+    <section class="block" id="b04">
+      <div class="block-code">[ Блок <span>04</span> ] — Перспектива I</div>
+      <div class="block-num">04</div>
+      <div class="block-en">Synergy Protocol</div>
+      <h2 class="block-title">Апгрейд сознания.</h2>
+
+      <div class="triad">Mind · Soul · Body</div>
+
+      <p>Настоящие изменения приходят только тогда, когда система сбалансирована. Наша цель — выстроить абсолютную синергию в главной алхимической триаде: <b>Ум — Душа — Тело</b> (мысли, чувства, действия).</p>
+      <p>Обыденный ум часто работает в состоянии внутреннего раскола: логика борется с интуицией, а напряжение блокирует расслабление. Этот конфликт создаёт фоновое трение, на которое уходит большая часть ваших сил.</p>
+      <p class="stmt">Synergy Protocol устраняет это сопротивление.</p>
+      <p>Убирая деструктивные подсознательные паттерны и настраивая внутренние источники энергии, мы переводим сознание в режим сверхпроводимости. Вы перестаёте тратить ресурс на внутреннюю борьбу и обретаете Майндсет Творца — состояние, в котором вы просто ловите волну естественной синхроничности и вдохновения.</p>
+    </section>
+
+    <!-- ═══ Block 05 — Resonance Framework ═══ -->
+    <section class="block" id="b05">
+      <div class="block-code">[ Блок <span>05</span> ] — Перспектива II</div>
+      <div class="block-num">05</div>
+      <div class="block-en">Resonance Framework</div>
+      <h2 class="block-title">Тонкая настройка мышления.</h2>
+
+      <p>Мы рассматриваем Сознание как передовую технологию, а ваш майндсет — как тонкий инструмент, требующий ювелирной калибровки.</p>
+      <p>Современные лидеры часто застревают в фазе жёсткого достижения целей, забывая о глубоком восстановлении и интуитивном считывании реальности. Попытка двигаться только на силе воли — это максимум усилия при нулевом результате.</p>
+      <p class="stmt">Energy Management — это искусство управления вашими состояниями.</p>
+      <p>Мы помогаем найти точки, где ваша энергия уходит в пустоту, и перестроить внутренние алгоритмы. Фазы интенсивного, точного действия начинают органично сменяться фазами глубокого накопления. Вы выходите из замкнутых циклов и начинаете действовать за пределами привычных ограничений.</p>
+    </section>
+
+    <!-- ═══ Block 06 — Family Engine ═══ -->
+    <section class="block" id="b06">
+      <div class="block-code">[ Блок <span>06</span> ] — Перспектива III</div>
+      <div class="block-num">06</div>
+      <div class="block-en">Family Engine</div>
+      <h2 class="block-title">Семья как резонансный двигатель.</h2>
+
+      <p>В старой парадигме принято считать, что ради грандиозного успеха нужно идти на компромисс, принося в жертву личную жизнь. Выбирать что-то одно — фундаментальная ошибка энергоменеджмента.</p>
+      <p>Мы рассматриваем семью не как зону компромиссов, а как ядро вашей системы. Это ваш <b>Первичный Двигатель</b>, питающий креативность и бизнес. Это ваш главный аккумулятор, который переваривает стресс и восстанавливает силы. Если дома есть скрытое напряжение, конфликты или недосказанность — ваша энергия просто утекает в пустоту.</p>
+
+      <p>Мы работаем с семьёй как с целостной единицей — через индивидуальные и парные сессии. Убирая диссонанс и простраивая резонанс внутри системы, вы видите результат моментально, уже после первой сессии.</p>
+
+      <div class="triad">Coupling · Decoupling</div>
+
+      <p>Используя протоколы Coupling &amp; Decoupling, мы тонко перенастраиваем отношения так, чтобы они звучали в абсолютном унисоне. Иногда связи нужно бережно починить и синхронизировать. Иногда — экологично и честно завершить.</p>
+      <p class="stmt">Отношения, выведенные в истинный резонанс, перестают потреблять ваш ресурс. Они становятся реактором, генерирующим чистую энергию для вашей внешней экспансии.</p>
+
+      <h3 class="block-title block-title--sub">Сексуальная энергия и дети.</h3>
+      <p>Огромным источником энергии и вдохновения становится снятие сексуальных блоков и следов прошлых травм, влияющих на оргазм и проявление желаний у женщин. Мужчины — увеличивают чувствительность, возбуждение и продолжительность акта.</p>
+      <p>Также мы помогаем в вопросах воспитания детей и сохранения их творческого потенциала в период взросления — от воздействия токсического влияния и подавления существующей системой.</p>
+      <p class="lede">Это наша любимая область, в которой люди буквально расцветают на глазах.</p>
+    </section>
+
+    <!-- ═══ Block 07 — Holy Business ═══ -->
+    <section class="block" id="b07">
+      <div class="block-code">[ Блок <span>07</span> ] — Перспектива IV</div>
+      <div class="block-num">07</div>
+      <div class="block-en">Holy Business · Synergy Economy</div>
+      <h2 class="block-title">Бизнес и команды: экономика синергии.</h2>
+
+      <p>Триста лет формула успеха оставалась неизменной: более точный анализ, лучшая стратегия, быстрое исполнение. Сегодня эта модель даёт сбои. Компании умирают не от конкуренции — они умирают от внутреннего трения и координационных издержек. Когда команда в рассинхроне, стоимость любого решения взлетает по экспоненте.</p>
+      <p>Ваша работа — естественное продолжение вашего Сознания. Мы переводим бизнес из парадигмы классического управления в парадигму <b>Energy Management</b>.</p>
+      <p class="stmt">Когда команда резонирует на одной частоте, формируется Эгрегор — коллективный сверхразум компании.</p>
+      <p>Потери на коммуникацию падают до нуля. Уровень доверия делает микроменеджмент излишним. Решения, на согласование которых раньше уходили месяцы, принимаются интуитивно и кристаллизуются за часы.</p>
+      <p>Ваша задача сводится к одному: поддерживать энергообмен с теми людьми и проектами, которые действительно отражают вашу суть.</p>
+    </section>
+
+    <!-- ═══ Block 08 — Integration Architecture ═══ -->
+    <section class="block" id="b08">
+      <div class="block-code">[ Блок <span>08</span> ] — Процесс</div>
+      <div class="block-num">08</div>
+      <div class="block-en">Integration Architecture</div>
+      <h2 class="block-title">Архитектура интеграции.</h2>
+
+      <p>Мы не создаём зависимость от наставников или долгих терапий. Наша цель — структурный ремонт вашей внутренней архитектуры. Когда она надёжна — она работает и масштабируется автономно.</p>
+
+      <div class="phases">
+        <div class="phase">
+          <div class="phase-num">Фаза 01</div>
+          <div class="phase-name">Диагностика</div>
+          <div class="phase-en">Diagnostic</div>
+          <p>Одна сессия до трёх часов. Структурный рентген текущей реальности. Прямое чтение поля сознания и паттернов, работающих вне вашего внимания.</p>
+          <p>Вы получаете ясную карту своей ситуации с инженерной точностью. Зачастую одной этой сессии достаточно, чтобы всё встало на свои места.</p>
+          <div class="phase-meta">≤ 3 часа</div>
+        </div>
+        <div class="phase">
+          <div class="phase-num">Фаза 02</div>
+          <div class="phase-name">Проектирование</div>
+          <div class="phase-en">Architecture Design</div>
+          <p>Каждое взаимодействие уникально. Опираясь на диагностику, мы создаём точный план: от пересборки личных установок до калибровки партнёрств и системного дизайна для команд.</p>
+          <p>Мы определяем минимально необходимое вмешательство — не больше и не меньше.</p>
+          <div class="phase-meta">Индивидуально</div>
+        </div>
+        <div class="phase">
+          <div class="phase-num">Фаза 03</div>
+          <div class="phase-name">Интеграция</div>
+          <div class="phase-en">Integration</div>
+          <p>Внутренние сдвиги неизбежно проявляются во внешнем мире. Новые паттерны стабилизируются (в среднем 13 дней) и начинают автоматически производить измеримые результаты.</p>
+          <p>Качество решений, глубина отношений, рост бизнеса.</p>
+          <div class="phase-meta">~ 13 дней</div>
+        </div>
+      </div>
+
+      <div class="field-card">
+        <div class="fc-tag">Feature · Биологический блокчейн</div>
+        <h4>Поле · The Resonance Network</h4>
+        <p>Для тех, кто готов идти дальше, мы открываем доступ к Полю Объединённого Сознания — психо-эмоциональному интернету, в котором духовность работает как резонансная технология коллективного поля.</p>
+        <p>Индивидуальный разум многократно усиливается людьми, звучащими на одной частоте. Устойчивый уровень энергии и состояния сознания каждого участника поддерживается на бэкграунде — без отдельной практики, без выделения часа в день.</p>
+        <p class="fc-stmt">Среда, в которой трансформация происходит на фоне самой жизни.</p>
+      </div>
+    </section>
+
+    <!-- ═══ Block 09 — Why 137 (inverse) ═══ -->
+    <section class="block block--inverse" id="b09">
+      <div class="block-code">[ Блок <span>09</span> ] — Почему 137</div>
+      <div class="coordinate">1/137<small>Fine-Structure Constant</small></div>
+
+      <h2 class="coordinate-title">Координата, а не бренд.</h2>
+
+      <p>В физике постоянная тонкой структуры (1/137) определяет границу взаимодействия Света и Материи. Это фундаментальный слой реальности. Мы выбрали эту координату, потому что работаем именно здесь — в точке, где невидимые состояния, мысли и энергия кристаллизуются в физическую форму.</p>
+      <p class="stmt">Измените базовый код — и всё, что на нём построено, пересоберётся само.</p>
+      <p>137 — это не бренд. Это координата. Вам не нужно больше информации. Вы уже всё чувствуете. Отправная точка — диагностическая сессия. Никаких скрытых обязательств. Только один разговор, который покажет вам архитектуру вашей жизни.</p>
+    </section>
+
+    <!-- ═══ FORM ═══ -->
+    <section class="form-wrap" id="enter">
+      <div class="form-head">[ Enter the Laboratory ]</div>
+      <h2 class="form-title">Оставьте отправную точку.</h2>
+      <p class="form-lede">Мы способны решить задачу любого человека, любого масштаба и в любой сфере — работая на фундаментальных слоях сознания, там, где кодируется сама реальность.</p>
+      <p class="form-stmt">Единственное условие — ваша готовность к настоящей трансформации.</p>
+      <p class="form-intro">Один разговор. Никаких обязательств сверх него. Мы свяжемся с вами в течение 72 часов.</p>
+
+      <form class="entry" name="137lab-entry-ru" method="POST" action="https://formsubmit.co/vladsdao@gmail.com">
+        <!-- FormSubmit configuration: requires one-time email confirmation on first submit -->
+        <input type="hidden" name="_subject" value="137 Lab · Новый запрос (RU)">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="https://137lab.xyz/thanks.html">
+        <input type="hidden" name="_honey" style="display:none">
+        <input type="hidden" name="_autoresponse" value="Получили вашу отправную точку. Свяжемся в течение 72 часов. — Dao &amp; Liza, 137 Lab.">
+        <p style="position:absolute;left:-9999px" aria-hidden="true"><label>Не заполнять: <input name="bot-field"></label></p>
+
+        <div class="field">
+          <label>Имя <span class="req">*</span></label>
+          <input type="text" name="name" required autocomplete="name" placeholder="Как к вам обращаться">
+        </div>
+
+        <div class="field">
+          <label>E-mail <span class="req">*</span></label>
+          <input type="email" name="email" required autocomplete="email" placeholder="you@domain.com">
+        </div>
+
+        <div class="field">
+          <label>Telegram / WhatsApp <span class="opt">опционально</span></label>
+          <input type="text" name="messenger" autocomplete="off" placeholder="@username или +380...">
+        </div>
+
+        <div class="field">
+          <label>Сфера запроса</label>
+          <div class="topic-options" role="radiogroup">
+            <div class="topic-chip" data-topic="consciousness" role="radio" tabindex="0">Consciousness</div>
+            <div class="topic-chip" data-topic="family" role="radio" tabindex="0">Family</div>
+            <div class="topic-chip" data-topic="business" role="radio" tabindex="0">Business</div>
+            <div class="topic-chip" data-topic="paradigm" role="radio" tabindex="0">Paradigm</div>
+          </div>
+          <input type="hidden" name="topic" id="topic-input" value="">
+        </div>
+
+        <div class="field">
+          <label>Ваш запрос <span class="req">*</span></label>
+          <textarea name="request" rows="4" required placeholder="Сформулируйте, с каким состоянием или вопросом приходите. Можно коротко — одна-две фразы. Цель не описать удобно, а назвать суть."></textarea>
+          <div class="field-hint">Подсказка: напишите про состояние, в котором вы находитесь, и то, что чувствуете под ним. Не про задачу — про то, что за ней стоит.</div>
+        </div>
+
+        <button class="submit" type="submit">Начать процесс</button>
+
+        <p class="consent">Отправляя форму, вы соглашаетесь на однократный контакт с нами по указанным каналам. Данные не передаются третьим сторонам.</p>
+      </form>
+
+      <footer class="form-foot">
+        <div>137 Lab · Dao &amp; Liza</div>
+        <div>vladsdao@gmail.com</div>
+        <div>© 2022—2026</div>
+      </footer>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function() {
+  const chips = document.querySelectorAll('.topic-chip');
+  const hidden = document.getElementById('topic-input');
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chips.forEach(c => c.classList.remove('on'));
+      chip.classList.add('on');
+      hidden.value = chip.dataset.topic;
+    });
+    chip.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); chip.click(); }
+    });
+  });
+})();
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href');
+    if (id.length > 1) {
+      const target = document.querySelector(id);
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    }
+  });
+});
+</script>
+
+</body>
+</html>
