@@ -362,16 +362,20 @@ a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-under
 .location-note p { margin: 0; max-width: none; font-size: 12.5px; line-height: 1.55; }
 .location-note p i { font-style: italic; color: var(--dim); }
 
-/* offerings 2×2 grid */
+/* offerings grid */
 .give-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 28px;
   margin: 36px 0 24px;
 }
+.give-grid--3 { grid-template-columns: repeat(3, 1fr); gap: 22px; }
+
 .give-item {
   border-top: 2px solid var(--ink);
   padding-top: 14px;
+  display: flex;
+  flex-direction: column;
 }
 .give-num {
   font-size: 10px;
@@ -390,17 +394,40 @@ a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-under
   margin-bottom: 6px;
 }
 .give-name {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
   letter-spacing: -0.005em;
   margin-bottom: 10px;
-  line-height: 1.18;
+  line-height: 1.2;
 }
 .give-body {
   font-size: 12.5px;
   line-height: 1.6;
   color: rgba(0,0,0,0.78);
+  flex: 1;
 }
+.give-cta {
+  align-self: flex-start;
+  margin-top: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 9px 14px;
+  border: 1px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font);
+  cursor: pointer;
+  transition: background var(--speed) var(--ease), color var(--speed) var(--ease);
+  text-decoration: none;
+}
+.give-cta:hover { background: var(--ink); color: var(--bg); text-decoration: none; }
+.give-cta .cta-arrow { transition: transform var(--speed) var(--ease); display: inline-block; }
+.give-cta:hover .cta-arrow { transform: translateX(3px); }
 
 /* industry pills */
 .target-label {
@@ -765,7 +792,7 @@ button.submit:hover::after { transform: translateX(4px); }
   .block--inverse { margin: 80px -28px 0; padding: 64px 28px 72px; }
   .form-wrap { margin: 0 -28px; padding: 0 28px 80px; }
   .phases { grid-template-columns: 1fr; }
-  .give-grid { grid-template-columns: 1fr; }
+  .give-grid, .give-grid--3 { grid-template-columns: 1fr; }
   .founder { grid-template-columns: 120px 1fr; gap: 20px; }
 }
 
@@ -883,43 +910,33 @@ button.submit:hover::after { transform: translateX(4px); }
         </div>
       </div>
 
-      <div class="location-note">
-        <div class="loc-label">[ Ко-ливинг ]</div>
-        <p>Мы принимаем созвучных нам людей и клиентов в формате ко-ливинга в нашем поле. Качественная работа с Сознанием в свободном потоке — или просто обмен опытом. Одна комната, до 1–2 человек, после собеседования. <i>Португалия · Sintra · 45 минут от Лиссабона · ultra-private estate.</i></p>
-      </div>
-
       <p style="margin-top: 36px;">Последние 3,5 года мы сфокусировались на исследовании моделей взаимодействия людей на уровне коллективного сознания. Грубо выражаясь — это психо-эмоциональный интернет для подсознания, в котором мы создаём кастомные технологические решения.</p>
 
       <p>Эволюция Сознания в нашем понимании — это прежде всего <b>игра и ирония</b>. Вне всяких догм и идеологий мы можем донести сложные абстрактные концепции из древних источников даже самому прагматичному разуму, создавая трансформационный опыт в уютной атмосфере. Без медитаций, йоги, аскез — только научная перспектива как технология.</p>
 
       <p>137 Lab для нас — точка контакта с теми личностями, которые разделяют наши ценности и готовы принять и применить тот ресурс, которым мы обладаем. Наши программы — это всегда индивидуальная работа с особым вниманием к каждому запросу.</p>
 
-      <p class="stmt">Мы собираем людей, в которых эта идея уже звучит. И даём четыре вещи.</p>
-
-      <div class="give-grid">
+      <div class="give-grid give-grid--3">
         <div class="give-item">
-          <div class="give-num">i</div>
-          <div class="give-en">Knowledge &amp; Transformation</div>
-          <div class="give-name">Знания и Трансформация</div>
-          <div class="give-body">Архитектура, методы, инженерия сознания как технология. Снять напряжение, восстановить внутренний баланс, вдохновить, настроить внутренний симбиоз.</div>
+          <div class="give-num">01</div>
+          <div class="give-en">Consciousness Upgrade</div>
+          <div class="give-name">Апгрейд Сознания</div>
+          <div class="give-body">Пересборка архитектуры ума, устранение деструктивных паттернов, ограничивающих убеждений, иллюзий, шедоу-ворк. Настройка майндсета и раскрытие чувств, восстановление внутреннего баланса.</div>
+          <a class="give-cta" href="#enter" data-topic="consciousness">Заявка <span class="cta-arrow">→</span></a>
         </div>
         <div class="give-item">
-          <div class="give-num">ii</div>
-          <div class="give-en">Family &amp; Community</div>
-          <div class="give-name">Семья и Сообщество</div>
-          <div class="give-body">Симбиоз в близких отношениях. Семья — как резонансный двигатель квантового успеха и среда, в которой всё это живёт и усиливается.</div>
+          <div class="give-num">02</div>
+          <div class="give-en">Family Engine</div>
+          <div class="give-name">Семья как резонансный двигатель</div>
+          <div class="give-body">Энергетический менеджмент в близких отношениях. Когерентная семья как среда вашего совместного квантового успеха, в которой всё живёт и усиливается. Со-настройка и работа с сексуальностью.</div>
+          <a class="give-cta" href="#enter" data-topic="family">Заявка <span class="cta-arrow">→</span></a>
         </div>
         <div class="give-item">
-          <div class="give-num">iii</div>
-          <div class="give-en">State</div>
-          <div class="give-name">Состояние Сознания</div>
-          <div class="give-body">Духовная практика, которая работает на бэкграунде за счёт со-настройки энергообмена в единой резонансной сети. Внутренняя среда, с которой всё начинается. Без неё остальное не держится.</div>
-        </div>
-        <div class="give-item">
-          <div class="give-num">iiii</div>
-          <div class="give-en">Business</div>
+          <div class="give-num">03</div>
+          <div class="give-en">Holy Business</div>
           <div class="give-name">Holy Business</div>
-          <div class="give-body">Настроить бизнес звучать в лад с фаундером и помочь адаптироваться к пост-трудовой экономике. Синергия, энергетический менеджмент, работа с сообществом или командой через эгрегор.</div>
+          <div class="give-body">Бизнес в лад с фаундером. Синергия, энергетический менеджмент, работа с сообществом или командой через эгрегор. Любая работа с коллективным Сознанием компании и адаптация к пост-трудовой экономике.</div>
+          <a class="give-cta" href="#enter" data-topic="business">Заявка <span class="cta-arrow">→</span></a>
         </div>
       </div>
 
@@ -1160,7 +1177,21 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     const id = a.getAttribute('href');
     if (id.length > 1) {
       const target = document.querySelector(id);
-      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      if (target) {
+        e.preventDefault();
+        // pre-select topic chip if data-topic is present on link (give-cta)
+        const topic = a.dataset.topic;
+        if (topic) {
+          const chip = document.querySelector('.topic-chip[data-topic="' + topic + '"]');
+          if (chip) {
+            document.querySelectorAll('.topic-chip').forEach(c => c.classList.remove('on'));
+            chip.classList.add('on');
+            const hidden = document.getElementById('topic-input');
+            if (hidden) hidden.value = topic;
+          }
+        }
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
   });
 });
