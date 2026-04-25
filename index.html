@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>137 Lab — Resonance Engine of the New Paradigm</title>
-<meta name="description" content="Meta-systemic architecture of consciousness. The mechanics of resonant holiness and symbiosis at the intersection of spirituality and technology. The laboratory of Dao &amp; Liza.">
+<title>137 Lab — Resonance Engine of the Symbiotic Paradigm</title>
+<meta name="description" content="Resonance engine of the symbiotic paradigm. Meta-systemic architecture of consciousness at the intersection of spirituality and technology. The laboratory of Dao &amp; Liza.">
 
 <link rel="icon" type="image/png" href="./icons/favicon-32x32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -396,9 +396,77 @@ a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-under
 
 .phases {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px 32px;
   margin-top: 36px;
+}
+
+/* ── epigraph (between 01 and 02) ── */
+.epigraph {
+  padding: 88px 0 96px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 720px;
+}
+.epigraph blockquote {
+  font-style: italic;
+  font-size: 18px;
+  line-height: 1.6;
+  color: rgba(0,0,0,0.85);
+  border-left: 2px solid var(--ink);
+  padding-left: 24px;
+  margin: 0;
+}
+.epigraph cite {
+  margin-top: 22px;
+  font-style: normal;
+  font-size: 10px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--dim);
+  font-weight: 700;
+  padding-left: 26px;
+}
+
+/* ── interlude card (after Family) ── */
+.interlude {
+  margin: 72px 0 0;
+  padding: 40px 44px;
+  background: #fafaf7;
+  border-top: 3px solid var(--ink);
+  border-bottom: 1px solid var(--rule);
+  border-left: 1px solid var(--rule);
+  border-right: 1px solid var(--rule);
+}
+.interlude .il-tag {
+  font-size: 9.5px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--dim);
+  margin-bottom: 18px;
+}
+.interlude .il-body {
+  font-size: 17px;
+  line-height: 1.55;
+  font-weight: 400;
+  color: rgba(0,0,0,0.88);
+  max-width: 640px;
+  margin: 0;
+}
+.interlude .il-body b {
+  font-weight: 700;
+  color: var(--ink);
+}
+.interlude .il-stmt {
+  font-size: 15px;
+  line-height: 1.55;
+  font-style: italic;
+  color: var(--dim);
+  margin-top: 18px;
+  max-width: 640px;
 }
 .phase { border-top: 2px solid var(--ink); padding-top: 16px; }
 .phase-num { font-size: 10px; letter-spacing: 0.22em; font-weight: 700; color: var(--dim); margin-bottom: 8px; }
@@ -696,7 +764,7 @@ button.submit:hover::after { transform: translateX(4px); }
   <aside class="rail">
     <div class="brand">
       <div class="brand-mark">137 LAB</div>
-      <div class="brand-line">Resonance engine<br>of the new paradigm.</div>
+      <div class="brand-line">Resonance engine<br>of the symbiotic paradigm.</div>
       <div class="brand-coord">1/137 · Fine-structure</div>
     </div>
 
@@ -747,6 +815,12 @@ button.submit:hover::after { transform: translateX(4px); }
       <h3 class="block-title block-title--sub">2026 — Game Over.</h3>
       <p>Accept the end of the old paradigm if you intend to enter the new world. There is no point continuing to fight for life by the rules of a departing era. Success of any kind in the new era requires deep deconstruction of the inner foundation. A full update of the operating system of consciousness — and the resonant mindset — is the key.</p>
       <p>We are not offering you another business model or productivity tool. We offer a chance to revise the very architecture of your personality, organisation, or community — to step onto an entirely different level of throughput, clarity, and ease.</p>
+    </section>
+
+    <!-- ═══ Epigraph — Lao Tzu ═══ -->
+    <section class="epigraph">
+      <blockquote>"A wise man hears of Dao and follows it with diligence. An ordinary man hears of Dao and follows it now and then. A foolish man hears of Dao and laughs aloud. If he did not laugh, it would not be the true Dao."</blockquote>
+      <cite>— Lao Tzu</cite>
     </section>
 
     <!-- ═══ Block 02 — Founders ═══ -->
@@ -884,6 +958,12 @@ button.submit:hover::after { transform: translateX(4px); }
       <h3 class="block-title block-title--sub">Sexual energy &amp; children.</h3>
       <p>An enormous source of energy and inspiration is the release of sexual blocks and traces of past traumas affecting orgasm and the expression of desire in women. Men — increase sensitivity, arousal, and the duration of the act.</p>
       <p>We also help with raising children and preserving their creative potential during growth — protecting them from toxic influences and the suppression of the existing system.</p>
+
+      <div class="interlude">
+        <div class="il-tag">[ Natural by-effect ]</div>
+        <p class="il-body"><b>Unlocking the creative potential</b> is the natural effect that awaits you. Creativity, sharpness of attention and senses, the depth of lived experience, and synchronicity — these are the baseline bonuses that arrive once internal resistance and self-suppression stop.</p>
+        <p class="il-stmt">Every domain of life arranges itself naturally once the imbalance is removed.</p>
+      </div>
     </section>
 
     <!-- ═══ Block 07 — Holy Business ═══ -->
@@ -921,15 +1001,23 @@ button.submit:hover::after { transform: translateX(4px); }
         <div class="phase">
           <div class="phase-num">Phase 02</div>
           <div class="phase-name">Architecture Design</div>
-          <div class="phase-en">Architecture Design</div>
+          <div class="phase-en">Preparation</div>
           <p>Every engagement is unique. Based on the diagnostic we draft a precise plan: from rebuilding personal settings to calibrating partnerships and systems design for teams.</p>
           <p>We define the minimum effective intervention — no more, no less.</p>
           <div class="phase-meta">Custom</div>
         </div>
         <div class="phase">
           <div class="phase-num">Phase 03</div>
+          <div class="phase-name">Implementation</div>
+          <div class="phase-en">Putting the architecture into practice</div>
+          <p>Sessions, protocols, field work — assembled into your custom plan. This is where shifts begin and lock in on the somatic, mental, and field layers.</p>
+          <p>We set the tempo together — without pressure, without delay.</p>
+          <div class="phase-meta">Per plan</div>
+        </div>
+        <div class="phase">
+          <div class="phase-num">Phase 04</div>
           <div class="phase-name">Integration</div>
-          <div class="phase-en">Integration</div>
+          <div class="phase-en">Transformation Support</div>
           <p>Inner shifts inevitably surface in the outer world. New patterns stabilise (about 13 days on average) and begin producing measurable results automatically.</p>
           <p>Quality of decisions, depth of relationships, growth of business.</p>
           <div class="phase-meta">~ 13 days</div>
