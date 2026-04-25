@@ -362,6 +362,31 @@ a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-under
 .location-note p { margin: 0; max-width: none; font-size: 12.5px; line-height: 1.55; }
 .location-note p i { font-style: italic; color: var(--dim); }
 
+/* offerings — section heading */
+.give-heading {
+  margin: 64px 0 28px;
+  padding-top: 26px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 700px;
+}
+.gh-tag {
+  font-size: 10px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--dim);
+}
+.gh-title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  line-height: 1.18;
+  margin: 4px 0 0;
+}
+
 /* offerings grid */
 .give-grid {
   display: grid;
@@ -916,6 +941,11 @@ button.submit:hover::after { transform: translateX(4px); }
 
       <p>137 Lab для нас — точка контакта с теми личностями, которые разделяют наши ценности и готовы принять и применить тот ресурс, которым мы обладаем. Наши программы — это всегда индивидуальная работа с особым вниманием к каждому запросу.</p>
 
+      <div class="give-heading">
+        <div class="gh-tag">[ Три домена · Three domains ]</div>
+        <h3 class="gh-title">Один метод. Три домена работы.</h3>
+      </div>
+
       <div class="give-grid give-grid--3">
         <div class="give-item">
           <div class="give-num">01</div>
@@ -940,7 +970,7 @@ button.submit:hover::after { transform: translateX(4px); }
         </div>
       </div>
 
-      <p class="stmt">Метод — энергетический менеджмент и гармонизация потоков, внутри и снаружи. Мы убираем диссонанс и выстраиваем систему на резонансе так, чтобы каждый процесс рождал синергию и увеличивал плотность энергии в общем поле.</p>
+      <p class="stmt">Энергетический менеджмент — гармонизация потоков, внутри и снаружи. Мы убираем диссонанс и выстраиваем систему на резонансе так, чтобы каждый процесс рождал синергию и увеличивал плотность энергии в общем поле.</p>
 
       <p class="lede">Мы индивидуально работаем с каждым клиентом — а с теми, кто разделяет наши ценности, это становится со-творчеством.</p>
     </section>

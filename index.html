@@ -337,6 +337,31 @@ a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-under
 .location-note p { margin: 0; max-width: none; font-size: 12.5px; line-height: 1.55; }
 .location-note p i { font-style: italic; color: var(--dim); }
 
+/* offerings — section heading */
+.give-heading {
+  margin: 64px 0 28px;
+  padding-top: 26px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 700px;
+}
+.gh-tag {
+  font-size: 10px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--dim);
+}
+.gh-title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  line-height: 1.18;
+  margin: 4px 0 0;
+}
+
 /* offerings grid */
 .give-grid {
   display: grid;
@@ -886,6 +911,11 @@ button.submit:hover::after { transform: translateX(4px); }
 
       <p>137 Lab, for us, is a point of contact with the personalities who share our values and are ready to receive and apply the resource we hold. Our programmes are always individual work, with particular attention to each request.</p>
 
+      <div class="give-heading">
+        <div class="gh-tag">[ Three domains ]</div>
+        <h3 class="gh-title">One method. Three domains of work.</h3>
+      </div>
+
       <div class="give-grid give-grid--3">
         <div class="give-item">
           <div class="give-num">01</div>
@@ -910,7 +940,7 @@ button.submit:hover::after { transform: translateX(4px); }
         </div>
       </div>
 
-      <p class="stmt">The method — energy management and the harmonisation of flows, inside and outside. We dismantle dissonance and build the system on resonance, so every process generates synergy and increases the density of energy in the common field.</p>
+      <p class="stmt">Energy management — the harmonisation of flows, inside and outside. We dismantle dissonance and build the system on resonance, so every process generates synergy and increases the density of energy in the common field.</p>
 
       <p class="lede">We work individually with every client — and with those who share our values, the work becomes co-creation.</p>
     </section>
