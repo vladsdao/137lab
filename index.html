@@ -427,6 +427,65 @@ a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-under
   font-weight: 700;
 }
 
+/* ── Recognition × Engagement matrix ── */
+.matrix {
+  margin-top: 36px;
+  border-top: 3px solid var(--ink);
+}
+.matrix-row {
+  display: grid;
+  grid-template-columns: 28px 1fr 1fr;
+  gap: 28px;
+  padding: 24px 0 26px;
+  border-bottom: 1px solid var(--rule);
+  align-items: start;
+}
+.matrix-num {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--dim);
+  padding-top: 2px;
+}
+.matrix-if {
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.55;
+  color: rgba(0,0,0,0.78);
+  max-width: none;
+  margin: 0;
+}
+.matrix-then {
+  font-size: 13.5px;
+  line-height: 1.55;
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  max-width: none;
+  margin: 0;
+}
+.matrix-then::before {
+  content: "→";
+  color: var(--ink);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.matrix-then b { font-weight: 700; color: var(--ink); }
+.matrix-then .meta {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--dim);
+  font-weight: 700;
+}
+@media (max-width: 760px) {
+  .matrix-row { grid-template-columns: 28px 1fr; gap: 16px; }
+  .matrix-then { grid-column: 2; padding-top: 12px; border-top: 1px dotted var(--dim2); }
+}
+
 .field-card {
   margin-top: 64px;
   border: 1px solid var(--rule);
@@ -652,7 +711,8 @@ button.submit:hover::after { transform: translateX(4px); }
         <li><a href="#b06"><span class="ix-num">06</span><span class="ix-name">Family</span></a></li>
         <li><a href="#b07"><span class="ix-num">07</span><span class="ix-name">Holy Business</span></a></li>
         <li><a href="#b08"><span class="ix-num">08</span><span class="ix-name">Integration architecture</span></a></li>
-        <li><a href="#b09"><span class="ix-num">09</span><span class="ix-name">Why 137</span></a></li>
+        <li><a href="#b09"><span class="ix-num">09</span><span class="ix-name">Recognition</span></a></li>
+        <li><a href="#b10"><span class="ix-num">10</span><span class="ix-name">Why 137</span></a></li>
       </ul>
     </div>
 
@@ -886,9 +946,55 @@ button.submit:hover::after { transform: translateX(4px); }
       </div>
     </section>
 
-    <!-- ═══ Block 09 — Why 137 (inverse) ═══ -->
-    <section class="block block--inverse" id="b09">
-      <div class="block-code">[ Block <span>09</span> ] — Why 137</div>
+    <!-- ═══ Block 09 — Recognition × Engagement ═══ -->
+    <section class="block" id="b09">
+      <div class="block-code">[ Block <span>09</span> ] — Recognition</div>
+      <div class="block-num">09</div>
+      <div class="block-en">Recognition × Engagement</div>
+      <h2 class="block-title">If you recognise yourself — here's what we hold.</h2>
+
+      <p class="lede">This is not a service catalogue. It's five configurations in which our work becomes precise — and five contours of self-recognition.</p>
+
+      <div class="matrix">
+
+        <div class="matrix-row">
+          <div class="matrix-num">i</div>
+          <p class="matrix-if">A founder hitting a ceiling that no further framework breaks through.</p>
+          <p class="matrix-then"><span><b>Diagnostic Session + Architecture engagement.</b><span class="meta">≤ 3 hours to start · then a custom plan</span></span></p>
+        </div>
+
+        <div class="matrix-row">
+          <div class="matrix-num">ii</div>
+          <p class="matrix-if">A couple or family where energy drains into unnamed conflict, things unsaid, background tension.</p>
+          <p class="matrix-then"><span><b>Coupling / Decoupling.</b> Pair format.<span class="meta">Resonance — already after the first session</span></span></p>
+        </div>
+
+        <div class="matrix-row">
+          <div class="matrix-num">iii</div>
+          <p class="matrix-if">A team that runs but no longer sounds on one frequency. Decisions stall, trust thins.</p>
+          <p class="matrix-then"><span><b>Field work with the company egregore.</b><span class="meta">Recalibration of collective coherence</span></span></p>
+        </div>
+
+        <div class="matrix-row">
+          <div class="matrix-num">iv</div>
+          <p class="matrix-if">A scientist, artist, or cultural producer sensing the next step lies beyond current models.</p>
+          <p class="matrix-then"><span><b>Field Access — Resonance Network.</b><span class="meta">An environment where transformation runs as background to your life</span></span></p>
+        </div>
+
+        <div class="matrix-row">
+          <div class="matrix-num">v</div>
+          <p class="matrix-if">Someone who wants to spend days inside the field — not to "learn", just to be.</p>
+          <p class="matrix-then"><span><b>Co-living residency.</b> Sintra estate.<span class="meta">By interview · 1–2 guests</span></span></p>
+        </div>
+
+      </div>
+
+      <p class="stmt" style="margin-top: 32px;">If you didn't recognise yourself in any row — that's an answer too. Likely we're not your people yet, and that's honest.</p>
+    </section>
+
+    <!-- ═══ Block 10 — Why 137 (inverse) ═══ -->
+    <section class="block block--inverse" id="b10">
+      <div class="block-code">[ Block <span>10</span> ] — Why 137</div>
       <div class="coordinate">1/137<small>Fine-Structure Constant</small></div>
 
       <h2 class="coordinate-title">A coordinate, not a brand.</h2>
