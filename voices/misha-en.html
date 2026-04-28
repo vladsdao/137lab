@@ -140,6 +140,34 @@ h2.section-title {
 .foot a { text-decoration: none; color: var(--ink); border-bottom: 1px solid var(--ink); padding-bottom: 2px; }
 .foot a:hover { opacity: 0.6; }
 
+/* video embed */
+.video-frame {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  aspect-ratio: 9 / 16;
+  border: 1px solid var(--rule);
+  background: #000;
+  margin: 8px 0 40px;
+  overflow: hidden;
+}
+.video-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.video-caption {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--dim);
+  margin-top: -28px;
+  margin-bottom: 32px;
+}
+
 @media (max-width: 520px) {
   h1 { font-size: 28px; }
   .lede { font-size: 16px; }
@@ -159,6 +187,16 @@ h2.section-title {
   <div class="kicker">[ Testimony · A story from inside the lab ]</div>
   <h1>"Shadow work — it's not a blowjob"</h1>
   <div class="byline">Misha · musician, producer · 4 months in Sintra</div>
+
+  <div class="video-frame">
+    <iframe src="https://www.youtube.com/embed/BCgiWRnHH5s"
+      title="Misha — video testimony"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen
+      referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  </div>
+  <div class="video-caption">[ Video testimony · 1 min ]</div>
 
   <p class="lede">"This story is the start of a big book that's going to be a bestseller — that's what it's like to work with Vlad and Liza."</p>
 
