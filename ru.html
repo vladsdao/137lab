@@ -6,7 +6,7 @@
 <title>137 Lab — Резонансный двигатель парадигмы симбиоза</title>
 <meta name="description" content="Резонансный двигатель парадигмы симбиоза. Мета-системная архитектура сознания на стыке духовности и технологий. Лаборатория Дао и Лизы.">
 
-<link rel="icon" type="image/png" href="../icons/favicon-32x32.png">
+<link rel="icon" type="image/png" href="./icons/favicon-32x32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
@@ -148,6 +148,56 @@ a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-under
 
 .lang-toggle { font-size: 10px; letter-spacing: 0.22em; color: var(--dim); }
 .lang-toggle .current { color: var(--ink); font-weight: 700; }
+
+/* rail testimonial */
+.rail-testimonial {
+  padding-top: 22px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.rt-label {
+  font-size: 9.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--dim);
+}
+.rt-quote {
+  font-style: italic;
+  font-size: 12px;
+  line-height: 1.55;
+  color: rgba(0,0,0,0.85);
+  border-left: 2px solid var(--ink);
+  padding-left: 12px;
+  margin: 0;
+}
+.rt-quote span { display: block; }
+.rt-quote span + span { margin-top: 8px; }
+.rt-cite {
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--dim);
+}
+.rt-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--ink);
+  align-self: flex-start;
+  padding-bottom: 2px;
+}
+.rt-more:hover { text-decoration: none; opacity: 0.6; }
 
 /* ──────────── CONTENT ──────────── */
 .content {
@@ -865,6 +915,16 @@ button.submit:hover::after { transform: translateX(4px); }
       </ul>
     </div>
 
+    <div class="rail-testimonial">
+      <div class="rt-label">[ Из поля · Field voice ]</div>
+      <blockquote class="rt-quote">
+        <span>«Истинная трансформация — она тихая.»</span>
+        <span>«Я наконец-то могу чувствовать.»</span>
+      </blockquote>
+      <div class="rt-cite">— Миша · музыкант, гость</div>
+      <a class="rt-more" href="./voices/misha-ru.html">Прочитать историю →</a>
+    </div>
+
     <div class="enter-cta">
       <a class="enter" href="#enter">Войти в лабораторию <span class="arr">↓</span></a>
       <div class="lang-toggle">
@@ -972,11 +1032,9 @@ button.submit:hover::after { transform: translateX(4px); }
 
       <p class="stmt">Энергетический менеджмент — гармонизация потоков, внутри и снаружи. Мы убираем диссонанс и выстраиваем систему на резонансе так, чтобы каждый процесс рождал синергию и увеличивал плотность энергии в общем поле.</p>
 
-      <div class="interlude">
-        <div class="il-tag">[ Естественный эффект · Natural by-effect ]</div>
-        <p class="il-body"><b>Раскрытие творческого потенциала</b> — естественный эффект, который вас ждёт. Креативность, острота внимания и чувств, глубина проживания опыта и синхронистичность — это базовые бонусы, которые приходят после прекращения внутреннего сопротивления и подавления себя.</p>
-        <p class="il-stmt">Все сферы жизни выстраиваются естественно при устранении дисбаланса.</p>
-      </div>
+      <h3 class="block-title block-title--sub">Раскрытие творческого потенциала.</h3>
+      <p>Естественный эффект, который вас ждёт. Креативность, острота внимания и чувств, глубина проживания опыта и синхронистичность — это базовые бонусы, которые приходят после прекращения внутреннего сопротивления и подавления себя.</p>
+      <p class="stmt">Все сферы жизни выстраиваются естественно при устранении дисбаланса.</p>
 
       <p class="lede">Мы индивидуально работаем с каждым клиентом — а с теми, кто разделяет наши ценности, это становится со-творчеством.</p>
     </section>

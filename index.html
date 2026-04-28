@@ -6,7 +6,7 @@
 <title>137 Lab — Resonance Engine of the Symbiotic Paradigm</title>
 <meta name="description" content="Resonance engine of the symbiotic paradigm. Meta-systemic architecture of consciousness at the intersection of spirituality and technology. The laboratory of Dao &amp; Liza.">
 
-<link rel="icon" type="image/png" href="../icons/favicon-32x32.png">
+<link rel="icon" type="image/png" href="./icons/favicon-32x32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
@@ -145,6 +145,56 @@ a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-under
 
 .lang-toggle { font-size: 10px; letter-spacing: 0.22em; color: var(--dim); }
 .lang-toggle .current { color: var(--ink); font-weight: 700; }
+
+/* rail testimonial */
+.rail-testimonial {
+  padding-top: 22px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.rt-label {
+  font-size: 9.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--dim);
+}
+.rt-quote {
+  font-style: italic;
+  font-size: 12px;
+  line-height: 1.55;
+  color: rgba(0,0,0,0.85);
+  border-left: 2px solid var(--ink);
+  padding-left: 12px;
+  margin: 0;
+}
+.rt-quote span { display: block; }
+.rt-quote span + span { margin-top: 8px; }
+.rt-cite {
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--dim);
+}
+.rt-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--ink);
+  align-self: flex-start;
+  padding-bottom: 2px;
+}
+.rt-more:hover { text-decoration: none; opacity: 0.6; }
 
 .content {
   padding: 72px 80px 0;
@@ -835,6 +885,16 @@ button.submit:hover::after { transform: translateX(4px); }
       </ul>
     </div>
 
+    <div class="rail-testimonial">
+      <div class="rt-label">[ Field voice ]</div>
+      <blockquote class="rt-quote">
+        <span>"True transformation is quiet."</span>
+        <span>"I can finally feel."</span>
+      </blockquote>
+      <div class="rt-cite">— Misha · musician, guest</div>
+      <a class="rt-more" href="./voices/misha-en.html">Read the story →</a>
+    </div>
+
     <div class="enter-cta">
       <a class="enter" href="#enter">Enter the Laboratory <span class="arr">↓</span></a>
       <div class="lang-toggle">
@@ -942,11 +1002,9 @@ button.submit:hover::after { transform: translateX(4px); }
 
       <p class="stmt">Energy management — the harmonisation of flows, inside and outside. We dismantle dissonance and build the system on resonance, so every process generates synergy and increases the density of energy in the common field.</p>
 
-      <div class="interlude">
-        <div class="il-tag">[ Natural by-effect ]</div>
-        <p class="il-body"><b>Unlocking the creative potential</b> is the natural effect that awaits you. Creativity, sharpness of attention and senses, the depth of lived experience, and synchronicity — these are the baseline bonuses that arrive once internal resistance and self-suppression stop.</p>
-        <p class="il-stmt">Every domain of life arranges itself naturally once the imbalance is removed.</p>
-      </div>
+      <h3 class="block-title block-title--sub">Unlocking creative potential.</h3>
+      <p>The natural effect that awaits you. Creativity, sharpness of attention and senses, the depth of lived experience, and synchronicity — these are the baseline bonuses that arrive once internal resistance and self-suppression stop.</p>
+      <p class="stmt">Every domain of life arranges itself naturally once the imbalance is removed.</p>
 
       <p class="lede">We work individually with every client — and with those who share our values, the work becomes co-creation.</p>
     </section>
