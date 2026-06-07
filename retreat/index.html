@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ретрит · 27–30 июня 2026 · Португалия</title>
+<meta name="description" content="Закрытый ретрит глубокой личной работы. Вилла в заповедной зоне под Лиссабоном. 27–30 июня 2026.">
+<meta name="robots" content="noindex">
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#F3EDE3;            /* warm milk */
+  --bg-2:#ECE3D5;          /* deeper sand */
+  --ink:#2B2620;           /* warm charcoal */
+  --ink-soft:#5A5247;
+  --taupe:#928678;         /* secondary */
+  --gold:#B2935E;          /* muted gold hairline */
+  --olive:#464C3C;
+  --line:rgba(43,38,32,0.14);
+  --cream:#F4EEE4;         /* text over photos */
+  --display:'Fraunces', Georgia, serif;
+  --body:'EB Garamond', Georgia, serif;
+  --pad: clamp(24px, 6vw, 96px);
+}
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--body);
+  background:var(--bg);
+  color:var(--ink);
+  font-size:20px;
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+}
+::selection{background:rgba(178,147,94,0.25)}
+img{display:block;max-width:100%}
+
+/* faint paper grain */
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px 200px;
+}
+
+/* ---------- shared ---------- */
+.eyebrow{
+  font-family:var(--body);
+  font-size:12.5px;letter-spacing:.32em;text-transform:uppercase;
+  color:var(--gold);font-weight:500;
+}
+h2.display{
+  font-family:var(--display);
+  font-weight:340;
+  font-size:clamp(30px,5vw,60px);
+  line-height:1.08;
+  letter-spacing:-0.012em;
+  color:var(--ink);
+}
+.lede{font-size:clamp(20px,2.4vw,27px);line-height:1.5;color:var(--ink)}
+p{color:var(--ink-soft);max-width:60ch}
+.section{padding:clamp(72px,13vh,150px) var(--pad)}
+.wrap{max-width:1180px;margin:0 auto}
+.measure{max-width:760px}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 1s cubic-bezier(.2,.7,.2,1),transform 1s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* ---------- nav ---------- */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 var(--pad);height:74px;
+  transition:background .5s ease, box-shadow .5s ease, color .5s ease;
+  color:var(--cream);
+}
+.nav.scrolled{background:rgba(243,237,227,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--line);color:var(--ink)}
+.wordmark{font-family:var(--display);font-weight:400;font-size:19px;letter-spacing:.04em;color:currentColor;text-decoration:none}
+.nav-right{display:flex;align-items:center;gap:22px}
+.lang{display:flex;align-items:center;gap:8px;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase}
+.lang button{background:none;border:none;color:currentColor;opacity:.5;cursor:pointer;font-family:var(--body);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;transition:opacity .3s;padding:0}
+.lang button.active{opacity:1}
+.lang .sep{opacity:.35}
+.nav-apply{
+  font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;color:currentColor;text-decoration:none;
+  border:1px solid currentColor;border-radius:40px;padding:8px 18px;opacity:.9;transition:all .4s ease;
+}
+.nav-apply:hover{background:currentColor}
+.nav.scrolled .nav-apply:hover{color:var(--bg)}
+.nav:not(.scrolled) .nav-apply:hover{color:var(--ink)}
+
+/* ---------- hero ---------- */
+.hero{position:relative;height:100svh;min-height:600px;display:flex;align-items:flex-end;color:var(--cream);overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:url('images/hero.jpeg') center 60%/cover no-repeat;transform:scale(1.06);animation:kb 18s ease-out forwards}
+@keyframes kb{to{transform:scale(1)}}
+.hero::before{content:'';position:absolute;inset:0;background:
+  linear-gradient(to bottom, rgba(20,16,12,.42) 0%, rgba(20,16,12,0) 26%),
+  linear-gradient(to top, rgba(20,16,12,.62) 0%, rgba(20,16,12,0) 52%);z-index:1}
+.hero-inner{position:relative;z-index:2;padding:0 var(--pad) clamp(56px,9vh,110px);max-width:1180px;margin:0 auto;width:100%}
+.hero .eyebrow{color:rgba(244,238,228,.85)}
+.hero h1{
+  font-family:var(--display);font-weight:330;
+  font-size:clamp(40px,8vw,104px);line-height:.98;letter-spacing:-0.02em;
+  margin:.32em 0 .34em;max-width:16ch;color:var(--cream);
+}
+.hero .hero-sub{font-size:clamp(17px,2vw,22px);line-height:1.5;max-width:46ch;color:rgba(244,238,228,.92)}
+.scrollcue{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:2;color:rgba(244,238,228,.7);font-size:11px;letter-spacing:.3em;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:8px}
+.scrollcue .bar{width:1px;height:46px;background:linear-gradient(rgba(244,238,228,.7),rgba(244,238,228,0));animation:cue 2.4s ease-in-out infinite}
+@keyframes cue{0%,100%{opacity:.3;transform:scaleY(.7)}50%{opacity:1;transform:scaleY(1)}}
+
+/* ---------- intro ---------- */
+.intro{text-align:center}
+.intro .lede{max-width:24ch;margin:0 auto 1.1em}
+.intro p{max-width:54ch;margin:0 auto;color:var(--ink-soft)}
+
+/* ---------- core statement ---------- */
+.core{background:var(--ink);color:var(--cream);text-align:center}
+.core .eyebrow{color:var(--gold)}
+.core h2{color:var(--cream);font-style:italic;font-weight:330;margin:.5em auto .55em;max-width:18ch}
+.core p{color:rgba(244,238,228,.78);max-width:52ch;margin:0 auto}
+
+/* ---------- inside ---------- */
+.inside-head{display:flex;flex-direction:column;gap:14px;margin-bottom:clamp(40px,6vw,72px)}
+.items{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.item{background:var(--bg);padding:clamp(28px,3.4vw,46px) clamp(22px,2.6vw,40px)}
+.item .num{font-family:var(--display);font-size:15px;color:var(--gold);letter-spacing:.1em;display:block;margin-bottom:18px}
+.item h3{font-family:var(--display);font-weight:400;font-size:clamp(22px,2.4vw,28px);line-height:1.15;margin-bottom:12px}
+.item p{font-size:18px;max-width:38ch}
+
+/* full bleed image */
+.bleed{width:100%;height:clamp(360px,62vh,720px);object-fit:cover}
+figure{position:relative}
+figure figcaption{
+  position:absolute;left:var(--pad);bottom:22px;color:var(--cream);
+  font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+  text-shadow:0 1px 14px rgba(0,0,0,.5);z-index:2
+}
+
+/* ---------- place ---------- */
+.place .wrap{display:grid;grid-template-columns:1fr 1fr;gap:clamp(36px,5vw,80px);align-items:center}
+.place .ptext{max-width:46ch}
+.place h2{margin:.34em 0 .55em}
+.place .loc{margin-top:30px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--taupe)}
+.place .pimg{width:100%;height:clamp(360px,58vh,640px);object-fit:cover}
+
+/* ---------- hosts ---------- */
+.hosts{background:var(--bg-2);text-align:center}
+.hosts .hgrid{display:grid;grid-template-columns:minmax(0,520px) 1fr;gap:clamp(34px,5vw,72px);align-items:center;text-align:left;max-width:1020px;margin:0 auto}
+.hosts img{width:100%;aspect-ratio:4/5;object-fit:cover}
+.hosts h2{margin:.2em 0 .6em}
+.hosts .bio{margin-bottom:16px;max-width:42ch}
+.hosts .bio b{font-weight:500;color:var(--ink)}
+.hosts .together{font-style:italic;color:var(--taupe)}
+
+/* ---------- practical ---------- */
+.rows{border-top:1px solid var(--line);margin-top:clamp(36px,5vw,60px)}
+.row{display:grid;grid-template-columns:230px 1fr;gap:30px;padding:26px 0;border-bottom:1px solid var(--line)}
+.row dt{font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--taupe);padding-top:5px}
+.row dd{font-size:19px;color:var(--ink);max-width:54ch}
+
+/* ---------- pricing ---------- */
+.pricing{background:var(--ink);color:var(--cream)}
+.pricing .eyebrow{color:var(--gold)}
+.pricing h2{color:var(--cream)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:clamp(36px,5vw,56px) 0 36px}
+.card{border:1px solid rgba(244,238,228,.18);padding:clamp(30px,3.4vw,48px);display:flex;flex-direction:column;gap:10px}
+.card .clabel{font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:rgba(244,238,228,.6)}
+.card .price{font-family:var(--display);font-weight:330;font-size:clamp(40px,5.5vw,68px);line-height:1;color:var(--cream)}
+.card .cnote{color:rgba(244,238,228,.6);font-size:17px}
+.pnotes{display:flex;flex-direction:column;gap:14px;max-width:60ch}
+.pnotes p{color:rgba(244,238,228,.74);font-size:17px;max-width:none}
+.pnotes .gicon{color:var(--gold);font-style:normal}
+
+/* ---------- apply ---------- */
+.apply{text-align:center}
+.apply .measure{margin:0 auto}
+.apply h2{margin:.3em 0 .5em}
+.apply > .wrap > p{margin:0 auto 40px;color:var(--ink-soft)}
+form{max-width:540px;margin:0 auto;text-align:left}
+.field{margin-bottom:26px}
+.field label{display:block;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--taupe);margin-bottom:9px}
+.field input,.field textarea{
+  width:100%;background:transparent;border:none;border-bottom:1px solid var(--line);
+  font-family:var(--body);font-size:19px;color:var(--ink);padding:8px 0;transition:border-color .3s
+}
+.field textarea{resize:vertical;min-height:96px}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--gold)}
+.hp{position:absolute;left:-9999px}
+.submit{
+  width:100%;background:var(--ink);color:var(--cream);border:1px solid var(--ink);
+  font-family:var(--body);font-size:13px;letter-spacing:.22em;text-transform:uppercase;
+  padding:16px;cursor:pointer;transition:opacity .3s;margin-top:6px
+}
+.submit:hover{opacity:.85}
+.or{text-align:center;color:var(--taupe);font-size:13px;letter-spacing:.16em;text-transform:uppercase;margin:22px 0}
+.tg{display:block;text-align:center;text-decoration:none;color:var(--ink);border:1px solid var(--gold);padding:15px;font-size:13px;letter-spacing:.22em;text-transform:uppercase;transition:background .3s}
+.tg:hover{background:var(--gold);color:var(--cream)}
+.formnote{display:none;text-align:center;color:var(--olive);margin-top:18px;font-size:17px}
+.formnote.show{display:block}
+
+/* ---------- footer ---------- */
+footer{background:var(--bg-2);text-align:center;padding:56px var(--pad)}
+footer .fmark{font-family:var(--display);font-size:17px;letter-spacing:.04em;margin-bottom:12px}
+footer .fline{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--taupe)}
+
+/* ---------- responsive ---------- */
+@media(max-width:768px){
+  .article-hero { padding: 40px 20px 60px; }
+}
+@media(max-width:860px){
+  body{font-size:19px}
+  .items{grid-template-columns:1fr}
+  .place .wrap{grid-template-columns:1fr;gap:34px}
+  .place .pimg{order:-1;height:clamp(300px,52vh,460px)}
+  .hosts .hgrid{grid-template-columns:1fr;text-align:center}
+  .hosts .bio,.hosts img{margin-left:auto;margin-right:auto}
+  .cards{grid-template-columns:1fr}
+  .row{grid-template-columns:1fr;gap:6px;padding:20px 0}
+  .nav-apply{display:none}
+}
+@media(max-width:480px){
+  .hero h1{font-size:clamp(38px,12vw,60px)}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <a href="#top" class="wordmark">27–30 · VI</a>
+  <div class="nav-right">
+    <div class="lang">
+      <button data-lang="ru" class="active" onclick="setLang('ru')">RU</button>
+      <span class="sep">/</span>
+      <button data-lang="ua" onclick="setLang('ua')">UA</button>
+    </div>
+    <a href="#apply" class="nav-apply" data-i18n="nav.apply">Заявка</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <div class="eyebrow" data-i18n="hero.eyebrow">Закрытый ретрит · Португалия · 27–30 июня 2026</div>
+    <h1 data-i18n="hero.title">Четыре дня вне привычного ритма</h1>
+    <p class="hero-sub" data-i18n="hero.sub">Выйти из потока дел, решений и ответственности — и вернуть внимание к себе.</p>
+  </div>
+  <div class="scrollcue"><span data-i18n="hero.scroll">вниз</span><span class="bar"></span></div>
+</header>
+
+<section class="section intro">
+  <div class="wrap measure" style="margin:0 auto">
+    <p class="lede reveal" data-i18n="intro.lead">Каждый участник приезжает со своим запросом.</p>
+    <p class="reveal" data-i18n="intro.body">Для кого-то это отношения. Для кого-то — деньги, реализация, бизнес, здоровье, сексуальность или внутренние ограничения, которые уже невозможно игнорировать. Эти четыре дня выстроены вокруг личных запросов участников.</p>
+  </div>
+</section>
+
+<figure class="reveal">
+  <img class="bleed" src="images/hero-sunset.jpeg" alt="">
+</figure>
+
+<section class="section core">
+  <div class="wrap">
+    <div class="eyebrow reveal" data-i18n="core.eyebrow">Почему это другое</div>
+    <h2 class="display reveal" data-i18n="core.title">Это не общий ретрит с общими практиками.</h2>
+    <p class="reveal" data-i18n="core.body">Это закрытое коллективное поле, в котором прорабатывается твой запрос. Не набор практик для всех — а пространство, собранное вокруг того, что важно каждому.</p>
+  </div>
+</section>
+
+<section class="section inside">
+  <div class="wrap">
+    <div class="inside-head">
+      <div class="eyebrow reveal" data-i18n="inside.eyebrow">Что внутри</div>
+      <h2 class="display reveal" data-i18n="inside.title">Из чего собраны четыре дня</h2>
+    </div>
+    <div class="items">
+      <div class="item reveal"><span class="num">01</span><h3 data-i18n="i1.t">Практики с нами двумя</h3><p data-i18n="i1.b">Живые практики и работа в поле — каждый день, вместе с Лизой и Dao.</p></div>
+      <div class="item reveal"><span class="num">02</span><h3 data-i18n="i2.t">Живые разборы в групповом поле</h3><p data-i18n="i2.b">Твой запрос — в фокусе коллективного поля. Не теория, а прямая работа.</p></div>
+      <div class="item reveal"><span class="num">03</span><h3 data-i18n="i3.t">Индивидуальная хилинг-сессия</h3><p data-i18n="i3.b">Отдельная сессия, посвящённая именно твоему процессу.</p></div>
+      <div class="item reveal"><span class="num">04</span><h3 data-i18n="i4.t">Работа с сексуальной энергией</h3><p data-i18n="i4.b">Снятие блоков и возвращение к собственной энергии.</p></div>
+    </div>
+  </div>
+</section>
+
+<figure class="reveal">
+  <img class="bleed" src="images/fire-circle.jpeg" alt="">
+</figure>
+
+<section class="section place">
+  <div class="wrap">
+    <div class="ptext reveal">
+      <div class="eyebrow" data-i18n="place.eyebrow">Место</div>
+      <h2 class="display" data-i18n="place.title">Очищение на всех уровнях</h2>
+      <p data-i18n="place.body">Вилла на закрытой территории заповедной зоны, далеко от всего. Дом сложен из камня, выкопанного на этой же земле, — дом, который возвёл сам себя. Дерево, нетоксичные материалы, антиквариат из Азии и Индии, которому по 600–700 лет. Своя колодезная вода. Тишина. Ни одной машины.</p>
+      <div class="loc" data-i18n="place.loc">50 минут до Лиссабона · 20 минут до Синтры · 15 минут до любимого пляжа Лизы</div>
+    </div>
+    <img class="pimg reveal" src="images/stone-door.jpeg" alt="">
+  </div>
+</section>
+
+<figure class="reveal">
+  <img class="bleed" src="images/antique-table.jpeg" alt="">
+</figure>
+
+<section class="section hosts">
+  <div class="hgrid">
+    <img class="reveal" src="images/couple.jpeg" alt="">
+    <div>
+      <div class="eyebrow reveal" data-i18n="hosts.eyebrow">Кто ведёт</div>
+      <h2 class="display reveal" data-i18n="hosts.title">Лиза и Dao</h2>
+      <p class="bio reveal"><b data-i18n="hosts.liza.n">Лиза</b> <span data-i18n="hosts.liza.r">— фасилитатор трансформации. Находит корневую причину запроса, перепрошивает, отпускает.</span></p>
+      <p class="bio reveal"><b data-i18n="hosts.dao.n">Dao</b> <span data-i18n="hosts.dao.r">— архитектор поля. Держит пространство и энергетическую топологию процесса.</span></p>
+      <p class="together reveal" data-i18n="hosts.together">Вместе они держат коллективное поле ретрита.</p>
+    </div>
+  </div>
+</section>
+
+<figure class="reveal">
+  <img class="bleed" src="images/table-eucalyptus.jpeg" alt="">
+</figure>
+
+<section class="section practical">
+  <div class="wrap measure" style="margin:0 auto">
+    <div class="eyebrow reveal" data-i18n="pr.eyebrow">Практическое</div>
+    <h2 class="display reveal" data-i18n="pr.title">Как устроены четыре дня</h2>
+    <dl class="rows reveal">
+      <div class="row"><dt data-i18n="pr.dates.l">Даты</dt><dd data-i18n="pr.dates.v">27–30 июня · 3 ночи, 4 дня</dd></div>
+      <div class="row"><dt data-i18n="pr.stay.l">Размещение</dt><dd data-i18n="pr.stay.v">По двое в комнате, на вилле</dd></div>
+      <div class="row"><dt data-i18n="pr.food.l">Еда</dt><dd data-i18n="pr.food.v">Ужины из локальных фермерских продуктов, чайные церемонии. Завтраки — продукты на вилле, готовим сами. Только эко.</dd></div>
+      <div class="row"><dt data-i18n="pr.incl.l">Входит в стоимость</dt><dd data-i18n="pr.incl.v">Проживание, все практики, групповая и индивидуальная работа, ужины, чайные церемонии, продукты для завтраков.</dd></div>
+      <div class="row"><dt data-i18n="pr.excl.l">Не входит</dt><dd data-i18n="pr.excl.v">Авиабилеты, трансфер до места, личные расходы.</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="section pricing">
+  <div class="wrap measure" style="margin:0 auto">
+    <div class="eyebrow reveal" data-i18n="price.eyebrow">Участие</div>
+    <h2 class="display reveal" data-i18n="price.title">Стоимость</h2>
+    <div class="cards">
+      <div class="card reveal">
+        <span class="clabel" data-i18n="price.solo.l">Одно место</span>
+        <span class="price">2700&nbsp;€</span>
+      </div>
+      <div class="card reveal">
+        <span class="clabel" data-i18n="price.couple.l">Для пары</span>
+        <span class="price">4000&nbsp;€</span>
+        <span class="cnote" data-i18n="price.couple.n">Для мужчины и женщины</span>
+      </div>
+    </div>
+    <div class="pnotes reveal">
+      <p><i class="gicon">—</i> <span data-i18n="price.kids">Можно с детьми (1–2) — по договорённости. Мы будем рады малышам.</span></p>
+      <p><i class="gicon">—</i> <span data-i18n="price.ext">По желанию — ещё 2–3 дня более глубокой индивидуальной работы после ретрита. Условия обсуждаются отдельно.</span></p>
+    </div>
+  </div>
+</section>
+
+<section class="section apply" id="apply">
+  <div class="wrap measure" style="margin:0 auto">
+    <div class="eyebrow reveal" data-i18n="apply.eyebrow">Заявка</div>
+    <h2 class="display reveal" data-i18n="apply.title">Напиши свой запрос</h2>
+    <p class="reveal" data-i18n="apply.body">Перед приездом каждый участник присылает нам свой запрос — это начало работы. Опиши, с чем хочешь прийти, и мы свяжемся.</p>
+    <form class="reveal" name="retreat-application" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="return handleApply(event)">
+      <input type="hidden" name="form-name" value="retreat-application">
+      <p class="hp"><label>Не заполняйте: <input name="bot-field"></label></p>
+      <div class="field"><label data-i18n="apply.name">Имя</label><input type="text" name="name" required></div>
+      <div class="field"><label data-i18n="apply.contact">Telegram или e-mail</label><input type="text" name="contact" required></div>
+      <div class="field"><label data-i18n="apply.req">Твой запрос</label><textarea name="request" rows="4" required></textarea></div>
+      <button type="submit" class="submit" data-i18n="apply.send">Отправить заявку</button>
+      <div class="formnote" id="formnote"></div>
+    </form>
+    <div class="or" data-i18n="apply.or">или</div>
+    <a class="tg" href="https://t.me/viki_assistant" target="_blank" rel="noopener" data-i18n="apply.tg">Написать в Telegram</a>
+  </div>
+</section>
+
+<footer>
+  <div class="fmark">27–30 · VI</div>
+  <div class="fline" data-i18n="footer.line">Ретрит · 27–30 июня 2026 · Португалия</div>
+</footer>
+
+<script>
+let LANG='ru';
+const I18N={
+  ru:{
+    "nav.apply":"Заявка",
+    "hero.eyebrow":"Закрытый ретрит · Португалия · 27–30 июня 2026",
+    "hero.title":"Четыре дня вне привычного ритма",
+    "hero.sub":"Выйти из потока дел, решений и ответственности — и вернуть внимание к себе.",
+    "hero.scroll":"вниз",
+    "intro.lead":"Каждый участник приезжает со своим запросом.",
+    "intro.body":"Для кого-то это отношения. Для кого-то — деньги, реализация, бизнес, здоровье, сексуальность или внутренние ограничения, которые уже невозможно игнорировать. Эти четыре дня выстроены вокруг личных запросов участников.",
+    "core.eyebrow":"Почему это другое",
+    "core.title":"Это не общий ретрит с общими практиками.",
+    "core.body":"Это закрытое коллективное поле, в котором прорабатывается твой запрос. Не набор практик для всех — а пространство, собранное вокруг того, что важно каждому.",
+    "inside.eyebrow":"Что внутри",
+    "inside.title":"Из чего собраны четыре дня",
+    "i1.t":"Практики с нами двумя","i1.b":"Живые практики и работа в поле — каждый день, вместе с Лизой и Dao.",
+    "i2.t":"Живые разборы в групповом поле","i2.b":"Твой запрос — в фокусе коллективного поля. Не теория, а прямая работа.",
+    "i3.t":"Индивидуальная хилинг-сессия","i3.b":"Отдельная сессия, посвящённая именно твоему процессу.",
+    "i4.t":"Работа с сексуальной энергией","i4.b":"Снятие блоков и возвращение к собственной энергии.",
+    "place.eyebrow":"Место","place.title":"Очищение на всех уровнях",
+    "place.body":"Вилла на закрытой территории заповедной зоны, далеко от всего. Дом сложен из камня, выкопанного на этой же земле, — дом, который возвёл сам себя. Дерево, нетоксичные материалы, антиквариат из Азии и Индии, которому по 600–700 лет. Своя колодезная вода. Тишина. Ни одной машины.",
+    "place.loc":"50 минут до Лиссабона · 20 минут до Синтры · 15 минут до любимого пляжа Лизы",
+    "hosts.eyebrow":"Кто ведёт","hosts.title":"Лиза и Dao",
+    "hosts.liza.n":"Лиза","hosts.liza.r":"— фасилитатор трансформации. Находит корневую причину запроса, перепрошивает, отпускает.",
+    "hosts.dao.n":"Dao","hosts.dao.r":"— архитектор поля. Держит пространство и энергетическую топологию процесса.",
+    "hosts.together":"Вместе они держат коллективное поле ретрита.",
+    "pr.eyebrow":"Практическое","pr.title":"Как устроены четыре дня",
+    "pr.dates.l":"Даты","pr.dates.v":"27–30 июня · 3 ночи, 4 дня",
+    "pr.stay.l":"Размещение","pr.stay.v":"По двое в комнате, на вилле",
+    "pr.food.l":"Еда","pr.food.v":"Ужины из локальных фермерских продуктов, чайные церемонии. Завтраки — продукты на вилле, готовим сами. Только эко.",
+    "pr.incl.l":"Входит в стоимость","pr.incl.v":"Проживание, все практики, групповая и индивидуальная работа, ужины, чайные церемонии, продукты для завтраков.",
+    "pr.excl.l":"Не входит","pr.excl.v":"Авиабилеты, трансфер до места, личные расходы.",
+    "price.eyebrow":"Участие","price.title":"Стоимость",
+    "price.solo.l":"Одно место","price.couple.l":"Для пары","price.couple.n":"Для мужчины и женщины",
+    "price.kids":"Можно с детьми (1–2) — по договорённости. Мы будем рады малышам.",
+    "price.ext":"По желанию — ещё 2–3 дня более глубокой индивидуальной работы после ретрита. Условия обсуждаются отдельно.",
+    "apply.eyebrow":"Заявка","apply.title":"Напиши свой запрос",
+    "apply.body":"Перед приездом каждый участник присылает нам свой запрос — это начало работы. Опиши, с чем хочешь прийти, и мы свяжемся.",
+    "apply.name":"Имя","apply.contact":"Telegram или e-mail","apply.req":"Твой запрос","apply.send":"Отправить заявку",
+    "apply.thanks":"Спасибо. Это черновик — на готовом сайте заявка придёт нам напрямую. Пока напиши, пожалуйста, в Telegram 👇",
+    "apply.or":"или","apply.tg":"Написать в Telegram",
+    "apply.ok":"Спасибо! Заявка отправлена — мы свяжемся с тобой.",
+    "apply.fail":"Не получилось отправить. Напиши, пожалуйста, в Telegram 👇",
+    "footer.line":"Ретрит · 27–30 июня 2026 · Португалия"
+  },
+  ua:{
+    "nav.apply":"Заявка",
+    "hero.eyebrow":"Закритий ретрит · Португалія · 27–30 червня 2026",
+    "hero.title":"Чотири дні поза звичним ритмом",
+    "hero.sub":"Вийти з потоку справ, рішень та відповідальності — й повернути увагу до себе.",
+    "hero.scroll":"вниз",
+    "intro.lead":"Кожен учасник приїжджає зі своїм запитом.",
+    "intro.body":"Для когось це стосунки. Для когось — гроші, реалізація, бізнес, здоров’я, сексуальність або внутрішні обмеження, які вже неможливо ігнорувати. Ці чотири дні збудовані навколо особистих запитів учасників.",
+    "core.eyebrow":"Чому це інше",
+    "core.title":"Це не спільний ретрит зі спільними практиками.",
+    "core.body":"Це закрите колективне поле, в якому проробляється твій запит. Не набір практик для всіх — а простір, зібраний навколо того, що важливо кожному.",
+    "inside.eyebrow":"Що всередині",
+    "inside.title":"З чого зібрані чотири дні",
+    "i1.t":"Практики з нами двома","i1.b":"Живі практики й робота в полі — щодня, разом із Лізою та Dao.",
+    "i2.t":"Живі розбори в груповому полі","i2.b":"Твій запит — у фокусі колективного поля. Не теорія, а пряма робота.",
+    "i3.t":"Індивідуальна хілінг-сесія","i3.b":"Окрема сесія, присвячена саме твоєму процесу.",
+    "i4.t":"Робота із сексуальною енергією","i4.b":"Зняття блоків і повернення до власної енергії.",
+    "place.eyebrow":"Місце","place.title":"Очищення на всіх рівнях",
+    "place.body":"Вілла на закритій території заповідної зони, далеко від усього. Дім складений з каменю, викопаного на цій же землі, — дім, що звів себе сам. Дерево, нетоксичні матеріали, антикваріат з Азії та Індії, якому по 600–700 років. Власна криничана вода. Тиша. Жодної машини.",
+    "place.loc":"50 хвилин до Лісабону · 20 хвилин до Сінтри · 15 хвилин до улюбленого пляжу Лізи",
+    "hosts.eyebrow":"Хто веде","hosts.title":"Ліза і Dao",
+    "hosts.liza.n":"Ліза","hosts.liza.r":"— фасилітатор трансформації. Знаходить кореневу причину запиту, перепрошиває, відпускає.",
+    "hosts.dao.n":"Dao","hosts.dao.r":"— архітектор поля. Тримає простір та енергетичну топологію процесу.",
+    "hosts.together":"Разом вони тримають колективне поле ретриту.",
+    "pr.eyebrow":"Практичне","pr.title":"Як влаштовані чотири дні",
+    "pr.dates.l":"Дати","pr.dates.v":"27–30 червня · 3 ночі, 4 дні",
+    "pr.stay.l":"Розміщення","pr.stay.v":"По двоє в кімнаті, на віллі",
+    "pr.food.l":"Їжа","pr.food.v":"Вечері з локальних фермерських продуктів, чайні церемонії. Сніданки — продукти на віллі, готуємо самі. Тільки еко.",
+    "pr.incl.l":"Входить у вартість","pr.incl.v":"Проживання, усі практики, групова та індивідуальна робота, вечері, чайні церемонії, продукти для сніданків.",
+    "pr.excl.l":"Не входить","pr.excl.v":"Авіаквитки, трансфер до місця, особисті витрати.",
+    "price.eyebrow":"Участь","price.title":"Вартість",
+    "price.solo.l":"Одне місце","price.couple.l":"Для пари","price.couple.n":"Для чоловіка і жінки",
+    "price.kids":"Можна з дітьми (1–2) — за домовленістю. Ми будемо раді малечі.",
+    "price.ext":"За бажанням — ще 2–3 дні глибшої індивідуальної роботи після ретриту. Умови обговорюються окремо.",
+    "apply.eyebrow":"Заявка","apply.title":"Напиши свій запит",
+    "apply.body":"Перед приїздом кожен учасник надсилає нам свій запит — це початок роботи. Опиши, з чим хочеш прийти, і ми зв’яжемося.",
+    "apply.name":"Ім’я","apply.contact":"Telegram або e-mail","apply.req":"Твій запит","apply.send":"Надіслати заявку",
+    "apply.thanks":"Дякуємо. Це чернетка — на готовому сайті заявка прийде нам напряму. Поки напиши, будь ласка, в Telegram 👇",
+    "apply.or":"або","apply.tg":"Написати в Telegram",
+    "apply.ok":"Дякуємо! Заявку надіслано — ми зв’яжемося з тобою.",
+    "apply.fail":"Не вдалося надіслати. Напиши, будь ласка, в Telegram 👇",
+    "footer.line":"Ретрит · 27–30 червня 2026 · Португалія"
+  }
+};
+
+function setLang(lang){
+  LANG=lang;
+  document.documentElement.lang = (lang==='ua'?'uk':'ru');
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    if(I18N[lang] && I18N[lang][k]!==undefined) el.textContent=I18N[lang][k];
+  });
+  document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
+  try{localStorage.setItem('retreat_lang',lang)}catch(e){}
+}
+
+function handleApply(e){
+  e.preventDefault();
+  const f=e.target;
+  const note=document.getElementById('formnote');
+  const body=new URLSearchParams(new FormData(f)).toString();
+  fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body})
+    .then(r=>{ if(!r.ok) throw new Error('bad'); f.reset(); note.textContent=I18N[LANG]['apply.ok']; note.classList.add('show'); })
+    .catch(()=>{ note.textContent=I18N[LANG]['apply.fail']; note.classList.add('show'); });
+  return false;
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  let saved='ru';
+  try{saved=localStorage.getItem('retreat_lang')||'ru'}catch(e){}
+  if(saved!=='ru') setLang(saved);
+
+  const nav=document.getElementById('nav');
+  const onScroll=()=>nav.classList.toggle('scrolled',window.scrollY>window.innerHeight*0.7);
+  onScroll();window.addEventListener('scroll',onScroll,{passive:true});
+
+  const io=new IntersectionObserver((es)=>{
+    es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target)}});
+  },{threshold:0.12,rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+});
+</script>
+</body>
+</html>
