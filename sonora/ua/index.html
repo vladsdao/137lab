@@ -57,6 +57,9 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;o
 .top a.lnk{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:currentColor;text-decoration:none;opacity:.85}
 .top a.lnk:hover{opacity:1}
 .top a.book{border-bottom:1px solid currentColor;padding-bottom:3px;opacity:1}
+.top a.lnk.book{white-space:nowrap}
+.t-short{display:none}
+@media(max-width:680px){.top{padding-left:16px;padding-right:16px}.top .actions{gap:16px}.top a.contact{display:none}.t-full{display:none}.t-short{display:inline}}
 
 .hero{position:relative;min-height:100svh;display:flex;align-items:center;justify-content:center;text-align:center;padding:var(--pad);overflow:hidden;color:#F2ECDF}
 .hero .bg{position:absolute;inset:0;z-index:0}
@@ -177,8 +180,8 @@ footer .fl a{color:var(--accent);text-decoration:none}
   <div class="actions">
     <a href="../" class="lnk">RU</a>
     <a href="../en/" class="lnk">EN</a>
-    <a href="https://t.me/viki_assistant" target="_blank" rel="noopener" class="lnk">Зв'язатися</a>
-    <a href="#apply" class="lnk book">Залишити заявку</a>
+    <a href="https://t.me/viki_assistant" target="_blank" rel="noopener" class="lnk contact">Зв'язатися</a>
+    <a href="#apply" class="lnk book"><span class="t-full">Залишити заявку</span><span class="t-short">Заявка</span></a>
   </div>
 </header>
 
