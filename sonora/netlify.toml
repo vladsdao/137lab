@@ -1,0 +1,9 @@
+# Netlify config for the Sonora landing page.
+# Publish the folder as static and serve the Telegram relay function.
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+# Secrets to set in Netlify → Site settings → Environment variables:
+#   TELEGRAM_BOT_TOKEN
+#   TELEGRAM_CHAT_ID

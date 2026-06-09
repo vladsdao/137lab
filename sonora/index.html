@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sonora · Возврат к своей частоте</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Spectral:ital,wght@0,400;0,500;1,400&family=Manrope:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap&subset=cyrillic,latin" rel="stylesheet">
+<style>
+:root{
+  --paper:#FAF8F2; --ink:#211C16; --ink-soft:#5B5346; --faint:#A99E8C;
+  --accent:#A8431F; --rule:rgba(33,28,22,.14); --rule-2:rgba(33,28,22,.07);
+  --sans:'Manrope',system-ui,sans-serif;
+  --display:'Spectral',Georgia,serif;
+  --wordmark:'Fraunces',Georgia,serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --pad:clamp(22px,5vw,80px); --col:660px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:17px;line-height:1.62;letter-spacing:-0.003em;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+::selection{background:var(--accent);color:var(--paper)}
+img{display:block}
+p{color:var(--ink-soft)}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.045;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:190px}
+
+.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--faint)}
+.eyebrow .n{color:var(--accent)}
+
+.top{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:18px var(--pad);transition:background .4s,box-shadow .4s,color .4s,padding .4s;color:#EFE9DC}
+.top.scrolled{background:rgba(250,248,242,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 1px 0 var(--rule);color:var(--ink);padding-top:12px;padding-bottom:12px}
+.top .wm{font-family:var(--wordmark);font-weight:500;font-size:19px;letter-spacing:.01em;color:currentColor;text-decoration:none}
+.top .actions{display:flex;align-items:center;gap:20px}
+.top a.lnk{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:currentColor;text-decoration:none;opacity:.85}
+.top a.lnk:hover{opacity:1}
+.top a.book{border-bottom:1px solid currentColor;padding-bottom:3px;opacity:1}
+
+.hero{position:relative;min-height:100svh;display:flex;align-items:center;justify-content:center;text-align:center;padding:var(--pad);overflow:hidden;color:#F2ECDF}
+.hero .bg{position:absolute;inset:0;z-index:0}
+.hero .bg img{width:100%;height:100%;object-fit:cover;object-position:50% 38%;filter:grayscale(.42) contrast(1.05) brightness(.95) sepia(.06)}
+.hero::after{content:'';position:absolute;inset:0;z-index:1;background:radial-gradient(130% 105% at 50% 40%,rgba(16,14,11,.18),rgba(16,14,11,.64))}
+.hero .grainover{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.5;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");background-size:170px}
+.hero .frame{position:absolute;inset:clamp(13px,2.2vw,28px);z-index:3;border:1px solid rgba(242,236,223,.32);pointer-events:none}
+.hero .mark{position:absolute;z-index:4;font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(242,236,223,.8)}
+.hero .mark.tl{top:clamp(26px,3.6vw,46px);left:clamp(26px,3.6vw,46px)}
+.hero .inner{position:relative;z-index:4}
+.hero h1{font-family:var(--wordmark);font-weight:400;font-size:clamp(72px,16vw,210px);line-height:.92;letter-spacing:.005em;color:#F4EEE2}
+.hero .tagline{font-family:var(--mono);font-weight:500;font-size:clamp(13px,1.8vw,18px);letter-spacing:.16em;text-transform:uppercase;color:#F4EEE2;margin-top:.85em}
+.hero .info{font-family:var(--mono);font-size:clamp(11px,1.4vw,13px);letter-spacing:.16em;text-transform:uppercase;color:rgba(244,238,226,.92);margin-top:1.7em}
+.hero .info2{font-family:var(--mono);font-size:clamp(10px,1.2vw,11.5px);letter-spacing:.16em;text-transform:uppercase;color:rgba(244,238,226,.72);margin-top:.6em}
+.hero .cta{display:inline-block;margin-top:1.9em;font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#F4EEE2;text-decoration:none;border-bottom:1px solid rgba(244,238,226,.55);padding-bottom:5px;transition:border-color .3s}
+.hero .cta:hover{border-color:#F4EEE2}
+
+.ed{max-width:var(--col);margin:0 auto;padding:clamp(58px,9.5vh,124px) var(--pad)}
+.ed.center{text-align:center}
+.ed .eyebrow{display:block;margin-bottom:clamp(18px,3vw,28px)}
+.ed h2{font-family:var(--display);font-weight:400;font-size:clamp(31px,4.8vw,56px);line-height:1.06;letter-spacing:-0.01em;color:var(--ink);margin-bottom:.5em}
+.ed h2 em{font-style:italic}
+.ed .lead{font-family:var(--display);font-weight:400;font-size:clamp(23px,2.9vw,33px);line-height:1.3;color:var(--ink)}
+.ed p{font-size:16.5px;line-height:1.68}
+.ed p+p{margin-top:1.05em}
+.ed .big{font-family:var(--display);font-size:clamp(20px,2.4vw,26px);line-height:1.4;color:var(--ink)}
+
+.sympt{display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(22px,4vw,46px);margin:1.4em 0;border-top:1px solid var(--rule)}
+.sympt div{padding:11px 2px;border-bottom:1px solid var(--rule-2);font-size:15px;color:var(--ink);line-height:1.4}
+
+.method{margin:1.1em 0;padding-left:0;list-style:none}
+.method li{position:relative;padding:7px 0 7px 22px;font-size:16px;color:var(--ink-soft)}
+.method li::before{content:'—';position:absolute;left:0;color:var(--accent)}
+.method li b{color:var(--ink);font-weight:600}
+
+.shot{position:relative;width:100%;height:clamp(420px,82vh,820px);overflow:hidden}
+.shot img{width:100%;height:100%;object-fit:cover;filter:grayscale(.38) contrast(1.04) brightness(.97) sepia(.05)}
+.shot .cap{position:absolute;left:var(--pad);bottom:clamp(22px,3vw,38px);z-index:2;color:#F4EEE2;font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;text-shadow:0 1px 14px rgba(0,0,0,.5)}
+.shot .quote{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;text-align:center;padding:var(--pad)}
+.shot .quote q{font-family:var(--display);font-style:italic;font-weight:400;quotes:none;font-size:clamp(28px,4.4vw,52px);line-height:1.12;color:#F4EEE2;max-width:18ch;text-shadow:0 2px 30px rgba(0,0,0,.4)}
+.shot::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(16,14,11,.34),rgba(16,14,11,.02) 40%,rgba(16,14,11,.14));z-index:1}
+
+.photo{max-width:760px;margin:0 auto;padding:clamp(8px,2vw,20px) var(--pad) clamp(40px,7vh,80px)}
+.photo .inner{position:relative;padding:11px}
+.photo .inner::after{content:'';position:absolute;inset:0;border:1px solid var(--rule);pointer-events:none}
+.photo img{width:100%;height:clamp(320px,50vh,500px);object-fit:cover;filter:grayscale(.4) contrast(1.04) sepia(.05)}
+.photo .cap{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-top:13px;text-align:center}
+
+.gallery{max-width:1180px;margin:0 auto;padding:clamp(6px,1.5vw,14px) var(--pad) clamp(50px,8vh,100px);display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(8px,1.3vw,15px)}
+.gallery figure{position:relative;overflow:hidden;aspect-ratio:3/4}
+.gallery img{width:100%;height:100%;object-fit:cover;filter:grayscale(.42) contrast(1.05) sepia(.06);transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+.gallery figure:hover img{transform:scale(1.045)}
+@media(max-width:680px){.gallery{grid-template-columns:1fr 1fr;gap:8px}}
+
+.triad{display:flex;gap:clamp(16px,3vw,40px);justify-content:center;margin:clamp(22px,4vw,38px) 0;flex-wrap:wrap}
+.triad span{font-family:var(--display);font-style:italic;font-size:clamp(22px,3vw,32px);color:var(--accent)}
+.triad span:not(:last-child)::after{content:'·';margin-left:clamp(16px,3vw,40px);color:var(--faint);font-style:normal}
+
+.modules{max-width:var(--col);margin:0 auto;padding:0 var(--pad) clamp(56px,9vh,120px)}
+.mod{padding:clamp(24px,4vw,38px) 0;border-top:1px solid var(--rule)}
+.mod:last-child{border-bottom:1px solid var(--rule)}
+.mod .mi{display:flex;align-items:baseline;gap:14px;margin-bottom:12px}
+.mod .mi .num{font-family:var(--mono);font-size:11px;color:var(--accent)}
+.mod h3{font-family:var(--display);font-weight:500;font-size:clamp(21px,2.7vw,28px);line-height:1.1}
+.mod .who{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-left:auto;align-self:center}
+.mod p{font-size:16px;max-width:58ch}
+.mod .extra{font-size:15px;color:var(--ink-soft);margin-top:10px}
+.mod .extra b{color:var(--ink);font-weight:600}
+
+.format{max-width:var(--col);margin:0 auto;padding:clamp(56px,9vh,120px) var(--pad)}
+.spec{border-top:1px solid var(--rule);margin:clamp(24px,4vw,36px) 0 0}
+.spec .row{display:grid;grid-template-columns:140px 1fr;gap:20px;padding:15px 0;border-bottom:1px solid var(--rule-2)}
+.spec dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);padding-top:5px}
+.spec dd{font-size:16.5px;color:var(--ink)}
+.spec dd .price{font-family:var(--display);font-size:24px;color:var(--ink)}
+.deepen{margin-top:18px;font-family:var(--display);font-style:italic;font-size:18px;color:var(--ink-soft)}
+.cta-row{display:flex;gap:26px;align-items:center;margin-top:clamp(28px,4vw,42px);flex-wrap:wrap}
+.btn{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;cursor:pointer}
+.btn.solid{background:var(--ink);color:var(--paper);padding:15px 30px;border-radius:2px;transition:opacity .3s}
+.btn.solid:hover{opacity:.85}
+.btn.line{color:var(--ink);border-bottom:1px solid var(--ink);padding-bottom:4px}
+
+.apply{max-width:var(--col);margin:0 auto;padding:clamp(56px,9vh,118px) var(--pad);text-align:center}
+.apply h2{font-family:var(--display);font-weight:400;font-size:clamp(30px,4.6vw,52px);margin:.3em 0 .5em}
+.apply p{max-width:48ch;margin:0 auto 32px}
+form{max-width:460px;margin:0 auto;text-align:left}
+.field{margin-bottom:20px}
+.field label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
+.field input,.field textarea{width:100%;background:transparent;border:none;border-bottom:1px solid var(--rule);font-family:var(--sans);font-size:17px;color:var(--ink);padding:8px 0}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--accent)}
+.submit{width:100%;background:var(--ink);color:var(--paper);border:none;font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;padding:16px;cursor:pointer;margin-top:6px;border-radius:2px}
+.hp{position:absolute;left:-9999px}
+.or{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin:20px 0}
+.tg{display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent);padding-bottom:4px}
+.formnote{display:none;margin-top:18px;color:var(--ink-soft);font-size:16px}
+.formnote.show{display:block}
+
+footer{text-align:center;padding:clamp(50px,8vw,90px) var(--pad);border-top:1px solid var(--rule)}
+footer .wm{font-family:var(--wordmark);font-size:30px;margin-bottom:14px}
+footer .fl{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);line-height:2.2}
+footer .fl a{color:var(--accent);text-decoration:none}
+
+@media(max-width:560px){
+  .spec .row{grid-template-columns:1fr;gap:3px;padding:13px 0}
+  .mod .mi{flex-wrap:wrap}.mod .who{margin-left:0;width:100%}
+  .sympt{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header class="top" id="top">
+  <a href="#top-anchor" class="wm">Sonora</a>
+  <div class="actions">
+    <a href="https://t.me/viki_assistant" target="_blank" rel="noopener" class="lnk">Связаться</a>
+    <a href="#apply" class="lnk book">Оставить заявку</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top-anchor">
+  <div class="bg"><img src="images/hero-ocean.jpeg" alt=""></div>
+  <div class="grainover"></div>
+  <div class="frame"></div>
+  <span class="mark tl">137 Lab</span>
+  <div class="inner">
+    <h1>Sonora</h1>
+    <div class="tagline">Возврат к своей частоте</div>
+    <div class="info">27–30 июня 2026 · Синтра, Португалия</div>
+    <div class="info2">Четыре дня · авторская программа погружения</div>
+    <a href="#apply" class="cta">Оставить заявку →</a>
+  </div>
+</section>
+
+<!-- IGNITE -->
+<section class="ed center">
+  <p class="lead" style="max-width:20ch;margin:0 auto">Помните себя на гребне волны — когда всё складывается само, без усилия и борьбы?</p>
+  <p class="lead" style="max-width:22ch;margin:.55em auto 0;color:var(--accent)">Это синхронистичность. Ваша природная частота.</p>
+  <p style="max-width:54ch;margin:2em auto 0">Настала эра игры. Мир входит в пост-трудовую экономику: логику, анализ и рутину забирает ИИ. Остаётся то, что невозможно оцифровать — творчество, игра, живая энергия. Вернуть их в себе — главная задача сейчас. И, пожалуй, самая приятная.</p>
+  <p style="max-width:54ch;margin:1em auto 0">Sonora — про это. Звонкая, звучащая чисто, без шума. Возврат к своей изначальной частоте: к себе — играющему, творящему, живому.</p>
+</section>
+
+<figure class="shot">
+  <img src="images/beach.jpeg" alt="">
+  <span class="cap">Атлантика · Синтра</span>
+</figure>
+
+<!-- 01 — problem -->
+<section class="ed">
+  <span class="eyebrow"><span class="n">01</span> — Почему мы это теряем</span>
+  <h2>Сбросить шкуру.</h2>
+  <p>Почти все живут отрезанными от этой частоты — в чужой шкуре, которую считали «нормой» лет с двух. Это не ваш выбор: ломает среда, как токсичный воздух, которого не замечаешь.</p>
+  <p>Узнаёте себя?</p>
+  <div class="sympt">
+    <div>страх проявляться</div><div>выключенность, потерянность</div>
+    <div>серость, день сурка</div><div>приглушённые чувства</div>
+    <div>симптомы в теле — от кожи до аутоиммунного</div><div>стеклянный потолок в деньгах</div>
+    <div>подавленное либидо</div><div>неуверенность в себе</div>
+    <div>нет вдохновения</div><div>сверхконтроль</div>
+    <div>тревожность и усталость</div><div>не получается расслабиться</div>
+    <div>зависимости</div><div>кризис смыслов</div>
+    <div>растворение в отношениях</div><div>и список можно продолжать</div>
+  </div>
+  <p>Так живёт 98% людей старше 25 лет (NASA creativity research). Каждый излом крадёт энергию — вашу витальность, здоровье, молодость и тот детский восторг, который не вернёт ни одно взрослое достижение.</p>
+</section>
+
+<!-- 02 — why nothing worked -->
+<section class="ed">
+  <span class="eyebrow"><span class="n">02</span> — Почему ничего не работало</span>
+  <h2><em>«Везде были, всё пробовали. Ничего не работает.»</em></h2>
+  <p>В вас живут трое. Когда вам было около двух лет, их поссорили и сделали врагами — и с тех пор они воюют, разрушая друг друга.</p>
+  <div class="triad"><span>Разум</span><span>Чувства</span><span>Тело</span></div>
+  <p>Классические методы трогают одного, максимум двух — поэтому всё откатывает:</p>
+  <ul class="method">
+    <li><b>Ум</b> — коучинг, психология, книги. Тело и чувства сопротивляются.</li>
+    <li><b>Чувства</b> — расширенные состояния, звук, психоделики. Без интеграции ум стирает опыт.</li>
+    <li><b>Тело</b> — йога, дыхание, практики. Без осмысления зажимы возвращаются.</li>
+  </ul>
+  <p>Помирить троих можно только на фундаментальном уровне — в Сознании. Найти точку сбоя и синхронизировать всех. Но сначала придётся умереть — метафизически, хотя этот переход ощущается реальнее похорон.</p>
+</section>
+
+<!-- 03 — result / synchronicity -->
+<section class="ed center">
+  <span class="eyebrow"><span class="n">03</span> — Что меняется</span>
+  <h2>Снова на гребне волны.</h2>
+  <p style="max-width:54ch;margin:0 auto">Индикатор, что получилось, — синхронистичность. Ваше психо-эмоциональное состояние определяет, насколько вы созвучны своей среде. А с ним — здоровье, деньги, отношения, реализация. Когда вы в резонансе, мир складывается на вашей стороне.</p>
+  <p style="max-width:54ch;margin:1.1em auto 0">В среднем человеку хватает 3–4 личных сессий с нами, чтобы качественно изменить жизнь и закрепиться в своей природе. Мы называем это <b style="color:var(--ink);font-weight:500">восстановлением внутреннего Дао</b>.</p>
+  <p style="max-width:54ch;margin:1.1em auto 0">А за четыре дня в общем поле синергии вы снимаете то, что давило, возможно, всю «осознанную» жизнь. <em style="font-family:var(--display)">Со</em> — это вместе: чистый воздух коллективного поля, в котором вдруг понимаешь, что всю жизнь дышал ядом. Личный опыт здесь усиливается в геометрической прогрессии.</p>
+</section>
+
+<figure class="shot">
+  <img src="images/horse.jpeg" alt="">
+  <div class="quote"><q>будто весь мир — на вашей стороне</q></div>
+</figure>
+
+<!-- 04 — method -->
+<section class="ed">
+  <span class="eyebrow"><span class="n">04</span> — Как это работает</span>
+  <h2>Три модуля. Мирим троих.</h2>
+  <p>У Соноры есть общий лейтмотив — возврат к своей частоте: сонорность, проявленность и раскрытие вашего гениального творчества и уникальности.</p>
+  <p>И есть индивидуальная часть. Мы разбираем личный запрос каждого участника — и вокруг него собирается ретрит. Не общие практики для всех, а работа со всеми тремя частями Сознания, выстроенная вокруг того, что важно именно вам.</p>
+</section>
+<div class="modules">
+  <div class="mod">
+    <div class="mi"><span class="num">01</span><h3>Mind-coding. Хирургия Сознания</h3><span class="who">Лиза</span></div>
+    <p>Работа с Лизой уникальна соединением мета-рационализма и сверхчувствительности. Она снимает информацию с поля с поразительной точностью и находит корневую точку сбоя. Одна личная практика радикально меняет жизнь.</p>
+    <div class="extra"><b>Опора для ума:</b> живые лекции · работа с архитектурой Сознания · простые алгоритмы, которые вы увезёте с собой на всю жизнь.</div>
+  </div>
+  <div class="mod">
+    <div class="mi"><span class="num">02</span><h3>Расширение диапазона чувств</h3><span class="who">Лиза и Влад</span></div>
+    <p>Причина всех блоков — страх. Но это не враг, а предохранитель ума. Мы снимаем защиты и перезаписываем подавленный опыт как ресурс — и потребность в страхе исчезает.</p>
+    <div class="extra"><b>Что ждёт:</b> коллективные разборы вашего запроса · опыт группового резонанса · творческий плейграунд и арт-мастер-класс от художницы Анастасии Пасечник — стихи, музыка, вокал, рисунок · арте-факт силы домой.</div>
+  </div>
+  <div class="mod">
+    <div class="mi"><span class="num">03</span><h3>Embodiment. Телесный опыт</h3><span class="who">Влад</span></div>
+    <p>Технологичные церемонии — игра со светом, звуком и воображением. Влад использует 15 лет в мировой видео-индустрии, чтобы срежиссировать проживание трансформации на уровне тела. Тело помнит всё — это ваша самая устойчивая опора при возвращении в жизнь.</p>
+    <div class="extra"><b>В программе:</b> сенсорная работа через цвет, свет, звук, вкус, запах · индивидуальный мульти-сенсорный хилинг. Глубину можно усилить индивидуально — по запросу.</div>
+  </div>
+</div>
+
+<figure class="shot">
+  <img src="images/cliff.jpeg" alt="">
+  <span class="cap">Океан · скалы · заповедная зона</span>
+</figure>
+
+<!-- hosts / about us -->
+<section class="ed">
+  <span class="eyebrow">Кто ведёт</span>
+  <h2>Привет, мы Влад и Лиза.</h2>
+  <p>Основатели 137 Lab. Последние 3,5 года мы исследуем, как люди взаимодействуют на уровне коллективного сознания — и переводим это в живой опыт.</p>
+</section>
+<figure class="shot">
+  <img src="images/us.jpeg" alt="">
+  <span class="cap">Влад и Лиза · Синтра</span>
+</figure>
+<div class="modules">
+  <div class="mod">
+    <div class="mi"><h3>Влад</h3><span class="who">Режиссёр опыта</span></div>
+    <p>Философ, визионер, психонавт и инноватор на стыке духовности, науки, технологий и творчества. Воспринимаю вдохновение как технологию, а раскрытие творческого потенциала в людях — моя страсть. 15 лет в мировой видео-индустрии на топовых проектах: на Соноре превращаю трансформацию в проживание на уровне тела — свет, звук, церемония.</p>
+    <p>Владею переключением реальности и мульти-сенсорными техниками. Представляю United Consciousness — объединённое сознание — и делюсь доступом к техникам, ранее людям недоступным.</p>
+  </div>
+  <div class="mod">
+    <div class="mi"><h3>Лиза</h3><span class="who">Архитектор Сознания</span></div>
+    <p>Работаю с сознанием как с мета-системой: исследую его архитектуру и перевожу духовность и магию в точную науку. Могу решить задачу любого человека в любой области и сложности — на уровнях, где Сознание создаёт реальность. При одном условии: если человек готов к трансформации.</p>
+  </div>
+</div>
+<section class="ed">
+  <p class="big">Эволюция сознания, как мы её видим, — это игра, в которую играют с иронией. Без догм, медитаций, йоги и аскезы — только научный взгляд, применённый как технология. И трансформационный опыт в близком кругу.</p>
+</section>
+
+<!-- place -->
+<section class="ed">
+  <span class="eyebrow">Синтра · Португалия</span>
+  <h2>Место силы.</h2>
+  <p>Вилла на закрытой территории заповедной зоны, далеко от всего. Камень, выкопанный на этой же земле; дерево и нетоксичные материалы; антиквариат из Азии и Индии, которому по 600–700 лет. Своя колодезная вода. Тишина. Ни одной машины — только океан, сосны и сухой свет Синтры.</p>
+  <p>50 минут до Лиссабона · 20 минут до Синтры · 15 минут до океана.</p>
+</section>
+<div class="gallery">
+  <figure><img src="images/gate.jpeg" alt=""></figure>
+  <figure><img src="images/house.jpeg" alt=""></figure>
+  <figure><img src="images/stone-door.jpeg" alt=""></figure>
+  <figure><img src="images/table-eucalyptus.jpeg" alt=""></figure>
+  <figure><img src="images/antique-table.jpeg" alt=""></figure>
+  <figure><img src="images/steps-pine.jpeg" alt=""></figure>
+</div>
+
+<!-- format -->
+<section class="format" id="format">
+  <span class="eyebrow">Формат · участие</span>
+  <dl class="spec">
+    <div class="row"><dt>Даты</dt><dd>27–30 июня 2026 · 3 ночи, 4 дня</dd></div>
+    <div class="row"><dt>Место</dt><dd>Вилла в заповедной зоне · Синтра, Португалия</dd></div>
+    <div class="row"><dt>Размещение</dt><dd>По двое в комнате, на вилле</dd></div>
+    <div class="row"><dt>Группа</dt><dd>Закрытая — всего 6 мест. Работа вокруг личного запроса каждого.</dd></div>
+    <div class="row"><dt>Еда</dt><dd>Ужины из локальных фермерских продуктов, чайные церемонии, эко-завтраки</dd></div>
+    <div class="row"><dt>Вклад</dt><dd><span class="price">2&thinsp;700&nbsp;€</span> соло · <span class="price">4&thinsp;000&nbsp;€</span> пара</dd></div>
+    <div class="row"><dt>Входит</dt><dd>Проживание, все практики, групповая и индивидуальная работа, ужины, чайные церемонии, продукты для завтраков</dd></div>
+    <div class="row"><dt>Не входит</dt><dd>Перелёт, трансфер, личные расходы</dd></div>
+  </dl>
+  <p class="deepen">Можно с детьми (1–2) — по договорённости. По желанию — ещё 2–3 дня более глубокой индивидуальной работы после ретрита.</p>
+  <div class="cta-row">
+    <a href="#apply" class="btn solid">Оставить заявку</a>
+    <a href="https://t.me/viki_assistant" target="_blank" rel="noopener" class="btn line">Связаться</a>
+  </div>
+</section>
+
+<!-- apply -->
+<section class="apply" id="apply">
+  <span class="eyebrow">Заявка</span>
+  <h2>Оставить заявку</h2>
+  <p>Мест всего шесть. Оставьте имя и ваш Telegram — и, если захотите, пару слов о том, с чем хотите прийти. Виктория свяжется с вами в Telegram.</p>
+  <form name="sonora-application" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="return handleApply(event)">
+    <input type="hidden" name="form-name" value="sonora-application">
+    <p class="hp"><label>Не заполняйте: <input name="bot-field"></label></p>
+    <div class="field"><label>Имя</label><input type="text" name="name" required></div>
+    <div class="field"><label>Ваш Telegram</label><input type="text" name="contact" placeholder="@username" required></div>
+    <div class="field"><label>С чем хотите прийти — необязательно</label><textarea name="request" rows="2"></textarea></div>
+    <button type="submit" class="submit">Отправить</button>
+    <div class="formnote" id="formnote"></div>
+  </form>
+  <div class="or">или</div>
+  <a class="tg" href="https://t.me/viki_assistant" target="_blank" rel="noopener">Написать Виктории в Telegram →</a>
+</section>
+
+<footer>
+  <div class="wm">Sonora</div>
+  <div class="fl">137 LAB · 27—30 VI 2026 · Синтра<br><a href="https://t.me/viki_assistant" target="_blank" rel="noopener">Связаться в Telegram →</a></div>
+</footer>
+
+<script>
+function handleApply(e){
+  e.preventDefault();
+  var f=e.target,note=document.getElementById('formnote');
+  var body=new URLSearchParams(new FormData(f)).toString();
+  fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body})
+    .then(function(r){if(!r.ok)throw 0;f.reset();note.textContent='Спасибо! Заявка принята — Виктория свяжется с вами в Telegram.';note.classList.add('show')})
+    .catch(function(){note.textContent='Не получилось отправить. Напишите, пожалуйста, в Telegram ниже.';note.classList.add('show')});
+  return false;
+}
+document.addEventListener('DOMContentLoaded',function(){
+  var top=document.getElementById('top'),onS=function(){top.classList.toggle('scrolled',window.scrollY>window.innerHeight*0.82)};onS();
+  window.addEventListener('scroll',onS,{passive:true});
+});
+</script>
+</body>
+</html>
