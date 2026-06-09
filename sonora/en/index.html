@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sonora · Return to Your Frequency</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Spectral:ital,wght@0,400;0,500;1,400&family=Manrope:wght@400;500;600&display=swap&subset=latin" rel="stylesheet">
+<style>
+:root{
+  --paper:#FAF8F2; --ink:#211C16; --ink-soft:#5B5346; --faint:#A99E8C;
+  --accent:#A8431F; --rule:rgba(33,28,22,.14); --rule-2:rgba(33,28,22,.07);
+  --sans:'Manrope',system-ui,sans-serif;
+  --display:'Spectral',Georgia,serif;
+  --wordmark:'Fraunces',Georgia,serif;
+  --mono:ui-monospace,'SFMono-Regular',Menlo,monospace;
+  --pad:clamp(22px,5vw,80px); --col:660px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:17px;line-height:1.62;letter-spacing:-0.003em;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+::selection{background:var(--accent);color:var(--paper)}
+img{display:block}
+p{color:var(--ink-soft)}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.045;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:190px}
+
+.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--faint)}
+.eyebrow .n{color:var(--accent)}
+
+.top{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:18px var(--pad);transition:background .4s,box-shadow .4s,color .4s,padding .4s;color:#EFE9DC}
+.top.scrolled{background:rgba(250,248,242,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 1px 0 var(--rule);color:var(--ink);padding-top:12px;padding-bottom:12px}
+.top .wm{font-family:var(--wordmark);font-weight:500;font-size:19px;letter-spacing:.01em;color:currentColor;text-decoration:none}
+.top .actions{display:flex;align-items:center;gap:20px}
+.top a.lnk{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:currentColor;text-decoration:none;opacity:.85}
+.top a.lnk:hover{opacity:1}
+.top a.book{border-bottom:1px solid currentColor;padding-bottom:3px;opacity:1}
+
+.hero{position:relative;min-height:100svh;display:flex;align-items:center;justify-content:center;text-align:center;padding:var(--pad);overflow:hidden;color:#F2ECDF}
+.hero .bg{position:absolute;inset:0;z-index:0}
+.hero .bg img{width:100%;height:100%;object-fit:cover;object-position:50% 38%;filter:grayscale(.42) contrast(1.05) brightness(.95) sepia(.06)}
+.hero::after{content:'';position:absolute;inset:0;z-index:1;background:radial-gradient(130% 105% at 50% 40%,rgba(16,14,11,.18),rgba(16,14,11,.64))}
+.hero .grainover{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.5;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");background-size:170px}
+.hero .frame{position:absolute;inset:clamp(13px,2.2vw,28px);z-index:3;border:1px solid rgba(242,236,223,.32);pointer-events:none}
+.hero .mark{position:absolute;z-index:4;font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(242,236,223,.8)}
+.hero .mark.tl{top:clamp(26px,3.6vw,46px);left:clamp(26px,3.6vw,46px)}
+.hero .inner{position:relative;z-index:4}
+.hero h1{font-family:var(--wordmark);font-weight:400;font-size:clamp(72px,16vw,210px);line-height:.92;letter-spacing:.005em;color:#F4EEE2}
+.hero .tagline{font-family:var(--mono);font-weight:500;font-size:clamp(13px,1.8vw,18px);letter-spacing:.16em;text-transform:uppercase;color:#F4EEE2;margin-top:.85em}
+.hero .info{font-family:var(--mono);font-size:clamp(11px,1.4vw,13px);letter-spacing:.16em;text-transform:uppercase;color:rgba(244,238,226,.92);margin-top:1.7em}
+.hero .info2{font-family:var(--mono);font-size:clamp(10px,1.2vw,11.5px);letter-spacing:.16em;text-transform:uppercase;color:rgba(244,238,226,.72);margin-top:.6em}
+.hero .cta{display:inline-block;margin-top:1.9em;font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#F4EEE2;text-decoration:none;border-bottom:1px solid rgba(244,238,226,.55);padding-bottom:5px;transition:border-color .3s}
+.hero .cta:hover{border-color:#F4EEE2}
+
+.ed{max-width:var(--col);margin:0 auto;padding:clamp(58px,9.5vh,124px) var(--pad)}
+.ed.center{text-align:center}
+.ed .eyebrow{display:block;margin-bottom:clamp(18px,3vw,28px)}
+.ed h2{font-family:var(--display);font-weight:400;font-size:clamp(31px,4.8vw,56px);line-height:1.06;letter-spacing:-0.01em;color:var(--ink);margin-bottom:.5em}
+.ed h2 em{font-style:italic}
+.ed .lead{font-family:var(--display);font-weight:400;font-size:clamp(23px,2.9vw,33px);line-height:1.3;color:var(--ink)}
+.ed p{font-size:16.5px;line-height:1.68}
+.ed p+p{margin-top:1.05em}
+.ed .big{font-family:var(--display);font-size:clamp(20px,2.4vw,26px);line-height:1.4;color:var(--ink)}
+
+.sympt{display:grid;grid-template-columns:1fr 1fr;gap:0 clamp(22px,4vw,46px);margin:1.4em 0;border-top:1px solid var(--rule)}
+.sympt div{padding:11px 2px;border-bottom:1px solid var(--rule-2);font-size:15px;color:var(--ink);line-height:1.4}
+
+.method{margin:1.1em 0;padding-left:0;list-style:none}
+.method li{position:relative;padding:7px 0 7px 22px;font-size:16px;color:var(--ink-soft)}
+.method li::before{content:'—';position:absolute;left:0;color:var(--accent)}
+.method li b{color:var(--ink);font-weight:600}
+
+.shot{position:relative;width:100%;height:clamp(420px,82vh,820px);overflow:hidden}
+.shot img{width:100%;height:100%;object-fit:cover;filter:grayscale(.28) contrast(1.05) brightness(.99) sepia(.1) saturate(1.07)}
+.shot.sea img{object-position:50% 30%}
+.shot .cap{position:absolute;left:var(--pad);bottom:clamp(22px,3vw,38px);z-index:2;color:#F4EEE2;font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;text-shadow:0 1px 14px rgba(0,0,0,.5)}
+.shot .quote{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;text-align:center;padding:var(--pad)}
+.shot .quote q{font-family:var(--display);font-style:italic;font-weight:400;quotes:none;font-size:clamp(28px,4.4vw,52px);line-height:1.12;color:#F4EEE2;max-width:18ch;text-shadow:0 2px 30px rgba(0,0,0,.4)}
+.shot::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(16,14,11,.34),rgba(16,14,11,.02) 40%,rgba(16,14,11,.14));z-index:1}
+
+.photo{max-width:760px;margin:0 auto;padding:clamp(8px,2vw,20px) var(--pad) clamp(40px,7vh,80px)}
+.photo .inner{position:relative;padding:11px}
+.photo .inner::after{content:'';position:absolute;inset:0;border:1px solid var(--rule);pointer-events:none}
+.photo img{width:100%;height:clamp(320px,50vh,500px);object-fit:cover;filter:grayscale(.4) contrast(1.04) sepia(.05)}
+.photo .cap{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-top:13px;text-align:center}
+
+.gallery{max-width:1180px;margin:0 auto;padding:clamp(6px,1.5vw,14px) var(--pad) clamp(50px,8vh,100px);display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(8px,1.3vw,15px)}
+.gallery figure{position:relative;overflow:hidden;aspect-ratio:3/4}
+.gallery img{width:100%;height:100%;object-fit:cover;filter:grayscale(.32) contrast(1.04) sepia(.1) saturate(1.07);transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+.gallery figure:hover img{transform:scale(1.045)}
+@media(max-width:680px){.gallery{grid-template-columns:1fr 1fr;gap:8px}}
+
+.triad{display:flex;gap:clamp(16px,3vw,40px);justify-content:center;margin:clamp(22px,4vw,38px) 0;flex-wrap:wrap}
+.triad span{font-family:var(--display);font-style:italic;font-size:clamp(22px,3vw,32px);color:var(--accent)}
+.triad span:not(:last-child)::after{content:'·';margin-left:clamp(16px,3vw,40px);color:var(--faint);font-style:normal}
+
+.modules{max-width:var(--col);margin:0 auto;padding:0 var(--pad) clamp(56px,9vh,120px)}
+.mod{padding:clamp(24px,4vw,38px) 0;border-top:1px solid var(--rule)}
+.mod:last-child{border-bottom:1px solid var(--rule)}
+.mod .mi{display:flex;align-items:baseline;gap:14px;margin-bottom:12px}
+.mod .mi .num{font-family:var(--mono);font-size:11px;color:var(--accent)}
+.mod h3{font-family:var(--display);font-weight:500;font-size:clamp(21px,2.7vw,28px);line-height:1.1}
+.mod .who{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin-left:auto;align-self:center}
+.mod p{font-size:16px;max-width:58ch}
+.mod .extra{font-size:15px;color:var(--ink-soft);margin-top:10px}
+.mod .extra b{color:var(--ink);font-weight:600}
+
+.format{max-width:var(--col);margin:0 auto;padding:clamp(56px,9vh,120px) var(--pad)}
+.spec{border-top:1px solid var(--rule);margin:clamp(24px,4vw,36px) 0 0}
+.spec .row{display:grid;grid-template-columns:150px 1fr;gap:20px;padding:15px 0;border-bottom:1px solid var(--rule-2)}
+.spec dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);padding-top:5px}
+.spec dd{font-size:16.5px;color:var(--ink)}
+.spec dd .price{font-family:var(--display);font-size:24px;color:var(--ink)}
+.deepen{margin-top:18px;font-family:var(--display);font-style:italic;font-size:18px;color:var(--ink-soft)}
+.cta-row{display:flex;gap:26px;align-items:center;margin-top:clamp(28px,4vw,42px);flex-wrap:wrap}
+.btn{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;cursor:pointer}
+.btn.solid{background:var(--ink);color:var(--paper);padding:15px 30px;border-radius:2px;transition:opacity .3s}
+.btn.solid:hover{opacity:.85}
+.btn.line{color:var(--ink);border-bottom:1px solid var(--ink);padding-bottom:4px}
+
+.apply{max-width:var(--col);margin:0 auto;padding:clamp(56px,9vh,118px) var(--pad);text-align:center}
+.apply h2{font-family:var(--display);font-weight:400;font-size:clamp(30px,4.6vw,52px);margin:.3em 0 .5em}
+.apply p{max-width:48ch;margin:0 auto 32px}
+form{max-width:460px;margin:0 auto;text-align:left}
+.field{margin-bottom:20px}
+.field label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
+.field input,.field textarea{width:100%;background:transparent;border:none;border-bottom:1px solid var(--rule);font-family:var(--sans);font-size:17px;color:var(--ink);padding:8px 0}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--accent)}
+.submit{width:100%;background:var(--ink);color:var(--paper);border:none;font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;padding:16px;cursor:pointer;margin-top:6px;border-radius:2px}
+.hp{position:absolute;left:-9999px}
+.or{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);margin:20px 0}
+.tg{display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent);padding-bottom:4px}
+.formnote{display:none;margin-top:18px;color:var(--ink-soft);font-size:16px}
+.formnote.show{display:block}
+
+footer{text-align:center;padding:clamp(50px,8vw,90px) var(--pad);border-top:1px solid var(--rule)}
+footer .wm{font-family:var(--wordmark);font-size:30px;margin-bottom:14px}
+footer .fl{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);line-height:2.2}
+footer .fl a{color:var(--accent);text-decoration:none}
+
+@media(max-width:560px){
+  .spec .row{grid-template-columns:1fr;gap:3px;padding:13px 0}
+  .mod .mi{flex-wrap:wrap}.mod .who{margin-left:0;width:100%}
+  .sympt{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header class="top" id="top">
+  <a href="#top-anchor" class="wm">Sonora</a>
+  <div class="actions">
+    <a href="../" class="lnk">RU</a>
+    <a href="https://t.me/viki_assistant" target="_blank" rel="noopener" class="lnk">Contact</a>
+    <a href="#apply" class="lnk book">Apply</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top-anchor">
+  <div class="bg"><img src="../images/hero-ocean.jpeg" alt=""></div>
+  <div class="grainover"></div>
+  <div class="frame"></div>
+  <span class="mark tl">137 Lab</span>
+  <div class="inner">
+    <h1>Sonora</h1>
+    <div class="tagline">Return to your frequency</div>
+    <div class="info">27–30 June 2026 · Sintra, Portugal</div>
+    <div class="info2">Four days · an author's immersion programme</div>
+    <a href="#apply" class="cta">Apply →</a>
+  </div>
+</section>
+
+<!-- IGNITE -->
+<section class="ed center">
+  <p class="lead" style="max-width:20ch;margin:0 auto">Remember yourself on the crest of a wave — when everything falls into place by itself, with no effort and no struggle?</p>
+  <p class="lead" style="max-width:22ch;margin:.55em auto 0;color:var(--accent)">That is synchronicity. Your natural frequency.</p>
+  <p style="max-width:56ch;margin:2em auto 0">The age of play has arrived. The world is entering a post-labour economy: logic, analysis and routine are taken over by AI. What remains is what can't be digitised — creativity, play, living energy. Bringing them back in yourself is the main task now. And, perhaps, the most pleasant one.</p>
+  <p style="max-width:56ch;margin:1em auto 0">Sonora is about exactly that. Resonant, ringing clear, without noise. A return to your original frequency — to yourself: playing, creating, alive.</p>
+</section>
+
+<figure class="shot sea">
+  <img src="../images/beach.jpeg" alt="">
+  <span class="cap">The Atlantic · Sintra</span>
+</figure>
+
+<!-- 01 -->
+<section class="ed">
+  <span class="eyebrow"><span class="n">01</span> — Who it's for</span>
+  <h2>Shed the skin.</h2>
+  <p>You probably have no request for this. And the convenient moment will never come. It's frightening. Most likely painful. But only this way can you feel that the skin was never yours — and begin to live in your own nature, without the self-violence you've called "normal" since the age of two.</p>
+  <p>Recognise yourself?</p>
+  <div class="sympt">
+    <div>fear of showing up</div><div>numbness, feeling lost</div>
+    <div>greyness, groundhog day</div><div>muted feelings</div>
+    <div>body symptoms — from skin to autoimmune</div><div>a glass ceiling on money</div>
+    <div>suppressed libido</div><div>self-doubt</div>
+    <div>no inspiration</div><div>over-control</div>
+    <div>anxiety and fatigue</div><div>can't relax</div>
+    <div>addictions</div><div>a crisis of meaning</div>
+    <div>dissolving into relationships</div><div>and the list goes on</div>
+  </div>
+  <p>This is how 98% of people over 25 live (NASA creativity research). Every fracture steals energy — your vitality, health, youth, and that childhood delight no adult achievement can ever bring back.</p>
+</section>
+
+<!-- 02 -->
+<section class="ed">
+  <span class="eyebrow"><span class="n">02</span> — Why nothing worked</span>
+  <h2><em>"Been everywhere, tried everything. Nothing works."</em></h2>
+  <p>Three beings live inside you. When you were around two years old, they were turned into enemies — and ever since they've been at war, destroying one another.</p>
+  <div class="triad"><span>Mind</span><span>Feeling</span><span>Body</span></div>
+  <p>Classic methods touch one, at most two — that's why it all rolls back:</p>
+  <ul class="method">
+    <li><b>Mind</b> — coaching, psychology, books. The body and feelings resist.</li>
+    <li><b>Feeling</b> — expanded states, sound, psychedelics. Without integration the mind erases the experience.</li>
+    <li><b>Body</b> — yoga, breathwork, practices. Without understanding, the tension returns.</li>
+  </ul>
+  <p>The three can only be reconciled at the foundational level — in Consciousness. Find the point of failure and synchronise them all. But first you'll have to die. Metaphysically — though this passage feels more real than a funeral.</p>
+</section>
+
+<figure class="shot">
+  <img src="../images/horse.jpeg" alt="">
+  <div class="quote"><q>as if the whole world were on your side</q></div>
+</figure>
+
+<!-- 03 -->
+<section class="ed center">
+  <span class="eyebrow"><span class="n">03</span> — What changes</span>
+  <h2>On the crest of the wave again.</h2>
+  <p style="max-width:56ch;margin:0 auto">The indicator that it worked is synchronicity. Your psycho-emotional state determines how attuned you are to your environment — and with it your health, money, relationships, fulfilment. When you're in resonance, the world arranges itself on your side.</p>
+  <p style="max-width:56ch;margin:1.1em auto 0">On average, 3–4 personal sessions with us are enough to change a life and settle into one's own nature. We call it <b style="color:var(--ink);font-weight:500">restoring your inner Dao</b>.</p>
+  <p style="max-width:56ch;margin:1.1em auto 0">And in four days inside a shared field of synergy you release what has weighed on you, perhaps your whole "conscious" life. <em style="font-family:var(--display)">Co—</em> means together: the clean air of a collective field, where you suddenly realise you've been breathing poison all your life. Here personal experience amplifies geometrically.</p>
+</section>
+
+<!-- 04 -->
+<section class="ed">
+  <span class="eyebrow"><span class="n">04</span> — How it works</span>
+  <h2>Three modules. Reconciling the three.</h2>
+  <p>Sonora has a common leitmotif — a return to your frequency: sonority, manifestation, and the unfolding of your genius creativity and uniqueness.</p>
+  <p>And there is the individual part. We work through each participant's personal request — and the retreat is assembled around it. Not generic practices for everyone, but work with all three parts of Consciousness, built around what matters to you.</p>
+</section>
+<div class="modules">
+  <div class="mod">
+    <div class="mi"><span class="num">01</span><h3>Mind-coding. Surgery of Consciousness</h3><span class="who">Liza</span></div>
+    <p>Working with Liza is unique in its blend of meta-rationalism and hypersensitivity. She reads information from the field with astonishing precision and finds the root point of failure. One personal practice radically changes a life.</p>
+    <div class="extra"><b>Support for the mind:</b> live talks · work with the architecture of Consciousness · simple algorithms you'll take with you for life.</div>
+  </div>
+  <div class="mod">
+    <div class="mi"><span class="num">02</span><h3>Expanding the range of feeling</h3><span class="who">Liza & Vlad</span></div>
+    <p>The cause of every block is fear. But fear is no enemy — it's a fuse set by the mind. We remove the defences and rewrite the suppressed experience as a resource — and the need for fear dissolves.</p>
+    <div class="extra"><b>What awaits:</b> collective explorations of your request · the experience of group resonance · a creative playground and art masterclass with artist Anastasia Pasechnik — poetry, music, voice, drawing · an artefact of power to take home.</div>
+  </div>
+  <div class="mod">
+    <div class="mi"><span class="num">03</span><h3>Embodiment. The bodily experience</h3><span class="who">Vlad</span></div>
+    <p>Technological ceremonies — a play of light, sound and imagination. Vlad draws on 15 years in the world's top video industry to direct the living-through of transformation at the level of the body. The body remembers everything — your most stable support when returning to ordinary life.</p>
+    <div class="extra"><b>In the programme:</b> sensory work through colour, light, sound, taste, scent · individual multi-sensory healing. The depth can be taken further individually — on request.</div>
+  </div>
+</div>
+
+<figure class="shot">
+  <img src="../images/cliff.jpeg" alt="">
+  <span class="cap">Ocean · cliffs · nature reserve</span>
+</figure>
+
+<!-- hosts -->
+<section class="ed">
+  <span class="eyebrow">Who leads</span>
+  <h2>Hi, we're Vlad and Liza.</h2>
+  <p>Founders of 137 Lab. For the past 3.5 years we've been researching how people interact at the level of collective consciousness — and translating it into living experience.</p>
+</section>
+<figure class="shot">
+  <img src="../images/us.jpeg" alt="">
+  <span class="cap">Vlad & Liza · Sintra</span>
+</figure>
+<div class="modules">
+  <div class="mod">
+    <div class="mi"><h3>Vlad</h3><span class="who">Director of experience</span></div>
+    <p>Philosopher, visionary, psychonaut and innovator at the intersection of spirituality, science, technology and creativity. I treat inspiration as a technology, and unlocking creative potential in people is my passion. 15 years in the world's top video industry: at Sonora I turn transformation into a living-through at the level of the body — light, sound, ceremony.</p>
+  </div>
+  <div class="mod">
+    <div class="mi"><h3>Liza</h3><span class="who">Architect of Consciousness</span></div>
+    <p>I work with consciousness as a meta-system: studying its architecture and translating spirituality and magic into precise science. I can solve any person's problem, in any field and at any complexity — working at the layers where Consciousness creates reality. On one condition: that the person is ready for transformation.</p>
+  </div>
+</div>
+<section class="ed">
+  <p class="big">The evolution of consciousness, as we see it, is a game played with irony. No dogma, no meditation, yoga or asceticism — only the scientific perspective, applied as technology. And a transformational experience in an intimate circle.</p>
+</section>
+
+<!-- place -->
+<section class="ed">
+  <span class="eyebrow">Place · Sintra, Portugal</span>
+  <h2>A place of power.</h2>
+  <p>A villa on the closed grounds of a nature reserve, far from everything. Stone dug from this very land; wood and non-toxic materials; antiques from Asia and India, 600–700 years old. Its own well water. Silence. Not a single car — only the ocean, the pines and the dry light of Sintra.</p>
+  <p>50 minutes to Lisbon · 20 minutes to Sintra · 15 minutes to the ocean.</p>
+</section>
+<div class="gallery">
+  <figure><img src="../images/gate.jpeg" alt=""></figure>
+  <figure><img src="../images/house.jpeg" alt=""></figure>
+  <figure><img src="../images/stone-door.jpeg" alt=""></figure>
+  <figure><img src="../images/table-eucalyptus.jpeg" alt=""></figure>
+  <figure><img src="../images/antique-table.jpeg" alt=""></figure>
+  <figure><img src="../images/steps-pine.jpeg" alt=""></figure>
+</div>
+
+<!-- format -->
+<section class="format" id="format">
+  <span class="eyebrow">Format · participation</span>
+  <dl class="spec">
+    <div class="row"><dt>Dates</dt><dd>27–30 June 2026 · 3 nights, 4 days</dd></div>
+    <div class="row"><dt>Place</dt><dd>Villa in a nature reserve · Sintra, Portugal</dd></div>
+    <div class="row"><dt>Stay</dt><dd>Two per room, at the villa</dd></div>
+    <div class="row"><dt>Group</dt><dd>Closed — only 6 places. Built around each person's request.</dd></div>
+    <div class="row"><dt>Food</dt><dd>Dinners from local farm produce, tea ceremonies, eco breakfasts</dd></div>
+    <div class="row"><dt>Contribution</dt><dd><span class="price">€2,700</span> solo · <span class="price">€4,000</span> couple</dd></div>
+    <div class="row"><dt>Included</dt><dd>Lodging, all practices, group and individual work, dinners, tea ceremonies, breakfast produce</dd></div>
+    <div class="row"><dt>Not included</dt><dd>Flights, transfer, personal expenses</dd></div>
+  </dl>
+  <p class="deepen">Children (1–2) welcome — by arrangement. Optionally, 2–3 more days of deeper individual work after the retreat.</p>
+  <div class="cta-row">
+    <a href="#apply" class="btn solid">Apply</a>
+    <a href="https://t.me/viki_assistant" target="_blank" rel="noopener" class="btn line">Contact</a>
+  </div>
+</section>
+
+<!-- meaning -->
+<section class="ed center">
+  <span class="eyebrow">Sonora · meaning</span>
+  <p class="lead" style="max-width:26ch;margin:0 auto">The name came on its own. We didn't choose it.</p>
+  <p style="max-width:54ch;margin:1.2em auto 0">The "sonorants" — the voiced M, N, L, R — are sounds where the air meets no obstacle and stays clear. This root is four thousand years old. Sonora is about a return to the original, clear sound: to live in your nature, to trust yourself, to ring at full volume. When the inner vibration finally becomes visible on the outside.</p>
+</section>
+
+<!-- apply -->
+<section class="apply" id="apply">
+  <span class="eyebrow">Apply</span>
+  <h2>Leave a request</h2>
+  <p>There are only six places, and Victoria will reach out to you on Telegram. Leave your name and your Telegram — and, if you wish, a few words about what you'd like to come with.</p>
+  <form name="sonora-application-en" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="return handleApply(event)">
+    <input type="hidden" name="form-name" value="sonora-application-en">
+    <p class="hp"><label>Don't fill this in: <input name="bot-field"></label></p>
+    <div class="field"><label>Name</label><input type="text" name="name" required></div>
+    <div class="field"><label>Your Telegram</label><input type="text" name="contact" placeholder="@username" required></div>
+    <div class="field"><label>What you'd like to come with — optional</label><textarea name="request" rows="2"></textarea></div>
+    <button type="submit" class="submit">Send</button>
+    <div class="formnote" id="formnote"></div>
+  </form>
+  <div class="or">or</div>
+  <a class="tg" href="https://t.me/viki_assistant" target="_blank" rel="noopener">Message Victoria on Telegram →</a>
+</section>
+
+<footer>
+  <div class="wm">Sonora</div>
+  <div class="fl">137 LAB · 27—30 VI 2026 · Sintra</div>
+  <div class="fl" style="margin-top:11px"><a href="https://t.me/viki_assistant" target="_blank" rel="noopener">Message Victoria</a> · <a href="https://t.me/liza_sigorska" target="_blank" rel="noopener">Telegram channel</a> · <a href="https://www.instagram.com/liza.sigorska" target="_blank" rel="noopener">Instagram</a></div>
+</footer>
+
+<script>
+function handleApply(e){
+  e.preventDefault();
+  var f=e.target,note=document.getElementById('formnote');
+  var body=new URLSearchParams(new FormData(f)).toString();
+  fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body})
+    .then(function(r){if(!r.ok)throw 0;f.reset();note.textContent='Thank you! Your request has been received — Victoria will reach out to you on Telegram.';note.classList.add('show')})
+    .catch(function(){note.textContent='Could not send. Please write to Victoria on Telegram below.';note.classList.add('show')});
+  return false;
+}
+document.addEventListener('DOMContentLoaded',function(){
+  var top=document.getElementById('top'),onS=function(){top.classList.toggle('scrolled',window.scrollY>window.innerHeight*0.82)};onS();
+  window.addEventListener('scroll',onS,{passive:true});
+});
+</script>
+</body>
+</html>

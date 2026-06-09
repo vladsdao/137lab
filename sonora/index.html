@@ -74,7 +74,8 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;o
 .method li b{color:var(--ink);font-weight:600}
 
 .shot{position:relative;width:100%;height:clamp(420px,82vh,820px);overflow:hidden}
-.shot img{width:100%;height:100%;object-fit:cover;filter:grayscale(.38) contrast(1.04) brightness(.97) sepia(.05)}
+.shot img{width:100%;height:100%;object-fit:cover;filter:grayscale(.28) contrast(1.05) brightness(.99) sepia(.1) saturate(1.07)}
+.shot.sea img{object-position:50% 30%}
 .shot .cap{position:absolute;left:var(--pad);bottom:clamp(22px,3vw,38px);z-index:2;color:#F4EEE2;font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;text-shadow:0 1px 14px rgba(0,0,0,.5)}
 .shot .quote{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;text-align:center;padding:var(--pad)}
 .shot .quote q{font-family:var(--display);font-style:italic;font-weight:400;quotes:none;font-size:clamp(28px,4.4vw,52px);line-height:1.12;color:#F4EEE2;max-width:18ch;text-shadow:0 2px 30px rgba(0,0,0,.4)}
@@ -88,7 +89,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;o
 
 .gallery{max-width:1180px;margin:0 auto;padding:clamp(6px,1.5vw,14px) var(--pad) clamp(50px,8vh,100px);display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(8px,1.3vw,15px)}
 .gallery figure{position:relative;overflow:hidden;aspect-ratio:3/4}
-.gallery img{width:100%;height:100%;object-fit:cover;filter:grayscale(.42) contrast(1.05) sepia(.06);transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+.gallery img{width:100%;height:100%;object-fit:cover;filter:grayscale(.32) contrast(1.04) sepia(.1) saturate(1.07);transition:transform .7s cubic-bezier(.2,.7,.2,1)}
 .gallery figure:hover img{transform:scale(1.045)}
 @media(max-width:680px){.gallery{grid-template-columns:1fr 1fr;gap:8px}}
 
@@ -152,6 +153,7 @@ footer .fl a{color:var(--accent);text-decoration:none}
 <header class="top" id="top">
   <a href="#top-anchor" class="wm">Sonora</a>
   <div class="actions">
+    <a href="en/" class="lnk">EN</a>
     <a href="https://t.me/viki_assistant" target="_blank" rel="noopener" class="lnk">Связаться</a>
     <a href="#apply" class="lnk book">Оставить заявку</a>
   </div>
@@ -180,7 +182,7 @@ footer .fl a{color:var(--accent);text-decoration:none}
   <p style="max-width:54ch;margin:1em auto 0">Sonora — про это. Звонкая, звучащая чисто, без шума. Возврат к своей изначальной частоте: к себе — играющему, творящему, живому.</p>
 </section>
 
-<figure class="shot">
+<figure class="shot sea">
   <img src="images/beach.jpeg" alt="">
   <span class="cap">Атлантика · Синтра</span>
 </figure>
@@ -277,7 +279,6 @@ footer .fl a{color:var(--accent);text-decoration:none}
   <div class="mod">
     <div class="mi"><h3>Влад</h3><span class="who">Режиссёр опыта</span></div>
     <p>Философ, визионер, психонавт и инноватор на стыке духовности, науки, технологий и творчества. Воспринимаю вдохновение как технологию, а раскрытие творческого потенциала в людях — моя страсть. 15 лет в мировой видео-индустрии на топовых проектах: на Соноре превращаю трансформацию в проживание на уровне тела — свет, звук, церемония.</p>
-    <p>Владею переключением реальности и мульти-сенсорными техниками. Представляю United Consciousness — объединённое сознание — и делюсь доступом к техникам, ранее людям недоступным.</p>
   </div>
   <div class="mod">
     <div class="mi"><h3>Лиза</h3><span class="who">Архитектор Сознания</span></div>
@@ -344,7 +345,8 @@ footer .fl a{color:var(--accent);text-decoration:none}
 
 <footer>
   <div class="wm">Sonora</div>
-  <div class="fl">137 LAB · 27—30 VI 2026 · Синтра<br><a href="https://t.me/viki_assistant" target="_blank" rel="noopener">Связаться в Telegram →</a></div>
+  <div class="fl">137 LAB · 27—30 VI 2026 · Синтра</div>
+  <div class="fl" style="margin-top:11px"><a href="https://t.me/viki_assistant" target="_blank" rel="noopener">Написать Виктории</a> · <a href="https://t.me/liza_sigorska" target="_blank" rel="noopener">Telegram-канал</a> · <a href="https://www.instagram.com/liza.sigorska" target="_blank" rel="noopener">Instagram</a></div>
 </footer>
 
 <script>
