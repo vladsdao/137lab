@@ -355,10 +355,15 @@ footer .fl a{color:var(--accent);text-decoration:none}
 function handleApply(e){
   e.preventDefault();
   var f=e.target,note=document.getElementById('formnote');
-  var body=new URLSearchParams(new FormData(f)).toString();
-  fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body})
-    .then(function(r){if(!r.ok)throw 0;f.reset();note.textContent='Спасибо! Заявка принята — Виктория свяжется с вами в Telegram.';note.classList.add('show')})
-    .catch(function(){note.textContent='Не получилось отправить. Напишите, пожалуйста, в Telegram ниже.';note.classList.add('show')});
+  var d={};new FormData(f).forEach(function(v,k){d[k]=v});
+  var forms=fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(f)).toString()});
+  var relay=fetch('/.netlify/functions/apply',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});
+  Promise.allSettled([forms,relay]).then(function(rs){
+    var ok=rs.some(function(r){return r.status==='fulfilled'&&r.value&&r.value.ok});
+    if(ok){f.reset();note.textContent='Спасибо! Заявка принята — Виктория свяжется с вами в Telegram.';}
+    else{note.textContent='Не получилось отправить. Напишите, пожалуйста, в Telegram ниже.';}
+    note.classList.add('show');
+  });
   return false;
 }
 document.addEventListener('DOMContentLoaded',function(){
