@@ -101,6 +101,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;o
 .shot .quote{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;text-align:center;padding:var(--pad)}
 .shot .quote q{font-family:var(--display);font-style:italic;font-weight:400;quotes:none;font-size:clamp(28px,4.4vw,52px);line-height:1.12;color:#F4EEE2;max-width:18ch;text-shadow:0 2px 30px rgba(0,0,0,.4)}
 .shot::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(16,14,11,.34),rgba(16,14,11,.02) 40%,rgba(16,14,11,.14));z-index:1}
+@media(max-width:680px){.shot.us{height:auto}.shot.us img{height:auto;object-position:center}}
 
 .photo{max-width:760px;margin:0 auto;padding:clamp(8px,2vw,20px) var(--pad) clamp(40px,7vh,80px)}
 .photo .inner{position:relative;padding:11px}
