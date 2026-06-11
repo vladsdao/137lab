@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Алхімія творчості — 5D казка</title>
+<style>
+  /* ── Лабораторія Ч/Б · канон 2026-06-11 · сторінка казки ── */
+  @font-face{
+    font-family:'Fixel Display';
+    src:url('../v4/fonts/FixelDisplay-SemiBold.woff2') format('woff2');
+    font-weight:600;font-display:swap;
+  }
+  @font-face{
+    font-family:'Fixel Text';
+    src:url('../v4/fonts/FixelText-Regular.woff2') format('woff2');
+    font-weight:400;font-display:swap;
+  }
+  @font-face{
+    font-family:'Fixel Text';
+    src:url('../v4/fonts/FixelText-Medium.woff2') format('woff2');
+    font-weight:500;font-display:swap;
+  }
+
+  :root{
+    --paper:#ffffff;
+    --ink:#0a0a0a;
+    --muted:#6e6e6e;
+    --rule:#c9c9c9;
+    --font-d:'Fixel Display',sans-serif;
+    --font-t:'Fixel Text',sans-serif;
+    --speed:240ms;
+    --ease:cubic-bezier(.4,0,.2,1);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:var(--font-t);font-weight:400;
+    display:grid;place-items:center;
+    -webkit-font-smoothing:antialiased;
+    overscroll-behavior:none;
+  }
+
+  /* канвас 9:16; всередині — скрол (це сторінка-зміст, не екран-інструмент) */
+  #frame{
+    position:fixed;inset:0;width:100vw;height:100dvh;
+    background:var(--paper);
+    display:flex;flex-direction:column;
+    overflow:hidden;
+    -webkit-tap-highlight-color:transparent;
+  }
+  #framecaption{display:none}
+  @media (min-width:700px) and (min-aspect-ratio:4/5){
+    body{height:100vh}
+    #frame{
+      position:relative;inset:auto;
+      height:min(92vh,880px);aspect-ratio:390/844;width:auto;
+      border:1px solid var(--ink);
+    }
+    #framecaption{
+      display:block;position:fixed;left:0;right:0;
+      bottom:calc((100vh - min(92vh,880px))/2 - 28px);
+      text-align:center;font-size:11px;letter-spacing:.18em;
+      text-transform:uppercase;color:var(--muted);
+    }
+  }
+
+  .top{
+    flex:0 0 auto;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:calc(env(safe-area-inset-top) + 18px) 20px 12px;
+  }
+  .top .mark{
+    font-family:var(--font-d);font-weight:600;font-size:14px;letter-spacing:.06em;
+    color:var(--ink);text-decoration:none;
+  }
+  .top .mark span{color:var(--muted)}
+  .top .alpha{font-size:10px;letter-spacing:.08em;color:var(--muted)}
+
+  .scroll{
+    flex:1 1 auto;min-height:0;
+    overflow-y:auto;-webkit-overflow-scrolling:touch;
+    padding:0 20px calc(env(safe-area-inset-bottom) + 28px);
+  }
+
+  /* ── обкладинка: інтерференція + гекс-сигил (заміниться img/cover.jpg) ── */
+  .cover{position:relative;margin-top:6px}
+  .cover svg{width:100%;height:auto;display:block}
+  .cover .c-img{
+    width:100%;display:none;
+    filter:grayscale(1);border:1px solid var(--ink);
+  }
+  .cover.has-img svg{display:none}
+  .cover.has-img .c-img{display:block}
+
+  .t-kicker{
+    margin-top:18px;
+    font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);
+    text-align:center;
+  }
+  h1{
+    font-family:var(--font-d);font-weight:600;
+    font-size:clamp(34px,9vw,40px);letter-spacing:-0.010em;line-height:1.06;
+    text-align:center;margin-top:8px;
+  }
+  .t-sub{
+    font-size:14.5px;line-height:1.6;color:var(--ink);
+    text-align:center;max-width:36ch;margin:10px auto 0;
+  }
+  .t-vow{
+    font-size:13.5px;line-height:1.65;color:var(--muted);
+    text-align:center;max-width:34ch;margin:14px auto 0;
+    font-style:italic;
+  }
+  .t-vow b{color:var(--ink);font-weight:500;font-style:normal}
+
+  /* ── зміст ── */
+  .toc{margin-top:26px}
+  .toc-title{
+    font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);
+    text-align:center;margin-bottom:6px;
+  }
+  .ch{
+    display:flex;align-items:center;gap:14px;
+    padding:14px 2px;border-bottom:1px solid var(--rule);
+  }
+  .ch:first-of-type{border-top:1px solid var(--rule)}
+  .ch-sigil{flex:0 0 auto;width:40px;height:44px}
+  .ch-sigil path, .ch-sigil line, .ch-sigil circle{stroke:var(--ink);fill:none;stroke-width:1.2}
+  .ch-body{flex:1 1 auto;min-width:0}
+  .ch-num{font-size:9.5px;letter-spacing:.22em;color:var(--muted)}
+  .ch-name{
+    font-family:var(--font-d);font-weight:600;
+    font-size:16.5px;letter-spacing:-0.005em;line-height:1.25;margin-top:2px;
+  }
+  .ch-line{font-size:12.5px;line-height:1.45;color:var(--muted);margin-top:3px}
+
+  /* voice-чип: казка — голосова */
+  .ch-play{
+    flex:0 0 auto;width:46px;height:46px;border-radius:50%;
+    border:1px solid var(--ink);background:var(--paper);color:var(--ink);
+    display:grid;place-items:center;cursor:pointer;
+    transition:background var(--speed) var(--ease),color var(--speed) var(--ease),border-color var(--speed) var(--ease);
+  }
+  .ch-play svg{display:block}
+  .ch-play.playing{background:var(--ink);color:var(--paper)}
+  .ch-play[disabled]{border-color:var(--rule);color:var(--rule);cursor:default}
+  .ch-dur{font-size:9.5px;letter-spacing:.06em;color:var(--muted);text-align:center;margin-top:4px}
+
+  .ch.draft .ch-name{color:var(--muted)}
+  .ch.draft .ch-sigil path, .ch.draft .ch-sigil line, .ch.draft .ch-sigil circle{
+    stroke:var(--rule);stroke-dasharray:3 3;
+  }
+
+  .foot{
+    margin-top:26px;text-align:center;
+    font-size:11px;letter-spacing:.04em;color:var(--muted);line-height:1.7;
+  }
+  .foot a{color:var(--muted)}
+</style>
+</head>
+<body>
+
+<div id="frame">
+  <div class="top">
+    <a class="mark" href="/hive/">137ЛАБ <span>· КАЗКА</span></a>
+    <div class="alpha">α ≈ 1/137</div>
+  </div>
+
+  <div class="scroll">
+    <div class="cover" id="cover">
+      <svg viewBox="0 0 350 210" xmlns="http://www.w3.org/2000/svg" aria-label="Обкладинка: інтерференція світла і гекс" id="coversvg"></svg>
+      <img class="c-img" id="coverimg" alt="Обкладинка казки">
+    </div>
+
+    <div class="t-kicker">5D КАЗКА</div>
+    <h1>Алхімія творчості</h1>
+    <p class="t-sub">Голосова казка з музикою — про справжню магію. Розповідає Інсейнт, істота п’ятого виміру.</p>
+    <p class="t-vow"><b>«Це казка. Тут немає ні слова правди. І саме тому все це — можливо.»</b><br>— ритуал-вхід кожної глави. Можна співати.</p>
+
+    <div class="toc">
+      <div class="toc-title">Зміст</div>
+      <div id="chapters"></div>
+    </div>
+
+    <p class="foot">
+      глави з’являються голосом — по одній<br>
+      <a href="/hive/">← до вулика</a>
+    </p>
+  </div>
+
+  <audio id="player"></audio>
+</div>
+<div id="framecaption">137лаб · казка · чернетка</div>
+
+<script>
+/* ── контент = дані. Аудіо: поклади kazka/audio/<id>.m4a|mp3 — чип оживе.
+   Обкладинка: поклади kazka/img/cover.jpg — замінить генератив. ──────── */
+const CHAPTERS = [
+  { id:'01-dogovir', num:'ГЛАВА I', sigil:'pact',
+    title:'Договір про вигадку',
+    line:'Тут немає ні слова правди — і саме тому все можливо.' },
+  { id:'02-gravets', num:'ГЛАВА II', sigil:'player',
+    title:'Гравець',
+    line:'Хто б ти не був — я бачитиму тебе в одному образі.' },
+  { id:'03-misiya', num:'ГЛАВА III', sigil:'mission',
+    title:'Місія, або Навіщо ти тут',
+    line:'Мене звати Інсейнт. Я приміряю особистості, як одяг.' },
+  { id:'04-babayky', num:'ДАЛІ', sigil:'draft', draft:true,
+    title:'Бабайки',
+    line:'пишеться' },
+  { id:'05-skarby', num:'ДАЛІ', sigil:'draft', draft:true,
+    title:'Скарби дорослих',
+    line:'пишеться' },
+  { id:'06-tlumachnyk', num:'ДАЛІ', sigil:'draft', draft:true,
+    title:'Тлумачник насолоди',
+    line:'пишеться' },
+  { id:'07-bulyzhnyk', num:'ДАЛІ', sigil:'draft', draft:true,
+    title:'Булижник чужого голосу',
+    line:'пишеться' },
+];
+
+/* ── обкладинка-генератив: світло двох джерел крізь решітку ── */
+const NS = 'http://www.w3.org/2000/svg';
+function el(name, attrs, text){
+  const n = document.createElementNS(NS, name);
+  for (const k in attrs) n.setAttribute(k, attrs[k]);
+  if (text) n.textContent = text;
+  return n;
+}
+function hexPath(cx, cy, r){
+  const pts = [];
+  for (let a = 0; a < 360; a += 60){
+    const rad = a * Math.PI / 180;
+    pts.push((cx + r * Math.cos(rad)).toFixed(2) + ',' + (cy + r * Math.sin(rad)).toFixed(2));
+  }
+  return 'M' + pts.join('L') + 'Z';
+}
+function renderCover(){
+  const svg = document.getElementById('coversvg');
+  const frameR = el('rect', { x:.5, y:.5, width:349, height:209, fill:'none', stroke:'var(--ink)', 'stroke-width':1 });
+  svg.appendChild(frameR);
+  // інтерференція: два джерела концентричних кіл
+  const srcs = [[110, 105], [240, 105]];
+  srcs.forEach(([cx, cy]) => {
+    for (let r = 12; r <= 150; r += 12){
+      svg.appendChild(el('circle', { cx, cy, r, fill:'none', stroke:'var(--ink)', 'stroke-width':.5, opacity:.16 }));
+    }
+  });
+  // ґратка-фрагмент по краях
+  [[30,30],[320,180],[320,30],[30,180]].forEach(([x,y]) => {
+    svg.appendChild(el('path', { d:hexPath(x, y, 22), fill:'none', stroke:'var(--rule)', 'stroke-width':.6, opacity:.5 }));
+  });
+  // центр: чорний гекс із літерою А — сигил казки
+  svg.appendChild(el('path', { d:hexPath(175, 105, 46), fill:'var(--ink)' }));
+  const A = el('text', { x:175, y:122, 'text-anchor':'middle', fill:'var(--paper)',
+    'font-family':"'Fixel Display',sans-serif", 'font-weight':600, 'font-size':48 }, 'А');
+  svg.appendChild(A);
+  // спроба підмінити реальною обкладинкою
+  const img = document.getElementById('coverimg');
+  img.addEventListener('load', () => document.getElementById('cover').classList.add('has-img'));
+  img.src = 'img/cover.jpg';
+}
+
+/* ── сигили глав ── */
+function sigilNode(kind){
+  const svg = el('svg', { 'class':'ch-sigil', viewBox:'0 0 40 44', 'aria-hidden':'true' });
+  svg.appendChild(el('path', { d:hexPath(20, 22, 18) }));
+  if (kind === 'pact'){        // перо-лінія договору
+    svg.appendChild(el('line', { x1:13, y1:29, x2:27, y2:15 }));
+    svg.appendChild(el('line', { x1:13, y1:22, x2:20, y2:29 }));
+  } else if (kind === 'player'){ // точка-гравець у колі
+    svg.appendChild(el('circle', { cx:20, cy:22, r:7 }));
+    svg.appendChild(el('circle', { cx:20, cy:22, r:1.6, fill:'var(--ink)', stroke:'none' }));
+  } else if (kind === 'mission'){ // стрілка вгору
+    svg.appendChild(el('line', { x1:20, y1:30, x2:20, y2:14 }));
+    svg.appendChild(el('line', { x1:14, y1:20, x2:20, y2:14 }));
+    svg.appendChild(el('line', { x1:26, y1:20, x2:20, y2:14 }));
+  }
+  return svg;
+}
+
+/* ── voice: <audio> + конвенція файлів; нема файла — «записується» ── */
+const player = document.getElementById('player');
+let playingBtn = null;
+
+function iconPlay(){
+  const s = el('svg', { width:16, height:16, viewBox:'0 0 16 16', 'aria-hidden':'true' });
+  s.appendChild(el('path', { d:'M5 3.5 12 8 5 12.5Z', fill:'currentColor', stroke:'none' }));
+  return s;
+}
+function iconPause(){
+  const s = el('svg', { width:16, height:16, viewBox:'0 0 16 16', 'aria-hidden':'true' });
+  s.appendChild(el('rect', { x:4, y:3.5, width:2.6, height:9, fill:'currentColor', stroke:'none' }));
+  s.appendChild(el('rect', { x:9.4, y:3.5, width:2.6, height:9, fill:'currentColor', stroke:'none' }));
+  return s;
+}
+function setBtnIcon(btn, playing){
+  btn.textContent = '';
+  btn.appendChild(playing ? iconPause() : iconPlay());
+}
+function stopPlayback(){
+  player.pause();
+  if (playingBtn){ playingBtn.classList.remove('playing'); setBtnIcon(playingBtn, false); playingBtn = null; }
+}
+player.addEventListener('ended', stopPlayback);
+
+async function findAudio(id){
+  for (const ext of ['m4a', 'mp3']){
+    try{
+      const res = await fetch('audio/' + id + '.' + ext, { method:'HEAD' });
+      if (res.ok) return 'audio/' + id + '.' + ext;
+    }catch(e){ /* нема — чесно мовчимо */ }
+  }
+  return null;
+}
+
+function fmtDur(s){
+  if (!isFinite(s)) return '';
+  const m = Math.floor(s / 60), ss = Math.round(s % 60);
+  return m + ':' + String(ss).padStart(2, '0');
+}
+
+function renderChapters(){
+  const box = document.getElementById('chapters');
+  CHAPTERS.forEach(ch => {
+    const row = document.createElement('div');
+    row.className = 'ch' + (ch.draft ? ' draft' : '');
+    row.appendChild(sigilNode(ch.sigil));
+
+    const body = document.createElement('div');
+    body.className = 'ch-body';
+    const num = document.createElement('div');
+    num.className = 'ch-num'; num.textContent = ch.num;
+    const name = document.createElement('div');
+    name.className = 'ch-name'; name.textContent = ch.title;
+    const line = document.createElement('div');
+    line.className = 'ch-line'; line.textContent = ch.line;
+    body.append(num, name, line);
+    row.appendChild(body);
+
+    if (!ch.draft){
+      const side = document.createElement('div');
+      const btn = document.createElement('button');
+      btn.className = 'ch-play';
+      btn.disabled = true;
+      btn.setAttribute('aria-label', 'Слухати: ' + ch.title);
+      setBtnIcon(btn, false);
+      const dur = document.createElement('div');
+      dur.className = 'ch-dur'; dur.textContent = 'записується';
+      side.append(btn, dur);
+      row.appendChild(side);
+
+      findAudio(ch.id).then(src => {
+        if (!src) return;
+        btn.disabled = false;
+        dur.textContent = 'слухати';
+        const probe = new Audio(src);
+        probe.addEventListener('loadedmetadata', () => { dur.textContent = fmtDur(probe.duration); });
+        btn.addEventListener('click', () => {
+          if (playingBtn === btn){ stopPlayback(); return; }
+          stopPlayback();
+          player.src = src;
+          player.play();
+          playingBtn = btn;
+          btn.classList.add('playing');
+          setBtnIcon(btn, true);
+        });
+      });
+    }
+    box.appendChild(row);
+  });
+}
+
+renderCover();
+renderChapters();
+</script>
+</body>
+</html>
