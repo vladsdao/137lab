@@ -198,6 +198,44 @@
   }
   @media (prefers-reduced-motion:reduce){.words span{animation-duration:1ms}}
 
+  /* ── онбординг: сота → двері → правила → вулик ── */
+  #frame:not([data-stage="hive"]) .quiz{display:none}
+  #frame:not([data-stage="hive"]) .sound{visibility:hidden}
+  #frame[data-stage="hive"] .ob{display:none}
+  .ob{flex:0 0 auto;text-align:center;padding:0 12px;margin-bottom:12px}
+  .ob-lead{
+    font-family:var(--font-d);font-weight:600;
+    font-size:20px;letter-spacing:-0.010em;line-height:1.22;
+  }
+  .ob-p{font-size:14.5px;line-height:1.6;margin-top:8px;max-width:34ch;margin-inline:auto}
+  .ob-act{margin-top:14px}
+  .ob-hint{font-size:11px;letter-spacing:.04em;color:var(--muted);margin-top:10px}
+  .ob-adults{
+    margin-top:12px;background:none;border:none;cursor:pointer;
+    font-family:var(--font-t);font-size:10.5px;color:var(--muted);
+    text-decoration:underline;text-underline-offset:3px;padding:8px;
+  }
+
+  /* двері: контур-прогрес навколо ядра під час hold */
+  .door-ring{
+    fill:none;stroke:var(--ink);stroke-width:2.5;stroke-linecap:round;
+    pointer-events:none;
+  }
+  .doorhex path{cursor:pointer}
+  .doorhex{transition:transform var(--speed) var(--ease);transform-box:fill-box;transform-origin:center}
+  .doorhex.held{transform:scale(.97)}
+
+  /* розкриття вулика */
+  .cell, .core{transform-box:fill-box;transform-origin:center}
+  svg.reveal .cell{animation:cellin .5s var(--ease) backwards}
+  svg.reveal .core{animation:cellin .45s var(--ease) backwards}
+  svg.reveal .lattice{animation:fadein .9s ease backwards .25s}
+  @keyframes cellin{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+  @media (prefers-reduced-motion:reduce){
+    svg.reveal .cell, svg.reveal .core, svg.reveal .lattice{animation:none}
+  }
+
   /* ── кітч-панч: «Перший мільйон» (превью, не клікабельно) ──
      відступ знизу більший за звичайний: in-app браузери Telegram/Insta
      підрізають нижній край, панч не має сидіти впритул */
@@ -258,6 +296,7 @@
   .sheet .s-act{margin-top:18px;display:flex;align-items:center;gap:12px}
   .s-open{
     display:inline-block;background:var(--ink);color:var(--paper);
+    border:none;cursor:pointer;
     font-family:var(--font-t);font-weight:500;font-size:14px;letter-spacing:.02em;
     text-decoration:none;border-radius:99px;
     padding:13px 26px;min-height:44px;
@@ -295,6 +334,14 @@
 
   <div class="hivewrap">
     <svg id="hive" viewBox="0 0 390 520" preserveAspectRatio="xMidYMid meet" aria-label="Мапа лабораторії: шість нод навколо ядра"></svg>
+  </div>
+
+  <div class="ob" id="ob">
+    <p class="ob-lead" id="oblead"></p>
+    <p class="ob-p" id="obp"></p>
+    <div class="ob-act" id="obact"></div>
+    <div class="ob-hint" id="obhint"></div>
+    <button class="ob-adults" id="obadults">ви дорослий? — вам сюди</button>
   </div>
 
   <div class="quiz">
@@ -356,6 +403,45 @@ const CELLS = [
 ];
 
 const CORE = { href:'/v4/', num:'137', word:'ЛАБ', door:'ВХІД' };
+
+/* ── онбординг: контент = дані. ДРАФТ-ТЕКСТИ — Влад переписує. ────── */
+const OB = {
+  seed: {
+    lead:'Це — вулик.',
+    p:'Сім стільників, у центрі — вхід. Але спершу — двері.',
+    hint:'торкнись соти',
+  },
+  door: {
+    lead:'Дорослим вхід заборонено.',
+    p:'Тримай палець на соті — так підписують Договір про вигадку: все тут — вигадка, і вона працює, лише якщо граєш по-справжньому.',
+    hint:'тримай, доки контур не замкнеться',
+  },
+  doorReturn: {
+    lead:'Двері пам’ятають тебе.',
+    p:'Договір про вигадку поновлюється щодня — потримай.',
+    hint:'тримай, доки контур не замкнеться',
+  },
+  rules: [
+    { lead:'Правило перше.',
+      p:'Тут усе — вигадка. Вигадка — це інструмент: вона працює, лише коли граєш по-справжньому.',
+      act:'далі' },
+    { lead:'Правило друге.',
+      p:'Поле пам’ятає твої кроки — і забуває твоє ім’я. Так влаштовано навмисно.',
+      act:'увійти' },
+  ],
+};
+
+const ADULTS = {
+  kick:'для дорослих',
+  full:'Школа магії творчості',
+  desc:'Гра-казка для дітей 9–12. Ми не збираємо жодних даних дитини — без імен, акаунтів і трекерів. Якщо дитині потрібна жива доросла розмова: Лінія дитини 116 111.',
+  status:'сторінка для дорослих — скоро',
+};
+
+const HOLD_MS = 3000;
+const ONBOARD_KEY = '137school-onboarded';
+let stage = 'seed';
+let ruleIdx = 0;
 
 /* ── звуковий двигун: перший екран = клавіатура ─────────────────────
    Значок звуку вмикає інструментальний режим: 7 гексів + 5 лозенджів
@@ -568,7 +654,117 @@ function render(){
   core.appendChild(el('text', { 'class':'core-door', x:CX + 1, y:CY + 41 }, CORE.door));
   svg.appendChild(core);
 }
-render();
+
+/* ── стадії: seed → door → rules → hive ───────────────────────────── */
+const SEED_R = 84;
+
+function seedNode(){
+  const g = el('g', { 'class':'core doorhex', role:'button', tabindex:'0', 'aria-label':'Сота-вхід' });
+  g.appendChild(el('path', { d:hexPath(CX, CY, SEED_R) }));
+  g.appendChild(el('text', { 'class':'core-num',  x:CX,     y:CY + 8  }, CORE.num));
+  g.appendChild(el('text', { 'class':'core-word', x:CX + 2, y:CY + 30 }, CORE.word));
+  return g;
+}
+
+let ringPerim = 0;
+function renderSingle(withRing){
+  const svg = document.getElementById('hive');
+  svg.classList.remove('reveal');
+  svg.textContent = '';
+  svg.appendChild(el('circle', { 'class':'pulse',    cx:CX, cy:CY, r:SEED_R }));
+  svg.appendChild(el('circle', { 'class':'pulse p2', cx:CX, cy:CY, r:SEED_R }));
+  if (withRing){
+    const ringR = SEED_R + 12;
+    ringPerim = 6 * ringR;
+    const ring = el('path', { 'class':'door-ring', id:'doorring', d:hexPath(CX, CY, ringR) });
+    ring.setAttribute('stroke-dasharray', ringPerim);
+    ring.setAttribute('stroke-dashoffset', ringPerim);
+    svg.appendChild(ring);
+  }
+  svg.appendChild(seedNode());
+}
+
+function renderHive(){
+  const svg = document.getElementById('hive');
+  svg.textContent = '';
+  render();
+  svg.classList.add('reveal');
+  const cells = svg.querySelectorAll('.cell');
+  cells.forEach((c, i) => { c.style.animationDelay = (0.18 + i * 0.08).toFixed(2) + 's'; });
+}
+
+function setOb(o){
+  document.getElementById('oblead').textContent = o.lead || '';
+  document.getElementById('obp').textContent    = o.p || '';
+  document.getElementById('obhint').textContent = o.hint || '';
+  const act = document.getElementById('obact');
+  act.textContent = '';
+  if (o.act){
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 's-open';
+    b.textContent = o.act;
+    b.addEventListener('click', nextRule);
+    act.appendChild(b);
+  }
+}
+
+function isOnboarded(){ return localStorage.getItem(ONBOARD_KEY) === '1'; }
+
+function setStage(s){
+  stage = s;
+  frame.dataset.stage = s;
+  if (s === 'seed'){ renderSingle(false); setOb(OB.seed); }
+  else if (s === 'door'){ renderSingle(true); setOb(isOnboarded() ? OB.doorReturn : OB.door); }
+  else if (s === 'rules'){ renderSingle(false); showRule(0); }
+  else { renderHive(); }
+}
+
+function showRule(i){ ruleIdx = i; setOb(OB.rules[i]); }
+function nextRule(){
+  if (ruleIdx + 1 < OB.rules.length){ showRule(ruleIdx + 1); }
+  else { localStorage.setItem(ONBOARD_KEY, '1'); setStage('hive'); }
+}
+
+/* hold-двері: контур замикається за 3с утримання, відпустив — відкат */
+let holdRAF = 0, holdT0 = 0, holdP = 0;
+function setRing(p){
+  const r = document.getElementById('doorring');
+  if (r) r.setAttribute('stroke-dashoffset', (ringPerim * (1 - p)).toFixed(1));
+}
+function holdDown(target){
+  if (stage !== 'door' || !target.closest('.doorhex')) return false;
+  cancelAnimationFrame(holdRAF);
+  document.querySelector('.doorhex').classList.add('held');
+  holdT0 = performance.now() - holdP * HOLD_MS;
+  const step = now => {
+    holdP = Math.min(1, (now - holdT0) / HOLD_MS);
+    setRing(holdP);
+    if (holdP >= 1){ doorPassed(); return; }
+    holdRAF = requestAnimationFrame(step);
+  };
+  holdRAF = requestAnimationFrame(step);
+  return true;
+}
+function holdUp(){
+  if (stage !== 'door') return;
+  cancelAnimationFrame(holdRAF);
+  const hex = document.querySelector('.doorhex');
+  if (hex) hex.classList.remove('held');
+  const decay = () => {
+    holdP = Math.max(0, holdP - 0.06);
+    setRing(holdP);
+    if (holdP > 0 && stage === 'door') holdRAF = requestAnimationFrame(decay);
+  };
+  holdRAF = requestAnimationFrame(decay);
+}
+function doorPassed(){
+  cancelAnimationFrame(holdRAF);
+  holdP = 0;
+  const hexEl = document.querySelector('.doorhex path');
+  if (hexEl) spawnWave(hexEl);
+  setStage(isOnboarded() ? 'hive' : 'rules');
+}
 
 /* ── взаємодія ─────────────────────────────────────────────────────── */
 const frame = document.getElementById('frame');
@@ -604,6 +800,7 @@ function closeSheet(){
 }
 
 function activate(target){
+  if (stage !== 'hive') return false;
   if (SND.on) return false;   /* звуковий режим: тап = звук, не навігація */
   if (target.closest('.core')){ location.href = CORE.href; return true; }
   const g = target.closest('.cell');
@@ -611,9 +808,17 @@ function activate(target){
   return false;
 }
 
-document.getElementById('hive').addEventListener('click', e => activate(e.target));
+document.getElementById('hive').addEventListener('click', e => {
+  if (stage === 'seed' && e.target.closest('.doorhex')){ setStage('door'); return; }
+  activate(e.target);
+});
 document.getElementById('hive').addEventListener('keydown', e => {
   if (e.key !== 'Enter' && e.key !== ' ') return;
+  if (stage === 'seed' && e.target.closest('.doorhex')){ setStage('door'); e.preventDefault(); return; }
+  if (stage === 'door'){
+    if (!e.repeat && holdDown(e.target)) e.preventDefault();
+    return;
+  }
   if (SND.on){
     const pad = padFrom(e.target);
     if (pad){
@@ -625,9 +830,18 @@ document.getElementById('hive').addEventListener('keydown', e => {
   }
   if (activate(e.target)) e.preventDefault();
 });
+document.getElementById('hive').addEventListener('keyup', e => {
+  if (stage === 'door' && (e.key === 'Enter' || e.key === ' ')) holdUp();
+});
+/* двері: hold на pointer */
+document.getElementById('hive').addEventListener('pointerdown', e => {
+  if (stage === 'door' && holdDown(e.target)) e.preventDefault();
+});
+document.addEventListener('pointerup', holdUp);
+document.addEventListener('pointercancel', holdUp);
 /* педи: pointerdown — миттєвий відгук, як в інструмента */
 document.addEventListener('pointerdown', e => {
-  if (!SND.on) return;
+  if (stage !== 'hive' || !SND.on) return;
   const pad = padFrom(e.target);
   if (pad){
     playPad(pad.id); spawnWave(pad.el);
@@ -638,6 +852,11 @@ document.getElementById('sound').addEventListener('click', sndToggle);
 document.getElementById('veil').addEventListener('click', closeSheet);
 document.getElementById('sclose').addEventListener('click', closeSheet);
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
+
+/* ── старт ── */
+if (new URLSearchParams(location.search).has('reset')) localStorage.removeItem(ONBOARD_KEY);
+document.getElementById('obadults').addEventListener('click', () => openSheet(ADULTS));
+setStage(isOnboarded() ? 'door' : 'seed');
 </script>
 </body>
 </html>
