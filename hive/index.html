@@ -228,6 +228,14 @@
     pointer-events:none;
   }
   .doorhex path{cursor:pointer}
+  .core .seed-k{
+    font-family:var(--font-t);font-weight:400;
+    font-size:9px;letter-spacing:.3em;fill:rgba(255,255,255,.55);
+  }
+  .core .seed-line{
+    font-family:var(--font-d);font-weight:600;
+    font-size:16.5px;letter-spacing:.04em;
+  }
   .doorhex{transition:transform var(--speed) var(--ease);transform-box:fill-box;transform-origin:center}
   .doorhex.held{transform:scale(.97)}
 
@@ -412,19 +420,20 @@ const CORE = { href:'/v4/', num:'137', word:'ЛАБ', door:'ВХІД' };
 
 /* ── онбординг: контент = дані. ДРАФТ-ТЕКСТИ — Влад переписує. ────── */
 const OB = {
+  /* без спойлерів: про Договір — у першій главі, не тут */
   seed: {
-    lead:'Це — вулик.',
-    p:'Сім стільників, у центрі — вхід. Але спершу — двері.',
+    lead:'Тут немає ні слова правди.',
+    p:'І саме тому все це — можливо.',
     hint:'торкнись соти',
   },
   door: {
     lead:'Дорослим вхід заборонено.',
-    p:'Тримай палець на соті — так підписують Договір про вигадку: все тут — вигадка, і вона працює, лише якщо граєш по-справжньому.',
+    p:'Тримай палець на соті — справжні двері відчиняються повільно.',
     hint:'тримай, доки контур не замкнеться',
   },
   doorReturn: {
-    lead:'Двері пам’ятають тебе.',
-    p:'Договір про вигадку поновлюється щодня — потримай.',
+    lead:'Дорослим вхід заборонено.',
+    p:'Ти знаєш, що робити.',
     hint:'тримай, доки контур не замкнеться',
   },
   rules: [
@@ -443,6 +452,9 @@ const ADULTS = {
   desc:'Гра-казка для дітей 9–12. Ми не збираємо жодних даних дитини — без імен, акаунтів і трекерів. Якщо дитині потрібна жива доросла розмова: Лінія дитини 116 111.',
   status:'сторінка для дорослих — скоро',
 };
+
+/* перша велика нода = казка */
+const SEED = { kicker:'КАЗКА', l1:'АЛХІМІЯ', l2:'ТВОРЧОСТІ' };
 
 const HOLD_MS = 3000;
 const ONBOARD_KEY = '137school-onboarded';
@@ -665,10 +677,11 @@ function render(){
 const SEED_R = 84;
 
 function seedNode(){
-  const g = el('g', { 'class':'core doorhex', role:'button', tabindex:'0', 'aria-label':'Сота-вхід' });
+  const g = el('g', { 'class':'core doorhex', role:'button', tabindex:'0', 'aria-label':'Казка «Алхімія Творчості» — вхід' });
   g.appendChild(el('path', { d:hexPath(CX, CY, SEED_R) }));
-  g.appendChild(el('text', { 'class':'core-num',  x:CX,     y:CY + 8  }, CORE.num));
-  g.appendChild(el('text', { 'class':'core-word', x:CX + 2, y:CY + 30 }, CORE.word));
+  g.appendChild(el('text', { 'class':'seed-k',    x:CX, y:CY - 26 }, SEED.kicker));
+  g.appendChild(el('text', { 'class':'seed-line', x:CX, y:CY + 0  }, SEED.l1));
+  g.appendChild(el('text', { 'class':'seed-line', x:CX, y:CY + 22 }, SEED.l2));
   return g;
 }
 
