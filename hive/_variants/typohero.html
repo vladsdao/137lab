@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>137ЛАБ — лабораторія</title>
+<style>
+  /* ── Лабораторія Ч/Б · варіант «типографіка-герой» · 2026-06-11 ──── */
+  @font-face{
+    font-family:'Fixel Display';
+    src:url('../../v4/fonts/FixelDisplay-SemiBold.woff2') format('woff2');
+    font-weight:600;font-display:swap;
+  }
+  @font-face{
+    font-family:'Fixel Text';
+    src:url('../../v4/fonts/FixelText-Regular.woff2') format('woff2');
+    font-weight:400;font-display:swap;
+  }
+  @font-face{
+    font-family:'Fixel Text';
+    src:url('../../v4/fonts/FixelText-Medium.woff2') format('woff2');
+    font-weight:500;font-display:swap;
+  }
+
+  :root{
+    --paper:#ffffff;
+    --ink:#0a0a0a;
+    --muted:#6e6e6e;
+    --rule:#c9c9c9;
+    --font-d:'Fixel Display',sans-serif;
+    --font-t:'Fixel Text',sans-serif;
+    --speed:240ms;
+    --ease:cubic-bezier(.4,0,.2,1);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:var(--font-t);font-weight:400;
+    display:grid;place-items:center;
+    -webkit-font-smoothing:antialiased;
+    overscroll-behavior:none;
+  }
+
+  /* канвас 9:16 — мобайл на весь екран, десктоп = той самий канвас по центру листа */
+  #frame{
+    position:fixed;inset:0;width:100vw;height:100dvh;
+    background:var(--paper);
+    display:flex;flex-direction:column;
+    padding:calc(env(safe-area-inset-top) + 18px) 20px calc(env(safe-area-inset-bottom) + 22px);
+    overflow:hidden;
+  }
+  #framecaption{display:none}
+  @media (min-width:700px) and (min-aspect-ratio:4/5){
+    body{height:100vh}
+    #frame{
+      position:relative;inset:auto;
+      height:min(92vh,880px);aspect-ratio:390/844;width:auto;
+      border:1px solid var(--ink);
+      padding:18px 20px 22px;
+    }
+    #framecaption{
+      display:block;position:fixed;left:0;right:0;
+      bottom:calc((100vh - min(92vh,880px))/2 - 28px);
+      text-align:center;font-size:11px;letter-spacing:.18em;
+      text-transform:uppercase;color:var(--muted);
+    }
+  }
+
+  /* ── шапка: вордмарк-плакат + лабораторна анотація ── */
+  .top{
+    display:flex;justify-content:space-between;align-items:baseline;
+    flex:0 0 auto;
+  }
+  .top .mark{font-family:var(--font-d);font-weight:600;font-size:21px;line-height:1}
+  .mark-num{letter-spacing:-0.010em}
+  .mark-lab{letter-spacing:.18em;margin-left:.30em}
+  .top .alpha{font-size:10px;letter-spacing:.08em;color:var(--muted)}
+
+  /* ── вулик ── */
+  .hivewrap{flex:1 1 auto;min-height:0;display:grid;place-items:center}
+  svg{width:100%;height:100%;display:block}
+
+  .cell path{
+    fill:var(--paper);stroke:var(--ink);stroke-width:1.1;
+    transition:fill var(--speed) var(--ease);
+    cursor:pointer;
+  }
+  .cell text{
+    font-family:var(--font-d);font-weight:600;
+    fill:var(--ink);text-anchor:middle;
+    transition:fill var(--speed) var(--ease);
+    pointer-events:none;
+  }
+  .cell .label{font-size:15px;letter-spacing:.03em}
+  @media (hover:hover){
+    .cell:hover path{fill:var(--ink)}
+    .cell:hover text{fill:var(--paper)}
+  }
+  .cell:active path{fill:var(--ink)}
+  .cell:active text{fill:var(--paper)}
+  .cell:focus-visible{outline:none}
+  .cell:focus-visible path{fill:var(--ink)}
+  .cell:focus-visible text{fill:var(--paper)}
+
+  .core path{fill:var(--ink);stroke:var(--ink);stroke-width:1.1;cursor:pointer}
+  .core text{fill:var(--paper);text-anchor:middle;pointer-events:none}
+  .core .core-num{
+    font-family:var(--font-d);font-weight:600;
+    font-size:50px;letter-spacing:-0.010em;
+  }
+  .core .core-word{
+    font-family:var(--font-d);font-weight:600;
+    font-size:12px;letter-spacing:.34em;
+  }
+  .core .core-door{
+    font-family:var(--font-t);font-weight:400;
+    font-size:8.5px;letter-spacing:.26em;fill:rgba(255,255,255,.55);
+  }
+  .core{transition:transform var(--speed) var(--ease);transform-origin:center;transform-box:fill-box}
+  .core:active{transform:scale(.965)}
+  .core:focus-visible{outline:none}
+  .core:focus-visible path{stroke-width:2.6}
+
+  /* імпульс світла з ядра */
+  .pulse{
+    fill:none;stroke:var(--ink);stroke-width:1;
+    opacity:0;transform-origin:195px 250px;
+    animation:pulse 5.2s var(--ease) infinite;
+    pointer-events:none;
+  }
+  .pulse.p2{animation-delay:2.6s}
+  @keyframes pulse{
+    0%   {opacity:.16;transform:scale(.4)}
+    70%  {opacity:0;  transform:scale(2.9)}
+    100% {opacity:0;  transform:scale(2.9)}
+  }
+  @media (prefers-reduced-motion:reduce){.pulse{animation:none}}
+
+  /* ── підпис-лід ── */
+  .foot{flex:0 0 auto;text-align:center}
+  .foot .lead{font-family:var(--font-t);font-weight:500;font-size:16px;line-height:1.45}
+  .foot .hint{font-size:11px;letter-spacing:.04em;color:var(--muted);margin-top:7px}
+
+  /* ── шторка ноди ── */
+  .veil{
+    position:absolute;inset:0;background:rgba(10,10,10,.22);
+    opacity:0;pointer-events:none;transition:opacity var(--speed) var(--ease);
+  }
+  .sheet{
+    position:absolute;left:0;right:0;bottom:0;
+    background:var(--paper);border-top:1px solid var(--ink);
+    padding:22px 24px calc(env(safe-area-inset-bottom) + 26px);
+    transform:translateY(102%);transition:transform 360ms var(--ease);
+  }
+  #frame.open .veil{opacity:1;pointer-events:auto}
+  #frame.open .sheet{transform:translateY(0)}
+
+  .sheet .s-kicker{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+  .sheet .s-name{
+    font-family:var(--font-d);font-weight:600;
+    font-size:24px;letter-spacing:-0.010em;line-height:1.12;
+    margin-top:8px;
+  }
+  .sheet .s-desc{font-size:15px;line-height:1.65;margin-top:10px;max-width:32ch}
+  .sheet .s-act{margin-top:18px;display:flex;align-items:center;gap:12px}
+  .s-open{
+    display:inline-block;background:var(--ink);color:var(--paper);
+    font-family:var(--font-t);font-weight:500;font-size:14px;letter-spacing:.02em;
+    text-decoration:none;border-radius:99px;
+    padding:13px 26px;min-height:44px;
+    transition:opacity var(--speed) var(--ease);
+  }
+  .s-open:active{opacity:.82}
+  .s-status{
+    display:inline-block;border:1px solid var(--rule);color:var(--muted);
+    font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+    border-radius:99px;padding:9px 18px;
+  }
+  .s-close{
+    position:absolute;top:10px;right:10px;width:44px;height:44px;
+    background:none;border:none;cursor:pointer;color:var(--ink);
+    font-size:20px;line-height:1;
+  }
+</style>
+</head>
+<body>
+
+<div id="frame">
+  <div class="top">
+    <div class="mark"><span class="mark-num">137</span><span class="mark-lab">ЛАБ</span></div>
+    <div class="alpha">α ≈ 1/137</div>
+  </div>
+
+  <div class="hivewrap">
+    <svg id="hive" viewBox="0 0 390 520" preserveAspectRatio="xMidYMid meet" aria-label="Мапа лабораторії: шість нод навколо ядра"></svg>
+  </div>
+
+  <div class="foot">
+    <div class="lead">Шість нод навколо ядра.<br>Вхід — у центрі.</div>
+    <div class="hint">ноди відкриваються дотиком</div>
+  </div>
+
+  <div class="veil" id="veil"></div>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true">
+    <button class="s-close" id="sclose" aria-label="Закрити">×</button>
+    <div class="s-kicker">нода</div>
+    <div class="s-name" id="sname"></div>
+    <p class="s-desc" id="sdesc"></p>
+    <div class="s-act" id="sact"></div>
+  </div>
+</div>
+<div id="framecaption">137лаб · мапа лабораторії · чернетка</div>
+
+<script>
+/* ── контент = дані. ДРАФТ-ТЕКСТИ — Влад переписує. ───────────────── */
+const CELLS = [
+  { id:'metapedia', label:['МЕТА-ПЕДІЯ'],
+    full:'Мета-педія',
+    desc:'Бібліотека лабораторії: статті, відео, мапи досліджень. Ключ видає ініціація.',
+    status:'формується' },
+  { id:'kazka', label:['КАЗКА'],
+    full:'5D казка «Алхімія творчості»',
+    desc:'Історія про творчість, написана як подорож. Перший продукт лабораторії.',
+    status:'пишеться' },
+  { id:'sonora', label:['СОНОРА'],
+    full:'Сонора',
+    desc:'Звукова мандрівка Лізи. Поле формується у Сінтрі.',
+    href:'/sonora/', act:'Відкрити Сонору' },
+  { id:'daodedo', label:['ДАО ДЕ ДО'],
+    full:'Дао Де До',
+    desc:'Практика дії без зусилля. Лабораторний журнал — згодом.',
+    status:'формується' },
+  { id:'worldview', label:['5D','СВІТОГЛЯД'],
+    full:'Симбіотичний 5D світогляд',
+    desc:'Оптика, крізь яку дивиться лабораторія. Есей про симбіоз людини і поля.',
+    status:'формується' },
+  { id:'house', label:['ЗІРКИ Й','ЄДИНОРОГИ'],
+    full:'Дім Зірок і Єдинорогів',
+    desc:'Дім, що збирається навколо казки. Поки що — креслення.',
+    status:'формується' },
+];
+
+const CORE = { href:'/v4/', num:'137', word:'ЛАБ', door:'ВХІД' };
+
+/* ── геометрія: flat-top гекси, квітка 1+6 ─────────────────────────── */
+const CX = 195, CY = 250;          // центр у viewBox 390×520
+const R  = 66;                     // радіус гекса (до вершини)
+const D  = Math.sqrt(3) * R;       // крок решітки
+const INSET = 0.94;                // повітря між нодами
+const NS = 'http://www.w3.org/2000/svg';
+
+// сусіди за годинниковою від верхньої ноди
+const DIRS = [270, 330, 30, 90, 150, 210];
+
+function el(name, attrs, text){
+  const node = document.createElementNS(NS, name);
+  for (const k in attrs) node.setAttribute(k, attrs[k]);
+  if (text) node.textContent = text;
+  return node;
+}
+
+function hexPath(cx, cy, r){
+  const pts = [];
+  for (let a = 0; a < 360; a += 60){
+    const rad = a * Math.PI / 180;
+    pts.push((cx + r * Math.cos(rad)).toFixed(2) + ',' + (cy + r * Math.sin(rad)).toFixed(2));
+  }
+  return 'M' + pts.join('L') + 'Z';
+}
+
+function cellNode(cell, cx, cy){
+  const g = el('g', { 'class':'cell', 'data-id':cell.id, role:'button', tabindex:'0', 'aria-label':'Нода — ' + cell.full });
+  g.appendChild(el('path', { d:hexPath(cx, cy, R * INSET) }));
+  // лейбл — герой ноди: Display 600, по центру, до двох рядків
+  const lh = 17;
+  cell.label.forEach((line, i) => {
+    const y = cy + (i - (cell.label.length - 1) / 2) * lh + 5.5;
+    g.appendChild(el('text', { 'class':'label', x:cx, y:y.toFixed(1) }, line));
+  });
+  return g;
+}
+
+function render(){
+  const svg = document.getElementById('hive');
+  // імпульси світла — позаду решітки
+  svg.appendChild(el('circle', { 'class':'pulse',    cx:CX, cy:CY, r:R }));
+  svg.appendChild(el('circle', { 'class':'pulse p2', cx:CX, cy:CY, r:R }));
+  CELLS.forEach((cell, i) => {
+    const rad = DIRS[i] * Math.PI / 180;
+    svg.appendChild(cellNode(cell, CX + D * Math.cos(rad), CY + D * Math.sin(rad)));
+  });
+  // ядро-плакат: 137 / ЛАБ / ВХІД
+  const core = el('g', { 'class':'core', role:'link', tabindex:'0', 'aria-label':'137 ЛАБ — вхід' });
+  core.appendChild(el('path', { d:hexPath(CX, CY, R * INSET) }));
+  core.appendChild(el('text', { 'class':'core-num',  x:CX,     y:CY + 5  }, CORE.num));
+  core.appendChild(el('text', { 'class':'core-word', x:CX + 2, y:CY + 24 }, CORE.word));
+  core.appendChild(el('text', { 'class':'core-door', x:CX + 1, y:CY + 41 }, CORE.door));
+  svg.appendChild(core);
+}
+render();
+
+/* ── взаємодія ─────────────────────────────────────────────────────── */
+const frame = document.getElementById('frame');
+
+function openSheet(cell){
+  document.getElementById('sname').textContent = cell.full;
+  document.getElementById('sdesc').textContent = cell.desc;
+  const act = document.getElementById('sact');
+  act.textContent = '';
+  if (cell.href){
+    const a = document.createElement('a');
+    a.className = 's-open';
+    a.href = cell.href;
+    a.textContent = cell.act + ' →';
+    act.appendChild(a);
+  } else {
+    const s = document.createElement('span');
+    s.className = 's-status';
+    s.textContent = cell.status;
+    act.appendChild(s);
+  }
+  frame.classList.add('open');
+}
+function closeSheet(){ frame.classList.remove('open'); }
+
+function activate(target){
+  if (target.closest('.core')){ location.href = CORE.href; return true; }
+  const g = target.closest('.cell');
+  if (g){ openSheet(CELLS.find(c => c.id === g.dataset.id)); return true; }
+  return false;
+}
+
+document.getElementById('hive').addEventListener('click', e => activate(e.target));
+document.getElementById('hive').addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  if (activate(e.target)) e.preventDefault();
+});
+document.getElementById('veil').addEventListener('click', closeSheet);
+document.getElementById('sclose').addEventListener('click', closeSheet);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
+</script>
+</body>
+</html>
