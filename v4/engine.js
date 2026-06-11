@@ -203,6 +203,7 @@ function renderBlocks(blocks, scene, content) {
         const btn = el('button', 'b-next', b.t);
         btn.addEventListener('click', () => {
           if (b.unlocksAudio) unlockAudio();
+          if (b.href){ location.href = b.href; return; }   /* вихід назовні (фінал без email-гейту) */
           if (b.goto) gotoId(b.goto); else next();
         });
         content.appendChild(btn); break;
