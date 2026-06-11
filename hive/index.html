@@ -222,11 +222,7 @@
     text-decoration:underline;text-underline-offset:3px;padding:8px;
   }
 
-  /* двері: контур-прогрес навколо ядра під час hold */
-  .door-ring{
-    fill:none;stroke:var(--ink);stroke-width:2.5;stroke-linecap:round;
-    pointer-events:none;
-  }
+  /* двері: простий дотик */
   .doorhex path{cursor:pointer}
   .core .seed-k{
     font-family:var(--font-t);font-weight:400;
@@ -237,7 +233,7 @@
     font-size:16.5px;letter-spacing:.04em;
   }
   .doorhex{transition:transform var(--speed) var(--ease);transform-box:fill-box;transform-origin:center}
-  .doorhex.held{transform:scale(.97)}
+  .doorhex:active{transform:scale(.97)}
 
   /* розкриття вулика */
   .cell, .core{transform-box:fill-box;transform-origin:center}
@@ -428,13 +424,13 @@ const OB = {
   },
   door: {
     lead:'Дорослим вхід заборонено.',
-    p:'Тримай палець на соті — справжні двері відчиняються повільно.',
-    hint:'тримай, доки контур не замкнеться',
+    p:'Торкнись соти — і заходь.',
+    hint:'',
   },
   doorReturn: {
     lead:'Дорослим вхід заборонено.',
     p:'Ти знаєш, що робити.',
-    hint:'тримай, доки контур не замкнеться',
+    hint:'',
   },
   rules: [
     { lead:'Правило перше.',
@@ -456,7 +452,6 @@ const ADULTS = {
 /* перша велика нода = казка */
 const SEED = { kicker:'КАЗКА', l1:'АЛХІМІЯ', l2:'ТВОРЧОСТІ' };
 
-const HOLD_MS = 3000;
 const ONBOARD_KEY = '137school-onboarded';
 let stage = 'seed';
 let ruleIdx = 0;
@@ -578,9 +573,25 @@ function padFrom(target){
   return { id, el };
 }
 
+/* ── колір як пробудження: Ч/Б — скелет світу, колір народжується
+   ЛИШЕ як відгук на дотик. Нота → колір (ньютонівська синестезія:
+   C червоний · D помаранч · E жовтий · G синій · A фіолет);
+   вища октава — світліша, нижча (кітч-панч) — глибша. ───────────── */
+const NOTE_COLOR = {
+  core:      'hsl(4, 78%, 50%)',     /* C5 */
+  metapedia: 'hsl(32, 82%, 50%)',    /* D5 */
+  kazka:     'hsl(52, 85%, 47%)',    /* E5 */
+  vibecode:  'hsl(210, 75%, 50%)',   /* G5 */
+  daodedo:   'hsl(276, 60%, 52%)',   /* A5 */
+  innernet:  'hsl(4, 78%, 64%)',     /* C6 */
+  house:     'hsl(32, 82%, 64%)',    /* D6 */
+  qq:'hsl(4, 60%, 40%)', qa:'hsl(32, 65%, 40%)', qb:'hsl(52, 70%, 38%)',
+  qc:'hsl(210, 60%, 40%)', qd:'hsl(276, 50%, 42%)',
+};
+
 /* хвиля з центру педа — у спільному шарі поверх канваса,
    щоб хвилі різних педів перетинались між собою */
-function spawnWave(el){
+function spawnWave(el, padId){
   const waves = document.getElementById('waves');
   const fr = frame.getBoundingClientRect();
   const r = el.getBoundingClientRect();
@@ -588,6 +599,7 @@ function spawnWave(el){
   c.setAttribute('cx', (r.x + r.width / 2 - fr.x).toFixed(1));
   c.setAttribute('cy', (r.y + r.height / 2 - fr.y).toFixed(1));
   c.setAttribute('r', 30);
+  if (padId && NOTE_COLOR[padId]) c.style.stroke = NOTE_COLOR[padId];
   c.addEventListener('animationend', () => c.remove());
   while (waves.childNodes.length > 28) waves.firstChild.remove();
   waves.appendChild(c);
@@ -685,21 +697,12 @@ function seedNode(){
   return g;
 }
 
-let ringPerim = 0;
-function renderSingle(withRing){
+function renderSingle(){
   const svg = document.getElementById('hive');
   svg.classList.remove('reveal');
   svg.textContent = '';
   svg.appendChild(el('circle', { 'class':'pulse',    cx:CX, cy:CY, r:SEED_R }));
   svg.appendChild(el('circle', { 'class':'pulse p2', cx:CX, cy:CY, r:SEED_R }));
-  if (withRing){
-    const ringR = SEED_R + 12;
-    ringPerim = 6 * ringR;
-    const ring = el('path', { 'class':'door-ring', id:'doorring', d:hexPath(CX, CY, ringR) });
-    ring.setAttribute('stroke-dasharray', ringPerim);
-    ring.setAttribute('stroke-dashoffset', ringPerim);
-    svg.appendChild(ring);
-  }
   svg.appendChild(seedNode());
 }
 
@@ -733,9 +736,9 @@ function isOnboarded(){ return localStorage.getItem(ONBOARD_KEY) === '1'; }
 function setStage(s){
   stage = s;
   frame.dataset.stage = s;
-  if (s === 'seed'){ renderSingle(false); setOb(OB.seed); }
-  else if (s === 'door'){ renderSingle(true); setOb(isOnboarded() ? OB.doorReturn : OB.door); }
-  else if (s === 'rules'){ renderSingle(false); showRule(0); }
+  if (s === 'seed'){ renderSingle(); setOb(OB.seed); }
+  else if (s === 'door'){ renderSingle(); setOb(isOnboarded() ? OB.doorReturn : OB.door); }
+  else if (s === 'rules'){ renderSingle(); showRule(0); }
   else { renderHive(); }
 }
 
@@ -745,41 +748,8 @@ function nextRule(){
   else { localStorage.setItem(ONBOARD_KEY, '1'); setStage('hive'); }
 }
 
-/* hold-двері: контур замикається за 3с утримання, відпустив — відкат */
-let holdRAF = 0, holdT0 = 0, holdP = 0;
-function setRing(p){
-  const r = document.getElementById('doorring');
-  if (r) r.setAttribute('stroke-dashoffset', (ringPerim * (1 - p)).toFixed(1));
-}
-function holdDown(target){
-  if (stage !== 'door' || !target.closest('.doorhex')) return false;
-  cancelAnimationFrame(holdRAF);
-  document.querySelector('.doorhex').classList.add('held');
-  holdT0 = performance.now() - holdP * HOLD_MS;
-  const step = now => {
-    holdP = Math.min(1, (now - holdT0) / HOLD_MS);
-    setRing(holdP);
-    if (holdP >= 1){ doorPassed(); return; }
-    holdRAF = requestAnimationFrame(step);
-  };
-  holdRAF = requestAnimationFrame(step);
-  return true;
-}
-function holdUp(){
-  if (stage !== 'door') return;
-  cancelAnimationFrame(holdRAF);
-  const hex = document.querySelector('.doorhex');
-  if (hex) hex.classList.remove('held');
-  const decay = () => {
-    holdP = Math.max(0, holdP - 0.06);
-    setRing(holdP);
-    if (holdP > 0 && stage === 'door') holdRAF = requestAnimationFrame(decay);
-  };
-  holdRAF = requestAnimationFrame(decay);
-}
+/* двері: простий дотик (hold прибрано рішенням Влада 2026-06-11) */
 function doorPassed(){
-  cancelAnimationFrame(holdRAF);
-  holdP = 0;
   const hexEl = document.querySelector('.doorhex path');
   if (hexEl) spawnWave(hexEl);
   setStage(isOnboarded() ? 'hive' : 'rules');
@@ -828,20 +798,22 @@ function activate(target){
 }
 
 document.getElementById('hive').addEventListener('click', e => {
-  if (stage === 'seed' && e.target.closest('.doorhex')){ setStage('door'); return; }
+  if (e.target.closest('.doorhex')){
+    if (stage === 'seed'){ setStage('door'); return; }
+    if (stage === 'door'){ doorPassed(); return; }
+  }
   activate(e.target);
 });
 document.getElementById('hive').addEventListener('keydown', e => {
   if (e.key !== 'Enter' && e.key !== ' ') return;
-  if (stage === 'seed' && e.target.closest('.doorhex')){ setStage('door'); e.preventDefault(); return; }
-  if (stage === 'door'){
-    if (!e.repeat && holdDown(e.target)) e.preventDefault();
-    return;
+  if (e.target.closest('.doorhex')){
+    if (stage === 'seed'){ setStage('door'); e.preventDefault(); return; }
+    if (stage === 'door'){ doorPassed(); e.preventDefault(); return; }
   }
   if (SND.on){
     const pad = padFrom(e.target);
     if (pad){
-      playPad(pad.id); spawnWave(pad.el);
+      playPad(pad.id); spawnWave(pad.el, pad.id);
       if (pad.id === 'core') spawnWord();
       e.preventDefault();
     }
@@ -849,21 +821,12 @@ document.getElementById('hive').addEventListener('keydown', e => {
   }
   if (activate(e.target)) e.preventDefault();
 });
-document.getElementById('hive').addEventListener('keyup', e => {
-  if (stage === 'door' && (e.key === 'Enter' || e.key === ' ')) holdUp();
-});
-/* двері: hold на pointer */
-document.getElementById('hive').addEventListener('pointerdown', e => {
-  if (stage === 'door' && holdDown(e.target)) e.preventDefault();
-});
-document.addEventListener('pointerup', holdUp);
-document.addEventListener('pointercancel', holdUp);
 /* педи: pointerdown — миттєвий відгук, як в інструмента */
 document.addEventListener('pointerdown', e => {
   if (stage !== 'hive' || !SND.on) return;
   const pad = padFrom(e.target);
   if (pad){
-    playPad(pad.id); spawnWave(pad.el);
+    playPad(pad.id); spawnWave(pad.el, pad.id);
     if (pad.id === 'core') spawnWord();
   }
 });
