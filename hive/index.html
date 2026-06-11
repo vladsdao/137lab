@@ -18,6 +18,11 @@
     font-weight:800;font-display:swap;   /* панк-слова з ядра */
   }
   @font-face{
+    font-family:'Fixel Display';
+    src:url('../v4/fonts/FixelDisplay-Regular.woff2') format('woff2');
+    font-weight:400;font-display:swap;   /* «lab» у лого */
+  }
+  @font-face{
     font-family:'Fixel Text';
     src:url('../v4/fonts/FixelText-Regular.woff2') format('woff2');
     font-weight:400;font-display:swap;
@@ -84,9 +89,10 @@
     display:flex;justify-content:space-between;align-items:center;
     flex:0 0 auto;position:relative;z-index:2;
   }
-  .top .mark{font-family:var(--font-d);font-weight:600;font-size:21px;line-height:1}
-  .mark-num{letter-spacing:-0.010em}
-  .mark-lab{letter-spacing:.18em;margin-left:.30em}
+  /* лого: 137lab — цифра щільна 600, lab легкий 400 */
+  .top .mark{font-family:var(--font-d);font-size:15px;line-height:1}
+  .mark-num{font-weight:600;letter-spacing:-0.010em}
+  .mark-lab{font-weight:400;letter-spacing:.02em;margin-left:1px}
   .top-r{display:flex;align-items:center;gap:4px}
   .top .alpha{font-size:10px;letter-spacing:.08em;color:var(--muted)}
   /* значок звуку — мініатюра пульсу з ядра; негативні поля тримають
@@ -319,7 +325,7 @@
 
 <div id="frame">
   <div class="top">
-    <div class="mark"><span class="mark-num">137</span><span class="mark-lab">ЛАБ</span></div>
+    <div class="mark"><span class="mark-num">137</span><span class="mark-lab">lab</span></div>
     <div class="top-r">
       <div class="alpha">α ≈ 1/137</div>
       <button class="sound" id="sound" aria-pressed="false" aria-label="Звуковий режим">
