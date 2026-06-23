@@ -405,7 +405,6 @@
     <p class="ob-p" id="obp"></p>
     <div class="ob-act" id="obact"></div>
     <div class="ob-hint" id="obhint"></div>
-    <button class="ob-adults" id="obadults">ви дорослий? — вам сюди</button>
   </div>
 
   <div class="quiz" id="quiz">
@@ -1057,7 +1056,6 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet()
 
 /* ── старт ── екран 1 = ворота-квіз для всіх (без seed/door і зайвих тапів) */
 if (new URLSearchParams(location.search).has('reset')) localStorage.removeItem(ONBOARD_KEY);
-document.getElementById('obadults').addEventListener('click', () => openSheet(ADULTS));
 setStage('quizgate');
 </script>
 </body>
