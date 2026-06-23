@@ -170,7 +170,8 @@
   }
   .core{transition:transform var(--speed) var(--ease);transform-origin:center;transform-box:fill-box}
   .core:active{transform:scale(.965)}
-  .core:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+  /* без браузерної синьої рамки фокусу на центральній соті (клік/таб) */
+  .core:focus,.core:focus-visible{outline:none}
 
   /* імпульс світла з ядра — просвічує крізь порожні клітини решітки */
   .pulse{
