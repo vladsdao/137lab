@@ -255,6 +255,9 @@
   }
   .doorhex{transition:transform var(--speed) var(--ease);transform-box:fill-box;transform-origin:center}
   .doorhex:active{transform:scale(.97)}
+  /* ворота заблоковано: сота сіра — спершу дай відповідь */
+  .doorhex.locked path{fill:var(--rule);stroke:var(--rule);transition:fill var(--speed) var(--ease),stroke var(--speed) var(--ease)}
+  .doorhex.locked text{fill:var(--muted)}
   /* ворота відімкнено: центральна сота зеленіє + «Увійти» */
   .doorhex.entered path{fill:var(--enter);stroke:var(--enter);transition:fill var(--speed) var(--ease),stroke var(--speed) var(--ease)}
   .enter-mark{
@@ -469,10 +472,10 @@ const CORE = {
 const GATE_Q = {
   q:'«Доки не навернетесь, як діти, не увійдете у…»',
   opts:[
-    { key:'А', label:'Майнкрафт',      snd:'qa' },
-    { key:'Б', label:'Резонанс',       snd:'qb' },
-    { key:'В', label:'137лаб',         snd:'qc' },
-    { key:'Г', label:'Царство Небесне', snd:'qd' },
+    { key:'A', label:'Майнкрафт',      snd:'qa' },
+    { key:'B', label:'Резонанс',       snd:'qb' },
+    { key:'C', label:'137лаб',         snd:'qc' },
+    { key:'D', label:'Царство Небесне', snd:'qd' },
   ],
 };
 const HIVE_Q = {
@@ -799,7 +802,7 @@ function renderSingle(){
 
 /* ворота: центральна сота = лого «137 ЛАБ» (жодної «Алхімії творчості») */
 function gateNode(){
-  const g = el('g', { 'class':'core doorhex', role:'button', tabindex:'0', 'aria-label':'137 ЛАБ — вхід' });
+  const g = el('g', { 'class':'core doorhex locked', role:'button', tabindex:'0', 'aria-label':'137 ЛАБ — спершу дай відповідь' });
   g.appendChild(el('path', { d:hexPath(CX, CY, SEED_R) }));
   g.appendChild(el('text', { 'class':'gate-num',  x:CX, y:CY + 6  }, '137'));
   g.appendChild(el('text', { 'class':'gate-word', x:CX, y:CY + 32 }, 'ЛАБ'));
@@ -965,6 +968,7 @@ function answerGate(){
   gateUnlocked = true;
   const g = document.querySelector('.doorhex');
   if (g){
+    g.classList.remove('locked');
     g.classList.add('entered');
     g.querySelectorAll('text').forEach(t => t.remove());
     // «137 ЛАБ» лишається, сота зеленіє, зʼявляється «Увійти»
