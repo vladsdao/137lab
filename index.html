@@ -244,15 +244,6 @@
     font-family:var(--font-d);font-weight:600;
     font-size:16.5px;letter-spacing:.04em;
   }
-  /* ворота: лого «137 ЛАБ» на центральній соті */
-  .core .gate-num{
-    font-family:var(--font-d);font-weight:600;
-    font-size:58px;letter-spacing:-0.010em;
-  }
-  .core .gate-word{
-    font-family:var(--font-d);font-weight:600;
-    font-size:14px;letter-spacing:.34em;
-  }
   .doorhex{transition:transform var(--speed) var(--ease);transform-box:fill-box;transform-origin:center}
   .doorhex:active{transform:scale(.97)}
   /* ворота заблоковано: сота сіра — спершу дай відповідь */
@@ -260,13 +251,9 @@
   .doorhex.locked text{fill:var(--muted)}
   /* ворота відімкнено: центральна сота зеленіє + «Увійти» */
   .doorhex.entered path{fill:var(--enter);stroke:var(--enter);transition:fill var(--speed) var(--ease),stroke var(--speed) var(--ease)}
-  .enter-mark{
-    font-family:var(--font-d);font-size:30px;
-    fill:var(--paper);text-anchor:middle;pointer-events:none;
-  }
   .enter-label{
     font-family:var(--font-t);font-weight:400;
-    font-size:13px;letter-spacing:.24em;
+    font-size:9.5px;letter-spacing:.2em;
     fill:var(--paper);text-anchor:middle;pointer-events:none;
   }
 
@@ -802,18 +789,19 @@ function renderSingle(){
 
 /* ворота: центральна сота = лого «137 ЛАБ» (жодної «Алхімії творчості») */
 function gateNode(){
+  // та сама нода, що й core у вулику: радіус R*INSET, шрифт core-num/core-word, позиції CY+8/CY+27
   const g = el('g', { 'class':'core doorhex locked', role:'button', tabindex:'0', 'aria-label':'137 ЛАБ — спершу дай відповідь' });
-  g.appendChild(el('path', { d:hexPath(CX, CY, SEED_R) }));
-  g.appendChild(el('text', { 'class':'gate-num',  x:CX, y:CY + 6  }, '137'));
-  g.appendChild(el('text', { 'class':'gate-word', x:CX, y:CY + 32 }, 'ЛАБ'));
+  g.appendChild(el('path', { d:hexPath(CX, CY, R * INSET) }));
+  g.appendChild(el('text', { 'class':'core-num',  x:CX,     y:CY + 8  }, CORE.num));
+  g.appendChild(el('text', { 'class':'core-word', x:CX + 2, y:CY + 27 }, CORE.word));
   return g;
 }
 function renderGate(){
   const svg = document.getElementById('hive');
   svg.classList.remove('reveal');
   svg.textContent = '';
-  svg.appendChild(el('circle', { 'class':'pulse',    cx:CX, cy:CY, r:SEED_R }));
-  svg.appendChild(el('circle', { 'class':'pulse p2', cx:CX, cy:CY, r:SEED_R }));
+  svg.appendChild(el('circle', { 'class':'pulse',    cx:CX, cy:CY, r:R }));
+  svg.appendChild(el('circle', { 'class':'pulse p2', cx:CX, cy:CY, r:R }));
   svg.appendChild(gateNode());
 }
 
@@ -970,11 +958,8 @@ function answerGate(){
   if (g){
     g.classList.remove('locked');
     g.classList.add('entered');
-    g.querySelectorAll('text').forEach(t => t.remove());
-    // «137 ЛАБ» лишається, сота зеленіє, зʼявляється «Увійти»
-    g.appendChild(el('text', { 'class':'gate-num',   x:CX, y:CY - 10 }, '137'));
-    g.appendChild(el('text', { 'class':'gate-word',  x:CX, y:CY + 13 }, 'ЛАБ'));
-    g.appendChild(el('text', { 'class':'enter-label', x:CX, y:CY + 40 }, 'Увійти'));
+    // 137/ЛАБ лишаються точно на місці (не чіпаємо); сота зеленіє + «Увійти» у слоті підпису
+    g.appendChild(el('text', { 'class':'enter-label', x:CX + 1, y:CY + 43 }, 'Увійти'));
     spawnWave(g.querySelector('path'));
   }
   document.getElementById('quiz').classList.add('dismissed');
