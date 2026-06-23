@@ -1,16 +1,41 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#ffffff">
-<title>137lab — Ініціація (чернетка v4)</title>
-<link rel="stylesheet" href="styles.css">
+<title>137lab — скоро</title>
+<style>
+  /* /137 поки прихована — заглушка «Скоро» (журей-копія v4 лишилась у файлах поруч) */
+  @font-face{font-family:'Fixel Display';src:url('/v4/fonts/FixelDisplay-SemiBold.woff2') format('woff2');font-weight:600;font-display:swap}
+  @font-face{font-family:'Fixel Display';src:url('/v4/fonts/FixelDisplay-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+  @font-face{font-family:'Fixel Text';src:url('/v4/fonts/FixelText-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    background:#ffffff;color:#0a0a0a;
+    font-family:'Fixel Text',sans-serif;
+    display:grid;place-items:center;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{text-align:center;padding:24px}
+  .mark{font-family:'Fixel Display';font-size:26px;line-height:1}
+  .mark .n{font-weight:600;letter-spacing:-0.010em}
+  .mark .l{font-weight:400;letter-spacing:.02em;margin-left:1px}
+  .soon{margin-top:20px;font-size:14px;letter-spacing:.26em;text-transform:uppercase;color:#6e6e6e}
+  .back{
+    margin-top:30px;display:inline-block;
+    font-size:13px;color:#6e6e6e;
+    text-decoration:underline;text-underline-offset:3px;
+  }
+</style>
 </head>
 <body>
-<div id="frame"></div>
-<div id="framecaption">137lab · протокол ініціації · чернетка v4</div>
-<script src="engine.js"></script>
+  <div class="wrap">
+    <div class="mark"><span class="n">137</span><span class="l">lab</span></div>
+    <div class="soon">Скоро</div>
+    <a class="back" href="/">← на головну</a>
+  </div>
 </body>
 </html>
