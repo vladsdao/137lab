@@ -1,1270 +1,1033 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>137 Lab — Practical Applications of United Consciousness</title>
-<meta name="description" content="The Physics of Quantum Sanctity &amp; 5D Leadership. Holy Business · Resonance Mindset · Symbiotic Family. The laboratory of Dao &amp; Liza.">
-
-<link rel="icon" type="image/png" href="./icons/favicon-32x32.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>137lab — лабораторія</title>
 <style>
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-:root {
-  --bg: #fff;
-  --ink: #000;
-  --rule: #000;
-  --dim: rgba(0,0,0,0.45);
-  --dim2: rgba(0,0,0,0.18);
-  --font: 'Space Mono', ui-monospace, 'Courier New', monospace;
-  --fs: 13px;
-  --lh: 1.6;
-  --rail-w: 280px;
-  --speed: 240ms;
-  --ease: cubic-bezier(0.77, 0, 0.175, 1);
-}
-
-html {
-  font-family: var(--font);
-  font-size: var(--fs);
-  line-height: var(--lh);
-  color: var(--ink);
-  background: var(--bg);
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
-
-body { min-height: 100vh; }
-a { color: inherit; text-decoration: none; }
-a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
-::selection { background: var(--ink); color: var(--bg); }
-
-.shell {
-  display: grid;
-  grid-template-columns: var(--rail-w) 1fr;
-  min-height: 100vh;
-}
-
-.rail {
-  border-right: 1px solid var(--rule);
-  padding: 28px 24px;
-  position: sticky; top: 0;
-  height: 100vh;
-  overflow-y: auto;
-  display: flex; flex-direction: column;
-  gap: 36px;
-}
-.rail::-webkit-scrollbar { width: 0; }
-
-.brand-mark {
-  font-weight: 400;
-  font-size: 14px;
-  letter-spacing: 0.18em;
-}
-
-.brand-line {
-  margin-top: 12px;
-  font-size: 11px;
-  line-height: 1.55;
-  color: var(--ink);
-  max-width: 220px;
-}
-
-.brand-coord {
-  margin-top: 14px;
-  font-size: 9.5px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--dim);
-}
-
-.rail-label {
-  font-size: 9.5px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--dim);
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--rule);
-  margin-bottom: 4px;
-}
-
-.rail-emblem {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 4px 0;
-}
-.rail-emblem img {
-  width: 96px; height: 96px;
-  object-fit: contain;
-  opacity: 0.85;
-}
-.rail-emblem .emblem-caption {
-  font-size: 8.5px;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--dim);
-}
-
-.index { list-style: none; }
-.index li { padding: 5px 0; }
-.index a {
-  display: grid;
-  grid-template-columns: 26px 1fr;
-  gap: 8px;
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  line-height: 1.4;
-}
-.index a:hover { text-decoration: none; }
-.index a:hover .ix-name { text-decoration: underline; text-underline-offset: 3px; }
-.ix-num { color: var(--dim); font-weight: 700; }
-.ix-name { color: var(--ink); }
-
-.enter-cta {
-  margin-top: auto;
-  display: flex; flex-direction: column; gap: 14px;
-  padding-top: 22px;
-  border-top: 1px solid var(--rule);
-}
-.enter-cta a.enter {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-size: 11px; font-weight: 700;
-  letter-spacing: 0.16em; text-transform: uppercase;
-}
-.enter-cta a.enter:hover { text-decoration: none; }
-.enter-cta a.enter:hover .arr { transform: translateY(2px); }
-.arr { transition: transform var(--speed) var(--ease); display: inline-block; }
-
-.lang-toggle { font-size: 10px; letter-spacing: 0.22em; color: var(--dim); }
-.lang-toggle .current { color: var(--ink); font-weight: 700; }
-
-/* rail testimonial */
-.rail-testimonial {
-  padding-top: 22px;
-  border-top: 1px solid var(--rule);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.rt-label {
-  font-size: 9.5px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--dim);
-}
-.rt-quote {
-  font-style: italic;
-  font-size: 12px;
-  line-height: 1.55;
-  color: rgba(0,0,0,0.85);
-  border-left: 2px solid var(--ink);
-  padding-left: 12px;
-  margin: 0;
-}
-.rt-quote span { display: block; }
-.rt-quote span + span { margin-top: 8px; }
-.rt-cite {
-  font-size: 9.5px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--dim);
-}
-.rt-more {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 4px;
-  font-size: 9.5px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--ink);
-  text-decoration: none;
-  border-bottom: 1px solid var(--ink);
-  align-self: flex-start;
-  padding-bottom: 2px;
-}
-.rt-more:hover { text-decoration: none; opacity: 0.6; }
-
-.content {
-  padding: 72px 80px 0;
-  max-width: 880px;
-}
-
-.masthead {
-  display: flex; flex-direction: column; gap: 18px;
-  padding-bottom: 56px;
-  border-bottom: 1px solid var(--rule);
-  margin-bottom: 64px;
-}
-.masthead-kick {
-  font-size: 10px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--dim);
-  font-weight: 700;
-}
-.masthead-title {
-  font-size: 38px;
-  font-weight: 700;
-  letter-spacing: -0.015em;
-  line-height: 1.04;
-  max-width: 680px;
-}
-.masthead-sub {
-  font-size: 14.5px;
-  font-weight: 400;
-  font-style: italic;
-  color: rgba(0,0,0,0.7);
-  max-width: 600px;
-  line-height: 1.55;
-}
-.masthead-by {
-  font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
-  color: var(--dim); font-weight: 700;
-  padding-top: 8px;
-}
-
-.block { padding: 64px 0 72px; border-top: 1px solid var(--rule); }
-.block:first-of-type { border-top: 0; padding-top: 0; }
-
-.block-code {
-  font-size: 10px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--dim);
-  font-weight: 700;
-  margin-bottom: 18px;
-}
-.block-code span { color: var(--ink); }
-
-.block-num {
-  font-size: 56px;
-  line-height: 0.92;
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  margin-bottom: 14px;
-}
-
-.block-en {
-  font-size: 11px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--dim);
-  margin-bottom: 10px;
-}
-
-.block-title {
-  font-size: 28px;
-  line-height: 1.14;
-  font-weight: 700;
-  letter-spacing: -0.005em;
-  margin-bottom: 28px;
-  max-width: 640px;
-}
-.block-title--sub {
-  font-size: 21px;
-  margin-top: 36px;
-  margin-bottom: 18px;
-}
-
-.block p {
-  max-width: 660px;
-  margin-bottom: calc(var(--lh) * 1em);
-  font-size: 13.5px;
-  line-height: 1.75;
-}
-.block p:last-child { margin-bottom: 0; }
-
-.block p.lede {
-  font-size: 15.5px;
-  font-style: italic;
-  color: rgba(0,0,0,0.78);
-  max-width: 640px;
-  line-height: 1.55;
-}
-
-.block p.stmt {
-  font-weight: 700;
-  font-size: 14.5px;
-  line-height: 1.5;
-  border-left: 2px solid var(--ink);
-  padding: 4px 0 4px 20px;
-  margin: 32px 0;
-  max-width: 660px;
-}
-
-.block .triad {
-  display: inline-block;
-  font-size: 11px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  font-weight: 700;
-  margin: 8px 0 22px;
-  color: var(--ink);
-}
-
-/* ── personal block (Founders) ── */
-.founders { margin-top: 28px; }
-.founder {
-  border-top: 1px solid var(--rule);
-  padding: 28px 0 32px;
-  display: grid;
-  grid-template-columns: 150px 1fr;
-  gap: 28px;
-  align-items: start;
-}
-.founder:last-of-type { border-bottom: 1px solid var(--rule); }
-
-.founder-photo {
-  aspect-ratio: 1 / 1;
-  border: 1px solid var(--rule);
-  background: repeating-linear-gradient(135deg, transparent 0 18px, rgba(0,0,0,0.045) 18px 19px);
-  position: relative;
-  overflow: hidden;
-}
-.founder-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.founder-photo::after {
-  content: 'PORTRAIT';
-  position: absolute; inset: 0;
-  display: grid; place-items: center;
-  font-size: 9px; letter-spacing: 0.24em;
-  color: var(--dim); font-weight: 700;
-  pointer-events: none;
-}
-.founder-photo:has(img)::after { display: none; }
-
-.founder-name {
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.005em;
-  margin-bottom: 4px;
-}
-.founder-role {
-  font-size: 10.5px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--dim);
-  margin-bottom: 16px;
-}
-.founder-voice {
-  font-style: italic;
-  font-size: 14px;
-  line-height: 1.65;
-  color: rgba(0,0,0,0.82);
-}
-
-.location-note {
-  margin-top: 36px;
-  padding: 20px 24px;
-  border: 1px solid var(--rule);
-  background: #fafaf7;
-  font-size: 12.5px;
-  line-height: 1.6;
-  display: flex; flex-wrap: wrap; gap: 10px 28px;
-  align-items: baseline;
-}
-.location-note .loc-label {
-  font-size: 9.5px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--dim);
-  line-height: 1.6;
-}
-.location-note p { margin: 0; max-width: none; font-size: 12.5px; line-height: 1.55; }
-.location-note p i { font-style: italic; color: var(--dim); }
-
-/* offerings — section heading */
-.give-heading {
-  margin: 64px 0 28px;
-  padding-top: 26px;
-  border-top: 1px solid var(--rule);
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  max-width: 700px;
-}
-.gh-tag {
-  font-size: 10px;
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--dim);
-}
-.gh-title {
-  font-size: 24px;
-  font-weight: 700;
-  letter-spacing: -0.005em;
-  line-height: 1.18;
-  margin: 4px 0 0;
-}
-
-/* offerings grid */
-.give-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 28px;
-  margin: 36px 0 24px;
-}
-.give-grid--3 { grid-template-columns: repeat(3, 1fr); gap: 22px; }
-
-.give-item {
-  border-top: 2px solid var(--ink);
-  padding-top: 14px;
-  display: flex;
-  flex-direction: column;
-}
-.give-num {
-  font-size: 10px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--dim);
-  margin-bottom: 4px;
-}
-.give-en {
-  font-size: 10px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--ink);
-  margin-bottom: 6px;
-}
-.give-name {
-  font-size: 17px;
-  font-weight: 700;
-  letter-spacing: -0.005em;
-  margin-bottom: 10px;
-  line-height: 1.2;
-}
-.give-body {
-  font-size: 12.5px;
-  line-height: 1.6;
-  color: rgba(0,0,0,0.78);
-  flex: 1;
-}
-.give-cta {
-  align-self: flex-start;
-  margin-top: 18px;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 10px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  font-weight: 700;
-  padding: 9px 14px;
-  border: 1px solid var(--ink);
-  background: transparent;
-  color: var(--ink);
-  font-family: var(--font);
-  cursor: pointer;
-  transition: background var(--speed) var(--ease), color var(--speed) var(--ease);
-  text-decoration: none;
-}
-.give-cta:hover { background: var(--ink); color: var(--bg); text-decoration: none; }
-.give-cta .cta-arrow { transition: transform var(--speed) var(--ease); display: inline-block; }
-.give-cta:hover .cta-arrow { transform: translateX(3px); }
-
-.target-label {
-  font-size: 10px; letter-spacing: 0.24em;
-  text-transform: uppercase; font-weight: 700;
-  color: var(--dim);
-  margin: 32px 0 12px;
-}
-.pillset { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0 28px; }
-.pill {
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  font-weight: 700;
-  border: 1px solid var(--ink);
-  padding: 5px 10px;
-  white-space: nowrap;
-}
-
-.phases {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 28px 32px;
-  margin-top: 36px;
-}
-
-/* ── epigraph (between 01 and 02) ── */
-.epigraph {
-  padding: 88px 0 96px;
-  border-top: 1px solid var(--rule);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  max-width: 720px;
-}
-.epigraph blockquote {
-  font-style: italic;
-  font-size: 18px;
-  line-height: 1.6;
-  color: rgba(0,0,0,0.85);
-  border-left: 2px solid var(--ink);
-  padding-left: 24px;
-  margin: 0;
-}
-.epigraph cite {
-  margin-top: 22px;
-  font-style: normal;
-  font-size: 10px;
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
-  color: var(--dim);
-  font-weight: 700;
-  padding-left: 26px;
-}
-
-/* ── interlude card (after Family) ── */
-.interlude {
-  margin: 72px 0 0;
-  padding: 40px 44px;
-  background: #fafaf7;
-  border-top: 3px solid var(--ink);
-  border-bottom: 1px solid var(--rule);
-  border-left: 1px solid var(--rule);
-  border-right: 1px solid var(--rule);
-}
-.interlude .il-tag {
-  font-size: 9.5px;
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--dim);
-  margin-bottom: 18px;
-}
-.interlude .il-body {
-  font-size: 17px;
-  line-height: 1.55;
-  font-weight: 400;
-  color: rgba(0,0,0,0.88);
-  max-width: 640px;
-  margin: 0;
-}
-.interlude .il-body b {
-  font-weight: 700;
-  color: var(--ink);
-}
-.interlude .il-stmt {
-  font-size: 15px;
-  line-height: 1.55;
-  font-style: italic;
-  color: var(--dim);
-  margin-top: 18px;
-  max-width: 640px;
-}
-.phase { border-top: 2px solid var(--ink); padding-top: 16px; }
-.phase-num { font-size: 10px; letter-spacing: 0.22em; font-weight: 700; color: var(--dim); margin-bottom: 8px; }
-.phase-name {
-  font-size: 17px;
-  font-weight: 700;
-  letter-spacing: -0.003em;
-  margin-bottom: 4px;
-  line-height: 1.15;
-}
-.phase-en {
-  font-size: 10.5px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--dim);
-  margin-bottom: 12px;
-}
-.phase p { font-size: 12px; line-height: 1.6; max-width: none; margin-bottom: 0.8em; }
-.phase p:last-of-type { margin-bottom: 0; }
-.phase-meta {
-  margin-top: 16px;
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--dim);
-  font-weight: 700;
-}
-
-/* ── Recognition × Engagement matrix ── */
-.matrix {
-  margin-top: 36px;
-  border-top: 3px solid var(--ink);
-}
-.matrix-row {
-  display: grid;
-  grid-template-columns: 28px 1fr 1fr;
-  gap: 28px;
-  padding: 24px 0 26px;
-  border-bottom: 1px solid var(--rule);
-  align-items: start;
-}
-.matrix-num {
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--dim);
-  padding-top: 2px;
-}
-.matrix-if {
-  font-style: italic;
-  font-size: 14px;
-  line-height: 1.55;
-  color: rgba(0,0,0,0.78);
-  max-width: none;
-  margin: 0;
-}
-.matrix-then {
-  font-size: 13.5px;
-  line-height: 1.55;
-  display: flex;
-  gap: 12px;
-  align-items: baseline;
-  max-width: none;
-  margin: 0;
-}
-.matrix-then::before {
-  content: "→";
-  color: var(--ink);
-  font-weight: 700;
-  flex-shrink: 0;
-}
-.matrix-then b { font-weight: 700; color: var(--ink); }
-.matrix-then .meta {
-  display: block;
-  margin-top: 6px;
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--dim);
-  font-weight: 700;
-}
-@media (max-width: 760px) {
-  .matrix-row { grid-template-columns: 28px 1fr; gap: 16px; }
-  .matrix-then { grid-column: 2; padding-top: 12px; border-top: 1px dotted var(--dim2); }
-}
-
-.field-card {
-  margin-top: 64px;
-  border: 1px solid var(--rule);
-  border-top: 3px solid var(--ink);
-  padding: 32px 36px 36px;
-  background: #fafaf7;
-}
-.field-card .fc-tag {
-  font-size: 9.5px;
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
-  color: var(--dim);
-  font-weight: 700;
-  margin-bottom: 14px;
-}
-.field-card h4 {
-  font-size: 22px;
-  letter-spacing: -0.005em;
-  line-height: 1.18;
-  margin-bottom: 18px;
-  font-weight: 700;
-}
-.field-card p { max-width: none; font-size: 13px; line-height: 1.7; margin-bottom: 14px; }
-.field-card p:last-child { margin-bottom: 0; }
-.field-card p.fc-stmt {
-  font-weight: 700;
-  font-style: normal;
-  border-left: 2px solid var(--ink);
-  padding: 4px 0 4px 18px;
-  margin: 18px 0;
-  line-height: 1.5;
-}
-
-.block--inverse {
-  background: #000; color: #fff;
-  margin: 96px -80px 0;
-  padding: 88px 80px 96px;
-  border-top: 0;
-}
-.block--inverse .block-code { color: rgba(255,255,255,0.45); }
-.block--inverse .block-code span { color: #fff; }
-.block--inverse p { color: rgba(255,255,255,0.86); }
-.block--inverse p.stmt { border-left-color: #fff; color: #fff; }
-
-.coordinate {
-  font-size: 88px; font-weight: 700; line-height: 1;
-  letter-spacing: -0.04em;
-  margin: 32px 0 8px;
-}
-.coordinate small {
-  font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
-  font-weight: 700; display: block; margin-top: 10px;
-  color: rgba(255,255,255,0.5);
-}
-.coordinate-title {
-  font-size: 28px; font-weight: 700;
-  letter-spacing: -0.005em;
-  margin-bottom: 22px;
-  line-height: 1.14;
-  color: #fff;
-}
-
-.form-wrap {
-  background: #000; color: #fff;
-  margin: 0 -80px;
-  padding: 0 80px 96px;
-}
-.form-head {
-  font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase;
-  color: rgba(255,255,255,0.7); font-weight: 700;
-  padding: 32px 0 16px;
-  border-top: 1px solid rgba(255,255,255,0.25);
-}
-.form-title {
-  font-size: 36px; line-height: 1.08;
-  font-weight: 700; letter-spacing: -0.018em;
-  margin-bottom: 18px;
-  max-width: 640px;
-}
-.form-lede {
-  font-size: 14.5px;
-  font-style: italic;
-  color: rgba(255,255,255,0.92);
-  max-width: 600px;
-  line-height: 1.55;
-  margin-bottom: 18px;
-}
-.form-stmt {
-  font-weight: 700;
-  font-size: 14.5px;
-  line-height: 1.5;
-  border-left: 2px solid #fff;
-  padding: 4px 0 4px 20px;
-  margin: 24px 0 36px;
-  max-width: 600px;
-  color: #fff;
-}
-.form-intro { font-size: 13px; color: rgba(255,255,255,0.85); max-width: 540px; margin-bottom: 40px; }
-
-form.entry { display: flex; flex-direction: column; gap: 28px; max-width: 620px; }
-.field { display: flex; flex-direction: column; gap: 8px; }
-.field label {
-  font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
-  font-weight: 700; color: rgba(255,255,255,0.7);
-}
-.field label .req { color: #fff; margin-left: 4px; }
-.field label .opt { color: rgba(255,255,255,0.5); margin-left: 4px; font-weight: 400; }
-
-.field input, .field textarea, .field select {
-  font-family: var(--font);
-  font-size: 14px;
-  color: #fff;
-  background: transparent;
-  border: 0;
-  border-bottom: 1px solid rgba(255,255,255,0.45);
-  padding: 8px 0 10px;
-  outline: none;
-  transition: border-color var(--speed) var(--ease);
-  resize: vertical;
-}
-.field input::placeholder, .field textarea::placeholder { color: rgba(255,255,255,0.55); }
-.field input:focus, .field textarea:focus, .field select:focus { border-bottom-color: #fff; }
-.field textarea { min-height: 90px; }
-.field-hint { font-size: 11px; color: rgba(255,255,255,0.6); font-style: italic; line-height: 1.5; }
-
-.topic-options { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
-.topic-chip {
-  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-  font-weight: 700;
-  padding: 7px 12px;
-  color: rgba(255,255,255,0.85);
-  border: 1px solid rgba(255,255,255,0.5);
-  cursor: pointer; user-select: none;
-  transition: border var(--speed), background var(--speed), color var(--speed);
-}
-.topic-chip.on, .topic-chip:hover {
-  border-color: #fff; background: #fff; color: #000;
-}
-
-button.submit {
-  margin-top: 12px;
-  background: #fff; color: #000;
-  border: 0;
-  padding: 18px 28px;
-  font-family: var(--font);
-  font-weight: 700;
-  font-size: 12px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  cursor: pointer;
-  display: inline-flex; align-items: center; gap: 16px;
-  align-self: flex-start;
-  transition: transform var(--speed) var(--ease);
-}
-button.submit:hover { transform: translateX(4px); }
-button.submit::after { content: "→"; display: inline-block; transition: transform var(--speed) var(--ease); }
-button.submit:hover::after { transform: translateX(4px); }
-
-.consent { font-size: 11px; color: rgba(255,255,255,0.6); max-width: 540px; line-height: 1.55; }
-
-.form-foot {
-  margin-top: 72px;
-  padding-top: 28px;
-  border-top: 1px solid rgba(255,255,255,0.25);
-  display: flex; justify-content: space-between; align-items: center;
-  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-  color: rgba(255,255,255,0.7);
-  flex-wrap: wrap; gap: 20px;
-}
-
-@media (max-width: 1024px) {
-  .shell { grid-template-columns: 1fr; }
-  .rail {
-    position: static; height: auto;
-    border-right: 0; border-bottom: 1px solid var(--rule);
-    padding: 24px;
+  /* ── Лабораторія Ч/Б · канон 2026-06-11 · вулик: решітка + типографіка ── */
+  @font-face{
+    font-family:'Fixel Display';
+    src:url('/v4/fonts/FixelDisplay-SemiBold.woff2') format('woff2');
+    font-weight:600;font-display:swap;
   }
-  .content { padding: 40px 28px 0; }
-  .block--inverse { margin: 80px -28px 0; padding: 64px 28px 72px; }
-  .form-wrap { margin: 0 -28px; padding: 0 28px 80px; }
-  .phases { grid-template-columns: 1fr; }
-  .give-grid, .give-grid--3 { grid-template-columns: 1fr; }
-  .founder { grid-template-columns: 120px 1fr; gap: 20px; }
-}
+  @font-face{
+    font-family:'Fixel Display';
+    src:url('/v4/fonts/FixelDisplay-ExtraBold.woff2') format('woff2');
+    font-weight:800;font-display:swap;   /* панк-слова з ядра */
+  }
+  @font-face{
+    font-family:'Fixel Display';
+    src:url('/v4/fonts/FixelDisplay-Regular.woff2') format('woff2');
+    font-weight:400;font-display:swap;   /* «lab» у лого */
+  }
+  @font-face{
+    font-family:'Fixel Text';
+    src:url('/v4/fonts/FixelText-Regular.woff2') format('woff2');
+    font-weight:400;font-display:swap;
+  }
+  @font-face{
+    font-family:'Fixel Text';
+    src:url('/v4/fonts/FixelText-Medium.woff2') format('woff2');
+    font-weight:500;font-display:swap;
+  }
 
-@media (max-width: 600px) {
-  .founder { grid-template-columns: 1fr; gap: 16px; }
-  .founder-photo { max-width: 180px; }
-}
+  :root{
+    --paper:#ffffff;
+    --ink:#0a0a0a;
+    --muted:#6e6e6e;
+    --rule:#c9c9c9;
+    --font-d:'Fixel Display',sans-serif;
+    --font-t:'Fixel Text',sans-serif;
+    --pad:#333333;   /* кітч-панч: м'якший за ink — рішення Влада 2026-06-11 */
+    --enter:#1f7a3d; /* зелена «Увійти»: виняток із Ч/Б — колір як відгук на дію */
+    --speed:240ms;
+    --ease:cubic-bezier(.4,0,.2,1);
+  }
 
-@media (max-width: 520px) {
-  .masthead-title { font-size: 30px; }
-  .block-num { font-size: 44px; }
-  .coordinate { font-size: 64px; }
-  .block-title { font-size: 24px; }
-  .form-title { font-size: 26px; }
-  .content { padding: 32px 20px 0; }
-  .block--inverse { margin: 64px -20px 0; padding: 56px 20px 64px; }
-  .form-wrap { margin: 0 -20px; padding: 0 20px 64px; }
-}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:var(--font-t);font-weight:400;
+    display:grid;place-items:center;
+    -webkit-font-smoothing:antialiased;
+    overscroll-behavior:none;
+  }
+
+  /* канвас 9:16 — мобайл на весь екран, десктоп = той самий канвас по центру листа */
+  #frame{
+    position:fixed;inset:0;width:100vw;height:100dvh;
+    background:var(--paper);
+    display:flex;flex-direction:column;
+    padding:calc(env(safe-area-inset-top) + 18px) 20px calc(env(safe-area-inset-bottom) + 22px);
+    overflow:hidden;
+    /* інструментальний екран: без double-tap-zoom і виділення тексту */
+    touch-action:manipulation;
+    -webkit-user-select:none;user-select:none;
+    -webkit-tap-highlight-color:transparent;
+  }
+  #framecaption{display:none}
+  @media (min-width:700px) and (min-aspect-ratio:4/5){
+    body{height:100vh}
+    #frame{
+      position:relative;inset:auto;
+      height:min(92vh,880px);aspect-ratio:390/844;width:auto;
+      border:1px solid var(--ink);
+      padding:18px 20px 22px;
+    }
+    #framecaption{
+      display:block;position:fixed;left:0;right:0;
+      bottom:calc((100vh - min(92vh,880px))/2 - 28px);
+      text-align:center;font-size:11px;letter-spacing:.18em;
+      text-transform:uppercase;color:var(--muted);
+    }
+  }
+
+  /* ── шапка: вордмарк-плакат + лабораторна анотація ── */
+  .top{
+    display:flex;justify-content:space-between;align-items:center;
+    flex:0 0 auto;position:relative;z-index:2;
+  }
+  /* лого: 137lab — цифра щільна 600, lab легкий 400 */
+  .top .mark{font-family:var(--font-d);font-size:15px;line-height:1}
+  .mark-num{font-weight:600;letter-spacing:-0.010em}
+  .mark-lab{font-weight:400;letter-spacing:.02em;margin-left:1px}
+  .top-r{display:flex;align-items:center;gap:4px}
+  .top .alpha{font-size:10px;letter-spacing:.08em;color:var(--muted)}
+  /* значок звуку — мініатюра пульсу з ядра; негативні поля тримають
+     висоту шапки, тач-ціль лишається 44px */
+  .sound{
+    width:44px;height:44px;margin:-11px -11px -11px 0;
+    display:grid;place-items:center;
+    background:none;border:none;color:var(--ink);cursor:pointer;
+  }
+  .sound:active{opacity:.55}
+  /* звуковий режим увімкнено: значок інвертується */
+  .sound.on{background:var(--ink);color:var(--paper);border-radius:50%}
+
+  /* ── поле: решітка на весь простір між шапкою і підписом ── */
+  .hivewrap{
+    flex:1 1 auto;min-height:0;
+    margin:0 -20px;                 /* решітка тече до країв канваса */
+    display:grid;place-items:center;
+  }
+  svg{width:100%;height:100%;display:block}
+
+  /* нескінченна решітка — порожні клітини, слабкий штрих */
+  .lattice{pointer-events:none}
+  .lattice path{fill:none;stroke:var(--rule);stroke-width:.6;opacity:.35}
+
+  /* продуктові ноди — чіткий ink на тлі поля */
+  .cell path{
+    fill:var(--paper);stroke:var(--ink);stroke-width:1.5;
+    transition:fill var(--speed) var(--ease);
+    cursor:pointer;
+  }
+  .cell text{
+    font-family:var(--font-d);font-weight:600;
+    fill:var(--ink);text-anchor:middle;
+    letter-spacing:.03em;
+    transition:fill var(--speed) var(--ease);
+    pointer-events:none;
+  }
+  .cell .label{font-size:15px}
+  .cell .label.sm{font-size:11.5px;letter-spacing:.01em}
+  @media (hover:hover){
+    .cell:hover path{fill:var(--ink)}
+    .cell:hover text{fill:var(--paper)}
+  }
+  .cell:active path{fill:var(--ink)}
+  .cell:active text{fill:var(--paper)}
+  .cell:focus-visible{outline:none}
+  .cell:focus-visible path{fill:var(--ink)}
+  .cell:focus-visible text{fill:var(--paper)}
+
+  /* приглушена нода (ще не жива): сіра, не чорніє на тап */
+  .cell.muted path{stroke:var(--rule)}
+  .cell.muted text{fill:var(--muted)}
+  .cell.muted:active path,.cell.muted:focus-visible path{fill:var(--paper);stroke:var(--rule)}
+  .cell.muted:active text,.cell.muted:focus-visible text{fill:var(--muted)}
+  @media (hover:hover){
+    .cell.muted:hover path{fill:var(--paper);stroke:var(--muted)}
+    .cell.muted:hover text{fill:var(--muted)}
+  }
+
+  /* ядро-плакат: 137 / ЛАБ / ВХІД */
+  .core path{fill:var(--ink);stroke:var(--ink);stroke-width:1.5;cursor:pointer}
+  .core text{text-anchor:middle;pointer-events:none;fill:var(--paper)}
+  .core .core-num{
+    font-family:var(--font-d);font-weight:600;
+    font-size:50px;letter-spacing:-0.010em;
+  }
+  .core .core-word{
+    font-family:var(--font-d);font-weight:600;
+    font-size:12px;letter-spacing:.34em;
+  }
+  .core .core-door{
+    font-family:var(--font-t);font-weight:400;
+    font-size:8.5px;letter-spacing:.26em;fill:rgba(255,255,255,.55);
+  }
+  .core{transition:transform var(--speed) var(--ease);transform-origin:center;transform-box:fill-box}
+  .core:active{transform:scale(.965)}
+  .core:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+
+  /* імпульс світла з ядра — просвічує крізь порожні клітини решітки */
+  .pulse{
+    fill:none;stroke:var(--ink);stroke-width:1;
+    opacity:0;transform-origin:195px 250px;
+    animation:pulse 6.4s var(--ease) infinite;
+    pointer-events:none;
+  }
+  .pulse.p2{animation-delay:3.2s}
+  @keyframes pulse{
+    0%   {opacity:.16;transform:scale(.35)}
+    75%  {opacity:0;  transform:scale(4.6)}
+    100% {opacity:0;  transform:scale(4.6)}
+  }
+  @media (prefers-reduced-motion:reduce){.pulse{animation:none}}
+
+  /* ── хвилі від педів: розходяться і перетинаються (інтерференція) ── */
+  .waves{position:absolute;inset:0;z-index:2;pointer-events:none}
+  .waves circle{
+    fill:none;stroke:var(--ink);stroke-width:.6;   /* тонше */
+    transform-box:fill-box;transform-origin:center;
+    animation:wavehit 1.7s var(--ease) forwards;
+  }
+  @keyframes wavehit{
+    0%   {opacity:.5;transform:scale(.25)}          /* помітніше */
+    55%  {opacity:.22}
+    100% {opacity:0;transform:scale(9)}
+  }
+  @media (prefers-reduced-motion:reduce){.waves circle{animation-duration:1ms}}
+
+  /* ── слова з ядра: панк-вильоти у звуковому режимі ── */
+  .words{position:absolute;inset:0;z-index:2;pointer-events:none}
+  .words span{
+    position:absolute;
+    font-family:var(--font-d);font-weight:800;text-transform:uppercase;
+    color:var(--ink);white-space:nowrap;
+    animation:wordfly var(--dur) cubic-bezier(.2,.6,.3,1) forwards;
+  }
+  @keyframes wordfly{
+    0%  {transform:translate(-50%,-50%) rotate(var(--r0)) scale(.5);opacity:.7}
+    100%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) rotate(var(--r1)) scale(1.15);opacity:0}
+  }
+  @media (prefers-reduced-motion:reduce){.words span{animation-duration:1ms}}
+
+  /* ── онбординг: сота → двері → ворота(квіз) → вулик ── */
+  #frame:not([data-stage="hive"]):not([data-stage="quizgate"]) .quiz{display:none}
+  #frame:not([data-stage="hive"]) .sound{visibility:hidden}
+  #frame[data-stage="hive"] .ob{display:none}
+  .quiz.dismissed{display:none}
+  .ob{flex:0 0 auto;text-align:center;padding:0 12px;margin-bottom:12px}
+  .ob-lead{
+    font-family:var(--font-d);font-weight:600;
+    font-size:20px;letter-spacing:-0.010em;line-height:1.22;
+  }
+  .ob-p{font-size:14.5px;line-height:1.6;margin-top:8px;max-width:34ch;margin-inline:auto}
+  .ob-act{margin-top:14px}
+  .ob-hint{font-size:11px;letter-spacing:.04em;color:var(--muted);margin-top:10px}
+  .ob-adults{
+    margin-top:12px;background:none;border:none;cursor:pointer;
+    font-family:var(--font-t);font-size:10.5px;color:var(--muted);
+    text-decoration:underline;text-underline-offset:3px;padding:8px;
+  }
+
+  /* двері: простий дотик */
+  .doorhex path{cursor:pointer}
+  .core .seed-k{
+    font-family:var(--font-t);font-weight:400;
+    font-size:9px;letter-spacing:.3em;fill:rgba(255,255,255,.55);
+  }
+  .core .seed-line{
+    font-family:var(--font-d);font-weight:600;
+    font-size:16.5px;letter-spacing:.04em;
+  }
+  .doorhex{transition:transform var(--speed) var(--ease);transform-box:fill-box;transform-origin:center}
+  .doorhex:active{transform:scale(.97)}
+  /* ворота відімкнено: центральна сота зеленіє + «Увійти» */
+  .doorhex.entered path{fill:var(--enter);stroke:var(--enter);transition:fill var(--speed) var(--ease),stroke var(--speed) var(--ease)}
+  .enter-label{
+    font-family:var(--font-d);font-weight:600;
+    font-size:23px;letter-spacing:.02em;
+    fill:var(--paper);text-anchor:middle;pointer-events:none;
+  }
+
+  /* розкриття вулика */
+  .cell, .core{transform-box:fill-box;transform-origin:center}
+  svg.reveal .cell{animation:cellin .5s var(--ease) backwards}
+  svg.reveal .core{animation:cellin .45s var(--ease) backwards}
+  svg.reveal .lattice{animation:fadein .9s ease backwards .25s}
+  @keyframes cellin{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+  @media (prefers-reduced-motion:reduce){
+    svg.reveal .cell, svg.reveal .core, svg.reveal .lattice{animation:none}
+  }
+
+  /* ── кітч-панч: «Перший мільйон» (превью, не клікабельно) ──
+     відступ знизу більший за звичайний: in-app браузери Telegram/Insta
+     підрізають нижній край, панч не має сидіти впритул */
+  .quiz{flex:0 0 auto;position:relative;z-index:2;margin-bottom:10px}
+  .q-grid{margin:0 -20px;display:grid;gap:8px}
+  .q-row{
+    position:relative;display:grid;grid-template-columns:1fr 1fr;gap:18px;
+    padding:0 28px;
+  }
+  .q-row--q{grid-template-columns:1fr}
+  /* лінія крізь увесь рядок до країв канваса — як у телеграфіці */
+  .q-row::before{
+    content:'';position:absolute;left:0;right:0;top:50%;
+    border-top:1px solid var(--rule);
+  }
+  /* лозендж = розтягнутий гекс: та сама решітка, тільки горизонтальна */
+  .q-opt{
+    position:relative;height:31px;
+    background:var(--pad);color:var(--paper);
+    clip-path:polygon(14px 0,calc(100% - 14px) 0,100% 50%,calc(100% - 14px) 100%,14px 100%,0 50%);
+    display:flex;align-items:center;justify-content:center;gap:7px;
+    font-family:var(--font-t);font-weight:500;font-size:12px;letter-spacing:.02em;
+    white-space:nowrap;
+    transition:transform 120ms var(--ease),background 120ms var(--ease);
+  }
+  /* у звуковому режимі лозенджі — педи */
+  .snd .q-opt{cursor:pointer}
+  .snd .q-opt:active{background:var(--ink);transform:scale(.97)}
+  .q-key{
+    font-family:var(--font-d);font-weight:600;font-size:11px;
+    color:rgba(255,255,255,.55);
+  }
+  /* питання — звичайний текст, що переноситься (не лозендж) */
+  .q-q{
+    background:none;color:var(--ink);
+    clip-path:none;height:auto;min-height:0;
+    white-space:normal;line-height:1.38;
+    font-family:var(--font-t);font-weight:500;
+    font-size:11.5px;letter-spacing:0;
+    padding:0 14px;display:block;text-align:center;
+  }
+  .q-row--q::before{display:none}
+
+  /* фідбек після відповіді (вулик) + хрестик */
+  .q-feedback{
+    font-family:var(--font-t);font-size:13px;line-height:1.55;
+    text-align:center;color:var(--ink);
+    max-width:38ch;margin:2px auto 0;padding:0 22px;
+  }
+  .q-close{
+    position:absolute;top:-10px;right:18px;width:40px;height:40px;
+    background:none;border:none;cursor:pointer;color:var(--ink);
+    font-size:22px;line-height:1;z-index:3;
+  }
+  .q-close:active{opacity:.55}
+
+  /* ── шторка ноди ── */
+  .veil{
+    position:absolute;inset:0;background:rgba(10,10,10,.22);
+    opacity:0;pointer-events:none;transition:opacity var(--speed) var(--ease);
+    z-index:3;   /* над кітч-панчем */
+  }
+  .sheet{
+    position:absolute;left:0;right:0;bottom:0;
+    background:var(--paper);border-top:1px solid var(--ink);
+    padding:22px 24px calc(env(safe-area-inset-bottom) + 26px);
+    transform:translateY(102%);transition:transform 360ms var(--ease);
+    z-index:4;   /* шторки виїжджають поверх усього */
+  }
+  #frame.open .veil{opacity:1;pointer-events:auto}
+  #frame.open .sheet{transform:translateY(0)}
+
+  .sheet .s-kick{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+  .sheet .s-name{
+    font-family:var(--font-d);font-weight:600;
+    font-size:24px;letter-spacing:-0.010em;line-height:1.12;
+    margin-top:8px;
+  }
+  .sheet .s-desc{font-size:15px;line-height:1.65;margin-top:10px;max-width:32ch}
+  .sheet .s-act{margin-top:18px;display:flex;align-items:center;gap:12px}
+  .s-open{
+    display:inline-block;background:var(--ink);color:var(--paper);
+    border:none;cursor:pointer;
+    font-family:var(--font-t);font-weight:500;font-size:14px;letter-spacing:.02em;
+    text-decoration:none;border-radius:99px;
+    padding:13px 26px;min-height:44px;
+    transition:opacity var(--speed) var(--ease);
+  }
+  .s-open:active{opacity:.82}
+  .s-status{
+    display:inline-block;border:1px solid var(--rule);color:var(--muted);
+    font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+    border-radius:99px;padding:9px 18px;
+  }
+  .s-close{
+    position:absolute;top:10px;right:10px;width:44px;height:44px;
+    background:none;border:none;cursor:pointer;color:var(--ink);
+    font-size:20px;line-height:1;
+  }
 </style>
 </head>
 <body>
 
-<div class="shell">
-
-  <!-- ═══════════════════ RAIL ═══════════════════ -->
-  <aside class="rail">
-    <div class="brand">
-      <div class="brand-mark">137 LAB</div>
-      <div class="brand-line">Holy Business<br>Resonance Mindset<br>Symbiotic Family</div>
-      <div class="brand-coord">1/137 · Fine-structure</div>
+<div id="frame">
+  <div class="top">
+    <div class="mark"><span class="mark-num">137</span><span class="mark-lab">lab</span></div>
+    <div class="top-r">
+      <div class="alpha">α ≈ 1/137</div>
+      <button class="sound" id="sound" aria-pressed="false" aria-label="Звуковий режим">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <circle cx="6" cy="12" r="2.2" fill="currentColor"/>
+          <path d="M11 7.5a6.5 6.5 0 0 1 0 9" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M14.5 4.5a11 11 0 0 1 0 15" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
     </div>
+  </div>
 
-    <div>
-      <div class="rail-label">Index</div>
-      <ul class="index">
-        <li><a href="#b01"><span class="ix-num">01</span><span class="ix-name">Game Over</span></a></li>
-        <li><a href="#b02"><span class="ix-num">02</span><span class="ix-name">Founders</span></a></li>
-        <li><a href="#b03"><span class="ix-num">03</span><span class="ix-name">Techno-hermeticism</span></a></li>
-        <li><a href="#b04"><span class="ix-num">04</span><span class="ix-name">Three domains</span></a></li>
-        <li><a href="#b05"><span class="ix-num">05</span><span class="ix-name">Symbiosis</span></a></li>
-        <li><a href="#b06"><span class="ix-num">06</span><span class="ix-name">Synergy Protocol</span></a></li>
-        <li><a href="#b07"><span class="ix-num">07</span><span class="ix-name">Resonance Framework</span></a></li>
-        <li><a href="#b08"><span class="ix-num">08</span><span class="ix-name">Family</span></a></li>
-        <li><a href="#b09"><span class="ix-num">09</span><span class="ix-name">Holy Business</span></a></li>
-        <li><a href="#b10"><span class="ix-num">10</span><span class="ix-name">Integration architecture</span></a></li>
-        <li><a href="#b11"><span class="ix-num">11</span><span class="ix-name">Why 137</span></a></li>
-      </ul>
-    </div>
+  <div class="hivewrap">
+    <svg id="hive" viewBox="0 0 390 520" preserveAspectRatio="xMidYMid meet" aria-label="Мапа лабораторії: шість нод навколо ядра"></svg>
+  </div>
 
-    <div class="rail-testimonial">
-      <div class="rt-label">[ Testimony ]</div>
-      <blockquote class="rt-quote">
-        <span>"True transformation is quiet."</span>
-        <span>"I can finally feel."</span>
-      </blockquote>
-      <div class="rt-cite">— Misha · musician, guest</div>
-      <a class="rt-more" href="./voices/misha-en.html">Read the story →</a>
-    </div>
+  <div class="ob" id="ob">
+    <p class="ob-lead" id="oblead"></p>
+    <p class="ob-p" id="obp"></p>
+    <div class="ob-act" id="obact"></div>
+    <div class="ob-hint" id="obhint"></div>
+    <button class="ob-adults" id="obadults">ви дорослий? — вам сюди</button>
+  </div>
 
-    <div class="enter-cta">
-      <a class="enter" href="#enter">Begin a conversation <span class="arr">↓</span></a>
-    </div>
-  </aside>
+  <div class="quiz" id="quiz">
+    <button class="q-close" id="qclose" aria-label="Закрити" hidden>×</button>
+    <div class="q-grid" id="qgrid"></div>
+    <p class="q-feedback" id="qfeedback" hidden></p>
+  </div>
 
-  <!-- ═══════════════════ MAIN ═══════════════════ -->
-  <main class="content">
-
-    <header class="masthead">
-      <div class="masthead-kick">137 Lab · 2026</div>
-      <h1 class="masthead-title">Practical Applications of United Consciousness.</h1>
-      <p class="masthead-sub">The Physics of Quantum Sanctity &amp; 5D Leadership.</p>
-      <div class="masthead-by">Dao &amp; Liza</div>
-    </header>
-
-    <!-- ═══ Block 01 — Game Over ═══ -->
-    <section class="block" id="b01">
-      <div class="block-code">[ Block <span>01</span> ] — Game Over</div>
-      <div class="block-num">01</div>
-      <div class="block-en">End of the old paradigm</div>
-      <h2 class="block-title">2026 — Game Over.</h2>
-
-      <p>Accept the end of the old paradigm if you intend to enter the post-labour world. The rules of a departing era return less and less. Real success in the new era asks for something deeper than effort — a full update of the operating system of consciousness, and a resonant mindset. That's the key.</p>
-      <p>We are not offering you another business model or productivity tool. We offer a chance to revise the very architecture of your personality, organisation, or community — to step onto an entirely different level of throughput, clarity, and ease.</p>
-    </section>
-
-    <!-- ═══ Epigraph — Lao Tzu ═══ -->
-    <section class="epigraph">
-      <blockquote>"A wise man hears of Dao and follows it with diligence. An ordinary man hears of Dao and follows it now and then. A foolish man hears of Dao and laughs aloud. If he did not laugh, it would not be the true Dao."</blockquote>
-      <cite>— Lao Tzu</cite>
-    </section>
-
-    <!-- ═══ Block 02 — Founders ═══ -->
-    <section class="block" id="b02">
-      <div class="block-code">[ Block <span>02</span> ]</div>
-      <div class="block-num">02</div>
-      <div class="block-en">Founders</div>
-      <h2 class="block-title">Hi, we are Dao and Liza — founders of 137 Lab.</h2>
-
-      <div class="founders">
-        <div class="founder">
-          <div class="founder-photo">
-            <img src="dao.jpg" alt="Dao" />
-          </div>
-          <div class="founder-meta">
-            <div class="founder-name">Dao</div>
-            <div class="founder-role">Director of Enlightenment</div>
-            <p class="founder-voice">I'm a philosopher, visionary, psychonaut, and innovator at the intersection of spirituality, science, technology, and creativity. I treat inspiration as a technology — and unlocking creative potential in people is my passion. I've had a direct experience of enlightenment and research synergy as a practical framework integrated into business, family, and a new kind of community.</p>
-          </div>
-        </div>
-        <div class="founder">
-          <div class="founder-photo">
-            <img src="liza.jpg" alt="Liza" />
-          </div>
-          <div class="founder-meta">
-            <div class="founder-name">Liza</div>
-            <div class="founder-role">Mother of Meta-systems</div>
-            <p class="founder-voice">I work with consciousness as a meta-system, studying its architecture and translating spirituality and magic into precise science. I can solve any problem, for any person, in any field, at any level of complexity — working at the layers where consciousness creates reality. On one condition: that the person is ready for transformation. The paradigm shift from parasitic to symbiotic on a planetary scale is my main driver.</p>
-          </div>
-        </div>
-      </div>
-
-      <p style="margin-top: 36px;">For the past 3.5 years we have been focused on researching how people interact at the level of collective consciousness. Roughly speaking — it's a psycho-emotional internet for the subconscious, in which we build custom technological solutions.</p>
-
-      <p>The evolution of consciousness, as we see it, is, first and foremost, <b>a game played with irony</b>. Outside any dogma or ideology, we can deliver complex abstract concepts from ancient sources even to the most pragmatic mind — creating a transformational experience in an intimate setting. No meditation, no yoga, no asceticism — just the scientific perspective, applied as technology.</p>
-
-      <p>137 Lab, for us, is a point of contact with the people who share our values and are ready to receive and apply the resource we hold. Our programmes are always one-on-one, tailored to each request.</p>
-
-      <p class="lede">We work individually with every client — and with those who share our values, the work becomes co-creation.</p>
-    </section>
-
-    <!-- ═══ Block 03 — Metaphysics Applied / Techno-hermeticism ═══ -->
-    <section class="block" id="b03">
-      <div class="block-code">[ Block <span>03</span> ] — Metaphysics Applied</div>
-      <div class="block-num">03</div>
-      <div class="block-en">Metaphysics Applied to the Game of Life</div>
-      <h2 class="block-title">Techno-hermeticism and quantum advantage.</h2>
-
-      <p>Techno-hermeticism is our authored approach: it accounts simultaneously for the wave and vector nature of reality in any practical solution. Energy management and the symbiotic interaction model open up an extended range of non-local consciousness.</p>
-
-      <p class="lede">This is applied metaphysics for post-conventional minds — an entirely new playing field for creativity and the realisation of any intent.</p>
-    </section>
-
-    <!-- ═══ Block 04 — Three Domains / Method ═══ -->
-    <section class="block" id="b04">
-      <div class="block-code">[ Block <span>04</span> ] — Three Domains</div>
-      <div class="block-num">04</div>
-      <div class="block-en">One method · three domains</div>
-      <h2 class="block-title">One method. Three domains of work.</h2>
-
-      <div class="give-grid give-grid--3" style="margin-top: 36px;">
-        <div class="give-item">
-          <div class="give-num">01</div>
-          <div class="give-en">Consciousness Upgrade</div>
-          <div class="give-name">Consciousness Upgrade</div>
-          <div class="give-body">Rebuilding the architecture of the mind: dismantling destructive patterns, limiting beliefs, illusions; shadow work. Tuning the mindset and unlocking the senses, restoring inner balance.</div>
-          <a class="give-cta" href="#enter" data-topic="consciousness">Inquire <span class="cta-arrow">→</span></a>
-        </div>
-        <div class="give-item">
-          <div class="give-num">02</div>
-          <div class="give-en">Family Engine</div>
-          <div class="give-name">Family as resonance engine</div>
-          <div class="give-body">Energy management in close relationships. A coherent family as the environment of your shared quantum success — where everything lives and amplifies. Co-tuning and work with sexuality.</div>
-          <a class="give-cta" href="#enter" data-topic="family">Inquire <span class="cta-arrow">→</span></a>
-        </div>
-        <div class="give-item">
-          <div class="give-num">03</div>
-          <div class="give-en">Holy Business</div>
-          <div class="give-name">Holy Business</div>
-          <div class="give-body">Business in tune with the founder. Synergy, energy management, working with community or team through an egregore. Any work with the collective consciousness of a company, and adaptation to the post-labour economy.</div>
-          <a class="give-cta" href="#enter" data-topic="business">Inquire <span class="cta-arrow">→</span></a>
-        </div>
-      </div>
-
-      <p class="stmt">Energy management — the harmonisation of flows, inside and outside. We dismantle dissonance and build the system on resonance, so every process generates synergy and increases the density of energy in the common field.</p>
-
-      <h3 class="block-title block-title--sub">Unlocking creative potential.</h3>
-      <p>The natural effect that awaits you. Creativity, sharpness of attention and senses, the depth of lived experience, and synchronicity — these are the baseline bonuses that arrive once internal resistance and self-suppression stop.</p>
-      <p class="stmt">Every domain of life arranges itself naturally once the imbalance is removed.</p>
-    </section>
-
-    <!-- ═══ Block 05 — Symbiosis · The Shift ═══ -->
-    <section class="block" id="b05">
-      <div class="block-code">[ Block <span>05</span> ] — The Shift</div>
-      <div class="block-num">05</div>
-      <div class="block-en">Symbiosis · The Shift</div>
-      <h2 class="block-title">From competition — to symbiosis.</h2>
-
-      <p class="lede">We don't treat a human being as an isolated case. We pursue a change in the operating model — from the consumerist, competitive regime to a symbiotic and creative one.</p>
-
-      <p>Our main vector: to rewrite the code of the industries everyday reality runs on. That's where the deepest habits of mind are encoded.</p>
-    </section>
-
-    <!-- ═══ Block 06 — Synergy Protocol ═══ -->
-    <section class="block" id="b06">
-      <div class="block-code">[ Block <span>06</span> ] — Perspective I</div>
-      <div class="block-num">06</div>
-      <div class="block-en">Synergy Protocol</div>
-      <h2 class="block-title">Consciousness upgrade.</h2>
-
-      <div class="triad">Mind · Soul · Body</div>
-
-      <p>Real change arrives only when the system is in balance. Our aim: to build absolute synergy in the main alchemical triad — <b>Mind — Soul — Body</b> (thoughts, feelings, actions).</p>
-      <p>The ordinary mind often runs in a state of inner split: logic fights intuition, tension blocks relaxation. This conflict produces background friction that consumes most of your energy.</p>
-      <p class="stmt">Synergy Protocol removes the resistance.</p>
-      <p>By dismantling destructive subconscious patterns and tuning your inner sources of energy, we shift consciousness into superconductivity mode. You stop spending energy on internal struggle and step into the Creator Mindset — a state in which you simply catch the wave of natural synchronicity and inspiration.</p>
-    </section>
-
-    <!-- ═══ Block 07 — Resonance Framework ═══ -->
-    <section class="block" id="b07">
-      <div class="block-code">[ Block <span>07</span> ] — Perspective II</div>
-      <div class="block-num">07</div>
-      <div class="block-en">Resonance Framework</div>
-      <h2 class="block-title">Fine-tuning the mindset.</h2>
-
-      <p>We treat consciousness as a frontier technology, and your mindset as a precision instrument that requires a watchmaker's calibration.</p>
-      <p>Modern leaders often get stuck in a hard-driving phase, forgetting deep restoration and the intuitive read of reality. Trying to move on willpower alone is maximum effort for zero return.</p>
-      <p class="stmt">Energy Management is the art of steering your states.</p>
-      <p>We help you find the points where your energy leaks into the void and rebuild the inner algorithms. Phases of intense, precise action begin to alternate organically with phases of deep replenishment. You step out of closed loops and start operating beyond your usual limits.</p>
-    </section>
-
-    <!-- ═══ Block 08 — Family Engine ═══ -->
-    <section class="block" id="b08">
-      <div class="block-code">[ Block <span>08</span> ] — Perspective III</div>
-      <div class="block-num">08</div>
-      <div class="block-en">Family Engine</div>
-      <h2 class="block-title">Family as resonance engine.</h2>
-
-      <p>The old paradigm holds that real success requires compromise — sacrificing personal life. Choosing one over the other is a fundamental error of energy management.</p>
-      <p>We treat family not as a zone of compromise but as the core of your system. It's your <b>Primary Engine</b>, powering creativity and business. Your main battery — digesting stress, restoring energy. If there is hidden tension at home, conflict, or things left unsaid — your energy simply drains into the void.</p>
-
-      <p>We work with the family as a whole unit — through individual and couples sessions. By removing dissonance and building resonance inside the system, you see the result instantly, after the very first session.</p>
-
-      <div class="triad">Coupling · Decoupling</div>
-
-      <p>Using the Coupling &amp; Decoupling protocols, we fine-tune relationships so they sound in absolute unison. Sometimes a connection needs careful repair and synchronisation. Sometimes, a clean and honest completion.</p>
-      <p class="stmt">Relationships brought into true resonance stop consuming your energy. They become a reactor generating clean energy for your outer expansion.</p>
-
-      <h3 class="block-title block-title--sub">Sexual energy &amp; children.</h3>
-      <p>Releasing sexual blocks and the imprint of past trauma — affecting orgasm and the expression of desire in women — opens a vast source of energy and inspiration. Men gain sensitivity, arousal, and stamina.</p>
-      <p>We also help with raising children and preserving their creative potential as they grow — protecting them from toxic influences and the suppressive force of the existing system.</p>
-
-      <p>Sexual energy held within the field of the family has a direct positive effect on your energetic state and on consciousness. Handled consciously, it stops dissipating and becomes the densest fuel of the whole system.</p>
-      <p class="stmt">This consciousness expresses itself most vividly and most fully in the domain where you actually realise yourself — above all, in business.</p>
-    </section>
-
-    <!-- ═══ Block 09 — Holy Business ═══ -->
-    <section class="block" id="b09">
-      <div class="block-code">[ Block <span>09</span> ] — Perspective IV</div>
-      <div class="block-num">09</div>
-      <div class="block-en">Holy Business · Synergy Economy</div>
-      <h2 class="block-title">Business &amp; teams: the synergy economy.</h2>
-
-      <p>For three hundred years the formula of success held steady: sharper analysis, better strategy, faster execution. Today the model is failing. Companies don't die from competition — they die from internal friction and coordination costs. When a team is out of sync, the cost of any decision rises exponentially.</p>
-      <p>Your work is a natural extension of your consciousness. We move business out of the traditional management paradigm into the paradigm of <b>Energy Management</b>.</p>
-      <p class="stmt">When a team resonates on one frequency, an Egregore forms — the company's collective super-mind.</p>
-      <p>Communication losses fall to zero. The level of trust renders micromanagement redundant. Decisions that once took months to align are made intuitively and crystallise in hours.</p>
-      <p>Your task narrows to one thing: sustaining energy exchange with the people and projects that actually reflect your essence.</p>
-    </section>
-
-    <!-- ═══ Block 10 — Integration Architecture ═══ -->
-    <section class="block" id="b10">
-      <div class="block-code">[ Block <span>10</span> ] — Process</div>
-      <div class="block-num">10</div>
-      <div class="block-en">Integration Architecture</div>
-      <h2 class="block-title">Integration architecture.</h2>
-
-      <p>We don't create dependency on mentors or long-term therapy. Our goal is the structural repair of your inner architecture. When it is sound — it runs and scales on its own.</p>
-
-      <div class="phases">
-        <div class="phase">
-          <div class="phase-num">Phase 01</div>
-          <div class="phase-name">Diagnostic</div>
-          <div class="phase-en">Diagnostic</div>
-          <p>One session, up to three hours. A structural X-ray of your current reality. Direct reading of the consciousness field and the patterns operating beneath your awareness.</p>
-          <p>You leave with a clear map of your situation drawn with engineering precision. Often this one session is enough — the rest falls into place.</p>
-          <div class="phase-meta">≤ 3 hours</div>
-        </div>
-        <div class="phase">
-          <div class="phase-num">Phase 02</div>
-          <div class="phase-name">Architecture Design</div>
-          <div class="phase-en">Preparation</div>
-          <p>Every engagement is unique. Based on the diagnostic we draft a precise plan: from rebuilding personal settings to calibrating partnerships and systems design for teams.</p>
-          <p>We define the minimum effective intervention — no more, no less.</p>
-          <div class="phase-meta">Custom</div>
-        </div>
-        <div class="phase">
-          <div class="phase-num">Phase 03</div>
-          <div class="phase-name">Implementation</div>
-          <div class="phase-en">Putting the architecture into practice</div>
-          <p>Sessions, protocols, field work — assembled into your custom plan. This is where shifts begin and lock in across the somatic, mental, and field layers.</p>
-          <p>We set the tempo together — without pressure, without delay.</p>
-          <div class="phase-meta">Per plan</div>
-        </div>
-        <div class="phase">
-          <div class="phase-num">Phase 04</div>
-          <div class="phase-name">Integration</div>
-          <div class="phase-en">Transformation Support</div>
-          <p>Inner shifts inevitably surface in the outer world. New patterns stabilise (about 13 days on average) and begin producing measurable results automatically.</p>
-          <p>Quality of decisions, depth of relationships, growth of business.</p>
-          <div class="phase-meta">~ 13 days</div>
-        </div>
-      </div>
-
-      <div class="field-card">
-        <div class="fc-tag">Feature · Biological Blockchain</div>
-        <h4>The Field · The Resonance Network</h4>
-        <p>For those ready to go further, we open access to the Field of Unified Consciousness — a psycho-emotional internet in which spirituality operates as a resonance technology of the collective field.</p>
-        <p>The individual mind is amplified many times over by people resonating on the same frequency. A steady level of energy and a steady state of consciousness for every participant are held in the background — without separate practice, without carving out an hour a day.</p>
-        <p class="fc-stmt">An environment in which transformation happens against the backdrop of life itself.</p>
-      </div>
-    </section>
-
-    <!-- ═══ Block 11 — Why 137 (inverse) ═══ -->
-    <section class="block block--inverse" id="b11">
-      <div class="block-code">[ Block <span>11</span> ] — Why 137</div>
-      <div class="coordinate">1/137<small>Fine-Structure Constant</small></div>
-
-      <h2 class="coordinate-title">A coordinate, not a brand.</h2>
-
-      <p>In physics, the fine-structure constant (1/137) governs the strength of interaction between Light and Matter. It is the foundational layer of reality. We chose this coordinate because we work precisely here — at the point where invisible states, thoughts, and energy crystallise into physical form.</p>
-      <p class="stmt">Change the base code — and everything built on top of it reassembles itself.</p>
-      <p>137 is not a brand. It's a coordinate. You don't need more information. You already feel it. The starting point is a diagnostic session. No hidden commitments. Just one conversation that will show you the architecture of your life.</p>
-    </section>
-
-    <!-- ═══ FORM ═══ -->
-    <section class="form-wrap" id="enter">
-      <div class="form-head">[ Begin a conversation ]</div>
-      <h2 class="form-title">Tell us where you are.</h2>
-      <p class="form-lede">We can solve a problem for any person, at any scale, in any field — working on the foundational layers of consciousness, where reality itself is encoded.</p>
-      <p class="form-stmt">The only requirement is your readiness for real transformation.</p>
-      <p class="form-intro">One conversation. No obligations beyond it. We respond within 72 hours.</p>
-
-      <form class="entry" name="137lab-entry-en" method="POST" action="https://formsubmit.co/vladsdao@gmail.com">
-        <input type="hidden" name="_subject" value="137 Lab · New inquiry (EN)">
-        <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_next" value="https://137lab.xyz/thanks-en.html">
-        <input type="hidden" name="_honey" style="display:none">
-        <input type="hidden" name="_autoresponse" value="We received your starting point. We will reach out within 72 hours. — Dao &amp; Liza, 137 Lab.">
-        <p style="position:absolute;left:-9999px" aria-hidden="true"><label>Do not fill: <input name="bot-field"></label></p>
-
-        <div class="field">
-          <label>Name <span class="req">*</span></label>
-          <input type="text" name="name" required autocomplete="name" placeholder="What should we call you?">
-        </div>
-
-        <div class="field">
-          <label>E-mail <span class="req">*</span></label>
-          <input type="email" name="email" required autocomplete="email" placeholder="you@domain.com">
-        </div>
-
-        <div class="field">
-          <label>Telegram / WhatsApp <span class="opt">optional</span></label>
-          <input type="text" name="messenger" autocomplete="off" placeholder="@username or +1...">
-        </div>
-
-        <div class="field">
-          <label>Area of inquiry</label>
-          <div class="topic-options" role="radiogroup">
-            <div class="topic-chip" data-topic="consciousness" role="radio" tabindex="0">Consciousness</div>
-            <div class="topic-chip" data-topic="family" role="radio" tabindex="0">Family</div>
-            <div class="topic-chip" data-topic="business" role="radio" tabindex="0">Business</div>
-            <div class="topic-chip" data-topic="paradigm" role="radio" tabindex="0">Paradigm</div>
-          </div>
-          <input type="hidden" name="topic" id="topic-input" value="">
-        </div>
-
-        <div class="field">
-          <label>Your request <span class="req">*</span></label>
-          <textarea name="request" rows="4" required placeholder="Put into words the state or question you're bringing. Short is fine — one or two sentences. The point isn't to describe it neatly, but to name what's beneath."></textarea>
-        </div>
-
-        <button class="submit" type="submit">Submit</button>
-
-        <p class="consent">By submitting, you agree to be contacted once by us through the channels you provided. Data is not shared with third parties.</p>
-      </form>
-
-      <footer class="form-foot">
-        <div>137 Lab · Dao &amp; Liza</div>
-        <div>vladsdao@gmail.com</div>
-        <div>© 2022—2026</div>
-      </footer>
-    </section>
-
-  </main>
+  <svg class="waves" id="waves" aria-hidden="true"></svg>
+  <div class="words" id="words" aria-hidden="true"></div>
+  <div class="veil" id="veil"></div>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sname">
+    <button class="s-close" id="sclose" aria-label="Закрити">×</button>
+    <div class="s-kick">нода</div>
+    <div class="s-name" id="sname"></div>
+    <p class="s-desc" id="sdesc"></p>
+    <div class="s-act" id="sact"></div>
+  </div>
 </div>
+<div id="framecaption">137лаб · мапа лабораторії</div>
 
 <script>
-(function() {
-  const chips = document.querySelectorAll('.topic-chip');
-  const hidden = document.getElementById('topic-input');
-  chips.forEach(chip => {
-    chip.addEventListener('click', () => {
-      chips.forEach(c => c.classList.remove('on'));
-      chip.classList.add('on');
-      hidden.value = chip.dataset.topic;
-    });
-    chip.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); chip.click(); }
-    });
-  });
-})();
+/* ── контент = дані. ДРАФТ-ТЕКСТИ — Влад переписує. ───────────────── */
+const CELLS = [
+  { id:'metapedia', label:['МЕТА-ПЕДІЯ'],
+    full:'Мета-педія',
+    desc:'Бібліотека лабораторії: статті, відео, мапи досліджень. Ключ видає ініціація.',
+    status:'формується' },
+  { id:'kazka', label:['СОНОРА'],
+    full:'Сонора',
+    desc:'Сонора — це не ретрит. Оффлайн у нашому полі. Мінімум людей, якісна колективна робота над індивідуальними запитами з використанням наших авторських технік та авангардних церемоній.',
+    href:'/sonora', act:'Дізнатись більше' },
+  { id:'vibecode', label:['НЕЙРО-','ПРАКТИКА 2.0'],
+    full:'Нейропрактика 2.0',
+    desc:'Нова версія авторських технік для перепрограмування підсвідомості від Лізи Сігорської — це справжній майнд-хакінг.',
+    muted:true, status:'Скоро премʼєра' },
+  { id:'daodedo', label:['СПІВПРАЦЯ'],
+    full:'Співпраця',
+    desc:'Ми з радістю допоможемо вам здолати будь-які виклики у сферах самореалізації, сімейних стосунків, бізнесу, здоров’я.',
+    status:'Скоро' },
+  { id:'innernet', label:['ОНЛАЙН','СТРІМИ'],
+    full:'Онлайн Стріми',
+    desc:'Закриті онлайн зустрічі для близького кола людей. Без цензури та масок ми ділимося досвідом та нашими дослідженнями багатовимірної реальності. Для людей, які пройшли наші програми, або відвідали Сонору.',
+    register:true, status:'Скоро' },
+  { id:'house', label:['ЗІРКИ Й','ЄДИНОРОГИ'],
+    full:'Дім Зірок і Єдинорогів',
+    desc:'Ідеї, що випереджають час, 5D бізнес-трансформації та практична психонавтика для учасників нашої спільноти.',
+    status:'Закритий клуб' },
+];
 
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-  a.addEventListener('click', e => {
-    const id = a.getAttribute('href');
-    if (id.length > 1) {
-      const target = document.querySelector(id);
-      if (target) {
-        e.preventDefault();
-        // pre-select topic chip if data-topic is present on link (give-cta)
-        const topic = a.dataset.topic;
-        if (topic) {
-          const chip = document.querySelector('.topic-chip[data-topic="' + topic + '"]');
-          if (chip) {
-            document.querySelectorAll('.topic-chip').forEach(c => c.classList.remove('on'));
-            chip.classList.add('on');
-            const hidden = document.getElementById('topic-input');
-            if (hidden) hidden.value = topic;
-          }
-        }
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+/* центр-нода: уже не прямий вхід — відкриває шторку «Що таке 137lab» */
+const CORE = {
+  id:'core', href:'/137', act:'Дізнатись більше',
+  num:'137', word:'ЛАБ', door:'',
+  kick:'нода', full:'Що таке 137lab',
+  desc:'137lab — це плейграунд-лабораторія. Незалежна авторська ініціатива, у рамках якої ми досліджуємо горизонти реальності на стику науки, духовності, творчості та технологій.',
+};
+
+/* ── квізи: контент = дані ─────────────────────────────────────────────
+   gate — на воротах (екран 1): будь-яка відповідь відмикає «Увійти».
+   hive — на вулику (екран 2): автор фрази; перевірка + фідбек + автозникнення. */
+const GATE_Q = {
+  q:'«Доки не навернетесь, як діти, не увійдете у…»',
+  opts:[
+    { key:'А', label:'Майнкрафт',      snd:'qa' },
+    { key:'Б', label:'Резонанс',       snd:'qb' },
+    { key:'В', label:'137лаб',         snd:'qc' },
+    { key:'Г', label:'Царство Небесне', snd:'qd' },
+  ],
+};
+const HIVE_Q = {
+  q:'Вкажіть автора: «Якщо хочете отримати ключі від всіх скарбів Всесвіту — сприймайте його крізь призму енергій, вібрацій, частот.»',
+  opts:[
+    { key:'А', label:'Гермес Трисмегіст', snd:'qa' },
+    { key:'Б', label:'Нікола Тесла',      snd:'qb' },
+    { key:'В', label:'Лао Цзи',           snd:'qc' },
+    { key:'Г', label:'Джо Діспенза',      snd:'qd' },
+  ],
+  correct:'qb',
+  feedback:{
+    right:'Правильна відповідь. Але ти ж знаєш, що всі ці люди казали про те ж саме, тому всі варіанти правильні.',
+    other:'«Мені подобається твоє почуття гумору.» Звісно, ти знаєш, що ця фраза належить Ніколі Тесла, але, по великому рахунку, всі ці люди казали про те ж саме, тому це правильна відповідь.',
+  },
+};
+
+/* ── онбординг: контент = дані. ДРАФТ-ТЕКСТИ — Влад переписує. ────── */
+const OB = {
+  /* без спойлерів: про Договір — у першій главі, не тут */
+  seed: {
+    lead:'Тут немає ні слова правди.',
+    p:'І саме тому все це — можливо.',
+    hint:'торкнись соти',
+  },
+  door: {
+    lead:'Дорослим вхід заборонено.',
+    p:'Торкнись соти — і заходь.',
+    hint:'',
+  },
+  doorReturn: {
+    lead:'Дорослим вхід заборонено.',
+    p:'Ти знаєш, що робити.',
+    hint:'',
+  },
+  /* ворота: квіз унизу; будь-яка відповідь відмикає «Увійти» */
+  gate: {
+    lead:'',
+    p:'',
+    hint:'обери — і двері впізнають тебе',
+  },
+  rules: [
+    { lead:'Правило перше.',
+      p:'Тут усе — вигадка. Вигадка — це інструмент: вона працює, лише коли граєш по-справжньому.',
+      act:'далі' },
+    { lead:'Правило друге.',
+      p:'Поле пам’ятає твої кроки — і забуває твоє ім’я. Так влаштовано навмисно.',
+      act:'увійти' },
+  ],
+};
+
+const ADULTS = {
+  kick:'для дорослих',
+  full:'Школа магії творчості',
+  desc:'Гра-казка для дітей 9–12. Ми не збираємо жодних даних дитини — без імен, акаунтів і трекерів. Якщо дитині потрібна жива доросла розмова: Лінія дитини 116 111.',
+  status:'сторінка для дорослих — скоро',
+};
+
+/* перша велика нода = казка */
+const SEED = { kicker:'КАЗКА', l1:'АЛХІМІЯ', l2:'ТВОРЧОСТІ' };
+
+const ONBOARD_KEY = '137school-onboarded';
+let stage = 'seed';
+let ruleIdx = 0;
+
+/* стан квізів (у памʼяті — щозаходу заново) */
+let quizDef = null;      // активний квіз (GATE_Q | HIVE_Q | null)
+let quizLocked = false;  // відповідь уже дано — далі no-op
+let quizTimer = null;    // таймер автозникнення фідбека
+let gateUnlocked = false;// ворота: обрано відповідь → «Увійти» зелена
+
+/* ── звуковий двигун: перший екран = клавіатура ─────────────────────
+   Значок звуку вмикає інструментальний режим: 7 гексів + 5 лозенджів
+   стають педами. Свої звуки: поклади файл hive/sounds/<id>.m4a або .mp3
+   (≤3 сек) — id з таблиці NOTES нижче. Нема файла — грає синт-нота
+   (пентатоніка: будь-яка комбінація звучить разом чисто).
+   Поліфонія: попередні звуки не глушаться — дозвучують як відлуння.
+   Майбутнє: sounds.json як адмін-мапа кнопка→звук; озвучка слів. */
+const SND = {
+  on:false, ctx:null, buffers:{}, loading:false, MAX_S:3,
+  NOTES: {
+    core:523.25,                       // C5 — ядро
+    metapedia:587.33, kazka:659.25,    // D5 E5
+    vibecode:783.99, daodedo:880,      // G5 A5
+    innernet:1046.5, house:1174.66,    // C6 D6
+    qq:261.63,                         // C4 — питання
+    qa:293.66, qb:329.63, qc:392, qd:440, // D4 E4 G4 A4
+  },
+};
+
+function sndToggle(){
+  if (!SND.ctx){
+    const AC = window.AudioContext || window.webkitAudioContext;
+    SND.ctx = new AC();
+  }
+  SND.on = !SND.on;
+  if (SND.on){ SND.ctx.resume(); sndPreload(); }
+  const btn = document.getElementById('sound');
+  btn.classList.toggle('on', SND.on);
+  btn.setAttribute('aria-pressed', String(SND.on));
+  document.body.classList.toggle('snd', SND.on);
+}
+
+function sndPreload(){
+  if (SND.loading) return;
+  SND.loading = true;
+  Object.keys(SND.NOTES).forEach(async id => {
+    for (const ext of ['m4a', 'mp3']){
+      try{
+        const res = await fetch('/sounds/' + id + '.' + ext);
+        if (!res.ok) continue;
+        SND.buffers[id] = await SND.ctx.decodeAudioData(await res.arrayBuffer());
+        break;
+      }catch(e){ /* файла нема — лишається синт-нота */ }
     }
   });
-});
-</script>
+}
 
+function playPad(id){
+  if (!SND.on || !SND.ctx || !(id in SND.NOTES)) return;
+  const ctx = SND.ctx, t = ctx.currentTime;
+  const gain = ctx.createGain();
+  gain.connect(ctx.destination);
+  const buf = SND.buffers[id];
+  if (buf){
+    const dur = Math.min(buf.duration, SND.MAX_S);
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    src.connect(gain);
+    gain.gain.setValueAtTime(1, t);
+    gain.gain.setValueAtTime(1, t + Math.max(dur - 0.06, 0));
+    gain.gain.linearRampToValueAtTime(0, t + dur);
+    src.start(t); src.stop(t + dur);
+  } else {
+    const osc = ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.value = SND.NOTES[id];
+    osc.connect(gain);
+    gain.gain.setValueAtTime(0.0001, t);
+    gain.gain.exponentialRampToValueAtTime(0.5, t + 0.012);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 1.6);
+    osc.start(t); osc.stop(t + 1.65);
+  }
+}
+
+/* панк-вильоти з ядра: і слово, і все інше — хаос і рандом */
+const WORDS = ['НЕМОЖЛИВО', 'ОПИСАТИ', 'СЛОВАМИ', 'ДАО'];
+
+function spawnWord(){
+  if (Math.random() < 0.5) return;   /* слова вилітають у 50% натисків */
+  const layer = document.getElementById('words');
+  const fr = frame.getBoundingClientRect();
+  const cr = document.querySelector('.core path').getBoundingClientRect();
+  const s = document.createElement('span');
+  /* 13.7% — ВІДЧУВАЙ: удвічі більше, червоне, живе довше.
+     22% — турбо: утричі швидше і закрученіше. Решта — звичайний панк. */
+  const isFeel = Math.random() < 0.137;
+  const turbo  = !isFeel && Math.random() < 0.22;
+  s.textContent = isFeel ? 'ВІДЧУВАЙ' : WORDS[Math.floor(Math.random() * WORDS.length)];
+  const a = Math.random() * Math.PI * 2;          // напрям — будь-куди
+  const d = 110 + Math.random() * 150;            // дальність
+  const fs = 6 + Math.random() * 3.4;
+  let dur = 4 + Math.random() * 3.5;
+  if (turbo)  dur /= 3;
+  if (isFeel) dur *= 1.6;
+  s.style.left = (cr.x + cr.width / 2 - fr.x).toFixed(1) + 'px';
+  s.style.top  = (cr.y + cr.height / 2 - fr.y).toFixed(1) + 'px';
+  s.style.fontSize = (isFeel ? fs * 2 : fs).toFixed(1) + 'px';
+  if (isFeel) s.style.color = '#d40000';
+  s.style.letterSpacing = (Math.random() * .2).toFixed(2) + 'em';
+  s.style.setProperty('--dx', (Math.cos(a) * d).toFixed(0) + 'px');
+  s.style.setProperty('--dy', (Math.sin(a) * d).toFixed(0) + 'px');
+  s.style.setProperty('--r0', (Math.random() * 60 - 30).toFixed(0) + 'deg');
+  s.style.setProperty('--r1', ((Math.random() * 720 - 360) * (turbo ? 3 : 1)).toFixed(0) + 'deg');
+  s.style.setProperty('--dur', dur.toFixed(2) + 's');
+  s.addEventListener('animationend', () => s.remove());
+  while (layer.childNodes.length > 16) layer.firstChild.remove();
+  layer.appendChild(s);
+}
+
+function padFrom(target){
+  if (!target.closest) return null;
+  const el = target.closest('.core') || target.closest('.cell') || target.closest('.q-opt');
+  if (!el) return null;
+  const id = el.classList.contains('core') ? 'core' : (el.dataset.id || el.dataset.snd);
+  return { id, el };
+}
+
+/* ── колір як пробудження: Ч/Б — скелет світу, колір народжується
+   ЛИШЕ як відгук на дотик. Нота → колір (ньютонівська синестезія:
+   C червоний · D помаранч · E жовтий · G синій · A фіолет);
+   вища октава — світліша, нижча (кітч-панч) — глибша. ───────────── */
+const NOTE_COLOR = {
+  core:      'hsl(4, 78%, 50%)',     /* C5 */
+  metapedia: 'hsl(32, 82%, 50%)',    /* D5 */
+  kazka:     'hsl(52, 85%, 47%)',    /* E5 */
+  vibecode:  'hsl(210, 75%, 50%)',   /* G5 */
+  daodedo:   'hsl(276, 60%, 52%)',   /* A5 */
+  innernet:  'hsl(4, 78%, 64%)',     /* C6 */
+  house:     'hsl(32, 82%, 64%)',    /* D6 */
+  qq:'hsl(4, 60%, 40%)', qa:'hsl(32, 65%, 40%)', qb:'hsl(52, 70%, 38%)',
+  qc:'hsl(210, 60%, 40%)', qd:'hsl(276, 50%, 42%)',
+};
+
+/* хвиля з центру педа — у спільному шарі поверх канваса,
+   щоб хвилі різних педів перетинались між собою */
+function spawnWave(el, padId){
+  const waves = document.getElementById('waves');
+  const fr = frame.getBoundingClientRect();
+  const r = el.getBoundingClientRect();
+  const c = document.createElementNS(NS, 'circle');
+  c.setAttribute('cx', (r.x + r.width / 2 - fr.x).toFixed(1));
+  c.setAttribute('cy', (r.y + r.height / 2 - fr.y).toFixed(1));
+  c.setAttribute('r', 30);
+  if (padId && NOTE_COLOR[padId]) c.style.stroke = NOTE_COLOR[padId];
+  c.addEventListener('animationend', () => c.remove());
+  while (waves.childNodes.length > 28) waves.firstChild.remove();
+  waves.appendChild(c);
+}
+
+/* ── геометрія: flat-top гекси, квітка 1+6 у нескінченній решітці ──── */
+const CX = 195, CY = 250;          // центр у viewBox 390×520
+const R  = 66;                     // радіус гекса (до вершини)
+const D  = Math.sqrt(3) * R;       // крок решітки
+const INSET = 0.94;                // повітря між клітинами
+const NS = 'http://www.w3.org/2000/svg';
+
+// сусіди за годинниковою від верхньої ноди
+const DIRS = [270, 330, 30, 90, 150, 210];
+
+// осьові координати семи зайнятих клітин (ядро + 6 нод)
+const OCCUPIED = new Set(['0,0','0,-1','1,-1','1,0','0,1','-1,1','-1,0']);
+
+function el(name, attrs, text){
+  const node = document.createElementNS(NS, name);
+  for (const k in attrs) node.setAttribute(k, attrs[k]);
+  if (text) node.textContent = text;
+  return node;
+}
+
+function hexPath(cx, cy, r){
+  const pts = [];
+  for (let a = 0; a < 360; a += 60){
+    const rad = a * Math.PI / 180;
+    pts.push((cx + r * Math.cos(rad)).toFixed(2) + ',' + (cy + r * Math.sin(rad)).toFixed(2));
+  }
+  return 'M' + pts.join('L') + 'Z';
+}
+
+/* нескінченна решітка: той самий hexPath по осьових координатах.
+   svg не обрізає по viewBox — клітини заповнюють і вертикальні «поля»
+   елемента, тому межі беремо з запасом; зайве зріже край елемента. */
+function latticeNode(){
+  const g = el('g', { 'class':'lattice', 'aria-hidden':'true' });
+  const ex = D * Math.cos(Math.PI / 6);   // крок по q: x
+  const ey = D * Math.sin(Math.PI / 6);   // крок по q: y
+  for (let q = -3; q <= 3; q++){
+    for (let r = -5; r <= 5; r++){
+      if (OCCUPIED.has(q + ',' + r)) continue;
+      const x = CX + q * ex;
+      const y = CY + q * ey + r * D;
+      if (x < -R || x > 390 + R) continue;
+      if (y < -190 || y > 710) continue;
+      g.appendChild(el('path', { d:hexPath(x, y, R * INSET) }));
+    }
+  }
+  return g;
+}
+
+function cellNode(cell, cx, cy){
+  const g = el('g', { 'class':'cell' + (cell.muted ? ' muted' : ''), 'data-id':cell.id, role:'button', tabindex:'0', 'aria-label':'Нода: ' + cell.full });
+  g.appendChild(el('path', { d:hexPath(cx, cy, R * INSET) }));
+  // лейбл — герой ноди: Display 600, по центру, до двох рядків
+  // довгі лейбли — менший кегль, щоб не вилазили за соту
+  const maxLen = Math.max(...cell.label.map(l => l.length));
+  const sm = maxLen > 10 ? ' sm' : '';
+  const lh = sm ? 14 : 17;
+  cell.label.forEach((line, i) => {
+    const y = cy + (i - (cell.label.length - 1) / 2) * lh + 5.5;
+    g.appendChild(el('text', { 'class':'label' + sm, x:cx, y:y.toFixed(1) }, line));
+  });
+  return g;
+}
+
+function render(){
+  const svg = document.getElementById('hive');
+  // імпульси світла — позаду всього: світло крізь решітку матерії
+  svg.appendChild(el('circle', { 'class':'pulse',    cx:CX, cy:CY, r:R }));
+  svg.appendChild(el('circle', { 'class':'pulse p2', cx:CX, cy:CY, r:R }));
+  svg.appendChild(latticeNode());
+  CELLS.forEach((cell, i) => {
+    const rad = DIRS[i] * Math.PI / 180;
+    svg.appendChild(cellNode(cell, CX + D * Math.cos(rad), CY + D * Math.sin(rad)));
+  });
+  // ядро-плакат: 137 / ЛАБ — відкриває шторку «Що таке 137lab»
+  const core = el('g', { 'class':'core', role:'button', tabindex:'0', 'aria-label':CORE.full });
+  core.appendChild(el('path', { d:hexPath(CX, CY, R * INSET) }));
+  core.appendChild(el('text', { 'class':'core-num',  x:CX,     y:CY + 8  }, CORE.num));
+  core.appendChild(el('text', { 'class':'core-word', x:CX + 2, y:CY + 27 }, CORE.word));
+  if (CORE.door) core.appendChild(el('text', { 'class':'core-door', x:CX + 1, y:CY + 43 }, CORE.door));
+  svg.appendChild(core);
+}
+
+/* ── стадії: seed → door → rules → hive ───────────────────────────── */
+const SEED_R = 84;
+
+function seedNode(){
+  const g = el('g', { 'class':'core doorhex', role:'button', tabindex:'0', 'aria-label':'Казка «Алхімія Творчості» — вхід' });
+  g.appendChild(el('path', { d:hexPath(CX, CY, SEED_R) }));
+  g.appendChild(el('text', { 'class':'seed-k',    x:CX, y:CY - 26 }, SEED.kicker));
+  g.appendChild(el('text', { 'class':'seed-line', x:CX, y:CY + 0  }, SEED.l1));
+  g.appendChild(el('text', { 'class':'seed-line', x:CX, y:CY + 22 }, SEED.l2));
+  return g;
+}
+
+function renderSingle(){
+  const svg = document.getElementById('hive');
+  svg.classList.remove('reveal');
+  svg.textContent = '';
+  svg.appendChild(el('circle', { 'class':'pulse',    cx:CX, cy:CY, r:SEED_R }));
+  svg.appendChild(el('circle', { 'class':'pulse p2', cx:CX, cy:CY, r:SEED_R }));
+  svg.appendChild(seedNode());
+}
+
+function renderHive(){
+  const svg = document.getElementById('hive');
+  svg.textContent = '';
+  render();
+  svg.classList.add('reveal');
+  const cells = svg.querySelectorAll('.cell');
+  cells.forEach((c, i) => { c.style.animationDelay = (0.18 + i * 0.08).toFixed(2) + 's'; });
+}
+
+function setOb(o){
+  document.getElementById('oblead').textContent = o.lead || '';
+  document.getElementById('obp').textContent    = o.p || '';
+  document.getElementById('obhint').textContent = o.hint || '';
+  const act = document.getElementById('obact');
+  act.textContent = '';
+  if (o.act){
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 's-open';
+    b.textContent = o.act;
+    b.addEventListener('click', nextRule);
+    act.appendChild(b);
+  }
+}
+
+function isOnboarded(){ return localStorage.getItem(ONBOARD_KEY) === '1'; }
+
+function setStage(s){
+  stage = s;
+  frame.dataset.stage = s;
+  clearQuizTimer();
+  if (s === 'seed'){ renderSingle(); setOb(OB.seed); }
+  else if (s === 'door'){ renderSingle(); setOb(isOnboarded() ? OB.doorReturn : OB.door); }
+  else if (s === 'quizgate'){ gateUnlocked = false; renderSingle(); setOb(OB.gate); renderQuiz(GATE_Q); }
+  else { renderHive(); renderQuiz(HIVE_Q); }
+}
+
+function showRule(i){ ruleIdx = i; setOb(OB.rules[i]); }
+function nextRule(){
+  if (ruleIdx + 1 < OB.rules.length){ showRule(ruleIdx + 1); }
+  else { localStorage.setItem(ONBOARD_KEY, '1'); setStage('hive'); }
+}
+
+/* двері: простий дотик (hold прибрано рішенням Влада 2026-06-11) */
+function doorPassed(){
+  const hexEl = document.querySelector('.doorhex path');
+  if (hexEl) spawnWave(hexEl);
+  setStage(isOnboarded() ? 'hive' : 'quizgate');
+}
+function enterHive(){
+  localStorage.setItem(ONBOARD_KEY, '1');
+  setStage('hive');
+}
+
+/* ── взаємодія ─────────────────────────────────────────────────────── */
+const frame = document.getElementById('frame');
+let lastFocus = null;
+
+function openSheet(cell){
+  document.querySelector('.s-kick').textContent = cell.kick || 'нода';
+  document.getElementById('sname').textContent = cell.full;
+  document.getElementById('sdesc').textContent = cell.desc;
+  const act = document.getElementById('sact');
+  act.textContent = '';
+  if (cell.register){
+    /* заглушка: реальний Google-auth — наступна фаза */
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 's-open';
+    b.textContent = 'Зареєструватися';
+    b.addEventListener('click', () => {
+      b.disabled = true;
+      b.className = 's-status';
+      b.textContent = 'Скоро';
+    });
+    act.appendChild(b);
+  } else if (cell.href){
+    const a = document.createElement('a');
+    a.className = 's-open';
+    a.href = cell.href;
+    a.textContent = cell.act + ' →';
+    act.appendChild(a);
+  } else {
+    const s = document.createElement('span');
+    s.className = 's-status';
+    s.textContent = cell.status;
+    act.appendChild(s);
+  }
+  lastFocus = document.activeElement;
+  frame.classList.add('open');
+  /* preventScroll: фокус під час transition інакше скролить overflow-hidden
+     #frame на висоту шторки, і канвас назавжди з'їжджає вгору */
+  document.getElementById('sclose').focus({ preventScroll:true });
+}
+function closeSheet(){
+  frame.classList.remove('open');
+  if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll:true });
+}
+
+/* ── квіз: data-driven рендер + перевірка ──────────────────────────────
+   gate (екран 1): будь-яка відповідь → центр зеленіє + «Увійти».
+   hive (екран 2): автор фрази — фідбек + автозникнення (10с / ×). */
+function clearQuizTimer(){ if (quizTimer){ clearTimeout(quizTimer); quizTimer = null; } }
+
+function renderQuiz(def){
+  quizDef = def;
+  quizLocked = false;
+  clearQuizTimer();
+  const quiz = document.getElementById('quiz');
+  quiz.classList.remove('dismissed');
+  const grid = document.getElementById('qgrid');
+  grid.hidden = false;
+  grid.textContent = '';
+  const fb = document.getElementById('qfeedback');
+  fb.hidden = true; fb.textContent = '';
+  document.getElementById('qclose').hidden = true;
+
+  const qrow = document.createElement('div');
+  qrow.className = 'q-row q-row--q';
+  const qq = document.createElement('div');
+  qq.className = 'q-opt q-q';
+  qq.dataset.snd = 'qq';
+  qq.textContent = def.q;
+  qrow.appendChild(qq);
+  grid.appendChild(qrow);
+
+  for (let i = 0; i < def.opts.length; i += 2){
+    const row = document.createElement('div');
+    row.className = 'q-row';
+    def.opts.slice(i, i + 2).forEach(o => {
+      const opt = document.createElement('div');
+      opt.className = 'q-opt';
+      opt.dataset.snd = o.snd;
+      opt.dataset.key = o.key;
+      const k = document.createElement('span');
+      k.className = 'q-key';
+      k.textContent = o.key;
+      opt.appendChild(k);
+      opt.appendChild(document.createTextNode(o.label));
+      row.appendChild(opt);
+    });
+    grid.appendChild(row);
+  }
+}
+
+/* ворота: будь-яка відповідь → зелена «Увійти» на центральній соті */
+function answerGate(){
+  if (gateUnlocked) return;
+  gateUnlocked = true;
+  const g = document.querySelector('.doorhex');
+  if (g){
+    g.classList.add('entered');
+    g.querySelectorAll('text').forEach(t => t.remove());
+    g.appendChild(el('text', { 'class':'enter-label', x:CX, y:CY + 7 }, 'Увійти'));
+    spawnWave(g.querySelector('path'));
+  }
+  document.getElementById('quiz').classList.add('dismissed');
+  const hint = document.getElementById('obhint');
+  if (hint) hint.textContent = 'торкнись соти — і заходь';
+}
+
+/* вулик: фідбек залежно від відповіді + автозникнення */
+function answerHive(snd){
+  if (quizLocked) return;
+  quizLocked = true;
+  const txt = (snd === HIVE_Q.correct) ? HIVE_Q.feedback.right : HIVE_Q.feedback.other;
+  document.getElementById('qgrid').hidden = true;
+  const fb = document.getElementById('qfeedback');
+  fb.textContent = txt; fb.hidden = false;
+  document.getElementById('qclose').hidden = false;
+  quizTimer = setTimeout(dismissQuiz, 10000);
+}
+
+function dismissQuiz(){
+  clearQuizTimer();
+  document.getElementById('quiz').classList.add('dismissed');
+}
+
+/* тап у блоці квізу (поза звуковим режимом — там лозендж = пед) */
+function quizTap(target){
+  if (SND.on) return false;
+  if (target.closest('#qclose')){ dismissQuiz(); return true; }
+  const opt = target.closest('.q-opt');
+  if (!opt || opt.classList.contains('q-q')) return false;
+  if (stage === 'quizgate'){ answerGate(); return true; }
+  if (stage === 'hive' && quizDef === HIVE_Q){ answerHive(opt.dataset.snd); return true; }
+  return false;
+}
+
+function activate(target){
+  if (stage !== 'hive') return false;
+  if (SND.on) return false;   /* звуковий режим: тап = звук, не навігація */
+  if (target.closest('.core')){ openSheet(CORE); return true; }
+  const g = target.closest('.cell');
+  if (g){ openSheet(CELLS.find(c => c.id === g.dataset.id)); return true; }
+  return false;
+}
+
+document.getElementById('hive').addEventListener('click', e => {
+  if (e.target.closest('.doorhex')){
+    if (stage === 'seed'){ setStage('door'); return; }
+    if (stage === 'door'){ doorPassed(); return; }
+    if (stage === 'quizgate'){ if (gateUnlocked) enterHive(); return; }
+  }
+  activate(e.target);
+});
+document.getElementById('quiz').addEventListener('click', e => quizTap(e.target));
+document.getElementById('hive').addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  if (e.target.closest('.doorhex')){
+    if (stage === 'seed'){ setStage('door'); e.preventDefault(); return; }
+    if (stage === 'door'){ doorPassed(); e.preventDefault(); return; }
+    if (stage === 'quizgate'){ if (gateUnlocked) enterHive(); e.preventDefault(); return; }
+  }
+  if (SND.on){
+    const pad = padFrom(e.target);
+    if (pad){
+      playPad(pad.id); spawnWave(pad.el, pad.id);
+      if (pad.id === 'core') spawnWord();
+      e.preventDefault();
+    }
+    return;
+  }
+  if (activate(e.target)) e.preventDefault();
+});
+/* педи: pointerdown — миттєвий відгук, як в інструмента */
+document.addEventListener('pointerdown', e => {
+  if (stage !== 'hive' || !SND.on) return;
+  const pad = padFrom(e.target);
+  if (pad){
+    playPad(pad.id); spawnWave(pad.el, pad.id);
+    if (pad.id === 'core') spawnWord();
+  }
+});
+document.getElementById('sound').addEventListener('click', sndToggle);
+document.getElementById('veil').addEventListener('click', closeSheet);
+document.getElementById('sclose').addEventListener('click', closeSheet);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
+
+/* ── старт ── */
+if (new URLSearchParams(location.search).has('reset')) localStorage.removeItem(ONBOARD_KEY);
+document.getElementById('obadults').addEventListener('click', () => openSheet(ADULTS));
+setStage(isOnboarded() ? 'door' : 'seed');
+</script>
 </body>
 </html>
