@@ -248,9 +248,13 @@
   .doorhex:active{transform:scale(.97)}
   /* ворота відімкнено: центральна сота зеленіє + «Увійти» */
   .doorhex.entered path{fill:var(--enter);stroke:var(--enter);transition:fill var(--speed) var(--ease),stroke var(--speed) var(--ease)}
+  .enter-mark{
+    font-family:var(--font-d);font-size:30px;
+    fill:var(--paper);text-anchor:middle;pointer-events:none;
+  }
   .enter-label{
-    font-family:var(--font-d);font-weight:600;
-    font-size:23px;letter-spacing:.02em;
+    font-family:var(--font-t);font-weight:400;
+    font-size:13px;letter-spacing:.24em;
     fill:var(--paper);text-anchor:middle;pointer-events:none;
   }
 
@@ -938,12 +942,17 @@ function answerGate(){
   if (g){
     g.classList.add('entered');
     g.querySelectorAll('text').forEach(t => t.remove());
-    g.appendChild(el('text', { 'class':'enter-label', x:CX, y:CY + 7 }, 'Увійти'));
+    // «Алхімія творчості» → лого «137lab» (137 щільний 600 + lab легкий 400)
+    const mark = el('text', { 'class':'enter-mark', x:CX, y:CY - 4 });
+    mark.appendChild(el('tspan', { 'font-weight':'600', 'letter-spacing':'-0.010em' }, '137'));
+    mark.appendChild(el('tspan', { 'font-weight':'400', 'letter-spacing':'.02em' }, 'lab'));
+    g.appendChild(mark);
+    g.appendChild(el('text', { 'class':'enter-label', x:CX, y:CY + 26 }, 'Увійти'));
     spawnWave(g.querySelector('path'));
   }
   document.getElementById('quiz').classList.add('dismissed');
   const hint = document.getElementById('obhint');
-  if (hint) hint.textContent = 'торкнись соти — і заходь';
+  if (hint) hint.textContent = 'торкнись — і заходь';
 }
 
 /* вулик: фідбек залежно від відповіді + автозникнення */
@@ -1024,10 +1033,10 @@ document.getElementById('veil').addEventListener('click', closeSheet);
 document.getElementById('sclose').addEventListener('click', closeSheet);
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
 
-/* ── старт ── */
+/* ── старт ── екран 1 = ворота-квіз для всіх (без seed/door і зайвих тапів) */
 if (new URLSearchParams(location.search).has('reset')) localStorage.removeItem(ONBOARD_KEY);
 document.getElementById('obadults').addEventListener('click', () => openSheet(ADULTS));
-setStage(isOnboarded() ? 'door' : 'seed');
+setStage('quizgate');
 </script>
 </body>
 </html>
