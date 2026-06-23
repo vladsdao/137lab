@@ -277,7 +277,7 @@
   /* фіксована висота зони квізу: і короткий (ворота), і довгий (Тесла) займають однаково
      → hivewrap не змінюється між екранами, центр-сота стоїть точно на місці */
   .quiz{flex:0 0 auto;position:relative;z-index:2;margin-bottom:10px;
-    min-height:165px;display:flex;flex-direction:column;justify-content:flex-end}
+    min-height:115px;display:flex;flex-direction:column;justify-content:flex-end}
   .q-grid{margin:0 -20px;display:grid;gap:8px}
   .q-row{
     position:relative;display:grid;grid-template-columns:1fr 1fr;gap:18px;
@@ -306,16 +306,8 @@
     font-family:var(--font-d);font-weight:600;font-size:11px;
     color:rgba(255,255,255,.55);
   }
-  /* питання — звичайний текст, що переноситься (не лозендж) */
-  .q-q{
-    background:none;color:var(--ink);
-    clip-path:none;height:auto;min-height:0;
-    white-space:normal;line-height:1.38;
-    font-family:var(--font-t);font-weight:500;
-    font-size:11.5px;letter-spacing:0;
-    padding:0 14px;display:block;text-align:center;
-  }
-  .q-row--q::before{display:none}
+  /* питання — теж у ромбику (лозендж), як відповіді */
+  .q-q{font-size:11.5px}
 
   /* фідбек після відповіді (вулик) + хрестик */
   .q-feedback{
@@ -845,7 +837,7 @@ function setStage(s){
   if (s === 'seed'){ renderSingle(); setOb(OB.seed); }
   else if (s === 'door'){ renderSingle(); setOb(isOnboarded() ? OB.doorReturn : OB.door); }
   else if (s === 'quizgate'){ gateUnlocked = false; renderGate(); setOb(OB.gate); renderQuiz(GATE_Q); }
-  else { renderHive(); renderQuiz(HIVE_Q); }
+  else { renderHive(); clearQuiz(); }   /* вулик: квіз прибрано (поки); зона лишається порожньою — центр-сота не зсувається */
 }
 
 function showRule(i){ ruleIdx = i; setOb(OB.rules[i]); }
@@ -914,6 +906,18 @@ function closeSheet(){
    gate (екран 1): будь-яка відповідь → центр зеленіє + «Увійти».
    hive (екран 2): автор фрази — фідбек + автозникнення (10с / ×). */
 function clearQuizTimer(){ if (quizTimer){ clearTimeout(quizTimer); quizTimer = null; } }
+
+/* спорожнити квіз (вулик): без питання/відповідей, але блок лишається — тримає висоту зони */
+function clearQuiz(){
+  quizDef = null;
+  clearQuizTimer();
+  document.getElementById('quiz').classList.remove('dismissed');
+  const grid = document.getElementById('qgrid');
+  grid.hidden = false; grid.textContent = '';
+  const fb = document.getElementById('qfeedback');
+  fb.hidden = true; fb.textContent = '';
+  document.getElementById('qclose').hidden = true;
+}
 
 function renderQuiz(def){
   quizDef = def;
