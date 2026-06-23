@@ -215,11 +215,13 @@
   }
   @media (prefers-reduced-motion:reduce){.words span{animation-duration:1ms}}
 
-  /* ── онбординг: сота → двері → ворота(квіз) → вулик ── */
+  /* ── онбординг: ворота(квіз) → вулик ── */
   #frame:not([data-stage="hive"]):not([data-stage="quizgate"]) .quiz{display:none}
   #frame:not([data-stage="hive"]) .sound{visibility:hidden}
-  #frame[data-stage="hive"] .ob{display:none}
-  .quiz.dismissed{display:none}
+  /* .ob схований і на воротах, і на вулику → hivewrap однаковий (сота не зсувається) */
+  #frame[data-stage="hive"] .ob, #frame[data-stage="quizgate"] .ob{display:none}
+  /* dismissed тримає висоту зони (visibility), щоб соти не зсувались після зникнення квізу */
+  .quiz.dismissed{visibility:hidden}
   .ob{flex:0 0 auto;text-align:center;padding:0 12px;margin-bottom:12px}
   .ob-lead{
     font-family:var(--font-d);font-weight:600;
@@ -257,10 +259,10 @@
     fill:var(--paper);text-anchor:middle;pointer-events:none;
   }
 
-  /* розкриття вулика */
+  /* розкриття вулика: центр-сота НЕ анімується — стоїть нерухомо (як на воротах),
+     навколо неї вилітають 6 продуктових сот */
   .cell, .core{transform-box:fill-box;transform-origin:center}
   svg.reveal .cell{animation:cellin .5s var(--ease) backwards}
-  svg.reveal .core{animation:cellin .45s var(--ease) backwards}
   svg.reveal .lattice{animation:fadein .9s ease backwards .25s}
   @keyframes cellin{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
   @keyframes fadein{from{opacity:0}to{opacity:1}}
@@ -271,7 +273,10 @@
   /* ── кітч-панч: «Перший мільйон» (превью, не клікабельно) ──
      відступ знизу більший за звичайний: in-app браузери Telegram/Insta
      підрізають нижній край, панч не має сидіти впритул */
-  .quiz{flex:0 0 auto;position:relative;z-index:2;margin-bottom:10px}
+  /* фіксована висота зони квізу: і короткий (ворота), і довгий (Тесла) займають однаково
+     → hivewrap не змінюється між екранами, центр-сота стоїть точно на місці */
+  .quiz{flex:0 0 auto;position:relative;z-index:2;margin-bottom:10px;
+    min-height:165px;display:flex;flex-direction:column;justify-content:flex-end}
   .q-grid{margin:0 -20px;display:grid;gap:8px}
   .q-row{
     position:relative;display:grid;grid-template-columns:1fr 1fr;gap:18px;
