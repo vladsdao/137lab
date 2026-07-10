@@ -5,37 +5,267 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#ffffff">
-<title>137lab — скоро</title>
+<title>Що таке 137lab — маніфест</title>
 <style>
-  /* /137 поки прихована — заглушка «Скоро» (журей-копія v4 лишилась у файлах поруч) */
-  @font-face{font-family:'Fixel Display';src:url('/v4/fonts/FixelDisplay-SemiBold.woff2') format('woff2');font-weight:600;font-display:swap}
-  @font-face{font-family:'Fixel Display';src:url('/v4/fonts/FixelDisplay-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
-  @font-face{font-family:'Fixel Text';src:url('/v4/fonts/FixelText-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+  /* ── Лабораторія Ч/Б · канон 2026-06-11 · маніфест лабораторії ──
+     (журей-копія v4 лишилась у файлах поруч — не чіпаємо) */
+  @font-face{
+    font-family:'Fixel Display';
+    src:url('/fonts/FixelDisplay-SemiBold.woff2') format('woff2');
+    font-weight:600;font-display:swap;
+  }
+  @font-face{
+    font-family:'Fixel Display';
+    src:url('/fonts/FixelDisplay-Regular.woff2') format('woff2');
+    font-weight:400;font-display:swap;   /* «lab» у лого */
+  }
+  @font-face{
+    font-family:'Fixel Text';
+    src:url('/fonts/FixelText-Regular.woff2') format('woff2');
+    font-weight:400;font-display:swap;
+  }
+  @font-face{
+    font-family:'Fixel Text';
+    src:url('/fonts/FixelText-Medium.woff2') format('woff2');
+    font-weight:500;font-display:swap;
+  }
+
+  :root{
+    --paper:#ffffff;
+    --ink:#0a0a0a;
+    --muted:#6e6e6e;
+    --rule:#c9c9c9;
+    --font-d:'Fixel Display',sans-serif;
+    --font-t:'Fixel Text',sans-serif;
+    --speed:240ms;
+    --ease:cubic-bezier(.4,0,.2,1);
+  }
+
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{height:100%}
   body{
-    background:#ffffff;color:#0a0a0a;
-    font-family:'Fixel Text',sans-serif;
+    background:var(--paper);color:var(--ink);
+    font-family:var(--font-t);font-weight:400;
     display:grid;place-items:center;
     -webkit-font-smoothing:antialiased;
+    overscroll-behavior:none;
   }
-  .wrap{text-align:center;padding:24px}
-  .mark{font-family:'Fixel Display';font-size:26px;line-height:1}
-  .mark .n{font-weight:600;letter-spacing:-0.010em}
-  .mark .l{font-weight:400;letter-spacing:.02em;margin-left:1px}
-  .soon{margin-top:20px;font-size:14px;letter-spacing:.26em;text-transform:uppercase;color:#6e6e6e}
-  .back{
-    margin-top:30px;display:inline-block;
-    font-size:13px;color:#6e6e6e;
-    text-decoration:underline;text-underline-offset:3px;
+
+  #frame{
+    position:fixed;inset:0;width:100vw;height:100dvh;
+    background:var(--paper);
+    display:flex;flex-direction:column;
+    overflow:hidden;
+    -webkit-tap-highlight-color:transparent;
   }
+  #framecaption{display:none}
+  @media (min-width:700px) and (min-aspect-ratio:4/5){
+    body{height:100vh}
+    #frame{
+      position:relative;inset:auto;
+      height:min(92vh,880px);aspect-ratio:390/844;width:auto;
+      border:1px solid var(--ink);
+    }
+    #framecaption{
+      display:block;position:fixed;left:0;right:0;
+      bottom:calc((100vh - min(92vh,880px))/2 - 28px);
+      text-align:center;font-size:11px;letter-spacing:.18em;
+      text-transform:uppercase;color:var(--muted);
+    }
+  }
+
+  .top{
+    flex:0 0 auto;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:calc(env(safe-area-inset-top) + 18px) 20px 12px;
+  }
+  .top .mark{
+    font-family:var(--font-d);font-size:15px;line-height:1;
+    color:var(--ink);text-decoration:none;
+  }
+  .top .mark .n{font-weight:600;letter-spacing:-0.010em}
+  .top .mark .l{font-weight:400;letter-spacing:.02em;margin-left:1px}
+  .top .mark .node{
+    color:var(--muted);font-family:var(--font-t);font-weight:400;
+    font-size:11px;letter-spacing:.12em;margin-left:7px;
+  }
+  .top-r{display:flex;align-items:center;gap:4px}
+  .top .alpha{font-size:10px;letter-spacing:.08em;color:var(--muted)}
+  .sndlabel{font-size:10px;letter-spacing:.08em;color:var(--muted);margin-left:8px}
+  .voice{
+    width:44px;height:44px;margin:-11px -11px -11px 0;
+    display:grid;place-items:center;
+    background:none;border:none;color:var(--ink);cursor:pointer;
+  }
+  .voice:active:not([disabled]){opacity:.55}
+  .voice.on{background:var(--ink);color:var(--paper);border-radius:50%}
+  .voice[disabled]{color:var(--rule);cursor:default}
+
+  .scroll{
+    flex:1 1 auto;min-height:0;
+    overflow-y:auto;-webkit-overflow-scrolling:touch;
+    padding:0 20px calc(env(safe-area-inset-bottom) + 28px);
+  }
+
+  .t-kicker{
+    margin-top:18px;
+    font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);
+    text-align:center;
+  }
+  h1{
+    font-family:var(--font-d);font-weight:600;
+    font-size:clamp(34px,9vw,40px);letter-spacing:-0.010em;line-height:1.06;
+    text-align:center;margin-top:8px;
+  }
+
+  .m{margin-top:26px}
+  .m-p{font-size:15px;line-height:1.7;max-width:36ch;margin:0 auto}
+  .m-p + .m-p{margin-top:14px}
+  .m-p b{font-weight:500}
+  /* одна дивина на сторінку: координата — окремим рядком, як формула */
+  .m-alpha{
+    margin:26px auto 0;text-align:center;
+    font-family:var(--font-d);font-weight:600;
+    font-size:22px;letter-spacing:.02em;
+  }
+  .m-alpha small{
+    display:block;font-family:var(--font-t);font-weight:400;
+    font-size:11.5px;letter-spacing:.06em;color:var(--muted);margin-top:6px;
+  }
+
+  /* ── мапа нод ── */
+  .map{margin-top:30px;padding-top:22px;border-top:1px solid var(--rule)}
+  .map-title{
+    font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);
+    text-align:center;margin-bottom:6px;
+  }
+  .nd{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:13px 2px;border-bottom:1px solid var(--rule);
+    text-decoration:none;color:var(--ink);
+  }
+  .nd-name{font-family:var(--font-d);font-weight:600;font-size:15.5px;letter-spacing:-0.005em}
+  .nd-line{font-size:12px;color:var(--muted);margin-top:2px}
+  .nd-go{font-size:14px;color:var(--ink);flex:0 0 auto}
+  .nd.muted{pointer-events:none}
+  .nd.muted .nd-name{color:var(--muted)}
+  .nd.muted .nd-go{color:var(--rule)}
+
+  .foot{
+    margin-top:26px;text-align:center;
+    font-size:11px;letter-spacing:.04em;color:var(--muted);line-height:1.7;
+  }
+  .foot a{color:var(--muted)}
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="mark"><span class="n">137</span><span class="l">lab</span></div>
-    <div class="soon">Скоро</div>
-    <a class="back" href="/">← на головну</a>
+
+<div id="frame">
+  <div class="top">
+    <a class="mark" href="/#hive"><span class="n">137</span><span class="l">lab</span><span class="node">· МАНІФЕСТ</span></a>
+    <div class="top-r">
+      <div class="alpha">α ≈ 1/137</div>
+      <span class="sndlabel" aria-hidden="true">голос</span>
+      <button class="voice" id="voice" disabled aria-label="Голос-гід: записується" title="Голос-гід: записується">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <circle cx="6" cy="12" r="2.2" fill="currentColor"/>
+          <path d="M11 7.5a6.5 6.5 0 0 1 0 9" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M14.5 4.5a11 11 0 0 1 0 15" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
   </div>
+
+  <div class="scroll">
+    <!-- ДРАФТ-ТЕКСТИ — Влад переписує; голос за voice.md («записки з поля», тест стола) -->
+    <div class="t-kicker">МАНІФЕСТ</div>
+    <h1>Що таке 137lab</h1>
+
+    <div class="m">
+      <p class="m-p">137lab — це плейграунд-лабораторія. Незалежна авторська ініціатива, у рамках якої ми досліджуємо горизонти реальності на стику науки, духовності, творчості та технологій.</p>
+      <p class="m-p">Три з половиною роки ми вдвох ходимо на дальні кордони свідомості. Повертаємось із картами. Цей сайт — стіл, на якому вони розкладені: гість підходить і дивиться. Ніхто не тягне за рукав.</p>
+      <p class="m-p">Ми не обіцяємо результатів — карта не гарантує маршруту. Ми показуємо знахідки: що спрацювало, що ні, і скільки це коштувало. Спершу все перевіряється на собі; це найдорожчий спосіб, зате чесний.</p>
+      <p class="m-p"><b>Еволюція свідомості — це, перш за все, гра, у яку грають з іронією.</b> Стара парадигма не впала — вона просто перестала бути цікавою. А для парадигм це смертельніше.</p>
+    </div>
+
+    <div class="m-alpha">
+      α ≈ 1/137
+      <small>стала тонкої структури: число, на якому тримається світло.<br>Для нас це координата, не бренд.</small>
+    </div>
+
+    <div class="map">
+      <div class="map-title">Мапа лабораторії</div>
+      <a class="nd" href="/sonora">
+        <span><span class="nd-name">Сонора</span><br><span class="nd-line">офлайн занурення у нашому полі</span></span>
+        <span class="nd-go">→</span>
+      </a>
+      <a class="nd" href="/kazka">
+        <span><span class="nd-name">Казка «Алхімія творчості»</span><br><span class="nd-line">голосова 5D казка від Інсейнта</span></span>
+        <span class="nd-go">→</span>
+      </a>
+      <a class="nd" href="/pro-nas">
+        <span><span class="nd-name">Про нас</span><br><span class="nd-line">Дао і Ліза — оператори лабораторії</span></span>
+        <span class="nd-go">→</span>
+      </a>
+      <a class="nd" href="/iventy">
+        <span><span class="nd-name">Івенти</span><br><span class="nd-line">стріми і живі події</span></span>
+        <span class="nd-go">→</span>
+      </a>
+      <a class="nd" href="/poslugy">
+        <span><span class="nd-name">Послуги</span><br><span class="nd-line">сесії, консалтинг, співпраця</span></span>
+        <span class="nd-go">→</span>
+      </a>
+      <a class="nd muted" href="#" aria-disabled="true" tabindex="-1">
+        <span><span class="nd-name">Мета-педія</span><br><span class="nd-line">бібліотека лабораторії — формується</span></span>
+        <span class="nd-go">…</span>
+      </a>
+    </div>
+
+    <p class="foot">
+      <a href="/#hive">← до вулика</a>
+    </p>
+  </div>
+
+  <audio id="guide"></audio>
+</div>
+<div id="framecaption">137лаб · маніфест</div>
+
+<script>
+/* ── голос-гід: поклади sounds/pages/137.m4a|mp3 — кнопка оживе ── */
+(function(){
+  const SLUG = '137';
+  const btn = document.getElementById('voice');
+  const audio = document.getElementById('guide');
+  let src = null;
+
+  async function findGuide(){
+    for (const ext of ['m4a', 'mp3']){
+      try{
+        const res = await fetch('/sounds/pages/' + SLUG + '.' + ext, { method:'HEAD' });
+        if (res.ok) return '/sounds/pages/' + SLUG + '.' + ext;
+      }catch(e){ /* нема — чесно мовчимо */ }
+    }
+    return null;
+  }
+
+  findGuide().then(s => {
+    if (!s) return;   /* лишається «записується» */
+    src = s;
+    btn.disabled = false;
+    btn.title = 'Голос-гід сторінки';
+    btn.setAttribute('aria-label', 'Голос-гід сторінки');
+  });
+
+  btn.addEventListener('click', () => {
+    if (!src) return;
+    if (!audio.paused){ audio.pause(); return; }
+    if (!audio.src) audio.src = src;
+    audio.play();
+  });
+  audio.addEventListener('play',  () => btn.classList.add('on'));
+  audio.addEventListener('pause', () => btn.classList.remove('on'));
+  audio.addEventListener('ended', () => { btn.classList.remove('on'); audio.currentTime = 0; });
+})();
+</script>
 </body>
 </html>
