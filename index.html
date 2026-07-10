@@ -8,27 +8,27 @@
   /* ── Лабораторія Ч/Б · канон 2026-06-11 · вулик: решітка + типографіка ── */
   @font-face{
     font-family:'Fixel Display';
-    src:url('/v4/fonts/FixelDisplay-SemiBold.woff2') format('woff2');
+    src:url('/fonts/FixelDisplay-SemiBold.woff2') format('woff2');
     font-weight:600;font-display:swap;
   }
   @font-face{
     font-family:'Fixel Display';
-    src:url('/v4/fonts/FixelDisplay-ExtraBold.woff2') format('woff2');
+    src:url('/fonts/FixelDisplay-ExtraBold.woff2') format('woff2');
     font-weight:800;font-display:swap;   /* панк-слова з ядра */
   }
   @font-face{
     font-family:'Fixel Display';
-    src:url('/v4/fonts/FixelDisplay-Regular.woff2') format('woff2');
+    src:url('/fonts/FixelDisplay-Regular.woff2') format('woff2');
     font-weight:400;font-display:swap;   /* «lab» у лого */
   }
   @font-face{
     font-family:'Fixel Text';
-    src:url('/v4/fonts/FixelText-Regular.woff2') format('woff2');
+    src:url('/fonts/FixelText-Regular.woff2') format('woff2');
     font-weight:400;font-display:swap;
   }
   @font-face{
     font-family:'Fixel Text';
-    src:url('/v4/fonts/FixelText-Medium.woff2') format('woff2');
+    src:url('/fonts/FixelText-Medium.woff2') format('woff2');
     font-weight:500;font-display:swap;
   }
 
@@ -61,7 +61,9 @@
     background:var(--paper);
     display:flex;flex-direction:column;
     padding:calc(env(safe-area-inset-top) + 18px) 20px calc(env(safe-area-inset-bottom) + 22px);
-    overflow:hidden;
+    /* clip, не hidden: схована шторка (translateY 102%) створює overflow,
+       і будь-який фокус-скрол зсував канвас угору назавжди — «НОДА» визирала знизу */
+    overflow:hidden;overflow:clip;
     /* інструментальний екран: без double-tap-zoom і виділення тексту */
     touch-action:manipulation;
     -webkit-user-select:none;user-select:none;
@@ -89,12 +91,17 @@
     display:flex;justify-content:space-between;align-items:center;
     flex:0 0 auto;position:relative;z-index:2;
   }
-  /* лого: 137lab — цифра щільна 600, lab легкий 400 */
-  .top .mark{font-family:var(--font-d);font-size:15px;line-height:1}
+  /* лого: 137lab — цифра щільна 600, lab легкий 400; лінк = додому (вулик) */
+  .top .mark{
+    font-family:var(--font-d);font-size:15px;line-height:1;
+    color:var(--ink);text-decoration:none;
+  }
   .mark-num{font-weight:600;letter-spacing:-0.010em}
   .mark-lab{font-weight:400;letter-spacing:.02em;margin-left:1px}
   .top-r{display:flex;align-items:center;gap:4px}
   .top .alpha{font-size:10px;letter-spacing:.08em;color:var(--muted)}
+  /* підпис тумблера: «звук» — щоб роль значка читалась одразу */
+  .sndlabel{font-size:10px;letter-spacing:.08em;color:var(--muted);margin-left:8px}
   /* значок звуку — мініатюра пульсу з ядра; негативні поля тримають
      висоту шапки, тач-ціль лишається 44px */
   .sound{
@@ -218,7 +225,7 @@
 
   /* ── онбординг: ворота(квіз) → вулик ── */
   #frame:not([data-stage="hive"]):not([data-stage="quizgate"]) .quiz{display:none}
-  #frame:not([data-stage="hive"]) .sound{visibility:hidden}
+  #frame:not([data-stage="hive"]) .sound, #frame:not([data-stage="hive"]) .sndlabel{visibility:hidden}
   /* .ob схований і на воротах, і на вулику → hivewrap однаковий (сота не зсувається) */
   #frame[data-stage="hive"] .ob, #frame[data-stage="quizgate"] .ob{display:none}
   /* dismissed тримає висоту зони (visibility), щоб соти не зсувались після зникнення квізу */
@@ -289,9 +296,10 @@
     content:'';position:absolute;left:0;right:0;top:50%;
     border-top:1px solid var(--rule);
   }
-  /* лозендж = розтягнутий гекс: та сама решітка, тільки горизонтальна */
+  /* лозендж = розтягнутий гекс: та сама решітка, тільки горизонтальна.
+     відповіді — <button>: клавіатура і скрінрідер з коробки */
   .q-opt{
-    position:relative;height:31px;
+    position:relative;height:31px;border:0;padding:0;
     background:var(--pad);color:var(--paper);
     clip-path:polygon(14px 0,calc(100% - 14px) 0,100% 50%,calc(100% - 14px) 100%,14px 100%,0 50%);
     display:flex;align-items:center;justify-content:center;gap:7px;
@@ -371,10 +379,11 @@
 
 <div id="frame">
   <div class="top">
-    <div class="mark"><span class="mark-num">137</span><span class="mark-lab">lab</span></div>
+    <a class="mark" href="/#hive" aria-label="137lab — на головну, до вулика"><span class="mark-num">137</span><span class="mark-lab">lab</span></a>
     <div class="top-r">
       <div class="alpha">α ≈ 1/137</div>
-      <button class="sound" id="sound" aria-pressed="false" aria-label="Звуковий режим">
+      <span class="sndlabel" aria-hidden="true">звук</span>
+      <button class="sound" id="sound" aria-pressed="false" aria-label="Піано-режим: соти звучать" title="Піано-режим: соти звучать">
         <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
           <circle cx="6" cy="12" r="2.2" fill="currentColor"/>
           <path d="M11 7.5a6.5 6.5 0 0 1 0 9" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linecap="round"/>
@@ -398,7 +407,7 @@
   <div class="quiz" id="quiz">
     <button class="q-close" id="qclose" aria-label="Закрити" hidden>×</button>
     <div class="q-grid" id="qgrid"></div>
-    <p class="q-feedback" id="qfeedback" hidden></p>
+    <p class="q-feedback" id="qfeedback" hidden aria-live="polite"></p>
   </div>
 
   <svg class="waves" id="waves" aria-hidden="true"></svg>
@@ -417,38 +426,39 @@
 <script>
 /* ── контент = дані. ДРАФТ-ТЕКСТИ — Влад переписує. ───────────────── */
 const CELLS = [
-  { id:'metapedia', label:['МЕТА-ПЕДІЯ'],
-    full:'Мета-педія',
-    desc:'Бібліотека лабораторії: статті, відео, мапи досліджень. Ключ видає ініціація.',
-    status:'формується' },
-  { id:'kazka', label:['СОНОРА'],
+  { id:'sonora', label:['СОНОРА'],
     full:'Сонора',
     desc:'Сонора — це не ретрит. Оффлайн у нашому полі. Мінімум людей, якісна колективна робота над індивідуальними запитами з використанням наших авторських технік та авангардних церемоній.',
     href:'/sonora', act:'Дізнатись більше' },
-  { id:'vibecode', label:['НЕЙРО-','ПРАКТИКА 2.0'],
-    full:'Нейропрактика 2.0',
-    desc:'Нова версія авторських технік для перепрограмування підсвідомості від Лізи Сігорської — це справжній майнд-хакінг.',
-    muted:true, status:'Скоро премʼєра' },
-  { id:'daodedo', label:['СПІВПРАЦЯ'],
-    full:'Співпраця',
-    desc:'Ми з радістю допоможемо вам здолати будь-які виклики у сферах самореалізації, сімейних стосунків, бізнесу, здоров’я.',
-    status:'Скоро' },
-  { id:'innernet', label:['ОНЛАЙН','СТРІМИ'],
-    full:'Онлайн Стріми',
-    desc:'Закриті онлайн зустрічі для близького кола людей. Без цензури та масок ми ділимося досвідом та нашими дослідженнями багатовимірної реальності. Для людей, які пройшли наші програми, або відвідали Сонору.',
-    register:true, status:'Скоро' },
-  { id:'house', label:['ЗІРКИ Й','ЄДИНОРОГИ'],
-    full:'Дім Зірок і Єдинорогів',
-    desc:'Ідеї, що випереджають час, 5D бізнес-трансформації та практична психонавтика для учасників нашої спільноти.',
-    status:'Закритий клуб' },
+  { id:'pronas', label:['ПРО НАС'],
+    full:'Про нас',
+    desc:'Дао і Ліза. Він збирає системи — навіть із просвітлення робить інженерну задачу. Вона чує поле і називає те, для чого ще немає слів. Три з половиною роки експедиції у свідомість — удвох.',
+    href:'/pro-nas', act:'Познайомитись' },
+  { id:'iventy', label:['ІВЕНТИ'],
+    full:'Івенти',
+    desc:'Живі події лабораторії: онлайн стріми без цензури і масок та офлайн занурення у нашому полі. Календар формується — анонси зʼявляться тут.',
+    href:'/iventy', act:'Що відбувається' },
+  { id:'poslugy', label:['ПОСЛУГИ'],
+    full:'Послуги',
+    desc:'Робота з лабораторією напряму: приватні сесії, консалтинг, супровід запитів — самореалізація, стосунки, бізнес.',
+    href:'/poslugy', act:'Подивитись' },
+  { id:'kazka', label:['КАЗКА'],
+    full:'Казка «Алхімія творчості»',
+    desc:'Голосова 5D казка про справжню магію. Розповідає Інсейнт, істота пʼятого виміру. Тут немає ні слова правди — і саме тому все можливо.',
+    href:'/kazka', act:'Слухати' },
+  { id:'metapedia', label:['МЕТА-ПЕДІЯ'],
+    full:'Мета-педія',
+    desc:'Бібліотека лабораторії: статті, відео, мапи досліджень.',
+    status:'формується' },
 ];
 
-/* центр-нода: уже не прямий вхід — відкриває шторку «Що таке 137lab» */
+/* центр-нода: відкриває шторку «Що таке 137lab» → маніфест /137 */
 const CORE = {
-  id:'core', status:'Скоро',   /* сторінка /137 поки прихована — Влад 2026-06-23 */
+  id:'core',
   num:'137', word:'ЛАБ', door:'',
   kick:'нода', full:'Що таке 137lab',
   desc:'137lab — це плейграунд-лабораторія. Незалежна авторська ініціатива, у рамках якої ми досліджуємо горизонти реальності на стику науки, духовності, творчості та технологій.',
+  href:'/137', act:'Маніфест',
 };
 
 /* ── квізи: контент = дані ─────────────────────────────────────────────
@@ -531,6 +541,9 @@ let quizDef = null;      // активний квіз (GATE_Q | HIVE_Q | null)
 let quizLocked = false;  // відповідь уже дано — далі no-op
 let quizTimer = null;    // таймер автозникнення фідбека
 let gateUnlocked = false;// ворота: обрано відповідь → «Увійти» зелена
+/* вікно після розкриття вулика: другий тап серії (даблтап по «Увійти»)
+   влучає у щойно перемальовану центр-соту і сам відкривав шторку — гасимо */
+let hiveRevealUntil = 0;
 
 /* ── звуковий двигун: перший екран = клавіатура ─────────────────────
    Значок звуку вмикає інструментальний режим: 7 гексів + 5 лозенджів
@@ -543,9 +556,9 @@ const SND = {
   on:false, ctx:null, buffers:{}, loading:false, MAX_S:3,
   NOTES: {
     core:523.25,                       // C5 — ядро
-    metapedia:587.33, kazka:659.25,    // D5 E5
-    vibecode:783.99, daodedo:880,      // G5 A5
-    innernet:1046.5, house:1174.66,    // C6 D6
+    sonora:587.33, pronas:659.25,      // D5 E5
+    iventy:783.99, poslugy:880,        // G5 A5
+    kazka:1046.5, metapedia:1174.66,   // C6 D6
     qq:261.63,                         // C4 — питання
     qa:293.66, qb:329.63, qc:392, qd:440, // D4 E4 G4 A4
   },
@@ -655,12 +668,12 @@ function padFrom(target){
    вища октава — світліша, нижча (кітч-панч) — глибша. ───────────── */
 const NOTE_COLOR = {
   core:      'hsl(4, 78%, 50%)',     /* C5 */
-  metapedia: 'hsl(32, 82%, 50%)',    /* D5 */
-  kazka:     'hsl(52, 85%, 47%)',    /* E5 */
-  vibecode:  'hsl(210, 75%, 50%)',   /* G5 */
-  daodedo:   'hsl(276, 60%, 52%)',   /* A5 */
-  innernet:  'hsl(4, 78%, 64%)',     /* C6 */
-  house:     'hsl(32, 82%, 64%)',    /* D6 */
+  sonora:    'hsl(32, 82%, 50%)',    /* D5 */
+  pronas:    'hsl(52, 85%, 47%)',    /* E5 */
+  iventy:    'hsl(210, 75%, 50%)',   /* G5 */
+  poslugy:   'hsl(276, 60%, 52%)',   /* A5 */
+  kazka:     'hsl(4, 78%, 64%)',     /* C6 */
+  metapedia: 'hsl(32, 82%, 64%)',    /* D6 */
   qq:'hsl(4, 60%, 40%)', qa:'hsl(32, 65%, 40%)', qb:'hsl(52, 70%, 38%)',
   qc:'hsl(210, 60%, 40%)', qd:'hsl(276, 50%, 42%)',
 };
@@ -837,7 +850,10 @@ function setStage(s){
   if (s === 'seed'){ renderSingle(); setOb(OB.seed); }
   else if (s === 'door'){ renderSingle(); setOb(isOnboarded() ? OB.doorReturn : OB.door); }
   else if (s === 'quizgate'){ gateUnlocked = false; renderGate(); setOb(OB.gate); renderQuiz(GATE_Q); }
-  else { renderHive(); clearQuiz(); }   /* вулик: квіз прибрано (поки); зона лишається порожньою — центр-сота не зсувається */
+  else {
+    hiveRevealUntil = Date.now() + 450;   /* гасимо другий тап даблтапу по «Увійти» */
+    renderHive(); clearQuiz();
+  }   /* вулик: квіз прибрано (поки); зона лишається порожньою — центр-сота не зсувається */
 }
 
 function showRule(i){ ruleIdx = i; setOb(OB.rules[i]); }
@@ -862,6 +878,7 @@ const frame = document.getElementById('frame');
 let lastFocus = null;
 
 function openSheet(cell){
+  if (!cell || !cell.full) return;   /* захист: шторка ніколи не відкривається порожньою */
   document.querySelector('.s-kick').textContent = cell.kick || 'нода';
   document.getElementById('sname').textContent = cell.full;
   document.getElementById('sdesc').textContent = cell.desc;
@@ -945,7 +962,8 @@ function renderQuiz(def){
     const row = document.createElement('div');
     row.className = 'q-row';
     def.opts.slice(i, i + 2).forEach(o => {
-      const opt = document.createElement('div');
+      const opt = document.createElement('button');
+      opt.type = 'button';
       opt.className = 'q-opt';
       opt.dataset.snd = o.snd;
       opt.dataset.key = o.key;
@@ -1005,6 +1023,7 @@ function quizTap(target){
 
 function activate(target){
   if (stage !== 'hive') return false;
+  if (Date.now() < hiveRevealUntil) return false;   /* вулик щойно розкрився — тап ще з ворітної серії */
   if (SND.on) return false;   /* звуковий режим: тап = звук, не навігація */
   if (target.closest('.core')){ openSheet(CORE); return true; }
   const g = target.closest('.cell');
@@ -1048,14 +1067,20 @@ document.addEventListener('pointerdown', e => {
     if (pad.id === 'core') spawnWord();
   }
 });
+/* страховка для двигунів без overflow:clip: канвас не скролиться ніколи */
+frame.addEventListener('scroll', () => { if (frame.scrollTop) frame.scrollTop = 0; });
 document.getElementById('sound').addEventListener('click', sndToggle);
 document.getElementById('veil').addEventListener('click', closeSheet);
 document.getElementById('sclose').addEventListener('click', closeSheet);
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
 
-/* ── старт ── екран 1 = ворота-квіз для всіх (без seed/door і зайвих тапів) */
+/* ── старт ── екран 1 = ворота-квіз для всіх (без seed/door і зайвих тапів).
+   /#hive — прямий вхід у вулик: сюди веде лого з внутрішніх сторінок */
 if (new URLSearchParams(location.search).has('reset')) localStorage.removeItem(ONBOARD_KEY);
-setStage('quizgate');
+setStage(location.hash === '#hive' ? 'hive' : 'quizgate');
+addEventListener('hashchange', () => {
+  if (location.hash === '#hive' && stage !== 'hive') setStage('hive');
+});
 </script>
 </body>
 </html>
