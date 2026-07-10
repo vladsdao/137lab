@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Послуги — 137lab</title>
+<style>
+  /* ── Лабораторія Ч/Б · канон 2026-06-11 · сторінка-нода «Послуги» ── */
+  @font-face{
+    font-family:'Fixel Display';
+    src:url('/fonts/FixelDisplay-SemiBold.woff2') format('woff2');
+    font-weight:600;font-display:swap;
+  }
+  @font-face{
+    font-family:'Fixel Display';
+    src:url('/fonts/FixelDisplay-Regular.woff2') format('woff2');
+    font-weight:400;font-display:swap;   /* «lab» у лого */
+  }
+  @font-face{
+    font-family:'Fixel Text';
+    src:url('/fonts/FixelText-Regular.woff2') format('woff2');
+    font-weight:400;font-display:swap;
+  }
+  @font-face{
+    font-family:'Fixel Text';
+    src:url('/fonts/FixelText-Medium.woff2') format('woff2');
+    font-weight:500;font-display:swap;
+  }
+
+  :root{
+    --paper:#ffffff;
+    --ink:#0a0a0a;
+    --muted:#6e6e6e;
+    --rule:#c9c9c9;
+    --font-d:'Fixel Display',sans-serif;
+    --font-t:'Fixel Text',sans-serif;
+    --speed:240ms;
+    --ease:cubic-bezier(.4,0,.2,1);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:var(--font-t);font-weight:400;
+    display:grid;place-items:center;
+    -webkit-font-smoothing:antialiased;
+    overscroll-behavior:none;
+  }
+
+  #frame{
+    position:fixed;inset:0;width:100vw;height:100dvh;
+    background:var(--paper);
+    display:flex;flex-direction:column;
+    overflow:hidden;
+    -webkit-tap-highlight-color:transparent;
+  }
+  #framecaption{display:none}
+  @media (min-width:700px) and (min-aspect-ratio:4/5){
+    body{height:100vh}
+    #frame{
+      position:relative;inset:auto;
+      height:min(92vh,880px);aspect-ratio:390/844;width:auto;
+      border:1px solid var(--ink);
+    }
+    #framecaption{
+      display:block;position:fixed;left:0;right:0;
+      bottom:calc((100vh - min(92vh,880px))/2 - 28px);
+      text-align:center;font-size:11px;letter-spacing:.18em;
+      text-transform:uppercase;color:var(--muted);
+    }
+  }
+
+  .top{
+    flex:0 0 auto;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:calc(env(safe-area-inset-top) + 18px) 20px 12px;
+  }
+  .top .mark{
+    font-family:var(--font-d);font-size:15px;line-height:1;
+    color:var(--ink);text-decoration:none;
+  }
+  .top .mark .n{font-weight:600;letter-spacing:-0.010em}
+  .top .mark .l{font-weight:400;letter-spacing:.02em;margin-left:1px}
+  .top .mark .node{
+    color:var(--muted);font-family:var(--font-t);font-weight:400;
+    font-size:11px;letter-spacing:.12em;margin-left:7px;
+  }
+  .top-r{display:flex;align-items:center;gap:4px}
+  .top .alpha{font-size:10px;letter-spacing:.08em;color:var(--muted)}
+  .sndlabel{font-size:10px;letter-spacing:.08em;color:var(--muted);margin-left:8px}
+  .voice{
+    width:44px;height:44px;margin:-11px -11px -11px 0;
+    display:grid;place-items:center;
+    background:none;border:none;color:var(--ink);cursor:pointer;
+  }
+  .voice:active:not([disabled]){opacity:.55}
+  .voice.on{background:var(--ink);color:var(--paper);border-radius:50%}
+  .voice[disabled]{color:var(--rule);cursor:default}
+
+  .scroll{
+    flex:1 1 auto;min-height:0;
+    overflow-y:auto;-webkit-overflow-scrolling:touch;
+    padding:0 20px calc(env(safe-area-inset-bottom) + 28px);
+  }
+
+  .t-kicker{
+    margin-top:18px;
+    font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);
+    text-align:center;
+  }
+  h1{
+    font-family:var(--font-d);font-weight:600;
+    font-size:clamp(34px,9vw,40px);letter-spacing:-0.010em;line-height:1.06;
+    text-align:center;margin-top:8px;
+  }
+  .t-sub{
+    font-size:14.5px;line-height:1.6;color:var(--ink);
+    text-align:center;max-width:36ch;margin:10px auto 0;
+  }
+
+  /* ── послуги: список-рядки ── */
+  .list{margin-top:26px}
+  .sv{
+    padding:18px 2px;border-bottom:1px solid var(--rule);
+  }
+  .sv:first-of-type{border-top:1px solid var(--rule)}
+  .sv-name{
+    font-family:var(--font-d);font-weight:600;
+    font-size:18px;letter-spacing:-0.005em;line-height:1.25;
+  }
+  .sv-line{font-size:13.5px;line-height:1.55;color:var(--ink);margin-top:6px;max-width:36ch}
+
+  .contact{margin-top:26px;text-align:center}
+  .contact-p{font-size:13.5px;line-height:1.6;color:var(--muted);max-width:32ch;margin:0 auto 14px}
+  .s-open{
+    display:inline-block;background:var(--ink);color:var(--paper);
+    border:none;cursor:pointer;
+    font-family:var(--font-t);font-weight:500;font-size:14px;letter-spacing:.02em;
+    text-decoration:none;border-radius:99px;
+    padding:13px 26px;min-height:44px;
+    transition:opacity var(--speed) var(--ease);
+  }
+  .s-open:active{opacity:.82}
+
+  .foot{
+    margin-top:26px;text-align:center;
+    font-size:11px;letter-spacing:.04em;color:var(--muted);line-height:1.7;
+  }
+  .foot a{color:var(--muted)}
+</style>
+</head>
+<body>
+
+<div id="frame">
+  <div class="top">
+    <a class="mark" href="/#hive"><span class="n">137</span><span class="l">lab</span><span class="node">· ПОСЛУГИ</span></a>
+    <div class="top-r">
+      <div class="alpha">α ≈ 1/137</div>
+      <span class="sndlabel" aria-hidden="true">голос</span>
+      <button class="voice" id="voice" disabled aria-label="Голос-гід: записується" title="Голос-гід: записується">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <circle cx="6" cy="12" r="2.2" fill="currentColor"/>
+          <path d="M11 7.5a6.5 6.5 0 0 1 0 9" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M14.5 4.5a11 11 0 0 1 0 15" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="scroll">
+    <!-- ДРАФТ-ТЕКСТИ — Влад переписує -->
+    <div class="t-kicker">ПОСЛУГИ</div>
+    <h1>Робота з нами</h1>
+    <p class="t-sub">Іноді запит не вміщається в івент. Тоді працюємо напряму.</p>
+
+    <div class="list">
+      <div class="sv">
+        <div class="sv-name">Приватні сесії</div>
+        <p class="sv-line">Індивідуальна робота із запитом: стан, стосунки, самореалізація. Формат і глибину визначає запит, а не шаблон.</p>
+      </div>
+
+      <div class="sv">
+        <div class="sv-name">Консалтинг</div>
+        <p class="sv-line">Для тих, хто будує своє: бізнес, команда, продукт. Дивимось на систему як на живе поле — і показуємо, де вона тримається, а де тече.</p>
+      </div>
+
+      <div class="sv">
+        <div class="sv-name">Співпраця</div>
+        <p class="sv-line">Проєкти на перетині свідомості, творчості й технологій. Якщо робиш своє і чуєш резонанс із лабораторією — напиши.</p>
+      </div>
+    </div>
+
+    <div class="contact">
+      <p class="contact-p">Перший крок — коротка розмова. Без анкет і воронок.</p>
+      <a class="s-open" href="https://t.me/viki_assistant" target="_blank" rel="noopener">Написати в Telegram →</a>
+    </div>
+
+    <p class="foot">
+      <a href="/#hive">← до вулика</a>
+    </p>
+  </div>
+
+  <audio id="guide"></audio>
+</div>
+<div id="framecaption">137лаб · послуги</div>
+
+<script>
+/* ── голос-гід: поклади sounds/pages/poslugy.m4a|mp3 — кнопка оживе ── */
+(function(){
+  const SLUG = 'poslugy';
+  const btn = document.getElementById('voice');
+  const audio = document.getElementById('guide');
+  let src = null;
+
+  async function findGuide(){
+    for (const ext of ['m4a', 'mp3']){
+      try{
+        const res = await fetch('/sounds/pages/' + SLUG + '.' + ext, { method:'HEAD' });
+        if (res.ok) return '/sounds/pages/' + SLUG + '.' + ext;
+      }catch(e){ /* нема — чесно мовчимо */ }
+    }
+    return null;
+  }
+
+  findGuide().then(s => {
+    if (!s) return;   /* лишається «записується» */
+    src = s;
+    btn.disabled = false;
+    btn.title = 'Голос-гід сторінки';
+    btn.setAttribute('aria-label', 'Голос-гід сторінки');
+  });
+
+  btn.addEventListener('click', () => {
+    if (!src) return;
+    if (!audio.paused){ audio.pause(); return; }
+    if (!audio.src) audio.src = src;
+    audio.play();
+  });
+  audio.addEventListener('play',  () => btn.classList.add('on'));
+  audio.addEventListener('pause', () => btn.classList.remove('on'));
+  audio.addEventListener('ended', () => { btn.classList.remove('on'); audio.currentTime = 0; });
+})();
+</script>
+</body>
+</html>
