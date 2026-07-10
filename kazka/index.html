@@ -9,22 +9,22 @@
   /* ── Лабораторія Ч/Б · канон 2026-06-11 · сторінка казки ── */
   @font-face{
     font-family:'Fixel Display';
-    src:url('../v4/fonts/FixelDisplay-SemiBold.woff2') format('woff2');
+    src:url('/fonts/FixelDisplay-SemiBold.woff2') format('woff2');
     font-weight:600;font-display:swap;
   }
   @font-face{
     font-family:'Fixel Display';
-    src:url('../v4/fonts/FixelDisplay-Regular.woff2') format('woff2');
+    src:url('/fonts/FixelDisplay-Regular.woff2') format('woff2');
     font-weight:400;font-display:swap;   /* «lab» у лого */
   }
   @font-face{
     font-family:'Fixel Text';
-    src:url('../v4/fonts/FixelText-Regular.woff2') format('woff2');
+    src:url('/fonts/FixelText-Regular.woff2') format('woff2');
     font-weight:400;font-display:swap;
   }
   @font-face{
     font-family:'Fixel Text';
-    src:url('../v4/fonts/FixelText-Medium.woff2') format('woff2');
+    src:url('/fonts/FixelText-Medium.woff2') format('woff2');
     font-weight:500;font-display:swap;
   }
 
@@ -90,6 +90,17 @@
     font-size:11px;letter-spacing:.12em;margin-left:7px;
   }
   .top .alpha{font-size:10px;letter-spacing:.08em;color:var(--muted)}
+  .top-r{display:flex;align-items:center;gap:4px}
+  /* голос-гід: той самий слот, що «звук» на вулику */
+  .sndlabel{font-size:10px;letter-spacing:.08em;color:var(--muted);margin-left:8px}
+  .voice{
+    width:44px;height:44px;margin:-11px -11px -11px 0;
+    display:grid;place-items:center;
+    background:none;border:none;color:var(--ink);cursor:pointer;
+  }
+  .voice:active:not([disabled]){opacity:.55}
+  .voice.on{background:var(--ink);color:var(--paper);border-radius:50%}
+  .voice[disabled]{color:var(--rule);cursor:default}
 
   .scroll{
     flex:1 1 auto;min-height:0;
@@ -177,8 +188,18 @@
 
 <div id="frame">
   <div class="top">
-    <a class="mark" href="/hive/"><span class="n">137</span><span class="l">lab</span><span class="node">· КАЗКА</span></a>
-    <div class="alpha">α ≈ 1/137</div>
+    <a class="mark" href="/#hive"><span class="n">137</span><span class="l">lab</span><span class="node">· КАЗКА</span></a>
+    <div class="top-r">
+      <div class="alpha">α ≈ 1/137</div>
+      <span class="sndlabel" aria-hidden="true">голос</span>
+      <button class="voice" id="voice" disabled aria-label="Голос-гід: записується" title="Голос-гід: записується">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <circle cx="6" cy="12" r="2.2" fill="currentColor"/>
+          <path d="M11 7.5a6.5 6.5 0 0 1 0 9" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M14.5 4.5a11 11 0 0 1 0 15" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
   </div>
 
   <div class="scroll">
@@ -199,11 +220,12 @@
 
     <p class="foot">
       глави з’являються голосом — по одній<br>
-      <a href="/hive/">← до вулика</a>
+      <a href="/#hive">← до вулика</a>
     </p>
   </div>
 
   <audio id="player"></audio>
+  <audio id="guide"></audio>
 </div>
 <div id="framecaption">137лаб · казка · чернетка</div>
 
@@ -388,6 +410,44 @@ function renderChapters(){
 
 renderCover();
 renderChapters();
+
+/* ── голос-гід сторінки: поклади /sounds/pages/kazka.m4a|mp3 — кнопка оживе
+   (глави живуть окремо у kazka/audio/) ── */
+(function(){
+  const SLUG = 'kazka';
+  const btn = document.getElementById('voice');
+  const guide = document.getElementById('guide');
+  let src = null;
+
+  async function findGuide(){
+    for (const ext of ['m4a', 'mp3']){
+      try{
+        const res = await fetch('/sounds/pages/' + SLUG + '.' + ext, { method:'HEAD' });
+        if (res.ok) return '/sounds/pages/' + SLUG + '.' + ext;
+      }catch(e){ /* нема — чесно мовчимо */ }
+    }
+    return null;
+  }
+
+  findGuide().then(s => {
+    if (!s) return;   /* лишається «записується» */
+    src = s;
+    btn.disabled = false;
+    btn.title = 'Голос-гід сторінки';
+    btn.setAttribute('aria-label', 'Голос-гід сторінки');
+  });
+
+  btn.addEventListener('click', () => {
+    if (!src) return;
+    if (!guide.paused){ guide.pause(); return; }
+    stopPlayback();   /* гід і глава не звучать одночасно */
+    if (!guide.src) guide.src = src;
+    guide.play();
+  });
+  guide.addEventListener('play',  () => btn.classList.add('on'));
+  guide.addEventListener('pause', () => btn.classList.remove('on'));
+  guide.addEventListener('ended', () => { btn.classList.remove('on'); guide.currentTime = 0; });
+})();
 </script>
 </body>
 </html>
