@@ -381,13 +381,12 @@
   <div class="top">
     <a class="mark" href="/#hive" aria-label="137lab — на головну, до вулика"><span class="mark-num">137</span><span class="mark-lab">lab</span></a>
     <div class="top-r">
-      <div class="alpha">α ≈ 1/137</div>
       <span class="sndlabel" aria-hidden="true">звук</span>
       <button class="sound" id="sound" aria-pressed="false" aria-label="Піано-режим: соти звучать" title="Піано-режим: соти звучать">
         <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-          <circle cx="6" cy="12" r="2.2" fill="currentColor"/>
-          <path d="M11 7.5a6.5 6.5 0 0 1 0 9" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linecap="round"/>
-          <path d="M14.5 4.5a11 11 0 0 1 0 15" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M4 9.5v5h3l5 4.5v-14L7 9.5H4Z" fill="currentColor"/>
+          <path d="M15 8.5a5 5 0 0 1 0 7" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M17.6 6.3a8.5 8.5 0 0 1 0 11.4" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linecap="round"/>
         </svg>
       </button>
     </div>
@@ -444,7 +443,7 @@ const CELLS = [
     href:'/poslugy', act:'Подивитись' },
   { id:'kazka', label:['КАЗКА'],
     full:'Казка «Алхімія творчості»',
-    desc:'Голосова 5D казка про справжню магію. Розповідає Інсейнт, істота пʼятого виміру. Тут немає ні слова правди — і саме тому все можливо.',
+    desc:'Голосова 5D казка про справжню магію. Тут немає ні слова правди — і саме тому все можливо.',
     href:'/kazka', act:'Слухати' },
   { id:'metapedia', label:['МЕТА-ПЕДІЯ'],
     full:'Мета-педія',
@@ -462,7 +461,8 @@ const CORE = {
 };
 
 /* ── квізи: контент = дані ─────────────────────────────────────────────
-   gate — на воротах (екран 1): будь-яка відповідь відмикає «Увійти».
+   gate — НЕ рендериться з 2026-07-11 (сота на воротах одразу зелена);
+   дані лишаємо — повернути легко (renderQuiz(GATE_Q) у setStage).
    hive — на вулику (екран 2): автор фрази; перевірка + фідбек + автозникнення. */
 const GATE_Q = {
   q:'«Доки не навернетесь, як діти, не увійдете у…»',
@@ -798,13 +798,15 @@ function renderSingle(){
   svg.appendChild(seedNode());
 }
 
-/* ворота: центральна сота = лого «137 ЛАБ» (жодної «Алхімії творчості») */
+/* ворота: центральна сота = лого «137 ЛАБ», одразу зелена з «Увійти».
+   Квіз прибрано (2026-07-11, Влад); повернути: locked-стан + renderQuiz(GATE_Q) у setStage */
 function gateNode(){
   // та сама нода, що й core у вулику: радіус R*INSET, шрифт core-num/core-word, позиції CY+8/CY+27
-  const g = el('g', { 'class':'core doorhex locked', role:'button', tabindex:'0', 'aria-label':'137 ЛАБ — спершу дай відповідь' });
+  const g = el('g', { 'class':'core doorhex entered', role:'button', tabindex:'0', 'aria-label':'137 ЛАБ — Увійти' });
   g.appendChild(el('path', { d:hexPath(CX, CY, R * INSET) }));
   g.appendChild(el('text', { 'class':'core-num',  x:CX,     y:CY + 8  }, CORE.num));
   g.appendChild(el('text', { 'class':'core-word', x:CX + 2, y:CY + 27 }, CORE.word));
+  g.appendChild(el('text', { 'class':'enter-label', x:CX + 1, y:CY + 43 }, 'Увійти'));
   return g;
 }
 function renderGate(){
@@ -849,7 +851,7 @@ function setStage(s){
   clearQuizTimer();
   if (s === 'seed'){ renderSingle(); setOb(OB.seed); }
   else if (s === 'door'){ renderSingle(); setOb(isOnboarded() ? OB.doorReturn : OB.door); }
-  else if (s === 'quizgate'){ gateUnlocked = false; renderGate(); setOb(OB.gate); renderQuiz(GATE_Q); }
+  else if (s === 'quizgate'){ gateUnlocked = true; renderGate(); setOb(OB.gate); clearQuiz(); }   /* ворота без квізу: сота одразу зелена */
   else {
     hiveRevealUntil = Date.now() + 450;   /* гасимо другий тап даблтапу по «Увійти» */
     renderHive(); clearQuiz();
