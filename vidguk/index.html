@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" sizes="32x32" href="/icons/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<title>Залишити відгук — 137lab</title>
+<style>
+  /* ── Лабораторія Ч/Б · канон 2026-06-11 · сторінка запису відгуку ── */
+  @font-face{
+    font-family:'Fixel Display';
+    src:url('/fonts/FixelDisplay-SemiBold.woff2') format('woff2');
+    font-weight:600;font-display:swap;
+  }
+  @font-face{
+    font-family:'Fixel Display';
+    src:url('/fonts/FixelDisplay-Regular.woff2') format('woff2');
+    font-weight:400;font-display:swap;   /* «lab» у лого */
+  }
+  @font-face{
+    font-family:'Fixel Text';
+    src:url('/fonts/FixelText-Regular.woff2') format('woff2');
+    font-weight:400;font-display:swap;
+  }
+  @font-face{
+    font-family:'Fixel Text';
+    src:url('/fonts/FixelText-Medium.woff2') format('woff2');
+    font-weight:500;font-display:swap;
+  }
+
+  :root{
+    --paper:#ffffff;
+    --ink:#0a0a0a;
+    --muted:#6e6e6e;
+    --rule:#c9c9c9;
+    --rec:#c62828;   /* запис іде: єдиний колір-виняток сторінки */
+    --font-d:'Fixel Display',sans-serif;
+    --font-t:'Fixel Text',sans-serif;
+    --speed:240ms;
+    --ease:cubic-bezier(.4,0,.2,1);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:var(--font-t);font-weight:400;
+    display:grid;place-items:center;
+    -webkit-font-smoothing:antialiased;
+    overscroll-behavior:none;
+  }
+
+  #frame{
+    position:fixed;inset:0;width:100vw;height:100dvh;
+    background:var(--paper);
+    display:flex;flex-direction:column;
+    overflow:hidden;
+    -webkit-tap-highlight-color:transparent;
+  }
+  #framecaption{display:none}
+  @media (min-width:700px) and (min-aspect-ratio:4/5){
+    body{height:100vh}
+    #frame{
+      position:relative;inset:auto;
+      height:min(92vh,880px);aspect-ratio:390/844;width:auto;
+      border:1px solid var(--ink);
+    }
+    #framecaption{
+      display:block;position:fixed;left:0;right:0;
+      bottom:calc((100vh - min(92vh,880px))/2 - 28px);
+      text-align:center;font-size:11px;letter-spacing:.18em;
+      text-transform:uppercase;color:var(--muted);
+    }
+  }
+
+  .top{
+    flex:0 0 auto;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:calc(env(safe-area-inset-top) + 18px) 20px 12px;
+  }
+  .top .mark{
+    font-family:var(--font-d);font-size:15px;line-height:1;
+    color:var(--ink);text-decoration:none;
+  }
+  .top .mark .n{font-weight:600;letter-spacing:-0.010em}
+  .top .mark .l{font-weight:400;letter-spacing:.02em;margin-left:1px}
+  .top .mark .node{
+    color:var(--muted);font-family:var(--font-t);font-weight:400;
+    font-size:11px;letter-spacing:.12em;margin-left:7px;
+  }
+
+  .scroll{
+    flex:1 1 auto;min-height:0;
+    overflow-y:auto;-webkit-overflow-scrolling:touch;
+    padding:0 20px calc(env(safe-area-inset-bottom) + 28px);
+  }
+
+  .t-kicker{
+    margin-top:18px;
+    font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);
+    text-align:center;
+  }
+  h1{
+    font-family:var(--font-d);font-weight:600;
+    font-size:clamp(34px,9vw,40px);letter-spacing:-0.010em;line-height:1.06;
+    text-align:center;margin-top:8px;
+  }
+  .t-sub{
+    font-size:14.5px;line-height:1.6;color:var(--ink);
+    text-align:center;max-width:36ch;margin:10px auto 0;
+  }
+
+  /* ── рекордер ── */
+  .rec-wrap{margin-top:30px;text-align:center}
+  .rec-btn{
+    width:88px;height:88px;border-radius:50%;
+    border:1px solid var(--ink);background:var(--ink);color:var(--paper);
+    cursor:pointer;display:inline-grid;place-items:center;
+    transition:transform 120ms var(--ease);
+  }
+  .rec-btn:active{transform:scale(.96)}
+  .rec-btn.recording{background:var(--rec);border-color:var(--rec);animation:recpulse 1.2s ease infinite}
+  @keyframes recpulse{
+    0%,100%{box-shadow:0 0 0 0 rgba(198,40,40,.28)}
+    50%    {box-shadow:0 0 0 14px rgba(198,40,40,0)}
+  }
+  @media (prefers-reduced-motion:reduce){.rec-btn.recording{animation:none}}
+  .rec-hint{font-size:12px;letter-spacing:.04em;color:var(--muted);margin-top:12px;min-height:18px}
+  .rec-timer{
+    font-family:var(--font-d);font-weight:600;font-size:22px;letter-spacing:.04em;
+    margin-top:10px;min-height:28px;
+  }
+  .rec-timer.live{color:var(--rec)}
+
+  /* превью запису */
+  .preview{
+    margin:26px auto 0;max-width:320px;
+    display:none;align-items:center;gap:12px;
+    padding:12px 2px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  }
+  .preview.show{display:flex}
+  .p-play{
+    flex:0 0 auto;width:46px;height:46px;border-radius:50%;
+    border:1px solid var(--ink);background:var(--paper);color:var(--ink);
+    display:grid;place-items:center;cursor:pointer;padding:0;
+  }
+  .p-play.playing{background:var(--ink);color:var(--paper)}
+  .p-label{flex:1 1 auto;text-align:left;font-size:13px}
+  .p-dur{font-size:11px;color:var(--muted)}
+  .p-redo{
+    background:none;border:none;cursor:pointer;
+    font-family:var(--font-t);font-size:12px;color:var(--muted);
+    text-decoration:underline;text-underline-offset:3px;padding:6px;
+  }
+
+  /* форма відправки */
+  .send{margin:22px auto 0;max-width:320px;display:none;flex-direction:column;gap:14px}
+  .send.show{display:flex}
+  .send input[type="text"]{
+    width:100%;border:1px solid var(--rule);border-radius:10px;
+    padding:12px 14px;font-family:var(--font-t);font-size:15px;color:var(--ink);
+    background:var(--paper);
+  }
+  .send input[type="text"]:focus{outline:none;border-color:var(--ink)}
+  .hp{position:absolute;left:-9999px;opacity:0;height:0;overflow:hidden}
+  .s-open{
+    display:inline-block;background:var(--ink);color:var(--paper);
+    border:none;cursor:pointer;
+    font-family:var(--font-t);font-weight:500;font-size:14px;letter-spacing:.02em;
+    text-decoration:none;border-radius:99px;
+    padding:13px 26px;min-height:44px;
+    transition:opacity var(--speed) var(--ease);
+  }
+  .s-open:active{opacity:.82}
+  .s-open[disabled]{background:var(--rule);cursor:default}
+  .status{font-size:13px;line-height:1.55;text-align:center;color:var(--muted);min-height:20px}
+  .status.ok{color:var(--ink)}
+
+  /* фолбек без мікрофона (in-app браузери) */
+  .fallback{
+    margin:26px auto 0;max-width:340px;display:none;
+    text-align:center;font-size:14px;line-height:1.6;
+  }
+  .fallback.show{display:block}
+  .fallback .s-open{margin-top:14px}
+  .fallback .fb-note{font-size:12px;color:var(--muted);margin-top:10px}
+
+  .foot{
+    margin-top:28px;text-align:center;
+    font-size:11px;letter-spacing:.04em;color:var(--muted);line-height:1.7;
+  }
+  .foot a{color:var(--muted)}
+</style>
+</head>
+<body>
+
+<div id="frame">
+  <div class="top">
+    <a class="mark" href="/#hive"><span class="n">137</span><span class="l">lab</span><span class="node">· ВІДГУК</span></a>
+  </div>
+
+  <div class="scroll">
+    <div class="t-kicker">ТВІЙ ГОЛОС</div>
+    <h1>Залишити відгук</h1>
+    <p class="t-sub">30 секунд голосом: що відгукнулося, що змінилось. Лише імʼя — без анкет. Після модерації відгук зʼявиться у вулику.</p>
+
+    <div class="rec-wrap" id="recwrap">
+      <button class="rec-btn" id="recbtn" aria-label="Почати запис">
+        <svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true" id="recicon">
+          <rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/>
+          <path d="M6 11a6 6 0 0 0 12 0" stroke="currentColor" fill="none" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="12" y1="17" x2="12" y2="21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="rec-timer" id="rectimer"></div>
+      <div class="rec-hint" id="rechint">тапни — і говори; максимум 0:30</div>
+    </div>
+
+    <div class="preview" id="preview">
+      <button class="p-play" id="pplay" aria-label="Прослухати запис"></button>
+      <div class="p-label">Твій запис <span class="p-dur" id="pdur"></span></div>
+      <button class="p-redo" id="predo" type="button">перезаписати</button>
+    </div>
+
+    <form class="send" id="send" autocomplete="off">
+      <input type="text" id="vname" name="name" maxlength="40" placeholder="Твоє імʼя" aria-label="Твоє імʼя">
+      <p class="hp" aria-hidden="true"><label>Не заповнюй: <input type="text" name="bot-field" tabindex="-1"></label></p>
+      <button class="s-open" id="vsend" type="submit">Надіслати →</button>
+      <p class="status" id="vstatus" aria-live="polite"></p>
+    </form>
+
+    <div class="fallback" id="fallback">
+      <p>Запис тут недоступний — цей браузер не дає доступу до мікрофона (так буває всередині Telegram та Instagram).</p>
+      <a class="s-open" href="https://t.me/viki_assistant" target="_blank" rel="noopener">Надіслати голосове в Telegram →</a>
+      <p class="fb-note">або відкрий цю сторінку в Safari чи Chrome</p>
+    </div>
+
+    <p class="foot">
+      запис живе лише в цьому вікні, поки ти не натиснеш «Надіслати»<br>
+      <a href="/#hive">← до вулика</a>
+    </p>
+  </div>
+
+  <audio id="pv"></audio>
+</div>
+<div id="framecaption">137лаб · твій голос</div>
+
+<script>
+/* ── запис 30 сек → base64 → /.netlify/functions/vidguk → Telegram Влада.
+   iOS Safari пише audio/mp4, Chrome — webm/opus; один blob, без timeslice.
+   In-app браузери без getUserMedia → фолбек на Telegram. ─────────────── */
+(function(){
+  const MAX_S = 30;
+  const NS = 'http://www.w3.org/2000/svg';
+  const btn = document.getElementById('recbtn');
+  const icon = document.getElementById('recicon');
+  const timer = document.getElementById('rectimer');
+  const hint = document.getElementById('rechint');
+  const preview = document.getElementById('preview');
+  const pplay = document.getElementById('pplay');
+  const pdur = document.getElementById('pdur');
+  const predo = document.getElementById('predo');
+  const send = document.getElementById('send');
+  const vname = document.getElementById('vname');
+  const vsend = document.getElementById('vsend');
+  const vstatus = document.getElementById('vstatus');
+  const fallback = document.getElementById('fallback');
+  const pv = document.getElementById('pv');
+
+  let rec = null, chunks = [], blob = null, mime = '', url = null;
+  let stream = null, tStop = null, tTick = null, t0 = 0, recSec = 0;
+
+  function showFallback(){
+    document.getElementById('recwrap').style.display = 'none';
+    preview.classList.remove('show');
+    send.classList.remove('show');
+    fallback.classList.add('show');
+  }
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder){
+    showFallback();
+    return;
+  }
+
+  function pickMime(){
+    const c = ['audio/mp4', 'audio/webm;codecs=opus', 'audio/webm'];
+    for (const m of c){ if (MediaRecorder.isTypeSupported(m)) return m; }
+    return '';
+  }
+  function fmt(s){ return '0:' + String(Math.max(0, s)).padStart(2, '0'); }
+  function svgEl(name, attrs){
+    const n = document.createElementNS(NS, name);
+    for (const k in attrs) n.setAttribute(k, attrs[k]);
+    return n;
+  }
+
+  function setIconStop(stop){
+    icon.textContent = '';
+    if (stop){
+      icon.appendChild(svgEl('rect', { x:7, y:7, width:10, height:10, rx:2, fill:'currentColor' }));
+    } else {
+      icon.appendChild(svgEl('rect', { x:9, y:3, width:6, height:11, rx:3, fill:'currentColor' }));
+      icon.appendChild(svgEl('path', { d:'M6 11a6 6 0 0 0 12 0', stroke:'currentColor', fill:'none', 'stroke-width':1.8, 'stroke-linecap':'round' }));
+      icon.appendChild(svgEl('line', { x1:12, y1:17, x2:12, y2:21, stroke:'currentColor', 'stroke-width':1.8, 'stroke-linecap':'round' }));
+    }
+  }
+
+  function setPvIcon(playing){
+    pplay.textContent = '';
+    const s = svgEl('svg', { width:16, height:16, viewBox:'0 0 16 16', 'aria-hidden':'true' });
+    if (playing){
+      s.appendChild(svgEl('rect', { x:4,   y:3.5, width:2.6, height:9, fill:'currentColor' }));
+      s.appendChild(svgEl('rect', { x:9.4, y:3.5, width:2.6, height:9, fill:'currentColor' }));
+    } else {
+      s.appendChild(svgEl('path', { d:'M5 3.5 12 8 5 12.5Z', fill:'currentColor' }));
+    }
+    pplay.appendChild(s);
+  }
+
+  async function startRec(){
+    vstatus.textContent = ''; vstatus.classList.remove('ok');
+    try{
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    }catch(e){
+      showFallback();
+      return;
+    }
+    mime = pickMime();
+    try{
+      rec = mime ? new MediaRecorder(stream, { mimeType: mime }) : new MediaRecorder(stream);
+    }catch(e){
+      rec = new MediaRecorder(stream);
+    }
+    mime = rec.mimeType || mime || 'audio/mp4';
+    chunks = [];
+    rec.addEventListener('dataavailable', e => { if (e.data && e.data.size) chunks.push(e.data); });
+    rec.addEventListener('stop', onStop);
+    rec.start();   /* один blob — без timeslice, надійніше на iOS */
+    t0 = Date.now();
+    btn.classList.add('recording');
+    btn.setAttribute('aria-label', 'Зупинити запис');
+    setIconStop(true);
+    hint.textContent = 'говори… тапни ще раз, щоб зупинити';
+    timer.classList.add('live');
+    tTick = setInterval(() => {
+      recSec = Math.round((Date.now() - t0) / 1000);
+      timer.textContent = fmt(MAX_S - recSec);
+    }, 250);
+    timer.textContent = fmt(MAX_S);
+    tStop = setTimeout(stopRec, MAX_S * 1000);
+  }
+
+  function stopRec(){
+    clearTimeout(tStop); clearInterval(tTick);
+    if (rec && rec.state !== 'inactive') rec.stop();
+    if (stream){ stream.getTracks().forEach(t => t.stop()); stream = null; }
+    btn.classList.remove('recording');
+    btn.setAttribute('aria-label', 'Перезаписати');
+    setIconStop(false);
+    timer.classList.remove('live');
+  }
+
+  function onStop(){
+    recSec = Math.min(recSec || Math.round((Date.now() - t0) / 1000), MAX_S);
+    blob = new Blob(chunks, { type: mime });
+    if (!blob.size){ hint.textContent = 'не записалось — спробуй ще раз'; return; }
+    if (blob.size > 4500000){ hint.textContent = 'запис завеликий — спробуй коротше'; blob = null; return; }
+    if (url) URL.revokeObjectURL(url);
+    url = URL.createObjectURL(blob);
+    pv.src = url;
+    pdur.textContent = fmt(recSec);
+    hint.textContent = 'послухай — і надішли';
+    timer.textContent = '';
+    preview.classList.add('show');
+    send.classList.add('show');
+    setPvIcon(false);
+  }
+
+  btn.addEventListener('click', () => {
+    if (btn.classList.contains('recording')){ stopRec(); return; }
+    preview.classList.remove('show');
+    send.classList.remove('show');
+    startRec();
+  });
+  predo.addEventListener('click', () => {
+    pv.pause();
+    preview.classList.remove('show');
+    send.classList.remove('show');
+    startRec();
+  });
+  pplay.addEventListener('click', () => {
+    if (!pv.paused){ pv.pause(); return; }
+    pv.currentTime = 0; pv.play();
+  });
+  pv.addEventListener('play',  () => { pplay.classList.add('playing'); setPvIcon(true); });
+  pv.addEventListener('pause', () => { pplay.classList.remove('playing'); setPvIcon(false); });
+  pv.addEventListener('ended', () => { pplay.classList.remove('playing'); setPvIcon(false); });
+
+  send.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!blob){ vstatus.textContent = 'спершу запиши відгук'; return; }
+    const name = vname.value.trim();
+    if (!name){ vstatus.textContent = 'напиши імʼя — щоб ми знали, чий це голос'; vname.focus(); return; }
+    vsend.disabled = true;
+    vstatus.textContent = 'надсилаю…';
+    try{
+      const b64 = await new Promise((res, rej) => {
+        const fr = new FileReader();
+        fr.onload = () => res(String(fr.result).split(',')[1] || '');
+        fr.onerror = rej;
+        fr.readAsDataURL(blob);
+      });
+      const resp = await fetch('/.netlify/functions/vidguk', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name, mime, seconds: recSec, data: b64,
+          'bot-field': send.querySelector('[name="bot-field"]').value,
+        }),
+      });
+      const out = await resp.json().catch(() => ({}));
+      if (resp.ok && out.ok){
+        vstatus.textContent = 'Надіслано. Дякуємо! Після модерації відгук зʼявиться у вулику.';
+        vstatus.classList.add('ok');
+        vsend.textContent = 'Надіслано ✓';
+      } else {
+        vsend.disabled = false;
+        vstatus.textContent = 'не долетіло — спробуй ще раз або надішли голосове в Telegram: t.me/viki_assistant';
+      }
+    }catch(err){
+      vsend.disabled = false;
+      vstatus.textContent = 'не долетіло — спробуй ще раз або надішли голосове в Telegram: t.me/viki_assistant';
+    }
+  });
+})();
+</script>
+</body>
+</html>
