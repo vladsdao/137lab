@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<title>Події — 137lab</title>
+<title>Творчість — 137lab</title>
 <style>
-  /* ── Лабораторія Ч/Б · канон 2026-06-11 · сторінка-нода «Події» (url /iventy) ── */
+  /* ── Лабораторія Ч/Б · канон 2026-06-11 · сторінка-нода «Творчість» ── */
   @font-face{
     font-family:'Fixel Display';
     src:url('/fonts/FixelDisplay-SemiBold.woff2') format('woff2');
@@ -88,7 +88,6 @@
     font-size:11px;letter-spacing:.12em;margin-left:7px;
   }
   .top-r{display:flex;align-items:center;gap:4px}
-  .top .alpha{font-size:10px;letter-spacing:.08em;color:var(--muted)}
   .sndlabel{font-size:10px;letter-spacing:.08em;color:var(--muted);margin-left:8px}
   .voice{
     width:44px;height:44px;margin:-11px -11px -11px 0;
@@ -120,19 +119,17 @@
     text-align:center;max-width:36ch;margin:10px auto 0;
   }
 
-  /* ── події: список-рядки, як зміст казки ── */
   .list{margin-top:26px}
-  .ev{
+  .sv{
     padding:18px 2px;border-bottom:1px solid var(--rule);
   }
-  .ev:first-of-type{border-top:1px solid var(--rule)}
-  .ev-kick{font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
-  .ev-name{
+  .sv:first-of-type{border-top:1px solid var(--rule)}
+  .sv-name{
     font-family:var(--font-d);font-weight:600;
-    font-size:18px;letter-spacing:-0.005em;line-height:1.25;margin-top:3px;
+    font-size:18px;letter-spacing:-0.005em;line-height:1.25;
   }
-  .ev-line{font-size:13.5px;line-height:1.55;color:var(--ink);margin-top:6px;max-width:36ch}
-  .ev-act{margin-top:12px}
+  .sv-line{font-size:13.5px;line-height:1.55;color:var(--ink);margin-top:6px;max-width:36ch}
+  .sv-act{margin-top:12px}
   .s-open{
     display:inline-block;background:var(--ink);color:var(--paper);
     border:none;cursor:pointer;
@@ -142,11 +139,9 @@
     transition:opacity var(--speed) var(--ease);
   }
   .s-open:active{opacity:.82}
-  .s-status{
-    display:inline-block;border:1px solid var(--rule);color:var(--muted);
-    font-size:11px;letter-spacing:.08em;text-transform:uppercase;
-    border-radius:99px;padding:8px 16px;
-  }
+
+  .contact{margin-top:26px;text-align:center}
+  .contact-p{font-size:13.5px;line-height:1.6;color:var(--muted);max-width:32ch;margin:0 auto 14px}
 
   .foot{
     margin-top:26px;text-align:center;
@@ -159,7 +154,7 @@
 
 <div id="frame">
   <div class="top">
-    <a class="mark" href="/#hive"><span class="n">137</span><span class="l">lab</span><span class="node">· ПОДІЇ</span></a>
+    <a class="mark" href="/#hive"><span class="n">137</span><span class="l">lab</span><span class="node">· ТВОРЧІСТЬ</span></a>
     <div class="top-r">
       <span class="sndlabel" aria-hidden="true">голос</span>
       <button class="voice" id="voice" disabled aria-label="Голос-гід: записується" title="Голос-гід: записується">
@@ -174,40 +169,46 @@
 
   <div class="scroll">
     <!-- ДРАФТ-ТЕКСТИ — Влад переписує -->
-    <div class="t-kicker">ПОДІЇ</div>
-    <h1>Живі події</h1>
-    <p class="t-sub">Лабораторія працює наживо: онлайн стріми для близького кола і офлайн занурення. Анонси зʼявляються тут.</p>
+    <div class="t-kicker">ТВОРЧІСТЬ</div>
+    <h1>Власне джерело</h1>
+    <p class="t-sub">Як ми працюємо з розкриттям творчого потенціалу.</p>
 
     <div class="list">
-      <div class="ev">
-        <div class="ev-kick">Онлайн</div>
-        <div class="ev-name">Стріми</div>
-        <p class="ev-line">Закриті онлайн зустрічі без цензури та масок: ділимося досвідом і дослідженнями багатовимірної реальності.</p>
-        <div class="ev-act"><span class="s-status">анонс скоро</span></div>
+      <div class="sv">
+        <div class="sv-name">Провідність, не талант</div>
+        <p class="sv-line">Творчість — це не дар обраних, а провідність: наскільки вільно ідея проходить крізь тебе. Ми прибираємо шум і блоки, що глушать сигнал.</p>
       </div>
 
-      <div class="ev">
-        <div class="ev-kick">Офлайн</div>
-        <div class="ev-name">Сонора</div>
-        <p class="ev-line">Чотири дні у нашому полі. Мінімум людей, якісна колективна робота над індивідуальними запитами.</p>
-        <div class="ev-act"><a class="s-open" href="/sonora">Дізнатись більше →</a></div>
+      <div class="sv">
+        <div class="sv-name">Практики джерела</div>
+        <p class="sv-line">Дослідження і техніки, що повертають доступ до стану, де ідеї зʼявляються самі — і кристалізуються у форму.</p>
+      </div>
+
+      <div class="sv">
+        <div class="sv-name">Казка «Алхімія творчості»</div>
+        <p class="sv-line">Голосова 5D казка про справжню магію — наш живий експеримент творчості. Тут немає ні слова правди, і саме тому все можливо.</p>
+        <div class="sv-act"><a class="s-open" href="/kazka">Слухати →</a></div>
       </div>
     </div>
 
+    <div class="contact">
+      <p class="contact-p">Працювати з творчим запитом можна напряму.</p>
+      <a class="s-open" href="/poslugy">Формати взаємодії →</a>
+    </div>
+
     <p class="foot">
-      календар формується — по одній події за раз<br>
       <a href="/#hive">← до вулика</a>
     </p>
   </div>
 
   <audio id="guide"></audio>
 </div>
-<div id="framecaption">137лаб · події</div>
+<div id="framecaption">137лаб · творчість</div>
 
 <script>
-/* ── голос-гід: поклади sounds/pages/iventy.m4a|mp3 — кнопка оживе ── */
+/* ── голос-гід: поклади sounds/pages/tvorchist.m4a|mp3 — кнопка оживе ── */
 (function(){
-  const SLUG = 'iventy';
+  const SLUG = 'tvorchist';
   const btn = document.getElementById('voice');
   const audio = document.getElementById('guide');
   let src = null;

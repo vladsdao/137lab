@@ -6,9 +6,12 @@
 | slug | сторінка |
 |---|---|
 | `137` | /137 — маніфест |
-| `pro-nas` | /pro-nas — Дао і Ліза |
-| `iventy` | /iventy — живі події |
+| `tvorchist` | /tvorchist — Творчість |
 | `poslugy` | /poslugy — Взаємодія (робота з нами) |
+| `biznes` | /biznes — 5Д Бізнес |
+| `pro-nas` | /pro-nas — Дао і Ліза |
+| `simia` | /simia — Сімʼя |
+| `iventy` | /iventy — Події |
 | `kazka` | /kazka — казка (гід сторінки, НЕ глави: глави живуть у `kazka/audio/`) |
 
 Правила:
