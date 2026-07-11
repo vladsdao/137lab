@@ -43,7 +43,7 @@ exports.handler = async (event) => {
   }
 
   const text =
-    '🌿 Новая заявка' + lang + ' · SONORA (27–30 июня)\n\n' +
+    '🌿 Новая заявка' + lang + ' · SONORA (2–5 августа)\n\n' +
     'Имя: ' + name + '\n' +
     'Telegram: ' + telegram +
     (request ? '\nЗапрос: ' + request : '');
