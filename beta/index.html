@@ -234,9 +234,8 @@
   #frame:not([data-stage="hive"]) .sound, #frame:not([data-stage="hive"]) .sndlabel{visibility:hidden}
   /* .ob схований і на воротах, і на вулику → hivewrap однаковий (сота не зсувається) */
   #frame[data-stage="hive"] .ob, #frame[data-stage="quizgate"] .ob{display:none}
-  /* dismissed тримає висоту зони (visibility), щоб соти не зсувались після зникнення квізу.
-     Ховаємо ЛИШЕ квіз-елементи — барабан #drum живе у цій самій зоні */
-  .quiz.dismissed .q-grid, .quiz.dismissed .q-feedback{visibility:hidden}
+  /* dismissed тримає висоту зони (visibility), щоб соти не зсувались після зникнення квізу */
+  .quiz.dismissed{visibility:hidden}
   .ob{flex:0 0 auto;text-align:center;padding:0 12px;margin-bottom:12px}
   .ob-lead{
     font-family:var(--font-d);font-weight:600;
@@ -291,7 +290,7 @@
   /* фіксована висота зони квізу: і короткий (ворота), і довгий (Тесла) займають однаково
      → hivewrap не змінюється між екранами, центр-сота стоїть точно на місці */
   .quiz{flex:0 0 auto;position:relative;z-index:2;margin-bottom:10px;
-    min-height:130px;display:flex;flex-direction:column;justify-content:flex-end}
+    min-height:115px;display:flex;flex-direction:column;justify-content:flex-end}
   .q-grid{margin:0 -20px;display:grid;gap:8px}
   .q-row{
     position:relative;display:grid;grid-template-columns:1fr 1fr;gap:18px;
@@ -336,56 +335,6 @@
     font-size:22px;line-height:1;z-index:3;
   }
   .q-close:active{opacity:.55}
-
-  /* ── барабан: аудіо-стрічка «ВІДГУКИ / РОЗДУМИ» внизу вулика ──
-     живе у зоні квізу (на вулику вона порожня); висота зони однакова
-     на воротах і вулику → центр-сота не зсувається */
-  .drum{display:flex;flex-direction:column;gap:8px}
-  .d-chips{display:flex;justify-content:center;gap:10px}
-  /* чипи — той самий лозендж, але СВІЙ клас: .q-opt = піано-пед, не чіпати */
-  .d-chip{
-    position:relative;height:20px;padding:0 22px;border:0;
-    background:none;color:var(--muted);cursor:pointer;
-    clip-path:polygon(10px 0,calc(100% - 10px) 0,100% 50%,calc(100% - 10px) 100%,10px 100%,0 50%);
-    font-family:var(--font-t);font-weight:500;font-size:10px;letter-spacing:.14em;
-  }
-  .d-chip.on{background:var(--pad);color:var(--paper)}
-  /* стрічка: нативний скрол зі снапом по рядах — «барабан» */
-  .d-list{
-    height:102px;overflow-y:auto;
-    scroll-snap-type:y mandatory;overscroll-behavior:contain;touch-action:pan-y;
-    -webkit-mask-image:linear-gradient(transparent,#000 8px,#000 calc(100% - 8px),transparent);
-            mask-image:linear-gradient(transparent,#000 8px,#000 calc(100% - 8px),transparent);
-  }
-  .d-row{
-    height:34px;display:flex;align-items:center;gap:10px;
-    border-bottom:1px solid var(--rule);scroll-snap-align:start;
-    cursor:pointer;
-  }
-  .d-row.draft{cursor:default}
-  .d-play{
-    flex:0 0 auto;width:24px;height:24px;border-radius:50%;padding:0;
-    border:1px solid var(--ink);background:var(--paper);color:var(--ink);
-    display:grid;place-items:center;cursor:pointer;
-  }
-  .d-play.playing{background:var(--ink);color:var(--paper)}
-  .d-play[disabled]{border-color:var(--rule);color:var(--rule);cursor:default}
-  .d-name{
-    flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-    font-family:var(--font-t);font-weight:500;font-size:13px;
-  }
-  .d-row.draft .d-name{color:var(--muted)}
-  .d-dur{flex:0 0 auto;font-size:10px;letter-spacing:.06em;color:var(--muted)}
-  .d-cta{
-    height:34px;display:flex;align-items:center;gap:10px;
-    font-family:var(--font-t);font-weight:500;font-size:13px;
-    color:var(--ink);text-decoration:none;scroll-snap-align:start;
-  }
-  .d-cta .d-plus{
-    flex:0 0 auto;width:24px;height:24px;border-radius:50%;
-    border:1px solid var(--ink);display:grid;place-items:center;
-    font-size:14px;line-height:1;
-  }
 
   /* ── шторка ноди ── */
   .veil{
@@ -450,7 +399,7 @@
   </div>
 
   <div class="hivewrap">
-    <svg id="hive" viewBox="0 0 390 520" preserveAspectRatio="xMidYMid meet" aria-label="Мапа лабораторії: шість нод навколо ядра"></svg>
+    <svg id="hive" viewBox="0 0 390 668" preserveAspectRatio="xMidYMid meet" aria-label="Мапа лабораторії: шість нод навколо ядра і нода-казка внизу"></svg>
   </div>
 
   <div class="ob" id="ob">
@@ -464,18 +413,10 @@
     <button class="q-close" id="qclose" aria-label="Закрити" hidden>×</button>
     <div class="q-grid" id="qgrid"></div>
     <p class="q-feedback" id="qfeedback" hidden aria-live="polite"></p>
-    <div class="drum" id="drum" hidden>
-      <div class="d-chips" role="tablist" aria-label="Аудіострічка лабораторії">
-        <button class="d-chip on" role="tab" aria-selected="true" data-ch="vidguk" type="button">ВІДГУКИ</button>
-        <button class="d-chip" role="tab" aria-selected="false" data-ch="rozdum" type="button">РОЗДУМИ</button>
-      </div>
-      <div class="d-list" id="dlist" role="tabpanel"></div>
-    </div>
   </div>
 
   <svg class="waves" id="waves" aria-hidden="true"></svg>
   <div class="words" id="words" aria-hidden="true"></div>
-  <audio id="feedplayer" preload="none"></audio>
   <div class="veil" id="veil"></div>
   <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sname">
     <button class="s-close" id="sclose" aria-label="Закрити">×</button>
@@ -523,6 +464,14 @@ const CORE = {
   kick:'нода', full:'Що таке 137lab',
   desc:'137lab — це не бренд, а скоріше координата. Ми обрали її, бо працюємо у точці, де невидимі стани, думки й енергія кристалізуються у фізичну форму.',
   href:'/137', act:'Дізнатись більше',
+};
+
+/* нижня нода-казка: DAO DE DO → контракт про вигадку → /daodedo/ */
+const DAODEDO = {
+  id:'daodedo', label:['DAO DE DO'], kick:'казка',
+  full:'Підписати контракт про вигадку',
+  desc:'DAO DE DO — казка про силу, задекларована як вигадка. Вхід — за підписом «Контракту про вигадку».',
+  href:'/daodedo/', act:'Читати контракт',
 };
 
 /* ── квізи: контент = дані ─────────────────────────────────────────────
@@ -624,6 +573,7 @@ const SND = {
     tvorchist:587.33, poslugy:659.25,  // D5 E5
     biznes:783.99, pronas:880,         // G5 A5
     simia:1046.5, podii:1174.66,       // C6 D6
+    daodedo:1318.51,                   // E6 — нижня нода-казка
     qq:261.63,                         // C4 — питання
     qa:293.66, qb:329.63, qc:392, qd:440, // D4 E4 G4 A4
   },
@@ -739,6 +689,7 @@ const NOTE_COLOR = {
   pronas:    'hsl(276, 60%, 52%)',   /* A5 */
   simia:     'hsl(4, 78%, 64%)',     /* C6 */
   podii:     'hsl(32, 82%, 64%)',    /* D6 */
+  daodedo:   'hsl(52, 85%, 62%)',    /* E6 — вища октава E, світліший жовтий */
   qq:'hsl(4, 60%, 40%)', qa:'hsl(32, 65%, 40%)', qb:'hsl(52, 70%, 38%)',
   qc:'hsl(210, 60%, 40%)', qd:'hsl(276, 50%, 42%)',
 };
@@ -769,8 +720,9 @@ const NS = 'http://www.w3.org/2000/svg';
 // сусіди за годинниковою від верхньої ноди
 const DIRS = [270, 330, 30, 90, 150, 210];
 
-// осьові координати семи зайнятих клітин (ядро + 6 нод)
-const OCCUPIED = new Set(['0,0','0,-1','1,-1','1,0','0,1','-1,1','-1,0']);
+// осьові координати зайнятих клітин (ядро + 6 нод + нода-казка на 0,3;
+// 0,2 лишається прозорою — повітря між квіткою і DAO DE DO)
+const OCCUPIED = new Set(['0,0','0,-1','1,-1','1,0','0,1','-1,1','-1,0','0,3']);
 
 function el(name, attrs, text){
   const node = document.createElementNS(NS, name);
@@ -823,6 +775,17 @@ function cellNode(cell, cx, cy){
   return g;
 }
 
+/* ── нижня нода-казка: DAO DE DO ─────────────────────────────────────
+   та сама клітина, що й ноди, але на вузлі решітки 0,3 — через одну
+   прозору соту під квіткою: окремий актуальний проєкт. НЕ додавати
+   в CELLS — render() мапить CELLS[i]→DIRS[i], сьомий елемент = NaN */
+const DAO_CY = CY + 3 * D;
+function daoNode(){
+  const g = cellNode(DAODEDO, CX, DAO_CY);
+  g.classList.add('dao');
+  return g;
+}
+
 function render(){
   const svg = document.getElementById('hive');
   // імпульси світла — позаду всього: світло крізь решітку матерії
@@ -840,6 +803,8 @@ function render(){
   core.appendChild(el('text', { 'class':'core-word', x:CX + 2, y:CY + 27 }, CORE.word));
   if (CORE.door) core.appendChild(el('text', { 'class':'core-door', x:CX + 1, y:CY + 43 }, CORE.door));
   svg.appendChild(core);
+  // нижня нода-казка — остання: поверх решітки, у reveal попає останньою
+  svg.appendChild(daoNode());
 }
 
 /* ── стадії: seed → door → rules → hive ───────────────────────────── */
@@ -916,15 +881,11 @@ function setStage(s){
   clearQuizTimer();
   if (s === 'seed'){ renderSingle(); setOb(OB.seed); }
   else if (s === 'door'){ renderSingle(); setOb(isOnboarded() ? OB.doorReturn : OB.door); }
-  else if (s === 'quizgate'){
-    gateUnlocked = true; renderGate(); setOb(OB.gate); clearQuiz();   /* ворота без квізу: сота одразу зелена */
-    document.getElementById('drum').hidden = true; stopFeed();
-  }
+  else if (s === 'quizgate'){ gateUnlocked = true; renderGate(); setOb(OB.gate); clearQuiz(); }   /* ворота без квізу: сота одразу зелена */
   else {
     hiveRevealUntil = Date.now() + 450;   /* гасимо другий тап даблтапу по «Увійти» */
     renderHive(); clearQuiz();
-    document.getElementById('drum').hidden = false; loadFeed();   /* барабан живе у зоні квізу */
-  }
+  }   /* вулик: квіз прибрано (поки); зона лишається порожньою — центр-сота не зсувається */
 }
 
 function showRule(i){ ruleIdx = i; setOb(OB.rules[i]); }
@@ -1097,6 +1058,7 @@ function activate(target){
   if (Date.now() < hiveRevealUntil) return false;   /* вулик щойно розкрився — тап ще з ворітної серії */
   if (SND.on) return false;   /* звуковий режим: тап = звук, не навігація */
   if (target.closest('.core')){ openSheet(CORE); return true; }
+  if (target.closest('.dao')){ openSheet(DAODEDO); return true; }
   const g = target.closest('.cell');
   if (g){ openSheet(CELLS.find(c => c.id === g.dataset.id)); return true; }
   return false;
@@ -1144,132 +1106,6 @@ document.getElementById('sound').addEventListener('click', sndToggle);
 document.getElementById('veil').addEventListener('click', closeSheet);
 document.getElementById('sclose').addEventListener('click', closeSheet);
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
-
-/* ── барабан: аудіо-стрічка «ВІДГУКИ / РОЗДУМИ» ─────────────────────
-   Дані: /sounds/feed/feed.json = [{id, type:'vidguk'|'rozdum', name, title?}]
-   (порядок масиву = порядок у стрічці, нове — зверху).
-   Файли: /sounds/feed/<id>.m4a|mp3 — нема файла → рядок «записується».
-   Канал «відгуки» завершується CTA → /vidguk (запис 30 сек на сайті). */
-const FEED = { items: [], loaded: false, channel: 'vidguk' };
-const feedplayer = document.getElementById('feedplayer');
-let playingFeedBtn = null;
-
-function feedIcon(playing){
-  const s = el('svg', { width:10, height:10, viewBox:'0 0 10 10', 'aria-hidden':'true' });
-  if (playing){
-    s.appendChild(el('rect', { x:1.5, y:1, width:2.4, height:8, fill:'currentColor' }));
-    s.appendChild(el('rect', { x:6.1, y:1, width:2.4, height:8, fill:'currentColor' }));
-  } else {
-    s.appendChild(el('path', { d:'M2.5 1 8.5 5 2.5 9Z', fill:'currentColor' }));
-  }
-  return s;
-}
-function setFeedIcon(btn, playing){
-  btn.textContent = '';
-  btn.appendChild(feedIcon(playing));
-}
-function stopFeed(){
-  feedplayer.pause();
-  if (playingFeedBtn){ playingFeedBtn.classList.remove('playing'); setFeedIcon(playingFeedBtn, false); playingFeedBtn = null; }
-}
-feedplayer.addEventListener('ended', stopFeed);
-
-function fmtFeedDur(s){
-  if (!isFinite(s)) return '';
-  const m = Math.floor(s / 60), ss = Math.round(s % 60);
-  return m + ':' + String(ss).padStart(2, '0');
-}
-
-async function feedFind(id){
-  for (const ext of ['m4a', 'mp3']){
-    try{
-      const res = await fetch('/sounds/feed/' + id + '.' + ext, { method:'HEAD' });
-      if (res.ok) return '/sounds/feed/' + id + '.' + ext;
-    }catch(e){ /* нема — чесно мовчимо */ }
-  }
-  return null;
-}
-
-async function loadFeed(){
-  if (FEED.loaded){ return; }
-  FEED.loaded = true;
-  try{
-    const res = await fetch('/sounds/feed/feed.json', { cache:'no-cache' });
-    if (res.ok) FEED.items = await res.json();
-    if (!Array.isArray(FEED.items)) FEED.items = [];
-  }catch(e){ FEED.items = []; /* порожньо — лишиться CTA */ }
-  renderDrum();
-}
-
-function renderDrum(){
-  const list = document.getElementById('dlist');
-  stopFeed();
-  list.textContent = '';
-  const items = FEED.items.filter(i => i && i.type === FEED.channel && i.id);
-  items.forEach(item => {
-    const row = document.createElement('div');
-    row.className = 'd-row draft';
-    const btn = document.createElement('button');
-    btn.type = 'button'; btn.className = 'd-play'; btn.disabled = true;
-    btn.setAttribute('aria-label', 'Слухати: ' + (item.name || ''));
-    setFeedIcon(btn, false);
-    const name = document.createElement('div');
-    name.className = 'd-name';
-    name.textContent = (item.name || '') + (item.title ? ' · ' + item.title : '');
-    const dur = document.createElement('div');
-    dur.className = 'd-dur'; dur.textContent = 'записується';
-    row.append(btn, name, dur);
-    list.appendChild(row);
-    feedFind(item.id).then(src => {
-      if (!src) return;
-      row.classList.remove('draft');
-      btn.disabled = false;
-      dur.textContent = '';
-      const probe = new Audio(); probe.preload = 'metadata'; probe.src = src;
-      probe.addEventListener('loadedmetadata', () => { dur.textContent = fmtFeedDur(probe.duration); });
-      const toggle = () => {
-        if (playingFeedBtn === btn){ stopFeed(); return; }
-        stopFeed();
-        feedplayer.src = src;
-        feedplayer.play();
-        playingFeedBtn = btn;
-        btn.classList.add('playing');
-        setFeedIcon(btn, true);
-      };
-      btn.addEventListener('click', toggle);
-      row.addEventListener('click', e => { if (btn.contains(e.target)) return; toggle(); });
-    });
-  });
-  if (FEED.channel === 'vidguk'){
-    const cta = document.createElement('a');
-    cta.className = 'd-cta';
-    cta.href = '/vidguk';
-    const plus = document.createElement('span');
-    plus.className = 'd-plus'; plus.setAttribute('aria-hidden', 'true'); plus.textContent = '+';
-    const label = document.createElement('span');
-    label.textContent = 'Залишити відгук';
-    cta.append(plus, label);
-    list.appendChild(cta);
-  } else if (!items.length){
-    const row = document.createElement('div');
-    row.className = 'd-row draft';
-    const name = document.createElement('div');
-    name.className = 'd-name'; name.textContent = 'записується…';
-    row.appendChild(name);
-    list.appendChild(row);
-  }
-}
-
-document.querySelectorAll('.d-chip').forEach(ch => ch.addEventListener('click', () => {
-  if (FEED.channel === ch.dataset.ch) return;
-  FEED.channel = ch.dataset.ch;
-  document.querySelectorAll('.d-chip').forEach(c => {
-    const on = c.dataset.ch === FEED.channel;
-    c.classList.toggle('on', on);
-    c.setAttribute('aria-selected', String(on));
-  });
-  renderDrum();
-}));
 
 /* ── старт ── екран 1 = ворота-квіз для всіх (без seed/door і зайвих тапів).
    /#hive — прямий вхід у вулик: сюди веде лого з внутрішніх сторінок */

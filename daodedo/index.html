@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" sizes="32x32" href="/icons/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<title>Контракт про вигадку — 137lab</title>
+<style>
+  /* ── Лабораторія Ч/Б · канон 2026-06-11 · сторінка-нода «ДАО ДЕ ДО» ── */
+  @font-face{
+    font-family:'Fixel Display';
+    src:url('/fonts/FixelDisplay-SemiBold.woff2') format('woff2');
+    font-weight:600;font-display:swap;
+  }
+  @font-face{
+    font-family:'Fixel Display';
+    src:url('/fonts/FixelDisplay-Regular.woff2') format('woff2');
+    font-weight:400;font-display:swap;   /* «lab» у лого */
+  }
+  @font-face{
+    font-family:'Fixel Text';
+    src:url('/fonts/FixelText-Regular.woff2') format('woff2');
+    font-weight:400;font-display:swap;
+  }
+  @font-face{
+    font-family:'Fixel Text';
+    src:url('/fonts/FixelText-Medium.woff2') format('woff2');
+    font-weight:500;font-display:swap;
+  }
+
+  :root{
+    --paper:#ffffff;
+    --ink:#0a0a0a;
+    --muted:#6e6e6e;
+    --rule:#c9c9c9;
+    --enter:#1f7a3d; /* зелений — «колір як відгук на дію» */
+    --font-d:'Fixel Display',sans-serif;
+    --font-t:'Fixel Text',sans-serif;
+    --speed:240ms;
+    --ease:cubic-bezier(.4,0,.2,1);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:var(--font-t);font-weight:400;
+    display:grid;place-items:center;
+    -webkit-font-smoothing:antialiased;
+    overscroll-behavior:none;
+  }
+
+  #frame{
+    position:fixed;inset:0;width:100vw;height:100dvh;
+    background:var(--paper);
+    display:flex;flex-direction:column;
+    overflow:hidden;
+    -webkit-tap-highlight-color:transparent;
+  }
+  #framecaption{display:none}
+  @media (min-width:700px) and (min-aspect-ratio:4/5){
+    body{height:100vh}
+    #frame{
+      position:relative;inset:auto;
+      height:min(92vh,880px);aspect-ratio:390/844;width:auto;
+      border:1px solid var(--ink);
+    }
+    #framecaption{
+      display:block;position:fixed;left:0;right:0;
+      bottom:calc((100vh - min(92vh,880px))/2 - 28px);
+      text-align:center;font-size:11px;letter-spacing:.18em;
+      text-transform:uppercase;color:var(--muted);
+    }
+  }
+
+  .top{
+    flex:0 0 auto;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:calc(env(safe-area-inset-top) + 18px) 20px 12px;
+  }
+  .top .mark{
+    font-family:var(--font-d);font-size:15px;line-height:1;
+    color:var(--ink);text-decoration:none;
+  }
+  .top .mark .n{font-weight:600;letter-spacing:-0.010em}
+  .top .mark .l{font-weight:400;letter-spacing:.02em;margin-left:1px}
+  .top .mark .node{
+    color:var(--muted);font-family:var(--font-t);font-weight:400;
+    font-size:11px;letter-spacing:.12em;margin-left:7px;
+  }
+  .top-r{display:flex;align-items:center;gap:4px}
+  .sndlabel{font-size:10px;letter-spacing:.08em;color:var(--muted);margin-left:8px}
+  .voice{
+    width:44px;height:44px;margin:-11px -11px -11px 0;
+    display:grid;place-items:center;
+    background:none;border:none;color:var(--ink);cursor:pointer;
+  }
+  .voice:active:not([disabled]){opacity:.55}
+  .voice.on{background:var(--ink);color:var(--paper);border-radius:50%}
+  .voice[disabled]{color:var(--rule);cursor:default}
+
+  .scroll{
+    flex:1 1 auto;min-height:0;
+    overflow-y:auto;-webkit-overflow-scrolling:touch;
+    padding:0 20px calc(env(safe-area-inset-bottom) + 28px);
+  }
+
+  .t-kicker{
+    margin-top:18px;
+    font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);
+    text-align:center;
+  }
+  h1{
+    font-family:var(--font-d);font-weight:600;
+    font-size:clamp(34px,9vw,40px);letter-spacing:-0.010em;line-height:1.06;
+    text-align:center;margin-top:8px;
+  }
+  .t-sub{
+    font-size:14.5px;line-height:1.6;color:var(--ink);
+    text-align:center;max-width:36ch;margin:10px auto 0;
+  }
+
+  .list{margin-top:26px}
+  .sv{
+    padding:18px 2px;border-bottom:1px solid var(--rule);
+  }
+  .sv:first-of-type{border-top:1px solid var(--rule)}
+  .sv-name{
+    font-family:var(--font-d);font-weight:600;
+    font-size:18px;letter-spacing:-0.005em;line-height:1.25;
+  }
+  .sv-line{font-size:13.5px;line-height:1.55;color:var(--ink);margin-top:6px;max-width:36ch}
+  .s-open{
+    display:inline-block;background:var(--ink);color:var(--paper);
+    border:none;cursor:pointer;
+    font-family:var(--font-t);font-weight:500;font-size:14px;letter-spacing:.02em;
+    text-decoration:none;border-radius:99px;
+    padding:13px 26px;min-height:44px;
+    transition:opacity var(--speed) var(--ease);
+  }
+  .s-open:active{opacity:.82}
+
+  /* ── форма підпису ── */
+  .sv form{max-width:300px;margin:16px auto 0}
+  .hp{position:absolute;left:-9999px}
+  .field{margin-top:14px}
+  .field label{
+    display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:6px;
+  }
+  .field input{
+    width:100%;border:1px solid var(--ink);border-radius:0;background:var(--paper);
+    color:var(--ink);font-family:var(--font-t);font-size:16px;padding:12px 14px;
+    -webkit-appearance:none;appearance:none;
+  }
+  .field input:focus{outline:none;box-shadow:0 0 0 1px var(--ink)}
+
+  /* сота-кнопка: справжній <button>, гекс тим самим clip-path-прийомом,
+     що й лозенджі квізу — клавіатура і скрінрідер з коробки.
+     Пропорція правильного flat-top гекса: висота = 0.866 × ширина */
+  .hexbtn{
+    width:176px;height:152px;border:0;cursor:pointer;
+    background:var(--ink);color:var(--paper);
+    clip-path:polygon(0 50%,25% 0,75% 0,100% 50%,75% 100%,25% 100%);
+    display:grid;place-items:center;margin:26px auto 0;
+    font-family:var(--font-d);font-weight:600;font-size:16px;letter-spacing:.08em;
+    transition:opacity var(--speed) var(--ease);
+  }
+  .hexbtn:active{opacity:.82}
+  .hexbtn[disabled]{opacity:.6;cursor:default}
+  /* outline ріжеться clip-path — фокус показуємо заливкою */
+  .hexbtn:focus-visible{outline:none;background:var(--enter)}
+  .formnote{margin-top:12px;text-align:center;font-size:13px;color:var(--muted);min-height:1.2em}
+
+  /* ── підписано ── */
+  .signed{text-align:center;padding:18px 2px}
+  .hexok{
+    width:176px;height:152px;margin:8px auto 0;
+    background:var(--enter);color:var(--paper);
+    clip-path:polygon(0 50%,25% 0,75% 0,100% 50%,75% 100%,25% 100%);
+    display:grid;place-items:center;
+    font-family:var(--font-d);font-weight:600;font-size:15px;letter-spacing:.08em;
+  }
+  .signed-p{font-size:14.5px;line-height:1.6;margin-top:16px}
+  .signed .s-open{margin-top:14px}
+
+  .foot{
+    margin-top:26px;text-align:center;
+    font-size:11px;letter-spacing:.04em;color:var(--muted);line-height:1.7;
+  }
+  .foot a{color:var(--muted)}
+</style>
+</head>
+<body>
+
+<div id="frame">
+  <div class="top">
+    <!-- БЕТА: лого веде у бета-вулик; при промоушені в корінь змінити на /#hive -->
+    <a class="mark" href="/beta/#hive"><span class="n">137</span><span class="l">lab</span></a>
+    <div class="top-r">
+      <span class="sndlabel" aria-hidden="true">голос</span>
+      <button class="voice" id="voice" disabled aria-label="Голос-гід: записується" title="Голос-гід: записується">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <path d="M4 9.5v5h3l5 4.5v-14L7 9.5H4Z" fill="currentColor"/>
+          <path d="M15 8.5a5 5 0 0 1 0 7" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M17.6 6.3a8.5 8.5 0 0 1 0 11.4" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="scroll">
+    <!-- текст Влада (2026-07-19), грамполіровка за його проханням -->
+    <div class="t-kicker">DAO DE DO</div>
+    <h1>Контракт про вигадку</h1>
+    <p class="t-sub">Тут немає ні слова правди. І саме тому все це — можливо.</p>
+
+    <div class="list">
+      <div class="sv">
+        <div class="sv-name">Декларація автора</div>
+        <p class="sv-line">DAO DE DO — це мета-раціональна квантова казка. Її мета — надихнути вас та розважити.</p>
+        <p class="sv-line">Вигадка звільняє від доказів та знімає супротив Свідомості при контакті з новими поглядами на реальність.</p>
+        <p class="sv-line">Щоб безпечно увійти, потрібен лише твій свідомий підпис, без додаткових зобовʼязань.</p>
+      </div>
+
+      <div class="sv">
+        <div class="sv-name">Умови</div>
+        <p class="sv-line">Підписуючи, я погоджуюсь:</p>
+        <p class="sv-line">1. Усе в казці DAO DE DO — фантазія автора. Цілковита вигадка.</p>
+        <p class="sv-line">2. Я не оцінюю її в парадигмі «правда — неправда». Цю парадигму я лишаю за дверима.</p>
+        <p class="sv-line">3. Я не раціоналізую почуте. Вигадці не потрібні пояснення.</p>
+        <p class="sv-line">4. Я не сприймаю це всерйоз і дозволяю собі грати мов дитина, але усвідомлюю, що це може вплинути на мій світогляд або надихнути мене до змін у власному житті.</p>
+        <p class="sv-line">5. Я довіряю собі і граю по-справжньому, за власними правилами. Інакше вигадка не працює.</p>
+      </div>
+
+      <div class="sv">
+        <div class="sv-name">Підпис</div>
+        <p class="sv-line">Підпис — це імʼя, email і натиск соти. Після підпису контракт набуває чинності — і ти отримуєш лінк на відео.</p>
+
+        <form name="daodedo-kontrakt" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="return handleSign(event)">
+          <input type="hidden" name="form-name" value="daodedo-kontrakt">
+          <p class="hp" aria-hidden="true"><label>Не заповнюйте: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+          <div class="field">
+            <label for="f-name">Імʼя</label>
+            <input id="f-name" type="text" name="name" required autocomplete="name" maxlength="120">
+          </div>
+          <div class="field">
+            <label for="f-email">Email</label>
+            <input id="f-email" type="email" name="email" required autocomplete="email" inputmode="email" maxlength="200">
+          </div>
+          <button type="submit" class="hexbtn" id="signbtn">ПІДПИСАТИ</button>
+          <p class="formnote" id="formnote" role="status"></p>
+        </form>
+
+        <div class="signed" id="signed" hidden>
+          <div class="hexok">ПІДПИСАНО</div>
+          <p class="signed-p">Контракт набув чинності. Ключ від казки:</p>
+          <a class="s-open" href="https://youtube.com/live/UqX58PLfJCc?feature=share" target="_blank" rel="noopener">Дивитись DAO DE DO на YouTube →</a>
+        </div>
+      </div>
+    </div>
+
+    <p class="foot">
+      <!-- БЕТА: при промоушені змінити на /#hive -->
+      <a href="/beta/#hive">← до вулика</a>
+    </p>
+  </div>
+
+  <audio id="guide"></audio>
+</div>
+<div id="framecaption">137лаб · dao de do</div>
+
+<script>
+/* ── підпис: подвійний сабміт як у Сонори — Netlify Forms + Telegram-релей.
+   Success, якщо хоч один канал прийняв; інакше чесна помилка і форма лишається. */
+function handleSign(e){
+  e.preventDefault();
+  var f = e.target;
+  var btn = document.getElementById('signbtn');
+  var note = document.getElementById('formnote');
+  var d = {};
+  new FormData(f).forEach(function(v, k){ d[k] = v; });
+  btn.disabled = true; btn.textContent = 'ПІДПИСУЄМО…';
+  note.textContent = '';
+  var forms = fetch('/', {
+    method:'POST',
+    headers:{ 'Content-Type':'application/x-www-form-urlencoded' },
+    body:new URLSearchParams(new FormData(f)).toString(),
+  });
+  var relay = fetch('/.netlify/functions/kontrakt', {
+    method:'POST',
+    headers:{ 'Content-Type':'application/json' },
+    body:JSON.stringify(d),
+  });
+  Promise.allSettled([forms, relay]).then(function(rs){
+    var ok = rs.some(function(r){ return r.status === 'fulfilled' && r.value.ok; });
+    if (ok){
+      f.hidden = true;
+      var s = document.getElementById('signed');
+      s.hidden = false;
+      s.scrollIntoView({ behavior:'smooth', block:'center' });
+    } else {
+      btn.disabled = false; btn.textContent = 'ПІДПИСАТИ';
+      note.textContent = 'Не вдалося надіслати. Спробуй ще раз.';
+    }
+  });
+  return false;
+}
+
+/* ── голос-гід: поклади sounds/pages/daodedo.m4a|mp3 — кнопка оживе ── */
+(function(){
+  const SLUG = 'daodedo';
+  const btn = document.getElementById('voice');
+  const audio = document.getElementById('guide');
+  let src = null;
+
+  async function findGuide(){
+    for (const ext of ['m4a', 'mp3']){
+      try{
+        const res = await fetch('/sounds/pages/' + SLUG + '.' + ext, { method:'HEAD' });
+        if (res.ok) return '/sounds/pages/' + SLUG + '.' + ext;
+      }catch(e){ /* нема — чесно мовчимо */ }
+    }
+    return null;
+  }
+
+  findGuide().then(s => {
+    if (!s) return;   /* лишається «записується» */
+    src = s;
+    btn.disabled = false;
+    btn.title = 'Голос-гід сторінки';
+    btn.setAttribute('aria-label', 'Голос-гід сторінки');
+  });
+
+  btn.addEventListener('click', () => {
+    if (!src) return;
+    if (!audio.paused){ audio.pause(); return; }
+    if (!audio.src) audio.src = src;
+    audio.play();
+  });
+  audio.addEventListener('play',  () => btn.classList.add('on'));
+  audio.addEventListener('pause', () => btn.classList.remove('on'));
+  audio.addEventListener('ended', () => { btn.classList.remove('on'); audio.currentTime = 0; });
+})();
+</script>
+</body>
+</html>
