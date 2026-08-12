@@ -21,7 +21,10 @@
   Всё локально, ничего не покидает устройство.
 -->
 <style>
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+*, *::before, *::after {
+  margin:0; padding:0; box-sizing:border-box;
+  -webkit-user-select:none; user-select:none; -webkit-touch-callout:none;
+}
 
 :root {
   --bg:#060606;
