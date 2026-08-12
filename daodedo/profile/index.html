@@ -1711,7 +1711,47 @@ gate.addEventListener('pointerdown', function(){
 });
 
 document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+
+/* дверь для комнаты: хедлайнер зовёт синк — зрители видят это мгновенно */
+window.__room = {
+  room: (new URLSearchParams(location.search).get('room') || 'daodedo-field').slice(0, 40),
+  me: 'headliner',
+  publish: null,
+  ready: function(fn){
+    this.publish = fn;
+    var self = this;
+    Bus.on('sync.hold', function(ev){ fn('headliner', { sync: !!ev.data.on }); });
+    Bus.on('rain.hold', function(ev){ fn('headliner-mood', { rain: !!ev.data.on }); });
+  },
+};
 })();
+</script>
+
+<script type="module">
+/* ═══════════════════════════════════════════════
+   ТРАНСПОРТ КОМНАТЫ — Supabase Realtime (только живой канал, без базы).
+   ═══════════════════════════════════════════════ */
+const R = window.__room;
+const URL_ = 'https://bnfkicmzxljkhahqxfla.supabase.co';
+const KEY_ = 'sb_publishable_w2yNutEh7zGyvNBwIPAZGw_kTfSY6mw';
+
+try {
+  const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2');
+  const sb = createClient(URL_, KEY_, {
+    realtime: { params: { eventsPerSecond: 20 } },
+    auth: { persistSession: false }
+  });
+  const ch = sb.channel('field:' + R.room, { config: { presence: { key: R.me, enabled: true }, broadcast: { self: false } } });
+  ch.subscribe(async (status) => {
+    if (status !== 'SUBSCRIBED') return;
+    await ch.track({ role: 'headliner', sync: false });
+    R.ready((ev, payload) => {
+      ch.send({ type: 'broadcast', event: ev, payload: payload });
+      if (ev === 'headliner') ch.track({ role: 'headliner', sync: !!payload.sync });
+    });
+  });
+  addEventListener('pagehide', () => { try { ch.unsubscribe(); } catch (_) {} });
+} catch (err) {}
 </script>
 </body>
 </html>
