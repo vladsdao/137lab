@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#121110">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" sizes="32x32" href="/icons/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<title>Після практики — пам'ятка учасника нейропрактик</title>
+<meta name="description" content="Трансформація відчиняє двері. Закріплення — це вміння лишитися. Проста карта для семи тижнів практики.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Literata:ital,opsz,wght@0,7..72,200;0,7..72,300;0,7..72,400;1,7..72,300&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#121110;
+    --line:#EDE7DA;
+    --linen:#8E8678;
+    --brass:#A98F60;
+    --hair:rgba(237,231,218,.14);
+    --hair2:rgba(237,231,218,.08);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--ink);
+    color:var(--line);
+    font-family:'Literata',Georgia,serif;
+    font-weight:300;
+    font-size:17px;
+    line-height:1.78;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--brass);color:var(--ink)}
+  a{color:inherit}
+  .wrap{max-width:620px;margin:0 auto;padding:0 22px}
+  .eyebrow{
+    font-family:'Cormorant Garamond',serif;font-weight:500;
+    font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--brass);
+  }
+  h1,h2,h3,.display{font-family:'Cormorant Garamond',serif;font-weight:300}
+  h2{font-size:clamp(26px,6.4vw,34px);line-height:1.22;margin:18px 0 26px;letter-spacing:.01em}
+  h3{
+    font-family:'Cormorant Garamond',serif;font-weight:400;
+    font-size:21px;letter-spacing:.03em;margin:36px 0 10px;
+  }
+  p{margin-bottom:1.3em}
+  p.mut{color:var(--linen)}
+  section{padding:74px 0}
+  .rule{border:none;border-top:1px solid var(--hair);max-width:620px;margin:0 auto}
+  em{font-style:italic}
+  strong{font-weight:400;color:var(--line)}
+
+  /* hero */
+  header{
+    min-height:100svh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;
+    padding:70px 22px 54px;position:relative;
+  }
+  .glyphs{font-size:14px;letter-spacing:.9em;margin-left:.9em;color:var(--brass);margin-bottom:34px}
+  h1{font-size:clamp(38px,10vw,62px);letter-spacing:.03em;line-height:1.06;font-weight:300}
+  .latin{
+    font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:.42em;
+    margin-left:.42em;text-transform:uppercase;color:var(--linen);margin-top:20px;
+  }
+  .field{width:min(58vw,260px);margin:44px 0 40px;animation:breathe 11s ease-in-out infinite;transform-origin:center}
+  @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
+  .field .ring2{animation:soften 11s ease-in-out infinite}
+  @keyframes soften{0%,100%{opacity:.5}50%{opacity:.92}}
+  @media (prefers-reduced-motion: reduce){.field,.field .ring2{animation:none}}
+  .thesis{
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(20px,5.4vw,26px);line-height:1.48;max-width:520px;
+  }
+  .breath-note{margin-top:22px;font-size:12.5px;letter-spacing:.07em;color:var(--linen)}
+  .down{
+    position:absolute;bottom:24px;left:50%;transform:translateX(-50%);
+    font-size:12px;letter-spacing:.3em;color:var(--linen);text-decoration:none;
+  }
+
+  /* two natures */
+  .duo{display:grid;grid-template-columns:1fr;gap:0;margin-top:8px;border-top:1px solid var(--hair)}
+  .duo > div{padding:26px 0;border-bottom:1px solid var(--hair)}
+  .duo .sign{font-size:20px;color:var(--brass);line-height:1;margin-bottom:12px}
+  .duo b{
+    display:block;font-family:'Cormorant Garamond',serif;font-weight:400;
+    font-size:22px;letter-spacing:.03em;margin-bottom:8px;
+  }
+  .duo span{display:block;font-size:15.5px;color:var(--linen);line-height:1.7}
+
+  /* phases */
+  .phases{margin-top:6px}
+  .ph{padding:26px 0;border-bottom:1px solid var(--hair);display:grid;grid-template-columns:52px 1fr;gap:0 16px}
+  .ph .n{
+    font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:.2em;
+    color:var(--brass);padding-top:7px;
+  }
+  .ph b{
+    display:block;font-family:'Cormorant Garamond',serif;font-weight:400;
+    font-size:21px;letter-spacing:.03em;margin-bottom:6px;
+  }
+  .ph span{display:block;font-size:15.5px;color:var(--linen);line-height:1.7}
+  .ph .do{display:block;margin-top:10px;font-size:15px;color:var(--line)}
+  .ph .do::before{content:"→ ";color:var(--brass)}
+
+  /* cases */
+  .case{
+    border:1px solid rgba(237,231,218,.22);
+    padding:26px 22px;margin:20px 0;
+    background:rgba(237,231,218,.014);
+  }
+  .case .q{
+    font-family:'Cormorant Garamond',serif;font-size:22px;line-height:1.35;
+    letter-spacing:.02em;margin-bottom:14px;
+  }
+  .case .what{font-size:15.5px;color:var(--linen);line-height:1.7;margin-bottom:12px}
+  .case .act{font-size:15.5px;line-height:1.7}
+  .case .act::before{content:"Що зробити · ";color:var(--brass);letter-spacing:.06em;font-size:12px;text-transform:uppercase}
+
+  /* rules */
+  .rules{counter-reset:r;margin-top:8px;border-top:1px solid var(--hair)}
+  .rules li{
+    list-style:none;counter-increment:r;padding:22px 0 22px 44px;
+    border-bottom:1px solid var(--hair);position:relative;font-size:16px;line-height:1.72;
+  }
+  .rules li::before{
+    content:counter(r);position:absolute;left:0;top:24px;
+    font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--brass);letter-spacing:.1em;
+  }
+  .rules b{display:block;font-family:'Cormorant Garamond',serif;font-weight:400;font-size:20px;margin-bottom:4px}
+  .rules span{color:var(--linen);font-size:15.5px}
+
+  /* pull */
+  .pull{
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(21px,5.2vw,27px);line-height:1.5;
+    border-left:1px solid var(--brass);padding-left:22px;margin:38px 0;
+  }
+
+  /* circle / group */
+  .circle-list li{
+    list-style:none;padding:20px 0;border-bottom:1px solid var(--hair);
+    font-size:16px;line-height:1.72;
+  }
+  .circle-list li b{
+    display:block;font-family:'Cormorant Garamond',serif;font-weight:400;
+    font-size:20px;letter-spacing:.03em;margin-bottom:5px;
+  }
+  .circle-list li span{color:var(--linen);font-size:15.5px}
+
+  /* checklist */
+  .check{border:1px solid rgba(237,231,218,.25);padding:32px 24px;margin-top:30px}
+  .check p{font-size:16.5px;margin-bottom:14px;padding-left:22px;position:relative;line-height:1.7}
+  .check p::before{content:"·";position:absolute;left:4px;color:var(--brass);font-size:22px;line-height:1.2}
+  .check p:last-child{margin-bottom:0}
+
+  /* seal */
+  .seal{padding:96px 0 40px;text-align:center}
+  .seal .mark{font-size:22px;letter-spacing:.7em;margin-left:.7em;color:var(--brass);margin-bottom:26px}
+  .seal p{
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(21px,5vw,27px);line-height:1.5;max-width:520px;margin:0 auto 14px;
+  }
+  footer{
+    border-top:1px solid var(--hair);padding:36px 22px 46px;text-align:center;
+    font-size:11.5px;letter-spacing:.22em;color:var(--linen);text-transform:uppercase;
+  }
+  footer .g{color:var(--brass);letter-spacing:.6em;margin-left:.6em;display:block;margin-bottom:12px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="glyphs">△ ▽</div>
+  <h1>Після<br>практики</h1>
+  <div class="latin">пам'ятка учасника · сім тижнів</div>
+
+  <svg class="field" viewBox="0 0 600 600" role="img" aria-label="Коло поля">
+    <circle cx="300" cy="300" r="278" fill="none" stroke="#EDE7DA" stroke-width="1.2"/>
+    <circle class="ring2" cx="300" cy="300" r="262" fill="none" stroke="#EDE7DA" stroke-width=".5" stroke-dasharray="2 5" opacity=".55"/>
+    <circle cx="300" cy="300" r="92" fill="none" stroke="#EDE7DA" stroke-width=".9"/>
+    <path d="M300 208 L380 348 L220 348 Z" fill="none" stroke="#A98F60" stroke-width=".8" opacity=".75"/>
+    <path d="M300 392 L220 252 L380 252 Z" fill="none" stroke="#A98F60" stroke-width=".8" opacity=".75"/>
+    <circle cx="300" cy="300" r="3" fill="#A98F60"/>
+  </svg>
+
+  <p class="thesis">Трансформація відчиняє двері.<br>Закріплення — це вміння лишитися.</p>
+  <p class="breath-note">Коло дихає в темпі спокійного дихання.</p>
+
+  <a class="down" href="#start" aria-label="Далі">↓</a>
+</header>
+
+<section id="start">
+  <div class="wrap">
+    <div class="eyebrow">Що щойно сталося</div>
+    <h2>Ти вже там. Тепер — обжитися</h2>
+    <p>Практика — це дія. Вона зрушує сприйняття й відчиняє двері в інший стан. Це швидко, яскраво й майже завжди відчутно тілом.</p>
+    <p>А далі починається інша частина роботи, про яку рідко попереджають: <strong>новий стан треба обжити.</strong> Не здобути ще раз, не повторити, не підсилити — саме обжити, як обживають дім, у який щойно занесли речі.</p>
+    <p class="mut">І тут діє несподіване правило: закріплення потребує не більше зусиль, а менше. Не нового ривка — а вміння не смикатися. Найцінніше, що ти можеш зробити в наступні дні, — не робити зайвого.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Дві природи</div>
+    <h2>Та, що відчиняє. І та, що втримує</h2>
+    <p>У кожному з нас одночасно живуть два начала. Це не про стать — це про два режими, якими ми користуємось щодня.</p>
+
+    <div class="duo">
+      <div>
+        <div class="sign">△</div>
+        <b>Активна природа</b>
+        <span>Спрямована, вольова, рухає до цілі. Вона привела тебе на практику й відчинила двері. Її мова — дія, рішення, ривок.</span>
+      </div>
+      <div>
+        <div class="sign">▽</div>
+        <b>Природа, що втримує</b>
+        <span>Не пасивна — стабілізуюча. Вона вміє вміщати, витримувати, давати новому вкоренитися. Її мова — присутність, тиша, тривання.</span>
+      </div>
+    </div>
+
+    <p style="margin-top:30px">Під час практики веде перша. <strong>Після практики веде друга.</strong> Більшість зривів після трансформації — це спроба закріпити результат інструментом, який для цього не призначений: тиснути, аналізувати, вимагати від себе доказів.</p>
+    <p class="pull">Коріння росте, коли рослину не смикають. Користь приходить із недіяння — але це живе недіяння, з відкритими очима.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Головне правило</div>
+    <h2>Новий стан не доводять. Ним живуть</h2>
+    <p>Найближчими днями життя майже напевно принесе ситуації, у яких старий сценарій запропонує тобі повернутися. Хтось скаже щось звичне. Виникне знайома напруга. З'явиться привід зіщулитися.</p>
+    <p>Це не збій і не втрата результату. <strong>Це запит на підтвердження</strong> — реальність питає, у якому ти стані, і чекає відповіді не словами, а реакцією.</p>
+    <p class="mut">Кожен такий момент водночас і виклик, і можливість. Виклик — бо тягне у звичне. Можливість — бо саме тут новий стан із досвіду стає характером. Тобі не треба виграти. Треба лише не піти автоматично.</p>
+    <p>І найважливіше: <em>зніми з цього важливість.</em> Ти не складаєш іспит. Тебе ніхто не оцінює. Якщо сьогодні спрацював старий сценарій — це не «все зіпсовано», це просто ще одна репетиція. Стан не зникає від того, що ти на мить про нього забув.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Карта тижня</div>
+    <h2>Чотири фази між практиками</h2>
+    <p class="mut">Майже всі проходять цей цикл. Він не однаковий у деталях, але схожий за формою. Знати його — половина спокою.</p>
+
+    <div class="phases">
+      <div class="ph">
+        <div class="n">I</div>
+        <div>
+          <b>Сяйво</b>
+          <span>Перші години й дні. Легкість, ясність, бажання змінити все одразу. Здається, що знайдено відповідь назавжди.</span>
+          <span class="do">Не приймай великих рішень на цій хвилі. Насолоджуйся й записуй — але не перебудовуй життя за один вечір.</span>
+        </div>
+      </div>
+      <div class="ph">
+        <div class="n">II</div>
+        <div>
+          <b>Відкат</b>
+          <span>Через день-три може накрити: втома, порожнеча, сумнів, «нічого не змінилося», іноді роздратування. Це найчастіша й найлякливіша фаза.</span>
+          <span class="do">Не роби висновків. Відкат — не спростування досвіду, а ознака того, що система переналаштовується. Тіло, сон, вода, менше стимулів.</span>
+        </div>
+      </div>
+      <div class="ph">
+        <div class="n">III</div>
+        <div>
+          <b>Плато</b>
+          <span>Нічого особливого не відбувається. Рівно. Саме тут виникає спокуса: «мабуть, треба ще одну практику, сильнішу».</span>
+          <span class="do">Плато — це не застій, це ґрунтування. Тримай мінімум опор (нижче) і живи звичайне життя. Тут закріплення й відбувається.</span>
+        </div>
+      </div>
+      <div class="ph">
+        <div class="n">IV</div>
+        <div>
+          <b>Ґрунт</b>
+          <span>Ближче до наступної зустрічі стан перестає бути подією і стає фоном. Ти помічаєш, що в якійсь ситуації відреагував інакше — і навіть не думав про це.</span>
+          <span class="do">Помітити й назвати. Одне речення в нотатки або в коло. Це і є доказ — тихий, а не гучний.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Живі ситуації</div>
+    <h2>Що робити, коли…</h2>
+
+    <div class="case">
+      <div class="q">«Через два дні все повернулося. Нічого не працює.»</div>
+      <div class="what">Найчастіше це фаза відкату, а не втрата. Нервова система повертається до звичного, бо звичне енергетично дешевше — це фізіологія, не характер.</div>
+      <div class="act">Не воюй зі станом. Три хвилини повільного дихання, тепло, сон. І напиши в коло одну фразу — не по допомогу, просто щоб не нести це самому.</div>
+    </div>
+
+    <div class="case">
+      <div class="q">«Я нічого не відчуваю. У всіх щось було, у мене — ні.»</div>
+      <div class="what">Частина людей інтегрує тихо: без спалахів, через тіло, сни, побутові дрібниці. Порівняння з чужим досвідом — найшвидший спосіб знецінити свій.</div>
+      <div class="act">Тиждень не порівнюй. Замість «що я відчув» постав інше питання: що я цього тижня зробив або не зробив інакше, ніж місяць тому?</div>
+    </div>
+
+    <div class="case">
+      <div class="q">«Мене накрило емоцією на рівному місці.»</div>
+      <div class="what">Коли стискання відпускає, назовні виходить те, що там трималося. Сльози, злість, дратівливість без причини — це вивільнення, а не поломка.</div>
+      <div class="act">Дай цьому пройти крізь тіло — рух, звук, вода, прогулянка. Не пояснюй собі й не шукай винних. Емоція — гість, а не діагноз.</div>
+    </div>
+
+    <div class="case">
+      <div class="q">«Близькі дивно реагують. Ніби провокують.»</div>
+      <div class="what">Ти змінив свою частину системи, і система шукає стару рівновагу. Це не змова — це інерція близьких, які звикли до попереднього тебе.</div>
+      <div class="act">Не пояснюй словами й не проповідуй. Просто будь у новому — рівно, без демонстрації. Систему переконує стабільність, а не аргументи.</div>
+    </div>
+
+    <div class="case">
+      <div class="q">«Хочу негайно все змінити: роботу, стосунки, місто.»</div>
+      <div class="what">Енергія Сяйва шукає виходу й пропонує найбільший доступний важіль. Часто це справжній імпульс — але з несправжнім терміном.</div>
+      <div class="act">Запиши рішення й постав паузу до наступної зустрічі. Те, що справжнє, дочекається. Те, що було гарячкою, розчиниться саме.</div>
+    </div>
+
+    <div class="case">
+      <div class="q">«Мені легко. І трохи ніяково про це говорити.»</div>
+      <div class="what">Ділитися легкістю чомусь важче, ніж болем. А для кола це найцінніший внесок: чиясь легкість буквально дає іншим дозвіл на своє.</div>
+      <div class="act">Скажи вголос. Одне речення. Це не хвастощі — це підтримка тих, хто зараз у відкаті.</div>
+    </div>
+
+    <div class="case">
+      <div class="q">«Хочу ще практику. Сильнішу. Швидше.»</div>
+      <div class="what">Спрага нової трансформації часто маскує втечу від інтеграції: новий вхід дає знайомий підйом і дозволяє не проживати тихий етап.</div>
+      <div class="act">Дай собі один цикл прожити до кінця. Сім тижнів — це і є доза. Глибина береться не з кількості входів, а з часу перебування.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Мінімум, що тримає</div>
+    <h2>П'ять опор. Без обов'язку</h2>
+    <p class="mut">Це не програма й не дисципліна. Якщо з п'яти працює одна — цього достатньо. Пропустив — нічого не зламалося.</p>
+
+    <ol class="rules">
+      <li><b>Три хвилини тиші</b><span>Раз на день, будь-коли. Повільне дихання, очі закриті або відкриті. Найкоротший шлях назад у стан — через тіло, а не через думки.</span></li>
+      <li><b>Одна нотатка</b><span>Речення на день: що я помітив. Без аналізу й висновків. За тиждень ці рядки покажуть рух, якого зсередини не видно.</span></li>
+      <li><b>Одне «ні» і одне «так»</b><span>За тиждень одна відмова від того, що виснажує, і одна згода на те, що живить. Маленькі — вони важать більше за великі наміри.</span></li>
+      <li><b>Тіло раніше за розум</b><span>У складний момент спершу вода, рух, сон, тепло — і лише потім розмова із собою. Стан живе в нервовій системі, не в поясненнях.</span></li>
+      <li><b>Одне повідомлення в коло</b><span>Раз на тиждень — хоч рядок. Про важке або про легке. Мовчання ізолює швидше, ніж будь-які труднощі.</span></li>
+    </ol>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Коло</div>
+    <h2>Ми тримаємось разом — і це не метафора</h2>
+    <p>Група працює як спільне поле. Коли одна нервова система спокійна, іншим поруч простіше повернутися в спокій — це вимірюваний фізіологічний ефект, а не образ. Саме тому те, що ти пишеш у коло, дає більше, ніж здається.</p>
+
+    <ul class="circle-list">
+      <li><b>Ділись і важким, і легким</b><span>Важке — щоб не нести самому. Легке — щоб іншим було на що спертися. І те, і те однаково потрібне.</span></li>
+      <li><b>Проси підтримки прямо</b><span>«Мені зараз важко, побудьте поруч» — повноцінне повідомлення. Не треба формулювати красиво чи чекати, поки стане зовсім погано.</span></li>
+      <li><b>Не лікуй і не радь без запиту</b><span>Найсильніша підтримка — «я тебе чую, я поруч». Порада часто закриває людину швидше, ніж мовчання.</span></li>
+      <li><b>Що сказано в колі — лишається в колі</b><span>Це умова, на якій тримається все інше.</span></li>
+    </ul>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Одним поглядом</div>
+    <h2>Якщо читати нема сил</h2>
+    <div class="check">
+      <p>Стан уже твій. Його не треба заслуговувати заново.</p>
+      <p>Закріплення — це не зусилля, а вміння не смикатися.</p>
+      <p>Відкат нормальний. Він нічого не скасовує.</p>
+      <p>Виклик — це запит на підтвердження, а не іспит.</p>
+      <p>Не доводь словами. Просто будь — рівно й спокійно.</p>
+      <p>Тіло раніше за розум. Три хвилини тиші.</p>
+      <p>Не порівнюй свій шлях із чужим.</p>
+      <p>Важко чи легко — напиши в коло.</p>
+      <p>До наступної зустрічі нічого доробляти не треба.</p>
+    </div>
+  </div>
+</section>
+
+<div class="seal">
+  <div class="wrap">
+    <div class="mark">△ ▽</div>
+    <p>Ти не тримаєш стан зусиллям.<br>Ти просто не заважаєш йому лишитися.</p>
+    <p class="breath-note" style="margin-top:26px">До зустрічі на наступній практиці.</p>
+  </div>
+</div>
+
+<footer>
+  <span class="g">△ ▽</span>
+  НЕЙРОПРАКТИКИ · 137LAB
+</footer>
+
+</body>
+</html>
