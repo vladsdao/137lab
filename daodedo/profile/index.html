@@ -386,33 +386,31 @@ var Audio = (function(){
       if (stream) return Promise.resolve(stream);
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia)
         return Promise.reject(new Error('no-mic'));
-      return navigator.mediaDevices.getUserMedia({ audio:{ echoCancellation:true } })
-        .then(function(s){ stream = s; return s; });
+      /* без echoCancellation/AGC: iOS не включает «голосовой» аудио-режим
+         и музыка не приседает; в динамик голос всё равно не идёт */
+      return navigator.mediaDevices.getUserMedia({ audio:{
+        echoCancellation:false, noiseSuppression:false, autoGainControl:false
+      } }).then(function(s){ stream = s; return s; });
     }
     return { ensureStream: ensureStream };
   })();
 
   /* живой голос */
   var Voice = (function(){
-    var srcNode = null, gain = null, analyser = null, on = false;
+    var srcNode = null, analyser = null, on = false;
     function toggle(){
       var c = ensure();
       if (on){
         on = false;
-        if (gain) gain.gain.setTargetAtTime(0.0001, c.currentTime, 0.05);
         Bus.emit('voice.live', { on:false });
         return Promise.resolve(false);
       }
       return Mic.ensureStream().then(function(s){
         if (!srcNode){
           srcNode = c.createMediaStreamSource(s);
-          gain = c.createGain();
           analyser = c.createAnalyser(); analyser.fftSize = 256;
-          var comp = c.createDynamicsCompressor();
-          srcNode.connect(analyser);
-          analyser.connect(gain); gain.connect(comp); comp.connect(master);
+          srcNode.connect(analyser);   /* только река: в динамики голос не идёт */
         }
-        gain.gain.setTargetAtTime(0.85, c.currentTime, 0.05);
         on = true;
         Bus.emit('voice.live', { on:true });
         return true;
