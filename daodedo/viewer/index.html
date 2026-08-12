@@ -149,7 +149,8 @@ var Bus = (function(){
 })();
 
 var qs = new URLSearchParams(location.search);
-var WAIT_S = Math.max(0, parseInt(qs.get('wait'), 10) || 75);
+var _w = parseInt(qs.get('wait'), 10);
+var WAIT_S = isNaN(_w) ? 75 : Math.max(0, _w);
 var GHOSTS = qs.get('ghosts') !== '0';
 var state = 'gate';          /* gate → stream */
 function lightColor(a){ return 'rgba(240,237,230,' + (a == null ? 1 : a) + ')'; }
@@ -313,11 +314,11 @@ var Field = (function(){
   var cnv = document.getElementById('field'), ctx2 = cnv.getContext('2d');
   var dpr = Math.min(devicePixelRatio || 1, 2);
   var W = 0, H = 0;
-  var pole = { r: 26, energy: 0 };         /* общее солнце */
-  var suns = [];                            /* летящие солнышки: {x0,y0,t0,dur,mine} */
-  var nodes = [], edges = [];               /* кристаллическая решётка */
-  var myHold = { on:false, t0:0, fade:0 };
-  var breathT0 = 0;
+  var atoms = [];          /* равные: {mine, cur{x,y}, tgt{x,y}, born, flash, alive, fade} */
+  var flights = [];        /* влетающие шары: {x0,y0,t0,dur,mine} */
+  var rot = 0, spin = 0.00025, glow = 0, breathT0 = 0;
+  var myHold = { on:false, fade:0 };
+  var AR = 9;              /* радиус атома — у всех один */
 
   function size(){
     W = innerWidth; H = innerHeight;
@@ -325,42 +326,88 @@ var Field = (function(){
   }
   size(); addEventListener('resize', size);
 
-  function poleXY(now){
+  function center(now){
     return {
-      x: W * 0.5 + Math.sin(now * 0.00019) * W * 0.16,
-      y: H * 0.3 + Math.sin(now * 0.00011) * H * 0.06
+      x: W * 0.5 + Math.sin(now * 0.00013) * W * 0.07,
+      y: H * 0.30 + Math.sin(now * 0.00009) * H * 0.04
     };
   }
   function btnXY(){ return { x: W / 2, y: H - 100 }; }
 
-  /* решётка растёт: новый узел цепляется рёбрами к двум ближайшим */
-  function growLattice(now){
-    var p = poleXY(now);
-    var count = nodes.length;
-    var R = 46 + count * 2.1;
-    var a = Math.random() * 2 * Math.PI;
-    var n = {
-      ox: Math.cos(a) * R * (0.7 + Math.random() * 0.5),
-      oy: Math.sin(a) * R * (0.55 + Math.random() * 0.45),
-      born: now, seed: Math.random() * 10
-    };
-    var dists = nodes.map(function(m, i){
-      return { i: i, d: Math.hypot(m.ox - n.ox, m.oy - n.oy) };
-    }).sort(function(x, y){ return x.d - y.d; });
-    nodes.push(n);
-    var ni = nodes.length - 1;
-    if (dists.length) edges.push({ a: ni, b: dists[0].i, born: now });
-    if (dists.length > 1 && dists[1].d < 130) edges.push({ a: ni, b: dists[1].i, born: now });
-    if (!dists.length) edges.push({ a: ni, b: ni, born: now });
-    if (nodes.length > 140){ /* решётка полна — дальше только мерцает */ }
+  /* сакральная геометрия: точка → весика → многоугольники → семя жизни → кольца */
+  function spacing(n){ return Math.max(34, 60 - n * 1.6); }
+  function layout(n, now){
+    var S = spacing(n), pts = [], i, a;
+    if (n <= 0) return pts;
+    if (n === 1){ pts.push([0, 0]); return pts; }
+    if (n === 2){ pts.push([-S / 2, 0], [S / 2, 0]); return pts; }
+    if (n <= 6){
+      for (i = 0; i < n; i++){
+        a = i / n * 2 * Math.PI - Math.PI / 2;
+        pts.push([S * Math.cos(a), S * Math.sin(a)]);
+      }
+      return pts;
+    }
+    /* 7+: семя жизни — центр + гексагон, дальше второе кольцо */
+    pts.push([0, 0]);
+    for (i = 0; i < 6; i++){
+      a = i / 6 * 2 * Math.PI - Math.PI / 2;
+      pts.push([S * Math.cos(a), S * Math.sin(a)]);
+    }
+    var rest = n - 7;
+    for (i = 0; i < rest; i++){
+      var ring = 1 + Math.floor(i / 12);
+      var idx = i % 12, cnt = Math.min(12, rest - Math.floor(i / 12) * 12);
+      a = idx / cnt * 2 * Math.PI - Math.PI / 2 + ring * 0.26;
+      var R2 = S * (1 + ring);
+      pts.push([R2 * Math.cos(a), R2 * Math.sin(a)]);
+    }
+    return pts;
   }
 
-  function addSun(mine, now){
+  function retarget(now){
+    var live = atoms.filter(function(at){ return at.fade > 0.05; });
+    var pts = layout(live.length, now);
+    live.forEach(function(at, i){
+      at.tgt.x = pts[i][0]; at.tgt.y = pts[i][1];
+    });
+  }
+
+  /* резонанс: волна вспышки пробегает по всем от нового атома */
+  function resonate(fromAtom, now){
+    glow = 1;
+    atoms.forEach(function(at){
+      var d = Math.hypot(at.tgt.x - fromAtom.tgt.x, at.tgt.y - fromAtom.tgt.y);
+      setTimeout(function(){ at.flash = 1; }, d * 2.2);
+    });
+    spin = Math.min(0.0012, spin + 0.00012);   /* фигура крутится быстрее от людей */
+  }
+
+  function addAtom(mine, now){
     var from = mine ? btnXY() : {
       x: Math.random() < 0.5 ? -20 : W + 20,
       y: 80 + Math.random() * (H * 0.5)
     };
-    suns.push({ x0: from.x, y0: from.y, t0: now, dur: mine ? 1100 : 1600, mine: mine });
+    flights.push({ x0: from.x, y0: from.y, t0: now, dur: mine ? 620 : 820, mine: mine });
+  }
+  function landAtom(mine, now){
+    var at = {
+      mine: mine, born: now, flash: 1, alive: true, fade: 1,
+      cur: { x: 0, y: -spacing(atoms.length + 1) * 2 },
+      tgt: { x: 0, y: 0 }
+    };
+    atoms.push(at);
+    retarget(now);
+    resonate(at, now);
+    Audio.joinChime(mine);
+    Bus.emit('sync.join', { mine: mine });
+    var live = atoms.filter(function(a2){ return a2.fade > 0.05; }).length;
+    if (live === 7) atoms.forEach(function(a3){ a3.flash = 1; });  /* семя жизни собралось */
+  }
+  function releaseAtom(mine){
+    for (var i = atoms.length - 1; i >= 0; i--){
+      if (atoms[i].mine === mine && atoms[i].alive){ atoms[i].alive = false; atoms[i].left = performance.now(); break; }
+    }
   }
 
   function draw(now){
@@ -368,99 +415,128 @@ var Field = (function(){
     ctx2.clearRect(0, 0, W, H);
     if (state !== 'stream'){ requestAnimationFrame(draw); return; }
 
-    var p = poleXY(now);
-    var breath = 0.5 - 0.5 * Math.cos((now - breathT0) * 0.00105);  /* цикл ~6с — дыхание */
+    var c = center(now);
+    var breath = 0.5 - 0.5 * Math.cos((now - breathT0) * 0.00105);
+    glow = Math.max(0, glow - 0.012);
+    rot += spin * 16;
+    spin += (0.00025 + atoms.length * 0.00004 - spin) * 0.004;  /* после всплеска — успокаивается к живому ходу */
 
-    /* фон: мягкая аврора потока */
-    var g1 = ctx2.createRadialGradient(p.x, p.y, 0, p.x, p.y, W * 0.85);
-    g1.addColorStop(0, 'rgba(240,237,230,' + (0.05 + breath * 0.04).toFixed(3) + ')');
+    /* фон: общая светимость растёт с фигурой */
+    var live = atoms.filter(function(at){ return at.fade > 0.05; });
+    var lum = Math.min(0.14, 0.04 + live.length * 0.012) + glow * 0.05;
+    var g1 = ctx2.createRadialGradient(c.x, c.y, 0, c.x, c.y, W * 0.85);
+    g1.addColorStop(0, 'rgba(240,237,230,' + (lum * (0.7 + 0.3 * breath)).toFixed(3) + ')');
     g1.addColorStop(1, 'rgba(0,0,0,0)');
     ctx2.fillStyle = g1; ctx2.fillRect(0, 0, W, H);
 
-    /* решётка: рёбра и узлы, лёгкое мерцание */
-    pole.energy = Math.max(0, pole.energy - 0.002);
-    edges.forEach(function(e){
-      var na = nodes[e.a], nb = nodes[e.b];
-      var age = Math.min(1, (now - e.born) / 900);
-      var shim = 0.5 + 0.5 * Math.sin(now * 0.0016 + na.seed * 3);
-      ctx2.strokeStyle = lightColor((0.10 + 0.13 * shim) * age + pole.energy * 0.2);
-      ctx2.lineWidth = 1;
-      ctx2.beginPath();
-      ctx2.moveTo(p.x + na.ox, p.y + na.oy);
-      ctx2.lineTo(p.x + nb.ox, p.y + nb.oy);
-      ctx2.stroke();
+    /* атомы: пружиной к позициям фигуры; уходящие тают */
+    var S = spacing(Math.max(1, live.length));
+    var brS = 1 + 0.05 * breath;
+    atoms.forEach(function(at){
+      if (!at.alive) at.fade = Math.max(0, at.fade - 0.008); /* память присутствия тает медленно */
+      at.cur.x += (at.tgt.x - at.cur.x) * 0.11;
+      at.cur.y += (at.tgt.y - at.cur.y) * 0.11;
+      at.flash = Math.max(0, at.flash - 0.03);
     });
-    nodes.forEach(function(n){
-      var age = Math.min(1, (now - n.born) / 900);
-      var tw = 0.5 + 0.5 * Math.sin(now * 0.0021 + n.seed * 7);
-      ctx2.fillStyle = lightColor((0.22 + 0.4 * tw) * age);
-      ctx2.beginPath();
-      ctx2.arc(p.x + n.ox, p.y + n.oy, 1.4 + tw * 1.1, 0, 6.29);
-      ctx2.fill();
+    for (var i = atoms.length - 1; i >= 0; i--)
+      if (atoms[i].fade <= 0.01){ atoms.splice(i, 1); retarget(now); }
+
+    function world(at){
+      /* атом жив: плавает вокруг своей сакральной позиции */
+      var jx = Math.sin(now * 0.0016 + at.born * 0.013) * 2.6;
+      var jy = Math.cos(now * 0.0013 + at.born * 0.017) * 2.6;
+      var x = (at.cur.x + jx) * brS, y = (at.cur.y + jy) * brS;
+      return {
+        x: c.x + x * Math.cos(rot) - y * Math.sin(rot),
+        y: c.y + x * Math.sin(rot) + y * Math.cos(rot)
+      };
+    }
+
+    /* связи: атомы в молекулу — рёбра между близкими */
+    for (var a1 = 0; a1 < atoms.length; a1++){
+      for (var b1 = a1 + 1; b1 < atoms.length; b1++){
+        var A = atoms[a1], B = atoms[b1];
+        var d = Math.hypot(A.cur.x - B.cur.x, A.cur.y - B.cur.y);
+        if (d > S * 1.45) continue;
+        var pa = world(A), pb = world(B);
+        var al = (0.16 + 0.22 * Math.max(A.flash, B.flash) + glow * 0.14) * Math.min(A.fade, B.fade);
+        ctx2.strokeStyle = lightColor(al);
+        ctx2.lineWidth = 1.1;
+        ctx2.beginPath(); ctx2.moveTo(pa.x, pa.y); ctx2.lineTo(pb.x, pb.y); ctx2.stroke();
+      }
+    }
+
+    /* сакральные окружности: пересечения сами рождают цветок жизни */
+    atoms.forEach(function(at){
+      var p = world(at);
+      ctx2.strokeStyle = lightColor((0.05 + 0.06 * breath + at.flash * 0.10) * at.fade);
+      ctx2.lineWidth = 1;
+      ctx2.beginPath(); ctx2.arc(p.x, p.y, S * brS, 0, 6.29); ctx2.stroke();
     });
 
-    /* моя нить внимания: от кнопки к полюсу, пока держу */
-    if (myHold.on) myHold.fade = Math.min(1, myHold.fade + 0.04);
+    /* моя нить внимания — к моему атому, равному среди равных */
+    if (myHold.on) myHold.fade = Math.min(1, myHold.fade + 0.05);
     else myHold.fade = Math.max(0, myHold.fade - 0.03);
-    if (myHold.fade > 0.02){
-      var b = btnXY();
-      var wob = Math.sin(now * 0.003) * 14;
-      ctx2.strokeStyle = lightColor(0.25 * myHold.fade + 0.25 * breath * myHold.fade);
-      ctx2.lineWidth = 1.6;
+    var mineAtom = null;
+    atoms.forEach(function(at){ if (at.mine && at.alive) mineAtom = at; });
+    if (myHold.fade > 0.02 && mineAtom){
+      var mp = world(mineAtom), b2 = btnXY();
+      var wob = Math.sin(now * 0.003) * 12;
+      ctx2.strokeStyle = lightColor((0.2 + 0.25 * breath) * myHold.fade);
+      ctx2.lineWidth = 1.5;
       ctx2.beginPath();
-      ctx2.moveTo(b.x, b.y - 60);
-      ctx2.quadraticCurveTo(b.x + wob, (b.y + p.y) / 2, p.x, p.y);
+      ctx2.moveTo(b2.x, b2.y - 60);
+      ctx2.quadraticCurveTo(b2.x + wob, (b2.y + mp.y) / 2, mp.x, mp.y);
       ctx2.stroke();
     }
 
-    /* летящие солнышки */
-    for (var i = suns.length - 1; i >= 0; i--){
-      var s = suns[i];
-      var t = (now - s.t0) / s.dur;
-      if (t >= 1){
-        suns.splice(i, 1);
-        pole.r = Math.min(64, pole.r + (s.mine ? 2.2 : 1.4));
-        pole.energy = 1;
-        growLattice(now);
-        if (s.mine) growLattice(now);
-        Audio.joinChime(s.mine);
-        Bus.emit('sync.join', { mine: s.mine });
-        continue;
+    /* атомы — все одного размера; вспышка резонанса пробегает по каждому */
+    atoms.forEach(function(at){
+      var p = world(at);
+      ctx2.shadowColor = lightColor(1);
+      ctx2.shadowBlur = (10 + at.flash * 26 + glow * 8) * at.fade;
+      ctx2.fillStyle = lightColor((0.72 + at.flash * 0.28) * at.fade);
+      ctx2.beginPath(); ctx2.arc(p.x, p.y, AR * (1 + at.flash * 0.25), 0, 6.29); ctx2.fill();
+      ctx2.shadowBlur = 0;
+      if (at.mine){   /* себя видно тонким кольцом — не больше, просто свой */
+        ctx2.strokeStyle = lightColor(0.5 * at.fade);
+        ctx2.lineWidth = 1;
+        ctx2.beginPath(); ctx2.arc(p.x, p.y, AR + 5, 0, 6.29); ctx2.stroke();
       }
+    });
+
+    /* влетающие шары — того же размера, что атомы */
+    for (var f = flights.length - 1; f >= 0; f--){
+      var fl = flights[f];
+      var t = (now - fl.t0) / fl.dur;
+      if (t >= 1){ flights.splice(f, 1); landAtom(fl.mine, now); continue; }
       var e = 1 - Math.pow(1 - t, 3);
-      var sx = s.x0 + (p.x - s.x0) * e;
-      var sy = s.y0 + (p.y - s.y0) * e - Math.sin(e * Math.PI) * 70;
-      var sr = 7 + (s.mine ? 4 : 1) - t * 3;
+      var fx = fl.x0 + (c.x - fl.x0) * e;
+      var fy = fl.y0 + (c.y - fl.y0) * e - Math.sin(e * Math.PI) * 60;
       ctx2.shadowColor = lightColor(1); ctx2.shadowBlur = 16;
-      ctx2.fillStyle = lightColor(0.6 + 0.4 * (1 - t));
-      ctx2.beginPath(); ctx2.arc(sx, sy, sr, 0, 6.29); ctx2.fill();
+      ctx2.fillStyle = lightColor(0.85);
+      ctx2.beginPath(); ctx2.arc(fx, fy, AR, 0, 6.29); ctx2.fill();
       ctx2.shadowBlur = 0;
     }
-
-    /* полюс: общее солнце дышит и растёт от каждого вливания */
-    var pr = pole.r * (0.85 + 0.22 * breath) + pole.energy * 8;
-    for (var h = 3; h > 0; h--){
-      ctx2.beginPath();
-      ctx2.arc(p.x, p.y, pr + h * 16 * (0.8 + 0.3 * breath), 0, 6.29);
-      ctx2.strokeStyle = lightColor(0.10 + pole.energy * 0.1);
-      ctx2.lineWidth = 1;
-      ctx2.stroke();
-    }
-    ctx2.beginPath();
-    ctx2.arc(p.x, p.y, pr, 0, 6.29);
-    ctx2.fillStyle = lightColor(0.88);
-    ctx2.shadowColor = lightColor(1); ctx2.shadowBlur = 34;
-    ctx2.fill();
-    ctx2.shadowBlur = 0;
 
     requestAnimationFrame(draw);
   }
   requestAnimationFrame(draw);
 
   return {
-    holdStart: function(){ myHold.on = true; myHold.t0 = performance.now(); breathT0 = breathT0 || performance.now(); },
-    holdEnd: function(){ myHold.on = false; },
-    sendSun: function(mine){ addSun(mine, performance.now()); },
+    holdStart: function(){
+      myHold.on = true;
+      if (!breathT0) breathT0 = performance.now();
+      var revived = false;
+      atoms.forEach(function(at){ if (at.mine){ at.alive = true; at.fade = 1; revived = true; } });
+      if (!revived) addAtom(true, performance.now());
+      else { retarget(performance.now()); }
+    },
+    holdEnd: function(){ myHold.on = false; releaseAtom(true); },
+    ghostJoin: function(){
+      addAtom(false, performance.now());
+      setTimeout(function(){ releaseAtom(false); }, 4000 + Math.random() * 9000);
+    },
     beginBreath: function(){ breathT0 = performance.now(); }
   };
 })();
@@ -494,7 +570,7 @@ function enterStream(){
 }
 function scheduleGhost(){
   ghostTimer = setTimeout(function(){
-    Field.sendSun(false);
+    Field.ghostJoin();
     scheduleGhost();
   }, 5000 + Math.random() * 11000);
 }
@@ -502,23 +578,19 @@ function scheduleGhost(){
 /* кнопка SYNC: зажал — нить светится и солнышко летит; отпустил — нить тает */
 (function SyncBtn(){
   var btn = document.getElementById('syncBtn');
-  var held = false, pulseTimer = null;
+  var held = false;
   btn.addEventListener('pointerdown', function(e){
     if (state !== 'stream' || held) return;
     held = true;
     btn.classList.add('hold');
     Audio.syncDown();
     Field.holdStart();
-    Field.sendSun(true);
     Bus.emit('sync.hold', { on:true });
-    /* долгое держание вливает новые солнышки — поток внимания течёт */
-    pulseTimer = setInterval(function(){ Field.sendSun(true); }, 4000);
   });
   ['pointerup', 'pointercancel'].forEach(function(n){
     btn.addEventListener(n, function(){
       if (!held) return;
       held = false;
-      clearInterval(pulseTimer);
       btn.classList.remove('hold');
       Audio.syncUp();
       Field.holdEnd();
