@@ -78,15 +78,22 @@ canvas#field { position:absolute; inset:0; width:100%; height:100%; display:bloc
 .hexbtn.stub .lbl { opacity:.4; letter-spacing:.2em; }
 .hexbtn.pressed svg path { filter:brightness(1.3) drop-shadow(0 0 16px rgba(240,237,230,.7)); }
 .hexbtn.armed svg path { filter:drop-shadow(0 0 12px rgba(240,237,230,.55)); }
-/* «в эфире» — красноватое дыхание */
-.hexbtn.live svg path { animation:livepulse 1.4s ease-in-out infinite; }
-.hexbtn.rec { animation:recpulse .8s ease-in-out infinite; }
-.hexbtn.rec svg path { filter:drop-shadow(0 0 18px var(--hot)) brightness(1.1); }
-@keyframes recpulse  { 0%,100% { transform:scale(1); } 50% { transform:scale(1.05); } }
-@keyframes livepulse {
-  0%,100% { filter:drop-shadow(0 0 6px rgba(255,90,77,.5)); }
-  50%     { filter:drop-shadow(0 0 20px rgba(255,90,77,.9)); }
+/* «в эфире» — красноватый обвод + дышащее свечение.
+   Только stroke и opacity: анимация CSS-фильтра на SVG молчит в iOS Safari. */
+.hexbtn .glow {
+  position:absolute; inset:-10px; border-radius:50%; pointer-events:none;
+  background:radial-gradient(circle, rgba(255,90,77,.55) 0%, rgba(255,90,77,0) 68%);
+  opacity:0; transition:opacity .3s ease;
 }
+.hexbtn.live svg path, .hexbtn.dark.live svg path { stroke:var(--hot); }
+.hexbtn.live .lbl, .hexbtn.dark.live .lbl { color:var(--hot); }
+.hexbtn.live .glow { animation:glowbreath 1.4s ease-in-out infinite; }
+.hexbtn.rec svg path, .hexbtn.dark.rec svg path { stroke:var(--hot); fill:#2a1512; }
+.hexbtn.rec .lbl { color:var(--hot); }
+.hexbtn.rec .glow { animation:glowbreath .7s ease-in-out infinite; }
+.hexbtn.rec { animation:recpulse .8s ease-in-out infinite; }
+@keyframes recpulse   { 0%,100% { transform:scale(1); } 50% { transform:scale(1.05); } }
+@keyframes glowbreath { 0%,100% { opacity:.25; } 50% { opacity:.75; } }
 
 /* мини-соты: орбита-библиотека вокруг кнопки */
 .minihex {
@@ -108,11 +115,11 @@ canvas#field { position:absolute; inset:0; width:100%; height:100%; display:bloc
 #orbitShade { position:fixed; inset:0; z-index:44; background:rgba(3,3,3,.5); display:none; }
 #orbitShade.on { display:block; }
 
-/* отмена кисти */
+/* отмена кисти — вплотную к соте кисти */
 #undoBtn {
-  position:fixed; width:44px; height:44px; border-radius:50%;
-  border:1px solid #2e2e2e; background:rgba(6,6,6,.7); color:var(--text);
-  font-family:var(--font); font-size:15px; z-index:34; cursor:pointer;
+  position:fixed; width:38px; height:38px; margin:-19px 0 0 -19px; border-radius:50%;
+  border:1px solid #2e2e2e; background:rgba(6,6,6,.8); color:var(--text);
+  font-family:var(--font); font-size:14px; z-index:34; cursor:pointer;
   display:none; place-items:center;
 }
 #undoBtn.on { display:grid; }
@@ -200,7 +207,7 @@ canvas#field { position:absolute; inset:0; width:100%; height:100%; display:bloc
 
   <div id="gate">
     <div class="yin"></div>
-    <span class="cap">коснись — поле оживёт</span>
+    <span class="cap">DAO DE DO</span>
   </div>
 
   <input type="file" id="filePic" accept="image/*" multiple>
@@ -230,7 +237,7 @@ var Bus = (function(){
 
 var deckSide = 'white';
 var mix = 0;
-var flowSpeed = 16, flowTarget = 16, abyssHeld = false;
+var flowSpeed = 16, flowTarget = 16, rainHeld = false;
 var brushOn = false;
 function lightColor(a){ return 'rgba(240,237,230,' + (a == null ? 1 : a) + ')'; }
 function hotColor(a){ return 'rgba(255,90,77,' + (a == null ? 1 : a) + ')'; }
@@ -300,14 +307,14 @@ var Audio = (function(){
       while (nextT < c.currentTime + 0.14){
         var s16 = step % 16;
         if (s16 % 4 === 0){
-          tone({ f:120, f2:42, g:0.16, a:0.004, dur:0.16, type:'square', dest:techGain, at:nextT });
+          tone({ f:120, f2:42, g:0.11, a:0.004, dur:0.14, type:'square', dest:techGain, at:nextT });
           Bus.emit('pulse', {});
         }
-        if (s16 % 4 === 2) noise({ g:0.035, freq:8000, dur:0.03, dest:techGain, at:nextT });
+        if (s16 % 4 === 2) noise({ g:0.02, freq:8000, dur:0.025, dest:techGain, at:nextT });
         var b = BASS[s16];
-        if (b) tone({ f:b, g:0.065, a:0.006, dur:STEP * 0.9, type:'square', dest:techGain, at:nextT });
-        if (s16 === 14 && Math.random() < 0.5)
-          tone({ f:[440,523,659,880][Math.floor(Math.random()*4)], g:0.03, a:0.004, dur:0.1, type:'square', dest:techGain, at:nextT });
+        if (b) tone({ f:b, g:0.042, a:0.006, dur:STEP * 0.85, type:'square', dest:techGain, at:nextT });
+        if (s16 === 14 && Math.random() < 0.35)
+          tone({ f:[440,523,659,880][Math.floor(Math.random()*4)], g:0.016, a:0.004, dur:0.09, type:'square', dest:techGain, at:nextT });
         step++; nextT += STEP;
       }
     }
@@ -332,9 +339,9 @@ var Audio = (function(){
     return {
       start: function(){
         if (started) return; started = true;
-        drone(110, 0.055, 11, 0); drone(164.8, 0.035, 9, 2); drone(220, 0.028, 13, 5);
+        drone(110, 0.036, 11, 0); drone(164.8, 0.023, 9, 2); drone(220, 0.017, 13, 5);
         setInterval(function(){
-          if (Math.random() < 0.6) tone({ f:880, g:0.022, a:0.4, dur:4.5, dest:healGain });
+          if (Math.random() < 0.6) tone({ f:880, g:0.013, a:0.4, dur:4.5, dest:healGain });
         }, 7000);
         setInterval(function(){ Bus.emit('breath', {}); }, 4000);
       }
@@ -346,8 +353,9 @@ var Audio = (function(){
   function setMix(x){
     var c = ensure(), t = c.currentTime;
     mix = Math.min(1, Math.max(0, x));
-    techGain.gain.setTargetAtTime(Math.cos(mix * Math.PI / 2), t, 0.08);
-    healGain.gain.setTargetAtTime(Math.sin(mix * Math.PI / 2), t, 0.08);
+    /* подложка — фон, не солист: полюса приглушены */
+    techGain.gain.setTargetAtTime(Math.cos(mix * Math.PI / 2) * 0.72, t, 0.08);
+    healGain.gain.setTargetAtTime(Math.sin(mix * Math.PI / 2) * 0.72, t, 0.08);
   }
 
   function quantized(fn){
@@ -594,33 +602,45 @@ var Audio = (function(){
     o.connect(gg).connect(chipGain);
     o.start(t); o.stop(t + dur + 0.05);
   }
-  var abyssO = null, abyssG = null;
-  function abyssDown(){
-    var c = ensure(), t = c.currentTime;
-    abyssO = c.createOscillator(); abyssO.frequency.value = 41;
-    abyssG = c.createGain();
-    abyssG.gain.setValueAtTime(0.0001, t);
-    abyssG.gain.exponentialRampToValueAtTime(0.12, t + 0.8);
-    abyssO.connect(abyssG).connect(master);
-    abyssO.start();
-  }
-  function abyssUp(){
-    if (!abyssO) return;
-    var c = ensure(), t = c.currentTime;
-    abyssG.gain.cancelScheduledValues(t);
-    abyssG.gain.setValueAtTime(Math.max(0.001, abyssG.gain.value), t);
-    abyssG.gain.exponentialRampToValueAtTime(0.0001, t + 1);
-    abyssO.stop(t + 1.1); abyssO = null;
-  }
+  /* дождь: вода из шума + редкие капли; поднимается, пока держишь */
+  var Rain = (function(){
+    var src = null, g = null, filt = null, dripTimer = null;
+    return {
+      down: function(){
+        var c = ensure(), t = c.currentTime;
+        this.up(true);
+        src = c.createBufferSource(); src.buffer = noiseBuf; src.loop = true;
+        filt = c.createBiquadFilter(); filt.type = 'lowpass'; filt.frequency.value = 1300;
+        g = c.createGain();
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(0.085, t + 2.4);   /* чувство поднимается */
+        src.connect(filt).connect(g).connect(chipGain);
+        src.start();
+        dripTimer = setInterval(function(){
+          if (Math.random() < 0.7)
+            tone({ f: 1800 + Math.random() * 1800, g:0.014, a:0.003, dur:0.05 });
+        }, 190);
+      },
+      up: function(instant){
+        clearInterval(dripTimer); dripTimer = null;
+        if (!g) return;
+        var c = ensure(), t = c.currentTime;
+        g.gain.cancelScheduledValues(t);
+        g.gain.setValueAtTime(Math.max(0.001, g.gain.value), t);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + (instant ? 0.05 : 1.4));
+        src.stop(t + (instant ? 0.1 : 1.5));
+        src = null; g = null; filt = null;
+      }
+    };
+  })();
 
   return {
     ensure:ensure, start:start, setMix:setMix, quantized:quantized,
     silenceDown:silenceDown, silenceUp:silenceUp,
-    Voice:Voice, Sample:Sample, Psalm:Psalm, Sync:Sync,
+    Voice:Voice, Sample:Sample, Psalm:Psalm, Sync:Sync, Rain:Rain,
     bellDown:bellDown, bellUp:bellUp,
     symbolSound:symbolSound, picSound:picSound, likeSound:likeSound,
-    rouletteSound:rouletteSound, invertSound:invertSound,
-    abyssDown:abyssDown, abyssUp:abyssUp
+    rouletteSound:rouletteSound, invertSound:invertSound
   };
 })();
 
@@ -642,6 +662,7 @@ var Field = (function(){
   var orbA = 0;
   var lastTrailT = 0;
   var sync = { held:false, t0:0, x:0, y:0, fade:0 };
+  var rain = { on:false, t0:0, fade:0, drops:[], ripples:[] };
 
   function size(){
     W = innerWidth; H = innerHeight;
@@ -784,6 +805,53 @@ var Field = (function(){
     });
   }
 
+  function drawRain(now, dt){
+    if (rain.on) rain.fade = Math.min(1, rain.fade + dt * 0.5);
+    else rain.fade = Math.max(0, rain.fade - dt * 0.7);
+    if (rain.fade <= 0.01 && !rain.drops.length && !rain.ripples.length) return;
+    /* поле чуть притемняется — идёт дождь */
+    ctx2.fillStyle = 'rgba(3,3,3,' + (0.22 * rain.fade).toFixed(3) + ')';
+    ctx2.fillRect(0, 0, W, H);
+    /* новые слёзы: интенсивность поднимается с проживанием */
+    if (rain.on){
+      var heldS = (now - rain.t0) / 1000;
+      var n = Math.min(4, 1 + heldS * 0.6) * rain.fade;
+      for (var k = 0; k < n; k++){
+        if (Math.random() < 0.8 && rain.drops.length < 90)
+          rain.drops.push({
+            x: Math.random() * W, y: -12,
+            v: 320 + Math.random() * 220,
+            len: 10 + Math.random() * 12,
+            floor: hexTop() - 20 - Math.random() * 120
+          });
+      }
+    }
+    ctx2.lineWidth = 1; ctx2.lineCap = 'round';
+    for (var i = rain.drops.length - 1; i >= 0; i--){
+      var d = rain.drops[i];
+      d.y += d.v * dt;
+      if (d.y > d.floor){
+        rain.ripples.push({ x: d.x, y: d.floor, t0: now });
+        rain.drops.splice(i, 1);
+        continue;
+      }
+      ctx2.strokeStyle = lightColor(0.3 * rain.fade + 0.1);
+      ctx2.beginPath();
+      ctx2.moveTo(d.x, d.y - d.len);
+      ctx2.lineTo(d.x + 1.5, d.y);
+      ctx2.stroke();
+    }
+    for (var j = rain.ripples.length - 1; j >= 0; j--){
+      var rp = rain.ripples[j];
+      var age = (now - rp.t0) / 900;
+      if (age > 1){ rain.ripples.splice(j, 1); continue; }
+      ctx2.strokeStyle = lightColor(0.3 * (1 - age));
+      ctx2.beginPath();
+      ctx2.ellipse(rp.x, rp.y, 3 + age * 20, (3 + age * 20) * 0.32, 0, 0, 6.29);
+      ctx2.stroke();
+    }
+  }
+
   function drawSync(now){
     if (!sync.held && sync.fade <= 0.01) return;
     if (sync.held) sync.fade = Math.min(1, sync.fade + 0.03);
@@ -819,7 +887,11 @@ var Field = (function(){
     ctx2.shadowBlur = 0;
   }
 
+  var lastDrawT = null;
   function draw(now){
+    if (lastDrawT === null) lastDrawT = now;
+    var dtDraw = Math.min(0.05, (now - lastDrawT) / 1000);
+    lastDrawT = now;
     ctx2.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx2.clearRect(0, 0, W, H);
     drawBg(now);
@@ -878,11 +950,11 @@ var Field = (function(){
       ctx2.shadowBlur = 0;
     }
 
+    drawRain(now, dtDraw);
     drawSync(now);
 
-    /* бездна: время ленты плавно замирает и возвращается */
     flowSpeed += (flowTarget - flowSpeed) * 0.06;
-    flowAll(flowSpeed * (1 / 60));
+    flowAll(flowSpeed * dtDraw);
 
     requestAnimationFrame(draw);
   }
@@ -921,7 +993,8 @@ var Field = (function(){
     hasStrokes: function(){ return strokes.length > 0; },
     riverHit: function(x, y){ return x < 90 && y > 60 && y < hexTop(); },
     syncDown: function(){ sync.held = true; sync.t0 = performance.now(); },
-    syncUp: function(){ sync.held = false; }
+    syncUp: function(){ sync.held = false; },
+    rainSet: function(on){ rain.on = on; if (on) rain.t0 = performance.now(); }
   };
 })();
 
@@ -939,13 +1012,13 @@ function hint(text, ttl){
 
 var DECKS = {
   white: { center:'sync',   petals:['sample', 'brush', 'symbol', 'picture', 'avatar', 'voice'] },
-  black: { center:'random', petals:['psalm', 'silence', 'bell', 'invert', 'abyss', null] }
+  black: { center:'random', petals:['psalm', 'silence', 'bell', 'invert', 'rain', null] }
 };
 var CHIP_LBL = {
   sync:'sync', voice:'голос', sample:'сэмпл', brush:'кисть', symbol:'символ',
   picture:'картинка', avatar:'аватар',
   random:'рандом', psalm:'псалом', silence:'тишина', bell:'колокол',
-  invert:'негатив', abyss:'бездна'
+  invert:'негатив', rain:'дождь'
 };
 var STUB_CHIPS = { avatar:1 };          /* зарезервировано: камера-мимика в следующем круге */
 var HEX_PATH = 'M48 8 L86 30 V76 L48 98 L10 76 V30 Z';
@@ -957,13 +1030,14 @@ var slotEls = [], slotPos = [];
   for (var i = 0; i < 7; i++){
     var b = document.createElement('button');
     b.className = 'hexbtn';
+    var glow = document.createElement('span'); glow.className = 'glow';
     var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttribute('viewBox', '0 0 96 106');
     var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     path.setAttribute('d', HEX_PATH);
     svg.appendChild(path);
     var lbl = document.createElement('span'); lbl.className = 'lbl';
-    b.appendChild(svg); b.appendChild(lbl);
+    b.appendChild(glow); b.appendChild(svg); b.appendChild(lbl);
     stage.appendChild(b);
     slotEls.push(b);
   }
@@ -999,7 +1073,7 @@ function decorate(b, chip){
     if (Audio.Psalm.playing()) b.classList.add('live');
     else if (Audio.Psalm.has()) b.classList.add('armed');
   }
-  if (chip === 'abyss' && abyssHeld) b.classList.add('live');
+  if (chip === 'rain' && rainHeld) b.classList.add('live');
 }
 
 function renderDeck(){
@@ -1007,7 +1081,7 @@ function renderDeck(){
     var chip = chipAt(deckSide, i);
     var lbl = b.querySelector('.lbl');
     b.dataset.chip = chip || '';
-    b.classList.toggle('stub', !chip || !!STUB_CHIPS[chip]);
+    b.classList.toggle('stub', !chip);
     b.classList.toggle('dark', deckSide === 'black');
     lbl.textContent = chip ? CHIP_LBL[chip] : '·';
     decorate(b, chip);
@@ -1036,7 +1110,7 @@ function flipDeck(originX, originY){
       var chip = chipAt(nextSide, i);
       b.dataset.chip = chip || '';
       b.classList.toggle('dark', nextSide === 'black');
-      b.classList.toggle('stub', !chip || !!STUB_CHIPS[chip]);
+      b.classList.toggle('stub', !chip);
       b.querySelector('.lbl').textContent = chip ? CHIP_LBL[chip] : '·';
       decorate(b, chip);
       b.classList.remove('mid');
@@ -1185,7 +1259,12 @@ document.getElementById('undoBtn').addEventListener('pointerup', function(e){
 });
 (function placeUndo(){
   var u = document.getElementById('undoBtn');
-  function place(){ u.style.left = '14px'; u.style.top = (hexTop() - 64) + 'px'; }
+  function place(){
+    /* кисть — лепесток 60°, слот 2: отмена сразу справа-снизу от неё */
+    var p = slotPos[2] || { x: innerWidth / 2, y: innerHeight - 224 };
+    u.style.left = (p.x + 76) + 'px';
+    u.style.top  = (p.y + 46) + 'px';
+  }
   place(); addEventListener('resize', place);
 })();
 
@@ -1196,7 +1275,7 @@ function cancelHolds(){
   if (bellHeld){ Audio.bellUp(); bellHeld = false; }
   if (silenceHeld){ Audio.silenceUp(); silenceHeld = false; }
   if (syncHeld){ Audio.Sync.up(); Field.syncUp(); syncHeld = false; Bus.emit('sync.hold', { on:false }); }
-  if (abyssHeld){ abyssHeld = false; flowTarget = lastFlow; Audio.abyssUp(); }
+  if (rainHeld){ rainHeld = false; Audio.Rain.up(); Field.rainSet(false); }
   slotEls.forEach(function(b){ b.classList.remove('pressed'); });
   renderDeck();
 }
@@ -1225,7 +1304,6 @@ fileAud.addEventListener('change', function(){
   Audio.Psalm.load(f).then(function(){ hint('псалом заряжен'); }).catch(function(){ hint('не читается'); });
 });
 
-var lastFlow = 16;
 var invertEl = document.getElementById('invert');
 function castChip(chip){
   Bus.emit('slot.fire', { side:deckSide, chip:chip, mix:mix });
@@ -1277,9 +1355,10 @@ slotEls.forEach(function(b){
       syncHeld = true;
       Audio.Sync.down(); Field.syncDown();
       Bus.emit('sync.hold', { on:true });
-    } else if (chip === 'abyss'){
-      abyssHeld = true; lastFlow = flowTarget;
-      flowTarget = 0; Audio.abyssDown();
+    } else if (chip === 'rain'){
+      rainHeld = true;
+      Audio.Rain.down(); Field.rainSet(true);
+      Bus.emit('rain.hold', { on:true });
       renderDeck();
     } else if (chip === 'sample'){
       holdTimers.sample = setTimeout(function(){
@@ -1307,7 +1386,7 @@ slotEls.forEach(function(b){
     b.classList.remove('pressed');
     var chip = b.dataset.chip;
     if (!chip || flipping) return;
-    if (STUB_CHIPS[chip]){ hint('скоро: живая маска'); return; }
+    if (STUB_CHIPS[chip]) return;   /* аватар — имя есть, функция придёт */
     if (gesture.swiped){ cancelHolds(); return; }
     if (chip === 'bell'){ if (bellHeld){ Audio.bellUp(); bellHeld = false; } return; }
     if (chip === 'silence'){
@@ -1318,8 +1397,8 @@ slotEls.forEach(function(b){
       if (syncHeld){ syncHeld = false; Audio.Sync.up(); Field.syncUp(); Bus.emit('sync.hold', { on:false }); }
       return;
     }
-    if (chip === 'abyss'){
-      if (abyssHeld){ abyssHeld = false; flowTarget = lastFlow; Audio.abyssUp(); renderDeck(); }
+    if (chip === 'rain'){
+      if (rainHeld){ rainHeld = false; Audio.Rain.up(); Field.rainSet(false); Bus.emit('rain.hold', { on:false }); renderDeck(); }
       return;
     }
     if (chip === 'voice'){
@@ -1402,7 +1481,6 @@ slotEls.forEach(function(b){
     var t = Math.min(1, Math.max(0, (clientY - r.top) / r.height));
     knob.style.top = (t * 100) + '%';
     flowTarget = 2 + t * 58;
-    if (!abyssHeld) lastFlow = flowTarget;
     Bus.emit('flow.set', { speed: flowTarget });
   }
   el.addEventListener('pointerdown', function(e){
