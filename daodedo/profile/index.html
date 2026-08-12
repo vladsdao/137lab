@@ -289,6 +289,11 @@ var Audio = (function(){
         }
       } catch(_){}
       if (!routed) master.connect(ctx.destination);
+      /* постоянный неслышимый ток (90Гц, -54дБ): MediaStream-канал не остывает,
+         и короткие техно-удары не проваливаются в щели буфера */
+      var keep = ctx.createOscillator(); keep.frequency.value = 90;
+      var kg = ctx.createGain(); kg.gain.value = 0.002;
+      keep.connect(kg).connect(master); keep.start();
       bgGain = ctx.createGain(); bgGain.gain.value = 1;
       bgGain.connect(master);
       techGain = ctx.createGain(); techGain.gain.value = 1;
@@ -342,7 +347,8 @@ var Audio = (function(){
     var BASS = [55, 0, 55, 0, 65.4, 0, 55, 0, 82.4, 0, 55, 0, 98, 0, 82.4, 0];
     function schedule(){
       var c = ensure();
-      while (nextT < c.currentTime + 0.14){
+      if (nextT < c.currentTime) nextT = c.currentTime + 0.02;  /* после паузы не догоняем прошлое */
+      while (nextT < c.currentTime + 0.35){
         var s16 = step % 16;
         if (s16 % 4 === 0){
           tone({ f:120, f2:42, g:0.11, a:0.004, dur:0.14, type:'square', dest:techGain, at:nextT });
@@ -357,7 +363,7 @@ var Audio = (function(){
       }
     }
     return {
-      start: function(){ var c = ensure(); step = 0; nextT = c.currentTime + 0.05; clearInterval(timer); timer = setInterval(schedule, 30); },
+      start: function(){ var c = ensure(); step = 0; nextT = c.currentTime + 0.05; clearInterval(timer); timer = setInterval(schedule, 80); },
       nextEighth: function(){ var c = ensure(); if (!timer) return c.currentTime; var e = STEP * 2; return nextT - STEP + (e - ((nextT - STEP) % e || e)); }
     };
   })();

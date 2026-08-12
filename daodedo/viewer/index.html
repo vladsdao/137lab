@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#060606">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="robots" content="noindex, nofollow">
+<title>DAODEDO · Зритель — эскиз</title>
+<!--
+  ЭСКИЗ «Зритель» v1 (LENTA_DESIGN, зафиксировано 2026-08-12).
+  Врата встречи: инь-ян, таймер до начала, по кругу собираются фигурки
+  ожидающих (без чисел — плотность круга говорит сама). Поток: полюс
+  хедлайнера дышит в верхней трети; у зрителя одна кнопка — SYNC:
+  зажал — его солнышко летит к полюсу, полюс растёт, от него
+  разрастается кристаллическая решётка; пока держишь — твоя нить
+  внимания светится. Другие зрители (в эскизе — призраки) вливаются
+  своими солнышками. Транспорт комнаты — следующая ступень: события
+  уже ходят по шине-драфту.
+  Параметры: ?wait=сек до старта (по умолчанию 75), ?ghosts=0 без призраков.
+-->
+<style>
+*, *::before, *::after {
+  margin:0; padding:0; box-sizing:border-box;
+  -webkit-user-select:none; user-select:none; -webkit-touch-callout:none;
+}
+:root {
+  --bg:#060606;
+  --text:#f0ede6;
+  --dim:#6f6b64;
+  --hot:#ff5a4d;
+  --font:'Space Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+html, body {
+  height:100%; background:var(--bg); color:var(--text); font-family:var(--font);
+  overflow:hidden; -webkit-font-smoothing:antialiased;
+  -webkit-tap-highlight-color:transparent; touch-action:none;
+}
+#stage { position:fixed; inset:0; width:100vw; height:100dvh; }
+canvas#field { position:absolute; inset:0; width:100%; height:100%; display:block; }
+
+.brand {
+  position:fixed; left:16px; top:calc(12px + env(safe-area-inset-top));
+  font-size:9px; letter-spacing:.26em; text-transform:uppercase; color:var(--dim); z-index:30;
+}
+
+#hint {
+  position:fixed; left:0; right:0; bottom:calc(150px + env(safe-area-inset-bottom));
+  text-align:center; z-index:40;
+  font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--text);
+  opacity:0; transition:opacity .8s ease; pointer-events:none;
+}
+#hint.on { opacity:.85; }
+
+/* ── врата встречи ───────────────────────────── */
+#gate {
+  position:fixed; inset:0; z-index:60; background:var(--bg);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:24px;
+  transition:opacity 1.4s ease;
+}
+#gate.off { opacity:0; pointer-events:none; }
+#gateRing { position:relative; width:280px; height:280px; }
+#gateRing canvas { position:absolute; inset:0; }
+#gateRing .yin {
+  position:absolute; left:50%; top:50%; width:96px; height:96px; margin:-48px 0 0 -48px;
+  border-radius:50%;
+  background:conic-gradient(from 0deg, #f0ede6 0 50%, #0a0a0a 50% 100%);
+  box-shadow:0 0 34px -8px rgba(240,237,230,.5);
+  animation:yinspin 9s linear infinite;
+}
+@keyframes yinspin { to { transform:rotate(360deg); } }
+#gate .cap { font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--dim); }
+#timer { font-size:22px; letter-spacing:.24em; color:var(--text); font-weight:700; }
+
+/* ── кнопка SYNC ─────────────────────────────── */
+#syncBtn {
+  position:fixed; left:50%; bottom:calc(34px + env(safe-area-inset-bottom));
+  width:120px; height:132px; margin-left:-60px;
+  border:none; background:none; cursor:pointer; font-family:var(--font);
+  display:grid; place-items:center; touch-action:none; z-index:26;
+  opacity:0; transition:opacity 1.2s ease;
+}
+#syncBtn.on { opacity:1; }
+#syncBtn svg { position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
+#syncBtn svg path {
+  stroke-width:13; stroke-linejoin:round;
+  fill:#e9e3d6; stroke:#e9e3d6;
+  filter:drop-shadow(0 2px 8px rgba(0,0,0,.55));
+  transition:stroke .25s ease;
+}
+#syncBtn .lbl { position:relative; z-index:2; font-size:12px; letter-spacing:.1em; color:#332e25; }
+#syncBtn .glow {
+  position:absolute; inset:-12px; border-radius:50%; pointer-events:none;
+  background:radial-gradient(circle, rgba(255,90,77,.5) 0%, rgba(255,90,77,0) 68%);
+  opacity:0;
+}
+#syncBtn.hold svg path { stroke:var(--hot); }
+#syncBtn.hold .glow { animation:glowbreath 1.2s ease-in-out infinite; }
+@keyframes glowbreath { 0%,100% { opacity:.25; } 50% { opacity:.75; } }
+
+#bgout { display:none; }
+</style>
+</head>
+<body>
+
+<div id="stage">
+  <canvas id="field"></canvas>
+  <span class="brand">DAODEDO · зритель</span>
+  <div id="hint"></div>
+
+  <button id="syncBtn" aria-label="Sync">
+    <span class="glow"></span>
+    <svg viewBox="0 0 120 132"><path d="M60 10 L108 38 V94 L60 122 L12 94 V38 Z"/></svg>
+    <span class="lbl">sync</span>
+  </button>
+
+  <div id="gate">
+    <div id="gateRing">
+      <canvas id="ringCnv" width="280" height="280"></canvas>
+      <div class="yin"></div>
+    </div>
+    <span id="timer">—:—</span>
+    <span class="cap">DAO DE DO</span>
+  </div>
+
+  <audio id="bgout" playsinline></audio>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ── шина (драфт: события зрителя готовы к транспорту комнаты) ── */
+var Bus = (function(){
+  var et = new EventTarget(), seq = 0;
+  return {
+    emit: function(type, data){
+      var ev = { v:'sketch', ts:Date.now(), seq:++seq, type:type, data:data || {} };
+      et.dispatchEvent(new CustomEvent('bus', { detail:ev }));
+      return ev;
+    },
+    on: function(type, fn){
+      et.addEventListener('bus', function(e){
+        if (type === '*' || e.detail.type === type) fn(e.detail);
+      });
+    }
+  };
+})();
+
+var qs = new URLSearchParams(location.search);
+var WAIT_S = Math.max(0, parseInt(qs.get('wait'), 10) || 75);
+var GHOSTS = qs.get('ghosts') !== '0';
+var state = 'gate';          /* gate → stream */
+function lightColor(a){ return 'rgba(240,237,230,' + (a == null ? 1 : a) + ')'; }
+
+/* ═══════════════════════════════════════════════
+   АУДИО ЗРИТЕЛЯ: тихий мир потока + тон синка
+   ═══════════════════════════════════════════════ */
+var Audio = (function(){
+  var ctx = null, master = null, worldGain = null;
+  function ensure(){
+    if (!ctx){
+      ctx = new (window.AudioContext || window.webkitAudioContext)();
+      master = ctx.createGain(); master.gain.value = 0.85;
+      var out = document.getElementById('bgout');
+      var routed = false;
+      try {
+        var elemDest = ctx.createMediaStreamDestination();
+        master.connect(elemDest);
+        out.srcObject = elemDest.stream;
+        var pp = out.play();
+        routed = true;
+        if (pp && pp.catch) pp.catch(function(){
+          if (routed){ routed = false; master.connect(ctx.destination); }
+        });
+        if ('mediaSession' in navigator && window.MediaMetadata)
+          navigator.mediaSession.metadata = new MediaMetadata({ title:'DAO DE DO', artist:'137lab' });
+      } catch(_){}
+      if (!routed) master.connect(ctx.destination);
+      var keep = ctx.createOscillator(); keep.frequency.value = 90;
+      var kg = ctx.createGain(); kg.gain.value = 0.002;
+      keep.connect(kg).connect(master); keep.start();
+    }
+    if (ctx.state !== 'running') ctx.resume().catch(function(){});
+    return ctx;
+  }
+  document.addEventListener('visibilitychange', function(){
+    if (!document.hidden && ctx){
+      if (ctx.state !== 'running') ctx.resume().catch(function(){});
+      var o = document.getElementById('bgout');
+      if (o && o.srcObject && o.paused) o.play().catch(function(){});
+    }
+  });
+
+  function tone(o){
+    var c = ensure(), t = (o.at || c.currentTime);
+    var osc = c.createOscillator(), g = c.createGain();
+    osc.type = o.type || 'sine'; osc.frequency.value = o.f;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(Math.max(0.001, o.g), t + (o.a || 0.01));
+    g.gain.exponentialRampToValueAtTime(0.0001, t + (o.dur || 0.3));
+    osc.connect(g).connect(o.dest || master);
+    osc.start(t); osc.stop(t + (o.dur || 0.3) + 0.05);
+  }
+
+  /* мир потока: мягкая смесь дронов — зритель слышит эфир хедлайнера */
+  function startWorld(){
+    var c = ensure();
+    worldGain = c.createGain(); worldGain.gain.value = 0.7;
+    worldGain.connect(master);
+    [[110, 0.03, 11, 0], [164.8, 0.02, 9, 2], [220, 0.014, 13, 5]].forEach(function(d){
+      var o = c.createOscillator(); o.frequency.value = d[0];
+      var gg = c.createGain(); gg.gain.value = d[1];
+      var lfo = c.createOscillator(); lfo.frequency.value = 1 / d[2];
+      var lg = c.createGain(); lg.gain.value = d[1] * 0.5;
+      lfo.connect(lg).connect(gg.gain);
+      o.connect(gg).connect(worldGain);
+      o.start(); lfo.start(c.currentTime + d[3]);
+    });
+    setInterval(function(){
+      if (Math.random() < 0.5) tone({ f:880, g:0.01, a:0.4, dur:4, dest:worldGain });
+    }, 8000);
+  }
+
+  /* нить синка: тихий тон с медленными биениями — общий язык с хедлайнером */
+  var s1 = null, s2 = null, sg = null;
+  function syncDown(){
+    var c = ensure(), t = c.currentTime;
+    syncUp();
+    s1 = c.createOscillator(); s1.frequency.value = 220;
+    s2 = c.createOscillator(); s2.frequency.value = 221.4;
+    sg = c.createGain();
+    sg.gain.setValueAtTime(0.0001, t);
+    sg.gain.exponentialRampToValueAtTime(0.045, t + 1.2);
+    s1.connect(sg); s2.connect(sg); sg.connect(master);
+    s1.start(); s2.start();
+  }
+  function syncUp(){
+    if (!sg) return;
+    var c = ensure(), t = c.currentTime;
+    sg.gain.cancelScheduledValues(t);
+    sg.gain.setValueAtTime(Math.max(0.001, sg.gain.value), t);
+    sg.gain.exponentialRampToValueAtTime(0.0001, t + 1.4);
+    s1.stop(t + 1.6); s2.stop(t + 1.6);
+    s1 = null; s2 = null; sg = null;
+  }
+  function joinChime(mine){
+    tone({ f: mine ? 660 : 520, g: mine ? 0.045 : 0.02, a:0.02, dur:0.9 });
+    tone({ f: mine ? 990 : 780, g: mine ? 0.02 : 0.01, a:0.03, dur:1.1 });
+  }
+  return { ensure:ensure, startWorld:startWorld, syncDown:syncDown, syncUp:syncUp, joinChime:joinChime };
+})();
+
+/* ═══════════════════════════════════════════════
+   ВРАТА: таймер + фигурки ожидающих по кругу
+   ═══════════════════════════════════════════════ */
+var Gate = (function(){
+  var cnv = document.getElementById('ringCnv'), g2 = cnv.getContext('2d');
+  var timerEl = document.getElementById('timer');
+  var startAt = performance.now() + WAIT_S * 1000;
+  var waiters = [];            /* {a: угол, born} — фигурки, без чисел */
+  var seedTimer = null;
+
+  /* народ собирается: фигурки приходят чаще ближе к началу */
+  function seed(){
+    var left = Math.max(0, startAt - performance.now());
+    if (waiters.length < 60 && Math.random() < 0.75)
+      waiters.push({ a: Math.random() * 2 * Math.PI, born: performance.now() });
+    seedTimer = setTimeout(seed, 400 + Math.random() * (left > 30000 ? 2600 : 900));
+  }
+  seed();
+  for (var i = 0; i < 8; i++) waiters.push({ a: Math.random() * 6.283, born: performance.now() - i * 700 });
+
+  function figure(x, y, al, s){
+    g2.strokeStyle = lightColor(al); g2.lineWidth = 1.3; g2.lineCap = 'round';
+    g2.beginPath(); g2.arc(x, y - 5 * s, 2.6 * s, 0, 6.29); g2.stroke();
+    g2.beginPath(); g2.moveTo(x, y - 2 * s); g2.lineTo(x, y + 4 * s); g2.stroke();
+    g2.beginPath(); g2.moveTo(x - 3 * s, y + 8 * s); g2.lineTo(x, y + 4 * s); g2.lineTo(x + 3 * s, y + 8 * s); g2.stroke();
+  }
+
+  function draw(now){
+    if (state !== 'gate') return;
+    g2.clearRect(0, 0, 280, 280);
+    /* тёмное кольцо-орбита */
+    g2.strokeStyle = 'rgba(240,237,230,.10)'; g2.lineWidth = 1;
+    g2.beginPath(); g2.arc(140, 140, 118, 0, 6.29); g2.stroke();
+    waiters.forEach(function(w, i){
+      var age = Math.min(1, (now - w.born) / 1200);
+      var a = w.a + now * 0.000045 * (i % 2 ? 1 : -1);   /* медленный ход по кругу */
+      var x = 140 + 118 * Math.cos(a), y = 140 + 118 * Math.sin(a);
+      figure(x, y, 0.25 + 0.45 * age, 0.9 + 0.2 * Math.sin(now * 0.002 + i));
+    });
+    var left = Math.max(0, startAt - now);
+    var mm = Math.floor(left / 60000), ss = Math.floor(left % 60000 / 1000);
+    timerEl.textContent = mm + ':' + (ss < 10 ? '0' : '') + ss;
+    if (left <= 0) enterStream();
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+
+  document.getElementById('gate').addEventListener('pointerdown', function(){
+    enterStream();               /* в эскизе можно войти раньше касанием */
+  });
+
+  return { stop: function(){ clearTimeout(seedTimer); } };
+})();
+
+/* ═══════════════════════════════════════════════
+   ПОТОК: полюс хедлайнера, солнышки, решётка
+   ═══════════════════════════════════════════════ */
+var Field = (function(){
+  var cnv = document.getElementById('field'), ctx2 = cnv.getContext('2d');
+  var dpr = Math.min(devicePixelRatio || 1, 2);
+  var W = 0, H = 0;
+  var pole = { r: 26, energy: 0 };         /* общее солнце */
+  var suns = [];                            /* летящие солнышки: {x0,y0,t0,dur,mine} */
+  var nodes = [], edges = [];               /* кристаллическая решётка */
+  var myHold = { on:false, t0:0, fade:0 };
+  var breathT0 = 0;
+
+  function size(){
+    W = innerWidth; H = innerHeight;
+    cnv.width = W * dpr; cnv.height = H * dpr;
+  }
+  size(); addEventListener('resize', size);
+
+  function poleXY(now){
+    return {
+      x: W * 0.5 + Math.sin(now * 0.00019) * W * 0.16,
+      y: H * 0.3 + Math.sin(now * 0.00011) * H * 0.06
+    };
+  }
+  function btnXY(){ return { x: W / 2, y: H - 100 }; }
+
+  /* решётка растёт: новый узел цепляется рёбрами к двум ближайшим */
+  function growLattice(now){
+    var p = poleXY(now);
+    var count = nodes.length;
+    var R = 46 + count * 2.1;
+    var a = Math.random() * 2 * Math.PI;
+    var n = {
+      ox: Math.cos(a) * R * (0.7 + Math.random() * 0.5),
+      oy: Math.sin(a) * R * (0.55 + Math.random() * 0.45),
+      born: now, seed: Math.random() * 10
+    };
+    var dists = nodes.map(function(m, i){
+      return { i: i, d: Math.hypot(m.ox - n.ox, m.oy - n.oy) };
+    }).sort(function(x, y){ return x.d - y.d; });
+    nodes.push(n);
+    var ni = nodes.length - 1;
+    if (dists.length) edges.push({ a: ni, b: dists[0].i, born: now });
+    if (dists.length > 1 && dists[1].d < 130) edges.push({ a: ni, b: dists[1].i, born: now });
+    if (!dists.length) edges.push({ a: ni, b: ni, born: now });
+    if (nodes.length > 140){ /* решётка полна — дальше только мерцает */ }
+  }
+
+  function addSun(mine, now){
+    var from = mine ? btnXY() : {
+      x: Math.random() < 0.5 ? -20 : W + 20,
+      y: 80 + Math.random() * (H * 0.5)
+    };
+    suns.push({ x0: from.x, y0: from.y, t0: now, dur: mine ? 1100 : 1600, mine: mine });
+  }
+
+  function draw(now){
+    ctx2.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx2.clearRect(0, 0, W, H);
+    if (state !== 'stream'){ requestAnimationFrame(draw); return; }
+
+    var p = poleXY(now);
+    var breath = 0.5 - 0.5 * Math.cos((now - breathT0) * 0.00105);  /* цикл ~6с — дыхание */
+
+    /* фон: мягкая аврора потока */
+    var g1 = ctx2.createRadialGradient(p.x, p.y, 0, p.x, p.y, W * 0.85);
+    g1.addColorStop(0, 'rgba(240,237,230,' + (0.05 + breath * 0.04).toFixed(3) + ')');
+    g1.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx2.fillStyle = g1; ctx2.fillRect(0, 0, W, H);
+
+    /* решётка: рёбра и узлы, лёгкое мерцание */
+    pole.energy = Math.max(0, pole.energy - 0.002);
+    edges.forEach(function(e){
+      var na = nodes[e.a], nb = nodes[e.b];
+      var age = Math.min(1, (now - e.born) / 900);
+      var shim = 0.5 + 0.5 * Math.sin(now * 0.0016 + na.seed * 3);
+      ctx2.strokeStyle = lightColor((0.10 + 0.13 * shim) * age + pole.energy * 0.2);
+      ctx2.lineWidth = 1;
+      ctx2.beginPath();
+      ctx2.moveTo(p.x + na.ox, p.y + na.oy);
+      ctx2.lineTo(p.x + nb.ox, p.y + nb.oy);
+      ctx2.stroke();
+    });
+    nodes.forEach(function(n){
+      var age = Math.min(1, (now - n.born) / 900);
+      var tw = 0.5 + 0.5 * Math.sin(now * 0.0021 + n.seed * 7);
+      ctx2.fillStyle = lightColor((0.22 + 0.4 * tw) * age);
+      ctx2.beginPath();
+      ctx2.arc(p.x + n.ox, p.y + n.oy, 1.4 + tw * 1.1, 0, 6.29);
+      ctx2.fill();
+    });
+
+    /* моя нить внимания: от кнопки к полюсу, пока держу */
+    if (myHold.on) myHold.fade = Math.min(1, myHold.fade + 0.04);
+    else myHold.fade = Math.max(0, myHold.fade - 0.03);
+    if (myHold.fade > 0.02){
+      var b = btnXY();
+      var wob = Math.sin(now * 0.003) * 14;
+      ctx2.strokeStyle = lightColor(0.25 * myHold.fade + 0.25 * breath * myHold.fade);
+      ctx2.lineWidth = 1.6;
+      ctx2.beginPath();
+      ctx2.moveTo(b.x, b.y - 60);
+      ctx2.quadraticCurveTo(b.x + wob, (b.y + p.y) / 2, p.x, p.y);
+      ctx2.stroke();
+    }
+
+    /* летящие солнышки */
+    for (var i = suns.length - 1; i >= 0; i--){
+      var s = suns[i];
+      var t = (now - s.t0) / s.dur;
+      if (t >= 1){
+        suns.splice(i, 1);
+        pole.r = Math.min(64, pole.r + (s.mine ? 2.2 : 1.4));
+        pole.energy = 1;
+        growLattice(now);
+        if (s.mine) growLattice(now);
+        Audio.joinChime(s.mine);
+        Bus.emit('sync.join', { mine: s.mine });
+        continue;
+      }
+      var e = 1 - Math.pow(1 - t, 3);
+      var sx = s.x0 + (p.x - s.x0) * e;
+      var sy = s.y0 + (p.y - s.y0) * e - Math.sin(e * Math.PI) * 70;
+      var sr = 7 + (s.mine ? 4 : 1) - t * 3;
+      ctx2.shadowColor = lightColor(1); ctx2.shadowBlur = 16;
+      ctx2.fillStyle = lightColor(0.6 + 0.4 * (1 - t));
+      ctx2.beginPath(); ctx2.arc(sx, sy, sr, 0, 6.29); ctx2.fill();
+      ctx2.shadowBlur = 0;
+    }
+
+    /* полюс: общее солнце дышит и растёт от каждого вливания */
+    var pr = pole.r * (0.85 + 0.22 * breath) + pole.energy * 8;
+    for (var h = 3; h > 0; h--){
+      ctx2.beginPath();
+      ctx2.arc(p.x, p.y, pr + h * 16 * (0.8 + 0.3 * breath), 0, 6.29);
+      ctx2.strokeStyle = lightColor(0.10 + pole.energy * 0.1);
+      ctx2.lineWidth = 1;
+      ctx2.stroke();
+    }
+    ctx2.beginPath();
+    ctx2.arc(p.x, p.y, pr, 0, 6.29);
+    ctx2.fillStyle = lightColor(0.88);
+    ctx2.shadowColor = lightColor(1); ctx2.shadowBlur = 34;
+    ctx2.fill();
+    ctx2.shadowBlur = 0;
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+
+  return {
+    holdStart: function(){ myHold.on = true; myHold.t0 = performance.now(); breathT0 = breathT0 || performance.now(); },
+    holdEnd: function(){ myHold.on = false; },
+    sendSun: function(mine){ addSun(mine, performance.now()); },
+    beginBreath: function(){ breathT0 = performance.now(); }
+  };
+})();
+
+/* ═══════════════════════════════════════════════
+   ПОТОК: вход, кнопка SYNC, призраки
+   ═══════════════════════════════════════════════ */
+var hintEl = document.getElementById('hint'), hintTimer = null;
+function hint(text, ttl){
+  clearTimeout(hintTimer);
+  if (!text){ hintEl.classList.remove('on'); return; }
+  hintEl.textContent = text; hintEl.classList.add('on');
+  hintTimer = setTimeout(function(){ hintEl.classList.remove('on'); }, ttl || 2600);
+}
+
+var ghostTimer = null;
+function enterStream(){
+  if (state !== 'gate') return;
+  state = 'stream';
+  Gate.stop();
+  Audio.ensure();
+  Audio.startWorld();
+  Field.beginBreath();
+  document.getElementById('gate').classList.add('off');
+  document.getElementById('syncBtn').classList.add('on');
+  Bus.emit('viewer.join', {});
+  setTimeout(function(){ hint('зажми sync — присоединись'); }, 1800);
+  if (GHOSTS) scheduleGhost();
+  if (navigator.wakeLock && navigator.wakeLock.request)
+    navigator.wakeLock.request('screen').catch(function(){});
+}
+function scheduleGhost(){
+  ghostTimer = setTimeout(function(){
+    Field.sendSun(false);
+    scheduleGhost();
+  }, 5000 + Math.random() * 11000);
+}
+
+/* кнопка SYNC: зажал — нить светится и солнышко летит; отпустил — нить тает */
+(function SyncBtn(){
+  var btn = document.getElementById('syncBtn');
+  var held = false, pulseTimer = null;
+  btn.addEventListener('pointerdown', function(e){
+    if (state !== 'stream' || held) return;
+    held = true;
+    btn.classList.add('hold');
+    Audio.syncDown();
+    Field.holdStart();
+    Field.sendSun(true);
+    Bus.emit('sync.hold', { on:true });
+    /* долгое держание вливает новые солнышки — поток внимания течёт */
+    pulseTimer = setInterval(function(){ Field.sendSun(true); }, 4000);
+  });
+  ['pointerup', 'pointercancel'].forEach(function(n){
+    btn.addEventListener(n, function(){
+      if (!held) return;
+      held = false;
+      clearInterval(pulseTimer);
+      btn.classList.remove('hold');
+      Audio.syncUp();
+      Field.holdEnd();
+      Bus.emit('sync.hold', { on:false });
+    });
+  });
+})();
+
+document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+})();
+</script>
+</body>
+</html>
