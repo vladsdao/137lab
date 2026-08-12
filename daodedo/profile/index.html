@@ -223,6 +223,7 @@ canvas#field { position:absolute; inset:0; width:100%; height:100%; display:bloc
     <span class="cap">DAO DE DO</span>
   </div>
 
+  <audio id="bgout" playsinline></audio>
   <input type="file" id="filePic" accept="image/*" multiple>
   <input type="file" id="fileAud" accept="audio/*">
 </div>
@@ -268,7 +269,26 @@ var Audio = (function(){
     if (!ctx){
       ctx = new (window.AudioContext || window.webkitAudioContext)();
       master = ctx.createGain(); master.gain.value = 0.9;
-      master.connect(ctx.destination);
+      /* звук уходит через медиа-элемент: iOS считает нас плеером
+         и не глушит при заблокированном экране; фолбэк — прямой выход */
+      var out = document.getElementById('bgout');
+      var routed = false;
+      try {
+        var elemDest = ctx.createMediaStreamDestination();
+        master.connect(elemDest);
+        out.srcObject = elemDest.stream;
+        var pp = out.play();
+        routed = true;
+        if (pp && pp.catch) pp.catch(function(){
+          if (routed){ routed = false; master.connect(ctx.destination); }
+        });
+        if ('mediaSession' in navigator && window.MediaMetadata){
+          navigator.mediaSession.metadata = new MediaMetadata({ title:'DAO DE DO', artist:'137lab' });
+          navigator.mediaSession.setActionHandler('play', function(){ out.play(); ctx.resume(); });
+          navigator.mediaSession.setActionHandler('pause', function(){ out.pause(); });
+        }
+      } catch(_){}
+      if (!routed) master.connect(ctx.destination);
       bgGain = ctx.createGain(); bgGain.gain.value = 1;
       bgGain.connect(master);
       techGain = ctx.createGain(); techGain.gain.value = 1;
@@ -285,7 +305,11 @@ var Audio = (function(){
     return ctx;
   }
   document.addEventListener('visibilitychange', function(){
-    if (!document.hidden && ctx && ctx.state !== 'running') ctx.resume().catch(function(){});
+    if (!document.hidden && ctx){
+      if (ctx.state !== 'running') ctx.resume().catch(function(){});
+      var out2 = document.getElementById('bgout');
+      if (out2 && out2.srcObject && out2.paused) out2.play().catch(function(){});
+    }
   });
 
   function tone(o){
