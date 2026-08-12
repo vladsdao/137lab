@@ -161,6 +161,15 @@ canvas#field { position:absolute; inset:0; width:100%; height:100%; display:bloc
   box-shadow:0 0 8px -2px rgba(240,237,230,.8); pointer-events:none;
 }
 
+/* запись ленты */
+#recBtn {
+  position:fixed; right:14px; top:calc(10px + env(safe-area-inset-top));
+  width:40px; height:40px; border:none; background:none; color:var(--dim);
+  font-family:var(--font); font-size:15px; z-index:36; cursor:pointer;
+}
+#recBtn.on { color:var(--hot); animation:recblink 1s ease-in-out infinite; }
+@keyframes recblink { 0%,100% { opacity:1; } 50% { opacity:.35; } }
+
 /* негатив: мир наизнанку */
 #invert {
   position:fixed; inset:0; z-index:70; background:#fff;
@@ -193,6 +202,7 @@ canvas#field { position:absolute; inset:0; width:100%; height:100%; display:bloc
 <div id="stage">
   <canvas id="field"></canvas>
   <span class="brand">DAODEDO · профиль</span>
+  <button id="recBtn" aria-label="Запись ленты">⦿</button>
   <div id="hint"></div>
 
   <div id="flow"><div class="track"></div><div id="flowKnob"></div></div>
@@ -240,7 +250,7 @@ var Bus = (function(){
 
 var deckSide = 'white';
 var mix = 0;
-var flowSpeed = 16, flowTarget = 16, rainHeld = false;
+var flowSpeed = 16, flowTarget = 16, rainHeld = false, twinOn = false;
 var brushOn = false;
 function lightColor(a){ return 'rgba(240,237,230,' + (a == null ? 1 : a) + ')'; }
 function hotColor(a){ return 'rgba(255,90,77,' + (a == null ? 1 : a) + ')'; }
@@ -252,7 +262,7 @@ function hexTop(){ return innerHeight - 360; }
 var Audio = (function(){
   var ctx = null, master = null, bgGain = null;
   var techGain = null, healGain = null, chipGain = null;
-  var noiseBuf = null;
+  var noiseBuf = null, recDest = null;
 
   function ensure(){
     if (!ctx){
@@ -265,6 +275,7 @@ var Audio = (function(){
       healGain = ctx.createGain(); healGain.gain.value = 0;
       chipGain = ctx.createGain(); chipGain.gain.value = 1;
       techGain.connect(bgGain); healGain.connect(bgGain); chipGain.connect(bgGain);
+      recDest = null;
       var len = ctx.sampleRate * 0.5;
       noiseBuf = ctx.createBuffer(1, len, ctx.sampleRate);
       var d = noiseBuf.getChannelData(0);
@@ -397,7 +408,7 @@ var Audio = (function(){
 
   /* живой голос */
   var Voice = (function(){
-    var srcNode = null, analyser = null, on = false;
+    var srcNode = null, analyser = null, on = false, srcRef = null;
     function toggle(){
       var c = ensure();
       if (on){
@@ -410,7 +421,9 @@ var Audio = (function(){
           srcNode = c.createMediaStreamSource(s);
           analyser = c.createAnalyser(); analyser.fftSize = 256;
           srcNode.connect(analyser);   /* только река: в динамики голос не идёт */
+          if (recDest) srcNode.connect(recDest);   /* но в запись ленты — идёт */
         }
+        srcRef = srcNode;
         on = true;
         Bus.emit('voice.live', { on:true });
         return true;
@@ -423,7 +436,8 @@ var Audio = (function(){
       var s = 0; for (var i = 0; i < arr.length; i++) s += arr[i];
       return s / arr.length / 255;
     }
-    return { toggle:toggle, level:level, isOn: function(){ return on; } };
+    return { toggle:toggle, level:level, isOn: function(){ return on; },
+      src: function(){ return srcRef; } };
   })();
 
   /* сэмплы: тап пишет 4с и крутит; библиотека до 6 */
@@ -496,11 +510,40 @@ var Audio = (function(){
   })();
 
   var Psalm = (function(){
-    var buffer = null, playing = null;
+    var buffer = null, reversed = null, playing = null, whisper = null;
+    function makeReversed(buf){
+      var c = ensure();
+      var r = c.createBuffer(buf.numberOfChannels, buf.length, buf.sampleRate);
+      for (var ch = 0; ch < buf.numberOfChannels; ch++){
+        var a = buf.getChannelData(ch), b = r.getChannelData(ch);
+        for (var i = 0, n = buf.length; i < n; i++) b[i] = a[n - 1 - i];
+      }
+      return r;
+    }
     function load(file){
       return file.arrayBuffer().then(function(ab){
         return ensure().decodeAudioData(ab);
-      }).then(function(buf){ buffer = buf; Bus.emit('psalm.state', { loaded:true }); return true; });
+      }).then(function(buf){
+        buffer = buf; reversed = makeReversed(buf);
+        Bus.emit('psalm.state', { loaded:true }); return true;
+      });
+    }
+    function whisperDown(){
+      if (!reversed) return;
+      var c = ensure();
+      whisperUp();
+      whisper = c.createBufferSource();
+      whisper.buffer = reversed; whisper.loop = true;
+      var g = c.createGain(); g.gain.value = 0.55;
+      whisper.connect(g).connect(chipGain);
+      whisper.start();
+      Bus.emit('psalm.whisper', { on:true });
+    }
+    function whisperUp(){
+      if (!whisper) return;
+      try { whisper.stop(); } catch(_){}
+      whisper = null;
+      Bus.emit('psalm.whisper', { on:false });
     }
     function play(){
       if (!buffer) return false;
@@ -515,7 +558,9 @@ var Audio = (function(){
       Bus.emit('psalm.play', { on:true });
       return true;
     }
-    return { load:load, play:play, has: function(){ return !!buffer; }, playing: function(){ return !!playing; } };
+    return { load:load, play:play, whisperDown:whisperDown, whisperUp:whisperUp,
+      has: function(){ return !!buffer; }, playing: function(){ return !!playing; },
+      whispering: function(){ return !!whisper; } };
   })();
 
   /* SYNC: дыхание внимания — тихий тон с медленными биениями */
@@ -581,6 +626,7 @@ var Audio = (function(){
     });
   }
   function picSound(){ tone({ f:520, f2:390, g:0.05, a:0.005, dur:0.25, type:'triangle' }); }
+  function shadowSound(){ tone({ f:164, g:0.03, a:0.02, dur:0.5 }); noise({ g:0.015, freq:500, lp:true, dur:0.4 }); }
   function likeSound(){ tone({ f:1174, g:0.04, a:0.005, dur:0.3 }); tone({ f:1568, g:0.025, a:0.005, dur:0.35 }); }
   function rouletteSound(){
     var c = ensure(), t = c.currentTime;
@@ -635,12 +681,22 @@ var Audio = (function(){
     };
   })();
 
+  function recStream(){
+    var c = ensure();
+    if (!recDest){
+      recDest = c.createMediaStreamDestination();
+      master.connect(recDest);
+      if (Voice.src()) Voice.src().connect(recDest);
+    }
+    return recDest.stream;
+  }
+
   return {
-    ensure:ensure, start:start, setMix:setMix, quantized:quantized,
+    ensure:ensure, start:start, setMix:setMix, quantized:quantized, recStream:recStream,
     silenceDown:silenceDown, silenceUp:silenceUp,
     Voice:Voice, Sample:Sample, Psalm:Psalm, Sync:Sync, Rain:Rain,
     bellDown:bellDown, bellUp:bellUp,
-    symbolSound:symbolSound, picSound:picSound, likeSound:likeSound,
+    symbolSound:symbolSound, picSound:picSound, likeSound:likeSound, shadowSound:shadowSound,
     rouletteSound:rouletteSound, invertSound:invertSound
   };
 })();
@@ -664,6 +720,7 @@ var Field = (function(){
   var lastTrailT = 0;
   var sync = { held:false, t0:0, x:0, y:0, fade:0 };
   var rain = { on:false, t0:0, fade:0, drops:[], ripples:[] };
+  var viewOff = 0, viewHeld = false;   /* скролл в прошлое ленты */
 
   function size(){
     W = innerWidth; H = innerHeight;
@@ -683,14 +740,13 @@ var Field = (function(){
     symbols.forEach(function(s){ s.y += dy; });
     pics.forEach(function(p){ p.y += dy; });
     texts.forEach(function(t2){ t2.y += dy; });
-    var cut = hexTop() + 60, off = H + 400;
-    /* река и метки — вечные: живут, пока не уедут далеко за экран */
-    voiceTrail = voiceTrail.filter(function(p){ return p.y < off; });
-    likes = likes.filter(function(p){ return p.y < off; });
-    strokes = strokes.filter(function(s){ return s.pts.some(function(p){ return p.y < cut; }); });
-    symbols = symbols.filter(function(s){ return s.y < cut; });
-    pics = pics.filter(function(p){ return p.y < cut + 80; });
-    texts = texts.filter(function(t2){ return t2.y < cut; });
+    var deep = H + 2600;   /* история хранится глубоко — в неё можно вернуться скроллом */
+    voiceTrail = voiceTrail.filter(function(p){ return p.y < deep; });
+    likes = likes.filter(function(p){ return p.y < deep; });
+    strokes = strokes.filter(function(s){ return s.pts.some(function(p){ return p.y < deep; }); });
+    symbols = symbols.filter(function(s){ return s.y < deep; });
+    pics = pics.filter(function(p){ return p.y < deep; });
+    texts = texts.filter(function(t2){ return t2.y < hexTop() + 60; });
   }
 
   var SYMS = ['spiral','eye','infinity','star','wave','triskel'];
@@ -734,8 +790,13 @@ var Field = (function(){
     ctx2.save();
     ctx2.translate(s.x, s.y);
     ctx2.rotate(Math.sin(s.seed) * 0.4);
-    ctx2.strokeStyle = lightColor(al); ctx2.lineWidth = 1.6; ctx2.lineCap = 'round';
-    ctx2.shadowColor = lightColor(0.9); ctx2.shadowBlur = 14 * pr;
+    if (s.shadow){
+      ctx2.strokeStyle = lightColor(al * 0.28); ctx2.shadowBlur = 0;
+    } else {
+      ctx2.strokeStyle = lightColor(al);
+      ctx2.shadowColor = lightColor(0.9); ctx2.shadowBlur = 14 * pr;
+    }
+    ctx2.lineWidth = 1.6; ctx2.lineCap = 'round';
     ctx2.beginPath();
     if (s.kind === 'text'){
       ctx2.font = '700 26px "Space Mono", monospace';
@@ -897,6 +958,11 @@ var Field = (function(){
     ctx2.clearRect(0, 0, W, H);
     drawBg(now);
 
+    /* взгляд в прошлое: лента поднимается, отпустил — резинка к настоящему */
+    if (!viewHeld && viewOff > 0.5) viewOff *= 0.9;
+    ctx2.save();
+    ctx2.translate(0, -viewOff);
+
     texts.forEach(function(t2){
       ctx2.fillStyle = lightColor(0.4);
       ctx2.font = '10px "Space Mono", monospace';
@@ -908,8 +974,13 @@ var Field = (function(){
 
     strokes.forEach(function(s){
       if (s.pts.length < 2) return;
-      ctx2.strokeStyle = lightColor(0.85); ctx2.lineWidth = 2.2; ctx2.lineCap = 'round'; ctx2.lineJoin = 'round';
-      ctx2.shadowColor = lightColor(1); ctx2.shadowBlur = 12;
+      if (s.shadow){
+        ctx2.strokeStyle = lightColor(0.24); ctx2.shadowBlur = 0;
+      } else {
+        ctx2.strokeStyle = lightColor(0.85);
+        ctx2.shadowColor = lightColor(1); ctx2.shadowBlur = 12;
+      }
+      ctx2.lineWidth = 2.2; ctx2.lineCap = 'round'; ctx2.lineJoin = 'round';
       ctx2.beginPath();
       s.pts.forEach(function(p, i){ i ? ctx2.lineTo(p.x, p.y) : ctx2.moveTo(p.x, p.y); });
       ctx2.stroke();
@@ -921,10 +992,13 @@ var Field = (function(){
     pics.forEach(function(p){
       ctx2.save();
       ctx2.translate(p.x, p.y); ctx2.rotate(p.rot);
-      ctx2.shadowColor = 'rgba(0,0,0,.7)'; ctx2.shadowBlur = 14;
+      if (p.shadow) ctx2.globalAlpha = 0.28;
+      else { ctx2.shadowColor = 'rgba(0,0,0,.7)'; ctx2.shadowBlur = 14; }
       ctx2.drawImage(p.img, -p.w/2, -p.w/2, p.w, p.w);
       ctx2.restore();
     });
+
+    ctx2.restore();   /* конец лентных слоёв — настоящее рисуется поверх */
 
     /* река пишется точкой настоящего — компактно, каждые 60мс */
     var vl = Audio.Voice.level();
@@ -962,25 +1036,40 @@ var Field = (function(){
   requestAnimationFrame(draw);
 
   return {
-    addSymbol: function(kind, text){
-      symbols.push({
+    addSymbol: function(kind, text, shadow){
+      var obj = {
         kind: kind || SYMS[Math.floor(Math.random() * SYMS.length)],
         text: text || '',
         x: 60 + Math.random() * (W - 120),
         y: 110 + Math.random() * (H * 0.3),
-        born: performance.now(), seed: Math.random() * 10
-      });
+        born: performance.now(), seed: Math.random() * 10,
+        shadow: !!shadow
+      };
+      symbols.push(obj);
+      if (twinOn && !shadow) setTimeout(function(){
+        symbols.push({ kind:obj.kind, text:obj.text, x:obj.x + 14, y:obj.y + 14,
+          born: performance.now(), seed: obj.seed, shadow:true });
+        Audio.shadowSound();
+      }, 2000);
     },
     randSym: function(){ return SYMS[Math.floor(Math.random() * SYMS.length)]; },
-    addPic: function(img){
-      pics.push({
+    addPic: function(img, shadow){
+      var obj = {
         img: img,
         x: 60 + Math.random() * (W - 120),
         y: 120 + Math.random() * (H * 0.28),
         rot: (Math.random() * 2 - 1) * 0.26,
-        w: 96 + Math.random() * 60
-      });
-      if (pics.length > 10) pics.shift();
+        w: 96 + Math.random() * 60,
+        shadow: !!shadow
+      };
+      pics.push(obj);
+      if (pics.length > 12) pics.shift();
+      if (twinOn && !shadow) setTimeout(function(){
+        pics.push({ img:obj.img, x:obj.x + 16, y:obj.y + 16, rot:obj.rot + 0.12,
+          w:obj.w, shadow:true });
+        if (pics.length > 12) pics.shift();
+        Audio.shadowSound();
+      }, 2000);
     },
     addText: function(str){ texts.push({ str: str, x: W / 2, y: 100 }); },
     addLike: function(x, y){ likes.push({ x: x, y: y, born: performance.now() }); },
@@ -990,6 +1079,15 @@ var Field = (function(){
       if (strokes.length > 30) strokes.shift();
       return strokes[strokes.length - 1];
     },
+    addShadowStroke: function(pts){
+      strokes.push({ pts: pts, born: performance.now(), shadow: true });
+      if (strokes.length > 30) strokes.shift();
+      Audio.shadowSound();
+    },
+    setView: function(off){ viewOff = Math.max(0, Math.min(2400, off)); },
+    view: function(){ return viewOff; },
+    viewRelease: function(){ viewHeld = false; },
+    viewHold: function(){ viewHeld = true; },
     undoStroke: function(){ var s = strokes.pop(); if (s) undone.push(s); return strokes.length; },
     hasStrokes: function(){ return strokes.length > 0; },
     riverHit: function(x, y){ return x < 90 && y > 60 && y < hexTop(); },
@@ -1013,13 +1111,13 @@ function hint(text, ttl){
 
 var DECKS = {
   white: { center:'sync',   petals:['sample', 'brush', 'symbol', 'picture', 'avatar', 'voice'] },
-  black: { center:'random', petals:['psalm', 'silence', 'bell', 'invert', 'rain', null] }
+  black: { center:'random', petals:['psalm', 'silence', 'bell', 'invert', 'rain', 'twin'] }
 };
 var CHIP_LBL = {
   sync:'sync', voice:'голос', sample:'сэмпл', brush:'кисть', symbol:'символ',
   picture:'картинка', avatar:'аватар',
   random:'рандом', psalm:'псалом', silence:'тишина', bell:'колокол',
-  invert:'негатив', rain:'дождь'
+  invert:'негатив', rain:'дождь', twin:'тень'
 };
 var STUB_CHIPS = { avatar:1 };          /* зарезервировано: камера-мимика в следующем круге */
 var HEX_PATH = 'M48 8 L86 30 V76 L48 98 L10 76 V30 Z';
@@ -1071,10 +1169,11 @@ function decorate(b, chip){
   }
   if (chip === 'brush' && brushOn) b.classList.add('live');
   if (chip === 'psalm'){
-    if (Audio.Psalm.playing()) b.classList.add('live');
+    if (Audio.Psalm.playing() || Audio.Psalm.whispering()) b.classList.add('live');
     else if (Audio.Psalm.has()) b.classList.add('armed');
   }
   if (chip === 'rain' && rainHeld) b.classList.add('live');
+  if (chip === 'twin' && twinOn) b.classList.add('live');
 }
 
 function renderDeck(){
@@ -1210,19 +1309,19 @@ var gesture = { id:null, x0:0, y0:0, swiped:false };
 var activeStroke = null, strokeId = null;
 var stageEl = document.getElementById('stage');
 
+var fieldDrag = { id:null, y0:0, base:0, moved:false, x0:0 };
 stageEl.addEventListener('pointerdown', function(e){
   if (e.target.tagName === 'CANVAS'){
-    /* лайк на реке голоса */
-    if (Field.riverHit(e.clientX, e.clientY)){
-      Field.addLike(Math.min(e.clientX, 80), e.clientY);
-      Audio.likeSound();
-      Bus.emit('river.like', { y: e.clientY });
-      return;
-    }
     if (brushOn && e.clientY < hexTop() - 20 && e.clientX < innerWidth - 34){
       activeStroke = Field.strokeStart(e.clientX, e.clientY);
       strokeId = e.pointerId;
       renderDeck();
+      return;
+    }
+    /* свободное поле: вертикальный драг листает прошлое, короткий тап по реке — метка */
+    if (e.clientY < hexTop() - 10 && fieldDrag.id === null){
+      fieldDrag = { id: e.pointerId, y0: e.clientY, x0: e.clientX, base: Field.view(), moved: false };
+      Field.viewHold();
       return;
     }
   }
@@ -1240,6 +1339,12 @@ stageEl.addEventListener('pointermove', function(e){
     }
     return;
   }
+  if (e.pointerId === fieldDrag.id){
+    var dy = fieldDrag.y0 - e.clientY;
+    if (Math.abs(dy) > 14) fieldDrag.moved = true;
+    if (fieldDrag.moved) Field.setView(fieldDrag.base + dy);
+    return;
+  }
   if (e.pointerId !== gesture.id || gesture.swiped) return;
   if (Math.abs(e.clientX - gesture.x0) > 46){
     gesture.swiped = true;
@@ -1248,7 +1353,23 @@ stageEl.addEventListener('pointermove', function(e){
 });
 ['pointerup', 'pointercancel'].forEach(function(n){
   stageEl.addEventListener(n, function(e){
-    if (e.pointerId === strokeId){ activeStroke = null; strokeId = null; }
+    if (e.pointerId === strokeId){
+      /* тень-двойник повторяет штрих через два счёта */
+      if (twinOn && activeStroke && activeStroke.pts.length > 1){
+        var copy = activeStroke.pts.map(function(p){ return { x: p.x + 12, y: p.y + 12 }; });
+        setTimeout(function(){ Field.addShadowStroke(copy); }, 2000);
+      }
+      activeStroke = null; strokeId = null;
+    }
+    if (e.pointerId === fieldDrag.id){
+      if (!fieldDrag.moved && Field.riverHit(fieldDrag.x0, fieldDrag.y0) && Field.view() < 10){
+        Field.addLike(Math.min(fieldDrag.x0, 80), fieldDrag.y0);
+        Audio.likeSound();
+        Bus.emit('river.like', { y: fieldDrag.y0 });
+      }
+      fieldDrag.id = null;
+      Field.viewRelease();
+    }
     if (e.pointerId === gesture.id) setTimeout(function(){ gesture.id = null; gesture.swiped = false; }, 0);
   });
 });
@@ -1270,13 +1391,14 @@ document.getElementById('undoBtn').addEventListener('pointerup', function(e){
 })();
 
 /* ── фишки ── */
-var holdTimers = {}, bellHeld = false, silenceHeld = false, syncHeld = false;
+var holdTimers = {}, bellHeld = false, silenceHeld = false, syncHeld = false, psalmWhisper = false;
 function cancelHolds(){
   Object.keys(holdTimers).forEach(function(k){ clearTimeout(holdTimers[k]); delete holdTimers[k]; });
   if (bellHeld){ Audio.bellUp(); bellHeld = false; }
   if (silenceHeld){ Audio.silenceUp(); silenceHeld = false; }
   if (syncHeld){ Audio.Sync.up(); Field.syncUp(); syncHeld = false; Bus.emit('sync.hold', { on:false }); }
   if (rainHeld){ rainHeld = false; Audio.Rain.up(); Field.rainSet(false); }
+  if (psalmWhisper){ psalmWhisper = false; Audio.Psalm.whisperUp(); }
   slotEls.forEach(function(b){ b.classList.remove('pressed'); });
   renderDeck();
 }
@@ -1379,8 +1501,8 @@ slotEls.forEach(function(b){
     } else if (chip === 'psalm' && Audio.Psalm.has()){
       holdTimers.psalm = setTimeout(function(){
         delete holdTimers.psalm;
-        fileAud.click();
-      }, 650);
+        if (!gesture.swiped){ psalmWhisper = true; Audio.Psalm.whisperDown(); renderDeck(); }
+      }, 450);
     }
   });
   b.addEventListener('pointerup', function(e){
@@ -1400,6 +1522,13 @@ slotEls.forEach(function(b){
     }
     if (chip === 'rain'){
       if (rainHeld){ rainHeld = false; Audio.Rain.up(); Field.rainSet(false); Bus.emit('rain.hold', { on:false }); renderDeck(); }
+      return;
+    }
+    if (chip === 'twin'){
+      twinOn = !twinOn;
+      Bus.emit('twin.set', { on: twinOn });
+      renderDeck();
+      if (twinOn) hint('тень ходит следом');
       return;
     }
     if (chip === 'voice'){
@@ -1435,8 +1564,8 @@ slotEls.forEach(function(b){
       return;
     }
     if (chip === 'psalm'){
-      if (holdTimers.psalm){ clearTimeout(holdTimers.psalm); delete holdTimers.psalm; }
-      castChip('psalm');
+      if (holdTimers.psalm){ clearTimeout(holdTimers.psalm); delete holdTimers.psalm; castChip('psalm'); }
+      else if (psalmWhisper){ psalmWhisper = false; Audio.Psalm.whisperUp(); renderDeck(); }
       return;
     }
     castChip(chip);
@@ -1494,6 +1623,45 @@ slotEls.forEach(function(b){
     el.addEventListener(n, function(){ active = false; el.classList.remove('touch'); });
   });
   knob.style.top = ((16 - 2) / 58 * 100) + '%';
+})();
+
+(function Rec(){
+  var btn = document.getElementById('recBtn');
+  var rec = null, chunks = [];
+  btn.addEventListener('click', function(){
+    if (rec){ try { rec.stop(); } catch(_){} return; }
+    try {
+      var canvasStream = document.getElementById('field').captureStream(30);
+      var mixed = new MediaStream(
+        canvasStream.getVideoTracks().concat(Audio.recStream().getAudioTracks())
+      );
+      var mime = ['video/mp4', 'video/webm;codecs=vp9', 'video/webm'].filter(function(m){
+        return window.MediaRecorder && MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(m);
+      })[0];
+      rec = new MediaRecorder(mixed, mime ? { mimeType: mime } : undefined);
+      chunks = [];
+      rec.ondataavailable = function(e){ if (e.data.size) chunks.push(e.data); };
+      rec.onstop = function(){
+        var type = (rec && rec.mimeType) || 'video/webm';
+        var blob = new Blob(chunks, { type: type });
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'daodedo-lenta.' + (type.indexOf('mp4') >= 0 ? 'mp4' : 'webm');
+        a.click();
+        setTimeout(function(){ URL.revokeObjectURL(a.href); }, 4000);
+        rec = null;
+        btn.classList.remove('on');
+        Bus.emit('rec.set', { on:false });
+      };
+      rec.start();
+      btn.classList.add('on');
+      Bus.emit('rec.set', { on:true });
+      hint('лента пишется');
+    } catch(err){
+      rec = null;
+      hint('запись недоступна');
+    }
+  });
 })();
 
 function teach(){
