@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#121110">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" sizes="32x32" href="/icons/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<title>Як говорити про це з тими, хто поруч — нейропрактики</title>
+<meta name="description" content="Трансформація зсередини і ззовні. Як проявлятися, не ховаючись, і як пояснити близьким, що з тобою відбувається.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Як говорити про це з тими, хто поруч">
+<meta property="og:description" content="Змінитися — половина шляху. Друга половина — не ховати це від тих, кого любиш. Памʼятка учасника нейропрактик · рівень другий.">
+<meta property="og:url" content="https://137lab.xyz/poruch/">
+<meta property="og:image" content="https://137lab.xyz/poruch/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Як говорити про це з тими, хто поруч">
+<meta name="twitter:description" content="Змінитися — половина шляху. Друга половина — не ховати це від тих, кого любиш.">
+<meta name="twitter:image" content="https://137lab.xyz/poruch/og.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Literata:ital,opsz,wght@0,7..72,200;0,7..72,300;0,7..72,400;1,7..72,300&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#121110;
+    --line:#EDE7DA;
+    --linen:#8E8678;
+    --brass:#A98F60;
+    --hair:rgba(237,231,218,.14);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--ink);color:var(--line);
+    font-family:'Literata',Georgia,serif;font-weight:300;
+    font-size:17px;line-height:1.78;-webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--brass);color:var(--ink)}
+  a{color:inherit}
+  .wrap{max-width:620px;margin:0 auto;padding:0 22px}
+  .eyebrow{
+    font-family:'Cormorant Garamond',serif;font-weight:500;
+    font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--brass);
+  }
+  h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:300}
+  h2{font-size:clamp(26px,6.4vw,34px);line-height:1.22;margin:18px 0 26px;letter-spacing:.01em}
+  p{margin-bottom:1.3em}
+  p.mut{color:var(--linen)}
+  section{padding:72px 0}
+  .rule{border:none;border-top:1px solid var(--hair);max-width:620px;margin:0 auto}
+  em{font-style:italic}
+  strong{font-weight:400;color:var(--line)}
+
+  /* hero */
+  header{
+    min-height:100svh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;
+    padding:70px 22px 54px;position:relative;
+  }
+  .glyphs{font-size:13px;letter-spacing:.9em;margin-left:.9em;color:var(--brass);margin-bottom:32px}
+  h1{font-size:clamp(33px,8.4vw,52px);letter-spacing:.03em;line-height:1.1;font-weight:300}
+  .latin{
+    font-family:'Cormorant Garamond',serif;font-size:12px;letter-spacing:.42em;
+    margin-left:.42em;text-transform:uppercase;color:var(--linen);margin-top:20px;
+  }
+  .field{width:min(54vw,230px);margin:40px 0 36px;animation:breathe 11s ease-in-out infinite;transform-origin:center}
+  @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
+  .field .ring2{animation:soften 11s ease-in-out infinite}
+  @keyframes soften{0%,100%{opacity:.5}50%{opacity:.92}}
+  @media (prefers-reduced-motion: reduce){.field,.field .ring2{animation:none}}
+  .thesis{font-family:'Cormorant Garamond',serif;font-size:clamp(20px,5.4vw,26px);line-height:1.48;max-width:520px}
+  .down{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);font-size:12px;letter-spacing:.3em;color:var(--linen);text-decoration:none}
+
+  /* story */
+  .story p{font-size:17.5px}
+  .beat{
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(20px,5vw,25px);line-height:1.5;
+    margin:30px 0;padding-left:20px;border-left:1px solid var(--brass);
+  }
+  .whisper{
+    font-family:'Cormorant Garamond',serif;font-style:italic;
+    font-size:19px;line-height:1.6;color:var(--linen);margin:26px 0;padding-left:20px;
+  }
+  .pull{
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(21px,5.2vw,27px);line-height:1.5;
+    border-left:1px solid var(--brass);padding-left:22px;margin:36px 0;
+  }
+
+  /* hook */
+  .hook{
+    text-align:center;padding:44px 0 6px;
+  }
+  .hook .mk{color:var(--brass);letter-spacing:.5em;margin-left:.5em;font-size:12px;display:block;margin-bottom:16px}
+  .hook p{
+    font-family:'Cormorant Garamond',serif;font-style:italic;
+    font-size:clamp(19px,4.8vw,23px);line-height:1.55;color:var(--line);
+    max-width:480px;margin:0 auto;
+  }
+
+  /* transformation map */
+  .curve{margin:24px 0 6px}
+  .curve svg{width:100%;height:auto;display:block}
+  .stages{border-top:1px solid var(--hair);margin-top:14px}
+  .stages > div{padding:20px 0;border-bottom:1px solid var(--hair);display:grid;grid-template-columns:34px 1fr;gap:0 14px}
+  .stages .n{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--brass);letter-spacing:.1em;padding-top:6px}
+  .stages b{display:block;font-family:'Cormorant Garamond',serif;font-weight:400;font-size:21px;letter-spacing:.02em;margin-bottom:4px}
+  .stages span{display:block;font-size:15.5px;color:var(--linen);line-height:1.68}
+  .stages .feel{display:block;margin-top:7px;font-size:15px;color:var(--line)}
+  .stages .feel::before{content:"зсередини · ";font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--brass)}
+
+  /* their eyes */
+  .eyes{border-top:1px solid var(--hair);margin-top:6px}
+  .eyes li{list-style:none;padding:22px 0;border-bottom:1px solid var(--hair)}
+  .eyes .see{
+    font-family:'Cormorant Garamond',serif;font-weight:400;color:var(--line);
+    font-size:21px;line-height:1.4;letter-spacing:.02em;margin-bottom:10px;
+  }
+  .eyes .ins,.eyes .why{display:block;font-size:15.5px;color:var(--linen);line-height:1.68;margin-top:7px}
+  .eyes .ins::before{content:"зсередини · ";font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--brass)}
+  .eyes .why::before{content:"чому так читається · ";font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--brass)}
+
+  /* dictionary */
+  .dict{margin-top:6px;border-top:1px solid var(--hair)}
+  .dict > div{padding:20px 0;border-bottom:1px solid var(--hair)}
+  .dict .in{font-family:'Cormorant Garamond',serif;font-size:20px;letter-spacing:.02em;margin-bottom:6px}
+  .dict .in::before{content:"зсередини · ";font-family:'Literata',serif;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--brass)}
+  .dict .out{font-size:15.5px;color:var(--linen);line-height:1.68}
+  .dict .out::before{content:"назовні · ";font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--brass)}
+
+  /* mistakes */
+  .miss{padding:22px 0;border-bottom:1px solid var(--hair)}
+  .miss b{display:block;font-family:'Cormorant Garamond',serif;font-weight:400;font-size:21px;margin-bottom:5px}
+  .miss span{display:block;font-size:15.5px;color:var(--linen);line-height:1.68}
+  .miss .fix{display:block;margin-top:9px;font-size:15.5px;color:var(--line)}
+  .miss .fix::before{content:"→ ";color:var(--brass)}
+
+  /* steps */
+  .steps{counter-reset:s;border-top:1px solid var(--hair);margin-top:6px}
+  .steps li{list-style:none;counter-increment:s;position:relative;padding:20px 0 20px 42px;border-bottom:1px solid var(--hair);font-size:16px;line-height:1.7}
+  .steps li::before{content:counter(s);position:absolute;left:0;top:22px;font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--brass);letter-spacing:.1em}
+  .steps b{display:block;font-family:'Cormorant Garamond',serif;font-weight:400;font-size:20px;margin-bottom:3px}
+  .steps span{color:var(--linen);font-size:15.5px}
+
+  /* phrases */
+  .phrase{border:1px solid rgba(237,231,218,.22);padding:22px 20px;margin:16px 0;background:rgba(237,231,218,.014)}
+  .phrase .who{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin-bottom:11px}
+  .phrase .said{font-size:15.5px;color:var(--linen);margin-bottom:11px;line-height:1.68}
+  .phrase .say{font-family:'Cormorant Garamond',serif;font-size:20px;line-height:1.5;letter-spacing:.01em}
+
+  /* sides */
+  .side{border:1px solid rgba(237,231,218,.22);padding:26px 22px;margin:20px 0;background:rgba(237,231,218,.014)}
+  .side .tag{font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--brass);margin-bottom:12px}
+  .side h3{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(21px,5.2vw,26px);line-height:1.3;margin:0 0 14px}
+  .side p{font-size:16px;margin-bottom:1.05em}
+  .side .do,.side .dont{display:block;font-size:15.5px;line-height:1.7;padding:12px 0;border-top:1px solid var(--hair)}
+  .side .do::before{content:"Роби · ";font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--brass)}
+  .side .dont::before{content:"Не роби · ";font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--linen)}
+  .side .law{display:block;margin-top:14px;padding-top:14px;border-top:1px solid var(--hair);font-family:'Cormorant Garamond',serif;font-size:19px;line-height:1.5}
+
+  /* checklist */
+  .check{border:1px solid rgba(237,231,218,.25);padding:30px 24px;margin-top:28px}
+  .check p{font-size:16.5px;margin-bottom:13px;padding-left:22px;position:relative;line-height:1.68}
+  .check p::before{content:"·";position:absolute;left:4px;color:var(--brass);font-size:22px;line-height:1.2}
+  .check p:last-child{margin-bottom:0}
+
+  /* cta */
+  .cta{padding:62px 0 8px;text-align:center}
+  .cta p{font-size:16.5px;color:var(--linen);max-width:460px;margin:0 auto 24px;line-height:1.7}
+  .cta a.join{
+    display:inline-block;text-decoration:none;
+    border:1px solid var(--brass);color:var(--line);
+    padding:16px 34px;font-family:'Cormorant Garamond',serif;
+    font-size:15px;letter-spacing:.28em;text-transform:uppercase;
+    transition:background .35s ease,color .35s ease;
+  }
+  .cta a.join:hover{background:var(--brass);color:var(--ink)}
+  .cta .fine{font-size:12.5px;letter-spacing:.06em;color:var(--linen);margin-top:18px}
+
+  /* seal */
+  .seal{padding:84px 0 36px;text-align:center}
+  .seal .mark{font-size:20px;letter-spacing:.7em;margin-left:.7em;color:var(--brass);margin-bottom:24px}
+  .seal p{font-family:'Cormorant Garamond',serif;font-size:clamp(21px,5vw,27px);line-height:1.5;max-width:520px;margin:0 auto 14px}
+  .backlink{display:block;text-align:center;margin-top:32px;font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--linen);text-decoration:none}
+  .backlink:hover{color:var(--brass)}
+  footer{border-top:1px solid var(--hair);padding:34px 22px 44px;text-align:center;font-size:11.5px;letter-spacing:.22em;color:var(--linen);text-transform:uppercase}
+  footer .g{color:var(--brass);letter-spacing:.6em;margin-left:.6em;display:block;margin-bottom:12px}
+
+  /* ── десктоп: ширше дихання, мобільна версія без змін (як /pislya) ── */
+  @media (min-width:900px){
+    body{font-size:18px}
+    .wrap{max-width:820px}
+    .rule{max-width:820px}
+    .thesis{max-width:640px}
+    .stages > div{grid-template-columns:44px 1fr}
+    .phrase{padding:26px 30px}
+    .side{padding:34px 36px}
+    .check{padding:40px 38px}
+    .seal p{max-width:640px}
+    .cta p{max-width:560px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="glyphs">◦ ◦ ◦</div>
+  <h1>Як говорити<br>про це з тими,<br>хто поруч</h1>
+  <div class="latin">пам'ятка учасника · рівень другий</div>
+
+  <svg class="field" viewBox="0 0 600 600" role="img" aria-label="Коло поля">
+    <circle cx="300" cy="300" r="278" fill="none" stroke="#EDE7DA" stroke-width="1.2"/>
+    <circle class="ring2" cx="300" cy="300" r="262" fill="none" stroke="#EDE7DA" stroke-width=".5" stroke-dasharray="2 5" opacity=".55"/>
+    <circle cx="300" cy="300" r="150" fill="none" stroke="#EDE7DA" stroke-width=".7" opacity=".5"/>
+    <circle cx="300" cy="300" r="92" fill="none" stroke="#A98F60" stroke-width=".9"/>
+    <circle cx="300" cy="300" r="3" fill="#A98F60"/>
+  </svg>
+
+  <p class="thesis">Змінитися — половина шляху.<br>Друга половина — не ховати це від тих, кого любиш.</p>
+
+  <a class="down" href="#story" aria-label="Далі">↓</a>
+</header>
+
+<section id="story" class="story">
+  <div class="wrap">
+    <div class="eyebrow">Спершу</div>
+    <h2>Згадай себе за три тижні до першої зустрічі</h2>
+
+    <p>Твоя увага натрапила на анонс. І щось усередині озвалося раніше за думку — на пів секунди, тілом, ще до слів.</p>
+    <p>А потім увімкнувся розум і почав робити свою роботу: <em>зараз не час. Стільки справ. Треба порахувати. А хто там веде. А раптом це якісь дивні люди. Мені й так нормально.</em></p>
+    <p>Вкладка закрилася. І відкривалася ще двічі за той тиждень.</p>
+
+    <div class="beat">Насправді страх був не про курс.<br>Це був страх двох речей одразу: що знову нічого не зміниться — і що цього разу зміниться.</div>
+
+    <p>Бо якщо не спрацює — буде ще одне підтвердження старої думки про себе. А якщо спрацює — доведеться жити інакше. І це, чесно, лякало більше.</p>
+    <p>Потім був вечір, який пам'ятається точно. Не аргумент і не розрахунок. Просто торг припинився сам собою — і прозвучало «так».</p>
+
+    <p class="whisper">А тепер подивись на тих, хто зараз поруч.<br>Вони зараз рівно там, де три тижні тому все починалося в тебе.</p>
+
+    <p>Коли близька людина каже «ти якось дивно поводишся», «це все ненадовго», «тобі просто нема чим зайнятися» — це не оцінка тебе. Це та сама вкладка, яку вона щойно закрила. Ти чуєш не її вирок, а її власний сумнів, промовлений уголос твоїм ім'ям.</p>
+    <p>Різниця між вами тепер одна: у тебе вже є досвід зсередини. У неї — поки що ні.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Зсередини</div>
+    <h2>Що з тобою насправді відбувається</h2>
+    <p>Тобі не «полагодили психіку» й не «відкрили чакри». Сталося простіше й точніше: <strong>зняли кілька затисків, які були з тобою так довго, що вже не помічалися.</strong></p>
+    <p>Нервова система вчиться іншого способу бути: менше готовності до удару, більше опори. Коли напруга йде, вивільняється сила, яка роками витрачалася на її утримання. Ця сила й виходить назовні — прямотою, сльозами, сміхом, раптовим «ні», бажанням творити.</p>
+    <p class="mut">Складність не в тобі й не в них. Складність у мові: усе це відбувається на рівні тіла й станів, а пояснювати доводиться словами, яких у побутовій мові майже немає.</p>
+    <p>Тому головна навичка зараз — не переконувати, а <strong>перекладати</strong>.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Карта</div>
+    <h2>Як насправді виглядає трансформація</h2>
+    <p class="mut">Її уявляють як стрибок угору й назавжди. Насправді вона має форму хвилі — і саме незнання цієї форми лякає найбільше.</p>
+
+    <div class="curve">
+      <svg viewBox="0 0 360 210" role="img" aria-label="Крива трансформації: імпульс, опір, вхід, вивільнення, відкат, нова норма">
+        <line x1="14" y1="170" x2="346" y2="170" stroke="#8E8678" stroke-width=".8" stroke-dasharray="3 5" opacity=".65"/>
+        <line x1="14" y1="118" x2="346" y2="118" stroke="#A98F60" stroke-width=".8" stroke-dasharray="3 5" opacity=".55"/>
+        <path d="M14 170 L44 168 C60 167, 66 172, 78 172 C96 172, 104 150, 120 104 C130 74, 138 48, 150 46 C162 45, 170 76, 180 112 C188 141, 196 156, 208 157 C224 158, 236 142, 252 132 C272 120, 292 120, 312 119 C326 118.5, 338 118, 346 118"
+              fill="none" stroke="#EDE7DA" stroke-width="1.6" stroke-linecap="round"/>
+        <circle cx="44" cy="168" r="3.4" fill="#A98F60"/>
+        <circle cx="78" cy="172" r="3.4" fill="#A98F60"/>
+        <circle cx="120" cy="104" r="3.4" fill="#A98F60"/>
+        <circle cx="150" cy="46" r="4" fill="#EDE7DA"/>
+        <circle cx="208" cy="157" r="3.4" fill="#A98F60"/>
+        <circle cx="312" cy="119" r="4" fill="#EDE7DA"/>
+        <g font-family="Cormorant Garamond, serif" font-size="11" fill="#EDE7DA" letter-spacing="1">
+          <text x="40" y="156">1</text>
+          <text x="74" y="190">2</text>
+          <text x="112" y="94">3</text>
+          <text x="146" y="34">4</text>
+          <text x="204" y="176">5</text>
+          <text x="308" y="107">6</text>
+        </g>
+        <g font-family="Literata, serif" font-size="8.5" fill="#8E8678" letter-spacing="1">
+          <text x="14" y="184">стара норма</text>
+          <text x="268" y="136">нова норма</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="stages">
+      <div>
+        <div class="n">1</div>
+        <div>
+          <b>Імпульс</b>
+          <span>Тіло озивається раніше за думку. Пів секунди — і ти вже знаєш, ще не маючи жодного аргументу.</span>
+          <span class="feel">тепло в грудях, раптова тиша, «мені туди»</span>
+        </div>
+      </div>
+      <div>
+        <div class="n">2</div>
+        <div>
+          <b>Опір</b>
+          <span>Розум наздоганяє й починає торгуватися. Це не боягузтво — це захист психіки, яка не любить зміни норми.</span>
+          <span class="feel">«не час», «дорого», «а раптом дивні люди», «мені й так нормально»</span>
+        </div>
+      </div>
+      <div>
+        <div class="n">3</div>
+        <div>
+          <b>Вхід</b>
+          <span>Практика. Знімається затиск, який тримався роками. Тіло вперше за довгий час не готується до удару.</span>
+          <span class="feel">тремтіння, тепло, дивна легкість — іноді страх від самої легкості</span>
+        </div>
+      </div>
+      <div>
+        <div class="n">4</div>
+        <div>
+          <b>Вивільнення</b>
+          <span>Пік. Сила, що витрачалася на утримання напруги, виходить назовні — тому емоції такі яскраві.</span>
+          <span class="feel">сльози без причини, сміх, ясність, бажання змінити все за один вечір</span>
+        </div>
+      </div>
+      <div>
+        <div class="n">5</div>
+        <div>
+          <b>Відкат</b>
+          <span>Найважча фаза. Система тягнеться до звичного, бо звичне дешевше — це фізіологія, а не поразка.</span>
+          <span class="feel">порожнеча, втома, сумнів, «нічого не змінилося, мене обманули»</span>
+        </div>
+      </div>
+      <div>
+        <div class="n">6</div>
+        <div>
+          <b>Нова норма</b>
+          <span>Стан перестає бути подією і стає фоном. Помітно не по емоціях, а по реакціях: у знайомій ситуації реакція виходить іншою — без жодного зусилля з твого боку.</span>
+          <span class="feel">рівність, менше терпіння до фальші, більше тиші</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="pull">Подивись на криву ще раз: після відкату лінія не повертається туди, звідки почалася. Відкат — не втрата. Це форма посадки.</p>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="hook">
+    <span class="mk">◦</span>
+    <p>Далі буде фраза з п'яти слів, після якої більшість важких розмов із близькими розвертаються.<br>Але спершу треба побачити, що вони насправді бачать.</p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Їхніми очима</div>
+    <h2>Вони не бачать твого стану</h2>
+    <p>Вони бачать зміну поведінки — і пояснюють її звичними причинами. Ось п'ять найчастіших. Ліворуч у кожній — те, що переживають вони. Далі — те, чим це є насправді, і чому воно читається саме так.</p>
+
+    <ul class="eyes">
+      <li>
+        <div class="see">«Її стало менше поруч»</div>
+        <span class="ins">Зникла потреба вплутуватись, доводити й підхоплювати кожну розмову. Тиша — не порожнеча, а економія сили.</span>
+        <span class="why">Ми звикли міряти любов кількістю реакції. Коли реакції меншає, це майже автоматично читається як «мене стало менше в її житті».</span>
+      </li>
+      <li>
+        <div class="see">«Мене не чують так, як раніше»</div>
+        <span class="ins">З'явилася пауза між стимулом і відповіддю. Не байдужість — простір, у якому ти вибираєш, а не відбиваєшся.</span>
+        <span class="why">Швидка відповідь роками була знаком «ти для мене важливий». Її зникнення близький читає як зниження свого статусу — і ображається раніше, ніж встигає це усвідомити.</span>
+      </li>
+      <li>
+        <div class="see">«Я більше не розумію, чого від неї чекати»</div>
+        <span class="ins">Повернулося власне «ні» — і разом із ним інші межі, ніж були рік тому.</span>
+        <span class="why">Стосунки трималися на негласних домовленостях, яких ніхто ніколи не промовляв уголос. Ти змінюєш свою частину — а для них це схоже на зміну правил посеред гри.</span>
+      </li>
+      <li>
+        <div class="see">«З нею щось коїться, треба рятувати»</div>
+        <span class="ins">Вивільнення: назовні виходить те, що трималося роками. Сльози чи різкість тут — ознака здоров'я, а не біди.</span>
+        <span class="why">Сильну емоцію люди читають як сигнал біди й вмикають рятівника. За цією метушнею майже завжди тривога за тебе, а не осуд.</span>
+      </li>
+      <li>
+        <div class="see">«Вона нас переросла»</div>
+        <span class="ins">Наповненість, а не зверхність. Просто вперше за довгий час є з чого світитися.</span>
+        <span class="why">Коли одна людина рухається, інші поруч мимоволі міряють себе. Це незручно — і найшвидший спосіб зняти незручність не в собі, а в тобі: знецінити те, що ти робиш.</span>
+      </li>
+    </ul>
+
+    <p class="pull">«Ти дивно поводишся» майже ніколи не означає, що з тобою щось не так. Найчастіше це означає: «мені трохи страшно, і я не знаю, як тебе про це запитати».</p>
+
+    <p>І ще одне, чого варто чекати заздалегідь. <strong>Новий стан піднімає застарілі больові точки</strong> — і твої, і їхні. Те, що роками лежало тихо під спільною напругою, спливає, щойно напруга йде. Тому найближчі тижні можуть виявитися чутливими не лише для тебе.</p>
+    <p>Тут є дві однаково погані стратегії. Перша — атакувати: «я нарешті бачу ясно, а ви як були, так і лишилися». Друга — провалитися у провину: «через мене всім складно, краще я стишуся». Обидві ведуть в одне — у розрив контакту.</p>
+    <p>Робоча — третя. <strong>Терпіння й піклування в обидва боки.</strong> Вони мають право не встигати за тобою. Ти маєш право не сповільнюватись до їхнього темпу. Ці два права не суперечать одне одному — вони просто потребують часу, щоб ужитися.</p>
+    <p>І головне: не приглушуй себе, щоб їм було спокійніше. Приглушений новий стан нікого не заспокоює — він лише робить тебе менш зрозумілою людиною поруч. Проявляйся м'яко, але проявляйся. Близькі звикають не до пояснень, а до стабільної присутності того, ким ти стаєш.</p>
+    <p class="pull">Вони не проти тебе. Вони просто ще не встигли.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Словник</div>
+    <h2>Одне й те саме — двома мовами</h2>
+    <p class="mut">Ліворуч — те, що ти відчуваєш. Праворуч — те, що можна сказати вголос, не втрачаючи правди й не викликаючи тривоги.</p>
+
+    <div class="dict">
+      <div>
+        <div class="in">Я в новому стані</div>
+        <div class="out">Мені останнім часом спокійніше, і я краще розумію, чого хочу</div>
+      </div>
+      <div>
+        <div class="in">Я працюю з проявністю</div>
+        <div class="out">Я вчуся говорити прямо й не мовчати там, де раніше було звично мовчати</div>
+      </div>
+      <div>
+        <div class="in">У мене було вивільнення</div>
+        <div class="out">Мене відпустило те, що трималося роками. Іноді через сльози — це нормально</div>
+      </div>
+      <div>
+        <div class="in">Мені треба втримати стан</div>
+        <div class="out">Мені зараз потрібно трохи більше тиші, ніж зазвичай. Це ненадовго</div>
+      </div>
+      <div>
+        <div class="in">Я в процесі трансформації</div>
+        <div class="out">Я проходжу курс і дещо в собі перебудовую. Мені це дуже потрібно</div>
+      </div>
+      <div>
+        <div class="in">Практика відкрила мені…</div>
+        <div class="out">Я бачу одну свою звичку — і розумію, звідки вона</div>
+      </div>
+    </div>
+
+    <p style="margin-top:28px">Правило одне: <strong>говори про наслідки, а не про метод.</strong> Доступу до твого досвіду в них немає — але є доступ до змін, які вони бачать. Про них і розмовляй.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Три помилки</div>
+    <h2>Їх робить майже кожен</h2>
+
+    <div class="miss">
+      <b>Проповідувати</b>
+      <span>З найкращих намірів ти починаєш пояснювати, як їм жити, і тягнути «спробуй теж». Людина, яку тягнуть, упирається — навіть якщо їй туди хочеться.</span>
+      <span class="fix">Розкажи тільки про себе. Про них — жодного слова, доки не спитають.</span>
+    </div>
+
+    <div class="miss">
+      <b>Потай чекати схвалення</b>
+      <span>Ти розповідаєш ніби спокійно, але всередині чекаєш, що близькі зрадіють і підтвердять твій вибір. Вони можуть не зрадіти — і тоді хитається все.</span>
+      <span class="fix">Скажи собі чесно: я розповідаю, щоб бути ближче, а не щоб отримати дозвіл. Дозвіл у мене вже є.</span>
+    </div>
+
+    <div class="miss">
+      <b>Гаснути поруч із ними</b>
+      <span>Найтихіша й найдорожча помилка. Ти повертаєшся у стару роль, щоб нікого не тривожити, — і власноруч скасовуєш зроблену роботу.</span>
+      <span class="fix">Пояснювати не мусиш. Але не гасни. Мовчати про зміни — можна. Вдавати, що їх немає, — уже ні.</span>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Формула розмови</div>
+    <h2>Три кроки — і жодного виправдовування</h2>
+
+    <ol class="steps">
+      <li><b>Я</b><span>Говори від себе, а не про метод. «Мені зараз потрібно…», «я помічаю, що…». Жодних «це працює так-то» — про це не питали.</span></li>
+      <li><b>Факт</b><span>Одна конкретна зміна, яку людина бачить сама. «Я менше зриваюся». «Я знову сплю». Факт неможливо оскаржити.</span></li>
+      <li><b>Запрошення без тиску</b><span>«Якщо колись стане цікаво — розкажу». Крапка. Двері прочинені, і в них нікого не штовхають.</span></li>
+    </ol>
+
+    <p class="pull">А ось і обіцяна фраза:<br>«Мені не потрібна згода. Потрібна присутність.»</p>
+    <p>Вона працює тому, що знімає з людини роль судді — тієї, у якій вона мимоволі опинилася й від якої їй самій незручно. Ти не просиш схвалити. Ти просиш побути поруч. Це різні прохання, і на друге майже завжди кажуть «так».</p>
+
+    <p style="margin-top:30px">Далі — готові відповіді на найчастіші запитання. Можна брати дослівно.</p>
+
+    <div class="phrase">
+      <div class="who">партнер</div>
+      <div class="said">«Ти віддаляєшся. Тобі більше не потрібні ми?»</div>
+      <div class="say">«Навпаки. Я забираю з себе те, що заважало мені бути поруч по-справжньому. Мені зараз треба трохи більше тиші — і це не про тебе.»</div>
+    </div>
+
+    <div class="phrase">
+      <div class="who">батьки</div>
+      <div class="said">«Що це за курс? Ти часом не в секті?»</div>
+      <div class="say">«Це заняття з тілом і нервовою системою — вчуся менше напружуватись і краще спати. Нікуди не переїжджаю, нічого не віддаю. Мені стало легше, і я хочу, щоб ви це знали.»</div>
+    </div>
+
+    <div class="phrase">
+      <div class="who">друзі</div>
+      <div class="said">«Що з тобою відбувається? Тебе не впізнати.»</div>
+      <div class="say">«Я в процесі. Стало більше спокою і менше терпіння до фальші — мабуть, це й помітно. Мені добре, дякую, що помічаєш.»</div>
+    </div>
+
+    <div class="phrase">
+      <div class="who">скептик</div>
+      <div class="said">«Це все самонавіювання. Наука цього не підтверджує.»</div>
+      <div class="say">«Можливо. Я не сперечаюся й нічого не доводжу. Просто помічаю по собі: сплю краще, зриваюся рідше. Мені цього достатньо.»</div>
+    </div>
+
+    <div class="phrase">
+      <div class="who">той, кому справді цікаво</div>
+      <div class="said">«А що ви там взагалі робите?»</div>
+      <div class="say">«Простіше показати, ніж розповісти. Скину тобі сторінку — почитаєш без мене.»</div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="hook">
+    <span class="mk">◦</span>
+    <p>А тепер найтонше місце цієї сторінки.<br>Саме тут більшість віддає свою опору — і навіть не помічає цього.</p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Межа</div>
+    <h2>Пояснення — це подарунок, а не борг</h2>
+    <p>Різниця між «пояснити» і «виправдовуватись» не в словах. Вона у стані, з якого ти говориш.</p>
+    <p><strong>Пояснюєш</strong> — коли тобі спокійно і ти хочеш, щоб людина була ближче. <strong>Виправдовуєшся</strong> — коли всередині тривога і потрібно, щоб тебе схвалили. Перше з'єднує. Друге віддає твою опору іншому в руки.</p>
+    <p class="mut">Простий тест: якщо після розмови всередині порожньо — це було виправдовування. Якщо тепло, навіть коли тебе не зрозуміли, — це було пояснення.</p>
+    <p>І пам'ятай: розповідати всім не обов'язково. Мовчання — теж повноцінна відповідь. «Мені зараз не хочеться про це говорити, але зі мною все добре» закриває будь-яку розмову без образи.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Одним поглядом</div>
+    <h2>Якщо читати нема сил</h2>
+    <div class="check">
+      <p>Говори про наслідки, а не про метод.</p>
+      <p>Про себе — так. Про них — тільки якщо спитали.</p>
+      <p>«Ти дивно поводишся» = «мені трохи страшно за тебе».</p>
+      <p>Не тягни нікого за собою. Прочини двері й відійди.</p>
+      <p>Не гасни поруч із близькими, щоб їх не тривожити.</p>
+      <p>Мені не потрібна згода. Потрібна присутність.</p>
+      <p>Спустошення після розмови = це було виправдовування.</p>
+      <p>Мовчання — теж повноцінна відповідь.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Якщо цю сторінку тобі надіслали</div>
+    <h2>Практична частина: як бути поруч</h2>
+    <p>Поруч із тобою людина, яка зараз десь на тій кривій. З нею все гаразд — просто змінюється спосіб, у який вона відповідає світу, і ззовні це виглядає незвично.</p>
+    <p class="mut">Нижче — дві сторони однієї механіки. Перша — для тих, хто поруч із людиною в емоційній хвилі. Друга — для того, хто цю хвилю проживає, бо зміни найчастіше зустрічають тишею з іншого боку. Обидва полюси живуть у кожному з нас, тож читай ту, що збігається з твоєю ситуацією, а не з паспортом.</p>
+
+    <div class="side">
+      <div class="tag">△ · коли поруч жінка в емоціях</div>
+      <h3>Емоція — це хвиля, а не задача</h3>
+      <p>Її система обробляє почуття потоком і назовні: щоб зрозуміти, що вона відчуває, їй треба це проговорити. А коли затиск відпускає, крізь неї виходить те, що трималося роками — тому емоція може здаватися непропорційною приводу. Вона й не про привід.</p>
+      <p>Головна пастка: почути емоцію як технічне завдання й кинутися лагодити. Вона ділиться станом — ти пропонуєш рішення — вона не почувається почутою — ти почуваєшся невдахою. Обидва самотні за тридцять секунд.</p>
+      <span class="do">Лишайся. Сповільни власне дихання — її нервова система зчитує твоє тіло швидше, ніж твої слова, і це вимірюваний ефект, а не поетика. Запитай шість слів: «тебе вислухати чи допомогти вирішити?». Замість «чому ти плачеш» — «що ти зараз відчуваєш».</span>
+      <span class="dont">Не лагодь без запиту. Не квап («давай коротше»). Не знецінюй («ти перебільшуєш»). І не роби висновків про стосунки на піку хвилі — на піку взагалі не роблять висновків.</span>
+      <span class="law">Найсильніше, що ти можеш зробити, — бути спокійним поруч, а не розумним навпроти.</span>
+    </div>
+
+    <div class="side">
+      <div class="tag">▽ · коли поруч чоловік, який замовк</div>
+      <h3>Тиша — це переробка, а не відхід</h3>
+      <p>Його система обробляє глибоко й по одному каналу, всередині, з відкладеним результатом. Коли він замовкає і йде в себе — це не покарання і не байдужість. Це переробка. Він повертається зібраним, якщо його там не бомбити.</p>
+      <p>Є й фізіологічна межа: у конфлікті чоловіки значно частіше входять у перевантаження — пульс за сотню, і людина буквально кам'яніє. У цьому стані розмова не працює жодними словами. Допомагає тільки пауза хвилин на двадцять і домовленість повернутися.</p>
+      <span class="do">Дай простір із названим часом повернення. Питай про напрям, а не вимагай звіту. Кажи вголос, що бачиш його зусилля: визнання для нього — те саме, що присутність для тебе.</span>
+      <span class="dont">Не добивайся слів у момент, коли він закрився. Не читай тишу як розлюблення. Не змагайся з його процесом за увагу — це змагання виграти неможливо.</span>
+      <span class="law">Довіра повертає його швидше, ніж вимога. З печери виходять самі — якщо вихід не завалено докорами.</span>
+    </div>
+
+    <p style="margin-top:28px">І одне спільне для обох сторін. Якщо незрозуміло — <strong>запитай прямо</strong>. «Я не дуже розумію, що з тобою відбувається, але хочу зрозуміти» — фраза, після якої зазвичай і починається справжня розмова. Усе інше — здогадки, а здогадки майже завжди виявляються гіршими за реальність.</p>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="cta">
+    <p>Якщо це вас зацікавило — до курсу «Нейропрактика 2.0» ще можна доєднатися.</p>
+    <a class="join" href="https://t.me/viki_assistant">Дізнатися більше</a>
+    <div class="fine">Без зобов'язань — просто напишіть, і вам розкажуть деталі.</div>
+  </div>
+</div>
+
+<div class="seal">
+  <div class="wrap">
+    <div class="mark">◦ ◦ ◦</div>
+    <p>Проявлятися — не означає доводити.<br>Це означає перестати ховати те, що вже є.</p>
+    <a class="backlink" href="/pislya/">← Повернутися до пам'ятки «Після практики»</a>
+  </div>
+</div>
+
+<footer>
+  <span class="g">△ ▽</span>
+  НЕЙРОПРАКТИКИ · 137LAB
+</footer>
+
+</body>
+</html>
