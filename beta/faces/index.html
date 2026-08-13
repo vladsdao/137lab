@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" sizes="32x32" href="/icons/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<title>137lab — вісь граней · beta</title>
+<style>
+  /* ══ ВІСЬ ГРАНЕЙ · нові правила — поверх канону ══════════════════════
+     Канон нижче — дослівна копія <style> кореневого index.html, не правиться.
+     Всі перекриття тут беруть гору специфічністю (#frame[data-face=…]). */
+
+  /* ── речовина граней: матеріал, не фарба (третій закон ДНК) ──
+     lab — еталон (канон нижче: решітка .6/.35, пульс 6.4s);
+     liza — щільна рівна, тримає форму; vlad — розріджена рухлива */
+  #frame[data-face="liza"] .lattice path{stroke-width:1;opacity:.3}
+  #frame[data-face="liza"] .pulse{animation-duration:7.6s}
+  #frame[data-face="vlad"] .lattice path{stroke-width:.7;opacity:.2}
+  #frame[data-face="vlad"] .pulse{animation-duration:5.2s}
+  #frame[data-face="vlad"] #cells .cell path{stroke-width:1.7}
+
+  /* кімната іншого (room): той самий гекс, але пунктир —
+     зерно протилежного полюса, закон точки інь-ян */
+  .cell.room path{stroke-dasharray:7 5}
+
+  /* ── зона підпису грані: фіксована min-height — сота не зсувається
+     (четвертий закон: якір; висота зони = зоні квізу з прода) ── */
+  .facebar{
+    flex:0 0 auto;position:relative;z-index:2;margin-bottom:10px;
+    min-height:115px;
+    display:flex;flex-direction:column;justify-content:flex-end;align-items:center;
+    gap:7px;text-align:center;padding-bottom:8px;
+  }
+  /* компас: три риски = три грані осі, активна — вища й чорна */
+  .f-compass{display:flex;gap:16px;align-items:flex-end;height:14px}
+  .f-compass i{display:block;width:1.5px;height:7px;background:var(--rule);
+    transition:height var(--speed) var(--ease),background var(--speed) var(--ease)}
+  .f-compass i.on{height:14px;width:2px;background:var(--ink)}
+  .f-title{
+    font-family:var(--font-d);font-weight:600;
+    font-size:16px;letter-spacing:-0.010em;line-height:1.2;color:var(--ink);
+  }
+  .f-title .f-sign{font-family:var(--font-t);font-weight:400;margin:0 7px}
+  .f-hint{font-size:11px;letter-spacing:.04em;color:var(--muted)}
+
+  /* зона гексагонів володіє жестом: браузер не перехоплює пан і не шле
+     pointercancel посеред свайпу — саме тому дека DAODEDO слухається пальця */
+  .hivewrap, #hive{touch-action:none}
+
+  /* ── вихід сот нової грані (ядро не анімується ніколи) ── */
+  svg.facein .cell{animation:cellin .45s var(--ease) backwards}
+
+  /* ── пружина решітки: грані немає — світ пружинить і вертається ──
+     transform лише на #bg і #cells: ядро стоїть (закон якоря) */
+  svg.springx #bg, svg.springx #cells{animation:springx 260ms var(--ease)}
+  svg.springy #bg, svg.springy #cells{animation:springy 260ms var(--ease)}
+  @keyframes springx{0%{transform:translateX(0)}45%{transform:translateX(var(--sdx,14px))}100%{transform:translateX(0)}}
+  @keyframes springy{0%{transform:translateY(0)}45%{transform:translateY(var(--sdy,12px))}100%{transform:translateY(0)}}
+
+  @media (prefers-reduced-motion:reduce){
+    svg.facein .cell{animation:none}
+    svg.springx #bg, svg.springx #cells,
+    svg.springy #bg, svg.springy #cells{animation:none}
+  }
+</style>
+<style>
+  /* ── Лабораторія Ч/Б · канон 2026-06-11 · вулик: решітка + типографіка ── */
+  @font-face{
+    font-family:'Fixel Display';
+    src:url('/fonts/FixelDisplay-SemiBold.woff2') format('woff2');
+    font-weight:600;font-display:swap;
+  }
+  @font-face{
+    font-family:'Fixel Display';
+    src:url('/fonts/FixelDisplay-ExtraBold.woff2') format('woff2');
+    font-weight:800;font-display:swap;   /* панк-слова з ядра */
+  }
+  @font-face{
+    font-family:'Fixel Display';
+    src:url('/fonts/FixelDisplay-Regular.woff2') format('woff2');
+    font-weight:400;font-display:swap;   /* «lab» у лого */
+  }
+  @font-face{
+    font-family:'Fixel Text';
+    src:url('/fonts/FixelText-Regular.woff2') format('woff2');
+    font-weight:400;font-display:swap;
+  }
+  @font-face{
+    font-family:'Fixel Text';
+    src:url('/fonts/FixelText-Medium.woff2') format('woff2');
+    font-weight:500;font-display:swap;
+  }
+
+  :root{
+    --paper:#ffffff;
+    --ink:#0a0a0a;
+    --muted:#6e6e6e;
+    --rule:#c9c9c9;
+    --font-d:'Fixel Display',sans-serif;
+    --font-t:'Fixel Text',sans-serif;
+    --pad:#333333;   /* кітч-панч: м'якший за ink — рішення Влада 2026-06-11 */
+    --enter:#1f7a3d; /* зелена «Увійти»: виняток із Ч/Б — колір як відгук на дію */
+    --speed:240ms;
+    --ease:cubic-bezier(.4,0,.2,1);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:var(--font-t);font-weight:400;
+    display:grid;place-items:center;
+    -webkit-font-smoothing:antialiased;
+    overscroll-behavior:none;
+  }
+
+  /* канвас 9:16 — мобайл на весь екран, десктоп = той самий канвас по центру листа */
+  #frame{
+    position:fixed;inset:0;width:100vw;height:100dvh;
+    background:var(--paper);
+    display:flex;flex-direction:column;
+    padding:calc(env(safe-area-inset-top) + 18px) 20px calc(env(safe-area-inset-bottom) + 22px);
+    /* clip, не hidden: схована шторка (translateY 102%) створює overflow,
+       і будь-який фокус-скрол зсував канвас угору назавжди — «НОДА» визирала знизу */
+    overflow:hidden;overflow:clip;
+    /* інструментальний екран: без double-tap-zoom і виділення тексту */
+    touch-action:manipulation;
+    -webkit-user-select:none;user-select:none;
+    -webkit-tap-highlight-color:transparent;
+  }
+  #framecaption{display:none}
+  @media (min-width:700px) and (min-aspect-ratio:4/5){
+    body{height:100vh}
+    #frame{
+      position:relative;inset:auto;
+      height:min(92vh,880px);aspect-ratio:390/844;width:auto;
+      border:1px solid var(--ink);
+      padding:18px 20px 22px;
+    }
+    #framecaption{
+      display:block;position:fixed;left:0;right:0;
+      bottom:calc((100vh - min(92vh,880px))/2 - 28px);
+      text-align:center;font-size:11px;letter-spacing:.18em;
+      text-transform:uppercase;color:var(--muted);
+    }
+  }
+
+  /* ── шапка: вордмарк-плакат + лабораторна анотація ── */
+  .top{
+    display:flex;justify-content:space-between;align-items:center;
+    flex:0 0 auto;position:relative;z-index:2;
+  }
+  /* лого: 137lab — цифра щільна 600, lab легкий 400; лінк = додому (вулик) */
+  .top .mark{
+    font-family:var(--font-d);font-size:15px;line-height:1;
+    color:var(--ink);text-decoration:none;
+  }
+  .mark-num{font-weight:600;letter-spacing:-0.010em}
+  .mark-lab{font-weight:400;letter-spacing:.02em;margin-left:1px}
+  .top-r{display:flex;align-items:center;gap:4px}
+  .top .alpha{font-size:10px;letter-spacing:.08em;color:var(--muted)}
+  /* підпис тумблера: «звук» — щоб роль значка читалась одразу */
+  .sndlabel{font-size:10px;letter-spacing:.08em;color:var(--muted);margin-left:8px}
+  /* значок звуку — мініатюра пульсу з ядра; негативні поля тримають
+     висоту шапки, тач-ціль лишається 44px */
+  .sound{
+    width:44px;height:44px;margin:-11px -11px -11px 0;
+    display:grid;place-items:center;
+    background:none;border:none;color:var(--ink);cursor:pointer;
+  }
+  .sound:active{opacity:.55}
+  /* звуковий режим увімкнено: значок інвертується */
+  .sound.on{background:var(--ink);color:var(--paper);border-radius:50%}
+
+  /* ── поле: решітка на весь простір між шапкою і підписом ── */
+  .hivewrap{
+    flex:1 1 auto;min-height:0;
+    margin:0 -20px;                 /* решітка тече до країв канваса */
+    display:grid;place-items:center;
+  }
+  svg{width:100%;height:100%;display:block}
+
+  /* нескінченна решітка — порожні клітини, слабкий штрих */
+  .lattice{pointer-events:none}
+  .lattice path{fill:none;stroke:var(--rule);stroke-width:.6;opacity:.35}
+
+  /* продуктові ноди — чіткий ink на тлі поля */
+  .cell path{
+    fill:var(--paper);stroke:var(--ink);stroke-width:1.5;
+    transition:fill var(--speed) var(--ease);
+    cursor:pointer;
+  }
+  .cell text{
+    font-family:var(--font-d);font-weight:600;
+    fill:var(--ink);text-anchor:middle;
+    letter-spacing:.03em;
+    transition:fill var(--speed) var(--ease);
+    pointer-events:none;
+  }
+  .cell .label{font-size:15px}
+  .cell .label.sm{font-size:11.5px;letter-spacing:.01em}
+  @media (hover:hover){
+    .cell:hover path{fill:var(--ink)}
+    .cell:hover text{fill:var(--paper)}
+  }
+  .cell:active path{fill:var(--ink)}
+  .cell:active text{fill:var(--paper)}
+  .cell:focus-visible{outline:none}
+  .cell:focus-visible path{fill:var(--ink)}
+  .cell:focus-visible text{fill:var(--paper)}
+
+  /* приглушена нода (ще не жива): сіра, не чорніє на тап */
+  .cell.muted path{stroke:var(--rule)}
+  .cell.muted text{fill:var(--muted)}
+  .cell.muted:active path,.cell.muted:focus-visible path{fill:var(--paper);stroke:var(--rule)}
+  .cell.muted:active text,.cell.muted:focus-visible text{fill:var(--muted)}
+  @media (hover:hover){
+    .cell.muted:hover path{fill:var(--paper);stroke:var(--muted)}
+    .cell.muted:hover text{fill:var(--muted)}
+  }
+
+  /* ядро-плакат: 137 / ЛАБ / ВХІД */
+  .core path{fill:var(--ink);stroke:var(--ink);stroke-width:1.5;cursor:pointer}
+  .core text{text-anchor:middle;pointer-events:none;fill:var(--paper)}
+  .core .core-num{
+    font-family:var(--font-d);font-weight:600;
+    font-size:50px;letter-spacing:-0.010em;
+  }
+  .core .core-word{
+    font-family:var(--font-d);font-weight:600;
+    font-size:12px;letter-spacing:.34em;
+  }
+  .core .core-door{
+    font-family:var(--font-t);font-weight:400;
+    font-size:8.5px;letter-spacing:.26em;fill:rgba(255,255,255,.55);
+  }
+  .core{transition:transform var(--speed) var(--ease);transform-origin:center;transform-box:fill-box}
+  .core:active{transform:scale(.965)}
+  /* без браузерної синьої рамки фокусу на центральній соті (клік/таб) */
+  .core:focus,.core:focus-visible{outline:none}
+
+  /* імпульс світла з ядра — просвічує крізь порожні клітини решітки */
+  .pulse{
+    fill:none;stroke:var(--ink);stroke-width:1;
+    opacity:0;transform-origin:195px 250px;
+    animation:pulse 6.4s var(--ease) infinite;
+    pointer-events:none;
+  }
+  .pulse.p2{animation-delay:3.2s}
+  @keyframes pulse{
+    0%   {opacity:.16;transform:scale(.35)}
+    75%  {opacity:0;  transform:scale(4.6)}
+    100% {opacity:0;  transform:scale(4.6)}
+  }
+  @media (prefers-reduced-motion:reduce){.pulse{animation:none}}
+
+  /* ── хвилі від педів: розходяться і перетинаються (інтерференція) ── */
+  .waves{position:absolute;inset:0;z-index:2;pointer-events:none}
+  .waves circle{
+    fill:none;stroke:var(--ink);stroke-width:.6;   /* тонше */
+    transform-box:fill-box;transform-origin:center;
+    animation:wavehit 1.7s var(--ease) forwards;
+  }
+  @keyframes wavehit{
+    0%   {opacity:.5;transform:scale(.25)}          /* помітніше */
+    55%  {opacity:.22}
+    100% {opacity:0;transform:scale(9)}
+  }
+  @media (prefers-reduced-motion:reduce){.waves circle{animation-duration:1ms}}
+
+  /* ── слова з ядра: панк-вильоти у звуковому режимі ── */
+  .words{position:absolute;inset:0;z-index:2;pointer-events:none}
+  .words span{
+    position:absolute;
+    font-family:var(--font-d);font-weight:800;text-transform:uppercase;
+    color:var(--ink);white-space:nowrap;
+    animation:wordfly var(--dur) cubic-bezier(.2,.6,.3,1) forwards;
+  }
+  @keyframes wordfly{
+    0%  {transform:translate(-50%,-50%) rotate(var(--r0)) scale(.5);opacity:.7}
+    100%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) rotate(var(--r1)) scale(1.15);opacity:0}
+  }
+  @media (prefers-reduced-motion:reduce){.words span{animation-duration:1ms}}
+
+  /* ── онбординг: ворота(квіз) → вулик ── */
+  #frame:not([data-stage="hive"]):not([data-stage="quizgate"]) .quiz{display:none}
+  #frame:not([data-stage="hive"]) .sound, #frame:not([data-stage="hive"]) .sndlabel{visibility:hidden}
+  /* .ob схований і на воротах, і на вулику → hivewrap однаковий (сота не зсувається) */
+  #frame[data-stage="hive"] .ob, #frame[data-stage="quizgate"] .ob{display:none}
+  /* dismissed тримає висоту зони (visibility), щоб соти не зсувались після зникнення квізу */
+  .quiz.dismissed{visibility:hidden}
+  .ob{flex:0 0 auto;text-align:center;padding:0 12px;margin-bottom:12px}
+  .ob-lead{
+    font-family:var(--font-d);font-weight:600;
+    font-size:20px;letter-spacing:-0.010em;line-height:1.22;
+  }
+  .ob-p{font-size:14.5px;line-height:1.6;margin-top:8px;max-width:34ch;margin-inline:auto}
+  .ob-act{margin-top:14px}
+  .ob-hint{font-size:11px;letter-spacing:.04em;color:var(--muted);margin-top:10px}
+  .ob-adults{
+    margin-top:12px;background:none;border:none;cursor:pointer;
+    font-family:var(--font-t);font-size:10.5px;color:var(--muted);
+    text-decoration:underline;text-underline-offset:3px;padding:8px;
+  }
+
+  /* двері: простий дотик */
+  .doorhex path{cursor:pointer}
+  .core .seed-k{
+    font-family:var(--font-t);font-weight:400;
+    font-size:9px;letter-spacing:.3em;fill:rgba(255,255,255,.55);
+  }
+  .core .seed-line{
+    font-family:var(--font-d);font-weight:600;
+    font-size:16.5px;letter-spacing:.04em;
+  }
+  .doorhex{transition:transform var(--speed) var(--ease);transform-box:fill-box;transform-origin:center}
+  .doorhex:active{transform:scale(.97)}
+  /* ворота заблоковано: сота сіра — спершу дай відповідь */
+  .doorhex.locked path{fill:var(--rule);stroke:var(--rule);transition:fill var(--speed) var(--ease),stroke var(--speed) var(--ease)}
+  .doorhex.locked text{fill:var(--muted)}
+  /* ворота відімкнено: центральна сота зеленіє + «Увійти» */
+  .doorhex.entered path{fill:var(--enter);stroke:var(--enter);transition:fill var(--speed) var(--ease),stroke var(--speed) var(--ease)}
+  .enter-label{
+    font-family:var(--font-t);font-weight:400;
+    font-size:9.5px;letter-spacing:.2em;
+    fill:var(--paper);text-anchor:middle;pointer-events:none;
+  }
+
+  /* розкриття вулика: центр-сота НЕ анімується — стоїть нерухомо (як на воротах),
+     навколо неї вилітають 6 продуктових сот */
+  .cell, .core{transform-box:fill-box;transform-origin:center}
+  svg.reveal .cell{animation:cellin .5s var(--ease) backwards}
+  svg.reveal .lattice{animation:fadein .9s ease backwards .25s}
+  @keyframes cellin{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+  @media (prefers-reduced-motion:reduce){
+    svg.reveal .cell, svg.reveal .core, svg.reveal .lattice{animation:none}
+  }
+
+  /* ── кітч-панч: «Перший мільйон» (превью, не клікабельно) ──
+     відступ знизу більший за звичайний: in-app браузери Telegram/Insta
+     підрізають нижній край, панч не має сидіти впритул */
+  /* фіксована висота зони квізу: і короткий (ворота), і довгий (Тесла) займають однаково
+     → hivewrap не змінюється між екранами, центр-сота стоїть точно на місці */
+  .quiz{flex:0 0 auto;position:relative;z-index:2;margin-bottom:10px;
+    min-height:115px;display:flex;flex-direction:column;justify-content:flex-end}
+  .q-grid{margin:0 -20px;display:grid;gap:8px}
+  .q-row{
+    position:relative;display:grid;grid-template-columns:1fr 1fr;gap:18px;
+    padding:0 28px;
+  }
+  .q-row--q{grid-template-columns:1fr}
+  /* лінія крізь увесь рядок до країв канваса — як у телеграфіці */
+  .q-row::before{
+    content:'';position:absolute;left:0;right:0;top:50%;
+    border-top:1px solid var(--rule);
+  }
+  /* лозендж = розтягнутий гекс: та сама решітка, тільки горизонтальна.
+     відповіді — <button>: клавіатура і скрінрідер з коробки */
+  .q-opt{
+    position:relative;height:31px;border:0;padding:0;
+    background:var(--pad);color:var(--paper);
+    clip-path:polygon(14px 0,calc(100% - 14px) 0,100% 50%,calc(100% - 14px) 100%,14px 100%,0 50%);
+    display:flex;align-items:center;justify-content:center;gap:7px;
+    font-family:var(--font-t);font-weight:500;font-size:12px;letter-spacing:.02em;
+    white-space:nowrap;
+    transition:transform 120ms var(--ease),background 120ms var(--ease);
+  }
+  /* у звуковому режимі лозенджі — педи */
+  .snd .q-opt{cursor:pointer}
+  .snd .q-opt:active{background:var(--ink);transform:scale(.97)}
+  .q-key{
+    font-family:var(--font-d);font-weight:600;font-size:11px;
+    color:rgba(255,255,255,.55);
+  }
+  /* питання — теж у ромбику (лозендж), як відповіді */
+  .q-q{font-size:11.5px}
+
+  /* фідбек після відповіді (вулик) + хрестик */
+  .q-feedback{
+    font-family:var(--font-t);font-size:13px;line-height:1.55;
+    text-align:center;color:var(--ink);
+    max-width:38ch;margin:2px auto 0;padding:0 22px;
+  }
+  .q-close{
+    position:absolute;top:-10px;right:18px;width:40px;height:40px;
+    background:none;border:none;cursor:pointer;color:var(--ink);
+    font-size:22px;line-height:1;z-index:3;
+  }
+  .q-close:active{opacity:.55}
+
+  /* ── шторка ноди ── */
+  .veil{
+    position:absolute;inset:0;background:rgba(10,10,10,.22);
+    opacity:0;pointer-events:none;transition:opacity var(--speed) var(--ease);
+    z-index:3;   /* над кітч-панчем */
+  }
+  .sheet{
+    position:absolute;left:0;right:0;bottom:0;
+    background:var(--paper);border-top:1px solid var(--ink);
+    padding:22px 24px calc(env(safe-area-inset-bottom) + 26px);
+    transform:translateY(102%);transition:transform 360ms var(--ease);
+    z-index:4;   /* шторки виїжджають поверх усього */
+  }
+  #frame.open .veil{opacity:1;pointer-events:auto}
+  #frame.open .sheet{transform:translateY(0)}
+
+  .sheet .s-kick{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+  .sheet .s-name{
+    font-family:var(--font-d);font-weight:600;
+    font-size:24px;letter-spacing:-0.010em;line-height:1.12;
+    margin-top:8px;
+  }
+  .sheet .s-desc{font-size:15px;line-height:1.65;margin-top:10px;max-width:32ch}
+  .sheet .s-act{margin-top:18px;display:flex;align-items:center;gap:12px}
+  .s-open{
+    display:inline-block;background:var(--ink);color:var(--paper);
+    border:none;cursor:pointer;
+    font-family:var(--font-t);font-weight:500;font-size:14px;letter-spacing:.02em;
+    text-decoration:none;border-radius:99px;
+    padding:13px 26px;min-height:44px;
+    transition:opacity var(--speed) var(--ease);
+  }
+  .s-open:active{opacity:.82}
+  .s-status{
+    display:inline-block;border:1px solid var(--rule);color:var(--muted);
+    font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+    border-radius:99px;padding:9px 18px;
+  }
+  .s-close{
+    position:absolute;top:10px;right:10px;width:44px;height:44px;
+    background:none;border:none;cursor:pointer;color:var(--ink);
+    font-size:20px;line-height:1;
+  }
+</style>
+</head>
+<body>
+
+<div id="frame" data-stage="hive" data-face="lab">
+  <div class="top">
+    <a class="mark" href="#/lab" aria-label="137lab — до Лабораторії"><span class="mark-num">137</span><span class="mark-lab">lab</span></a>
+    <div class="top-r">
+      <span class="sndlabel" aria-hidden="true">звук</span>
+      <button class="sound" id="sound" aria-pressed="false" aria-label="Піано-режим: соти звучать" title="Піано-режим: соти звучать">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <path d="M4 9.5v5h3l5 4.5v-14L7 9.5H4Z" fill="currentColor"/>
+          <path d="M15 8.5a5 5 0 0 1 0 7" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M17.6 6.3a8.5 8.5 0 0 1 0 11.4" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="hivewrap">
+    <svg id="hive" viewBox="0 0 390 520" preserveAspectRatio="xMidYMid meet" aria-label="Мапа лабораторії: шість нод навколо ядра"></svg>
+  </div>
+
+  <!-- зона підпису грані: фіксована висота — сота не зсувається -->
+  <div class="facebar" id="facebar">
+    <div class="f-compass" id="fcompass" aria-hidden="true"></div>
+    <p class="f-title" id="ftitle"></p>
+    <p class="f-hint" id="fhint"></p>
+  </div>
+
+  <svg class="waves" id="waves" aria-hidden="true"></svg>
+  <div class="words" id="words" aria-hidden="true"></div>
+  <div class="veil" id="veil"></div>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sname">
+    <button class="s-close" id="sclose" aria-label="Закрити">×</button>
+    <div class="s-kick">нода</div>
+    <div class="s-name" id="sname"></div>
+    <p class="s-desc" id="sdesc"></p>
+    <div class="s-act" id="sact"></div>
+  </div>
+</div>
+<div id="framecaption">137лаб · вісь граней · beta</div>
+
+<script>
+/* ══ ПРОТОТИП ОСІ X · /beta/faces/ · три грані навколо одного якоря ═════
+   Контент = дані. Стан — тільки в хеші (#/lab | #/liza | #/vlad).
+   Геометрія і канон — дослівно з кореневого index.html. */
+
+/* ── грані: підписи людські, природа полюса — лише знаком (ДНК v1.2) ── */
+const FACES = {
+  lab : { at:[ 0, 0], title:'Лабораторія',   sign:null, material:'paper',
+          aria:'Грань «Лабораторія»: шість нод навколо ядра',
+          hint:'свайп убік — сторони' },
+  liza: { at:[-1, 0], title:'Простір Лізи',  sign:'∿',  material:'shchilne',
+          aria:'Грань «Простір Лізи»: шість нод навколо ядра',
+          hint:'свайп ліворуч — до Лабораторії' },
+  vlad: { at:[ 1, 0], title:'Простір Влада', sign:'→',  material:'rozridzhene',
+          aria:'Грань «Простір Влада»: шість нод навколо ядра',
+          hint:'свайп праворуч — до Лабораторії' },
+};
+const FACE_ORDER = ['liza','lab','vlad'];   // компас зліва направо: x = −1 · 0 · +1
+
+/* ── ноди: плаский список {face, slot 0..5 за годинниковою з верхньої} ──
+   lab — шість сот прода без змін (тексти авторські, Влада, 2026-07-11).
+   room:true — кімната іншого: зерно протилежного полюса (закон інь-ян). */
+const NODES = [
+  /* lab */
+  { id:'tvorchist', face:'lab', slot:0, label:['ТВОРЧІСТЬ'],
+    full:'Стан Творця',
+    desc:'Розкриття творчого потенціалу. Творчість — це не дар обраних, а пропускна здатність Свідомості.',
+    href:'/tvorchist', act:'Дізнатись більше', status:null, owner:'137lab', muted:false, room:false },
+  { id:'poslugy', face:'lab', slot:1, label:['ВЗАЄМОДІЯ'],
+    full:'Взаємодія',
+    desc:'Пряма взаємодія з лабораторією: приватні сесії, менторство, робота з бізнесом.',
+    href:'/poslugy', act:'Подивитись', status:null, owner:'137lab', muted:false, room:false },
+  { id:'biznes', face:'lab', slot:2, label:['5Д БІЗНЕС'],
+    full:'5Д Бізнес',
+    desc:'Квантово-хвильове кунг-фу підприємця. Мета-системний підхід: працюємо з рівнем, де народжуються рішення, а не з наслідками.',
+    href:'/biznes', act:'Дізнатись більше', status:null, owner:'137lab', muted:false, room:false },
+  { id:'pronas', face:'lab', slot:3, label:['ПРО НАС'],
+    full:'Про нас',
+    desc:'Ми — Влад і Ліза. Обʼєднані пристрастю до пошуку істини, ми досліджуємо життя поза всілякими кордонами. Доповнюючи та підтримуючи один одного, ми пірнаємо у найглибші рівні нашої свідомості і знаходимо там ключі для розуміння всесвіту.',
+    href:'/pro-nas', act:'Познайомитись', status:null, owner:'137lab', muted:false, room:false },
+  { id:'simia', face:'lab', slot:4, label:['СІМʼЯ'],
+    full:'Симбіотичні Стосунки',
+    desc:'Атомний реактор вашого успіху. Резонансна сімʼя: налаштовуємо спільне поле пари — джерело любові та натхнення.',
+    href:'/simia', act:'Дізнатись більше', status:null, owner:'137lab', muted:false, room:false },
+  { id:'podii', face:'lab', slot:5, label:['ПОДІЇ'],
+    full:'Події',
+    desc:'Живі події лабораторії: онлайн-стріми без цензури і масок та офлайн-занурення у нашому полі. Анонси зʼявляються тут.',
+    href:'/iventy', act:'Що відбувається', status:null, owner:'137lab', muted:false, room:false },
+
+  /* liza — ∿ */
+  { id:'materynstvo', face:'liza', slot:0, label:['МАТЕРИНСТВО'],   /* ДРАФТ — Влад переписує */
+    full:'Материнство',
+    desc:'Мати як дослідниця: поле, в якому росте нова людина.',
+    href:null, act:null, status:'скоро', owner:'137lab', muted:true, room:false },
+  { id:'zhinoche-kolo', face:'liza', slot:1, label:['ЖІНОЧЕ','КОЛО'],   /* ДРАФТ — Влад переписує */
+    full:'Жіноче коло',
+    desc:'Коло, де жіноче знання передається з рук у руки.',
+    href:null, act:null, status:'скоро', owner:'137lab', muted:true, room:false },
+  { id:'neuro', face:'liza', slot:2, label:['НЕЙРО'],   /* ДРАФТ — Влад переписує */
+    full:'Нейропрактики',
+    desc:'Практики уваги: памʼятка учасника і мова, якою говорити про це з близькими.',
+    href:'/pislya', act:'Дізнатись більше', status:null, owner:'проект нейропрактик', muted:false, room:false },
+  { id:'osvita', face:'liza', slot:3, label:['ОСВІТА'],   /* ДРАФТ — Влад переписує */
+    full:'Освіта',
+    desc:'Як вчаться діти й дорослі, коли ніхто не примушує.',
+    href:null, act:null, status:'скоро', owner:'137lab', muted:true, room:false },
+  { id:'forma-znannia', face:'liza', slot:4, label:['ФОРМА','ЗНАННЯ'],   /* ДРАФТ — Влад переписує */
+    full:'Форма знання',
+    desc:'Як знання отримує тіло: текст, карта, гра.',
+    href:null, act:null, status:'скоро', owner:'137lab', muted:true, room:false },
+  { id:'kimnata-vlada', face:'liza', slot:5, label:['КІМНАТА','ВЛАДА'],   /* ДРАФТ — Влад переписує */
+    full:'Кімната Влада',
+    desc:'Зерно іншого полюса: сота Влада на стороні Лізи.',
+    href:null, act:null, status:'скоро', owner:'137lab', muted:true, room:true },
+
+  /* vlad — → */
+  { id:'daodedo', face:'vlad', slot:0, label:['DAO DE DO'],
+    kick:'казка', full:'DAO DE DO',
+    desc:'Казка про силу: контракт про вигадку, дека, кімната.',
+    href:'/daodedo/', act:'Відкрити', status:null, owner:'проект DAODEDO', muted:false, room:false },
+  { id:'vibe-kod', face:'vlad', slot:1, label:['ВАЙБ-КОД'],   /* ДРАФТ — Влад переписує */
+    full:'Вайб-код',
+    desc:'Код як інструмент стану: пишемо разом з машиною.',
+    href:null, act:null, status:'скоро', owner:'137lab', muted:true, room:false },
+  { id:'framework', face:'vlad', slot:2, label:['ФРЕЙМВОРК'],   /* ДРАФТ — Влад переписує */
+    full:'Фреймворк',
+    desc:'Каркас практики лабораторії: як влаштована робота.',
+    href:null, act:null, status:'скоро', owner:'137lab', muted:true, room:false },
+  { id:'rezhysura', face:'vlad', slot:3, label:['РЕЖИСУРА'],   /* ДРАФТ — Влад переписує */
+    full:'Режисура досвіду',
+    desc:'Досвід як сцена: драматургія переживання.',
+    href:null, act:null, status:'скоро', owner:'137lab', muted:true, room:false },
+  { id:'biznes', face:'vlad', slot:4, label:['5Д БІЗНЕС'],
+    full:'5Д Бізнес',
+    desc:'Квантово-хвильове кунг-фу підприємця. Мета-системний підхід: працюємо з рівнем, де народжуються рішення, а не з наслідками.',
+    href:'/biznes', act:'Дізнатись більше', status:null, owner:'137lab', muted:false, room:false },
+  { id:'kimnata-lizy', face:'vlad', slot:5, label:['КІМНАТА','ЛІЗИ'],   /* ДРАФТ — Влад переписує */
+    full:'Кімната Лізи',
+    desc:'Зерно іншого полюса: сота Лізи на стороні Влада.',
+    href:null, act:null, status:'скоро', owner:'137lab', muted:true, room:true },
+];
+
+/* центр-нода: відкриває шторку «Що таке 137lab» → маніфест /137 */
+const CORE = {
+  id:'core',
+  num:'137', word:'ЛАБ', door:'',
+  kick:'нода', full:'Що таке 137lab',
+  desc:'137lab — це не бренд, а скоріше координата. Ми обрали її, бо працюємо у точці, де невидимі стани, думки й енергія кристалізуються у фізичну форму.',
+  href:'/137', act:'Дізнатись більше',
+};
+
+/* ── prefers-reduced-motion: matchMedia З ПЕРЕВІРКОЮ існування —
+   у деяких webview його нема, голий виклик ронив би зміну грані */
+function reduceMotion(){
+  return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+}
+
+/* ── звуковий двигун (перенесено з кореня; нота — за слотом, не за id) ──
+   Сторона Лізи — та сама пентатоніка октавою нижче, сторона Влада — вище. */
+const SND = { on:false, ctx:null, buffers:{}, loading:false, MAX_S:3 };
+const CORE_FREQ = 523.25;                                         // C5 — ядро
+const SLOT_FREQ = [587.33, 659.25, 783.99, 880, 1046.5, 1174.66]; // D5 E5 G5 A5 C6 D6
+const FACE_OCT  = { lab:1, liza:0.5, vlad:2 };
+const PAD_IDS   = ['core', ...new Set(NODES.map(n => n.id))];
+
+function nodeOn(faceId, id){ return NODES.find(n => n.face === faceId && n.id === id); }
+
+function noteFreq(id){
+  if (id === 'core') return CORE_FREQ * FACE_OCT[face];
+  const n = nodeOn(face, id);
+  return n ? SLOT_FREQ[n.slot] * FACE_OCT[face] : null;
+}
+
+function sndToggle(){
+  if (!SND.ctx){
+    const AC = window.AudioContext || window.webkitAudioContext;
+    SND.ctx = new AC();
+  }
+  SND.on = !SND.on;
+  if (SND.on){ SND.ctx.resume(); sndPreload(); }
+  const btn = document.getElementById('sound');
+  btn.classList.toggle('on', SND.on);
+  btn.setAttribute('aria-pressed', String(SND.on));
+  document.body.classList.toggle('snd', SND.on);
+}
+
+function sndPreload(){
+  if (SND.loading) return;
+  SND.loading = true;
+  PAD_IDS.forEach(async id => {
+    for (const ext of ['m4a', 'mp3']){
+      try{
+        const res = await fetch('/sounds/' + id + '.' + ext);
+        if (!res.ok) continue;
+        SND.buffers[id] = await SND.ctx.decodeAudioData(await res.arrayBuffer());
+        break;
+      }catch(e){ /* файла нема — лишається синт-нота */ }
+    }
+  });
+}
+
+function playPad(id){
+  if (!SND.on || !SND.ctx) return;
+  const f = noteFreq(id);
+  if (f == null) return;
+  const ctx = SND.ctx, t = ctx.currentTime;
+  const gain = ctx.createGain();
+  gain.connect(ctx.destination);
+  const buf = SND.buffers[id];
+  if (buf){
+    const rate = FACE_OCT[face];   // семпл теж їде октавою разом із гранню
+    const dur = Math.min(buf.duration / rate, SND.MAX_S);
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    src.playbackRate.value = rate;
+    src.connect(gain);
+    gain.gain.setValueAtTime(1, t);
+    gain.gain.setValueAtTime(1, t + Math.max(dur - 0.06, 0));
+    gain.gain.linearRampToValueAtTime(0, t + dur);
+    src.start(t); src.stop(t + dur);
+  } else {
+    const osc = ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.value = f;
+    osc.connect(gain);
+    gain.gain.setValueAtTime(0.0001, t);
+    gain.gain.exponentialRampToValueAtTime(0.5, t + 0.012);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 1.6);
+    osc.start(t); osc.stop(t + 1.65);
+  }
+}
+
+/* панк-вильоти з ядра: і слово, і все інше — хаос і рандом (з кореня) */
+const WORDS = ['НЕМОЖЛИВО', 'ОПИСАТИ', 'СЛОВАМИ', 'ДАО'];
+
+function spawnWord(){
+  if (Math.random() < 0.5) return;   /* слова вилітають у 50% натисків */
+  const layer = document.getElementById('words');
+  const fr = frame.getBoundingClientRect();
+  const cr = document.querySelector('.core path').getBoundingClientRect();
+  const s = document.createElement('span');
+  /* 13.7% — ВІДЧУВАЙ: удвічі більше, червоне, живе довше.
+     22% — турбо: утричі швидше і закрученіше. Решта — звичайний панк. */
+  const isFeel = Math.random() < 0.137;
+  const turbo  = !isFeel && Math.random() < 0.22;
+  s.textContent = isFeel ? 'ВІДЧУВАЙ' : WORDS[Math.floor(Math.random() * WORDS.length)];
+  const a = Math.random() * Math.PI * 2;          // напрям — будь-куди
+  const d = 110 + Math.random() * 150;            // дальність
+  const fs = 6 + Math.random() * 3.4;
+  let dur = 4 + Math.random() * 3.5;
+  if (turbo)  dur /= 3;
+  if (isFeel) dur *= 1.6;
+  s.style.left = (cr.x + cr.width / 2 - fr.x).toFixed(1) + 'px';
+  s.style.top  = (cr.y + cr.height / 2 - fr.y).toFixed(1) + 'px';
+  s.style.fontSize = (isFeel ? fs * 2 : fs).toFixed(1) + 'px';
+  if (isFeel) s.style.color = '#d40000';
+  s.style.letterSpacing = (Math.random() * .2).toFixed(2) + 'em';
+  s.style.setProperty('--dx', (Math.cos(a) * d).toFixed(0) + 'px');
+  s.style.setProperty('--dy', (Math.sin(a) * d).toFixed(0) + 'px');
+  s.style.setProperty('--r0', (Math.random() * 60 - 30).toFixed(0) + 'deg');
+  s.style.setProperty('--r1', ((Math.random() * 720 - 360) * (turbo ? 3 : 1)).toFixed(0) + 'deg');
+  s.style.setProperty('--dur', dur.toFixed(2) + 's');
+  s.addEventListener('animationend', () => s.remove());
+  while (layer.childNodes.length > 16) layer.firstChild.remove();
+  layer.appendChild(s);
+}
+
+function padFrom(target){
+  if (!target.closest) return null;
+  const el2 = target.closest('.core') || target.closest('.cell');
+  if (!el2) return null;
+  const id = el2.classList.contains('core') ? 'core' : el2.dataset.id;
+  return { id, el: el2 };
+}
+
+/* ── колір як пробудження: нота → колір; октава вище — світліша,
+   нижча — глибша (канон NOTE_COLOR з кореня, розгорнутий за слотами) ── */
+const CORE_HSL = [4, 78, 50];                     /* C */
+const SLOT_HSL = [
+  [32, 82, 50],   /* D */
+  [52, 85, 47],   /* E */
+  [210, 75, 50],  /* G */
+  [276, 60, 52],  /* A */
+  [4, 78, 64],    /* C+ */
+  [32, 82, 64],   /* D+ */
+];
+function noteColor(id){
+  let hsl = null;
+  if (id === 'core') hsl = CORE_HSL;
+  else { const n = nodeOn(face, id); if (n) hsl = SLOT_HSL[n.slot]; }
+  if (!hsl) return null;
+  const dl = face === 'liza' ? -12 : face === 'vlad' ? 10 : 0;
+  const l = Math.max(20, Math.min(82, hsl[2] + dl));
+  return 'hsl(' + hsl[0] + ', ' + hsl[1] + '%, ' + l + '%)';
+}
+
+/* хвиля з центру педа — у спільному шарі поверх канваса (з кореня) */
+function spawnWave(el2, padId){
+  const waves = document.getElementById('waves');
+  const fr = frame.getBoundingClientRect();
+  const r = el2.getBoundingClientRect();
+  const c = document.createElementNS(NS, 'circle');
+  c.setAttribute('cx', (r.x + r.width / 2 - fr.x).toFixed(1));
+  c.setAttribute('cy', (r.y + r.height / 2 - fr.y).toFixed(1));
+  c.setAttribute('r', 30);
+  const col = padId && noteColor(padId);
+  if (col) c.style.stroke = col;
+  c.addEventListener('animationend', () => c.remove());
+  while (waves.childNodes.length > 28) waves.firstChild.remove();
+  waves.appendChild(c);
+}
+
+/* ── геометрія: РІВНО як у проді ─────────────────────────────────────── */
+const CX = 195, CY = 250;          // центр у viewBox 390×520
+const R  = 66;                     // радіус гекса (до вершини)
+const D  = Math.sqrt(3) * R;       // крок решітки
+const INSET = 0.94;                // повітря між клітинами
+const NS = 'http://www.w3.org/2000/svg';
+
+// сусіди за годинниковою від верхньої ноди
+const DIRS = [270, 330, 30, 90, 150, 210];
+
+// осьові координати семи зайнятих клітин (ядро + 6 нод)
+const OCCUPIED = new Set(['0,0','0,-1','1,-1','1,0','0,1','-1,1','-1,0']);
+
+function el(name, attrs, text){
+  const node = document.createElementNS(NS, name);
+  for (const k in attrs) node.setAttribute(k, attrs[k]);
+  if (text) node.textContent = text;
+  return node;
+}
+
+function hexPath(cx, cy, r){
+  const pts = [];
+  for (let a = 0; a < 360; a += 60){
+    const rad = a * Math.PI / 180;
+    pts.push((cx + r * Math.cos(rad)).toFixed(2) + ',' + (cy + r * Math.sin(rad)).toFixed(2));
+  }
+  return 'M' + pts.join('L') + 'Z';
+}
+
+/* нескінченна решітка (з кореня) */
+function latticeNode(){
+  const g = el('g', { 'class':'lattice', 'aria-hidden':'true' });
+  const ex = D * Math.cos(Math.PI / 6);   // крок по q: x
+  const ey = D * Math.sin(Math.PI / 6);   // крок по q: y
+  for (let q = -3; q <= 3; q++){
+    for (let r = -5; r <= 5; r++){
+      if (OCCUPIED.has(q + ',' + r)) continue;
+      const x = CX + q * ex;
+      const y = CY + q * ey + r * D;
+      if (x < -R || x > 390 + R) continue;
+      if (y < -190 || y > 710) continue;
+      g.appendChild(el('path', { d:hexPath(x, y, R * INSET) }));
+    }
+  }
+  return g;
+}
+
+function cellNode(cell, cx, cy){
+  const cls = 'cell' + (cell.muted ? ' muted' : '') + (cell.room ? ' room' : '');
+  const g = el('g', { 'class':cls, 'data-id':cell.id, role:'button', tabindex:'0', 'aria-label':'Нода: ' + cell.full });
+  g.appendChild(el('path', { d:hexPath(cx, cy, R * INSET) }));
+  // лейбл — герой ноди: Display 600, по центру, до двох рядків
+  const maxLen = Math.max(...cell.label.map(l => l.length));
+  const sm = maxLen > 10 ? ' sm' : '';
+  const lh = sm ? 14 : 17;
+  cell.label.forEach((line, i) => {
+    const y = cy + (i - (cell.label.length - 1) / 2) * lh + 5.5;
+    g.appendChild(el('text', { 'class':'label' + sm, x:cx, y:y.toFixed(1) }, line));
+  });
+  return g;
+}
+
+/* ── сцена: ЧОТИРИ ШАРИ — два .pulse → g#bg → g#cells → g#core ─────────
+   ЗАКОН ЯКОРЯ, вбитий у структуру: g#core будується ОДИН раз тут
+   і більше ніколи не перемальовується. Зміна грані живе ТІЛЬКИ в
+   renderFace(), а renderFace() торкається ТІЛЬКИ g#cells (і CSS-атрибута
+   речовини на #frame). Жодна інша функція #core не чіпає. */
+function buildStage(){
+  const svg = document.getElementById('hive');
+  svg.appendChild(el('circle', { 'class':'pulse',    cx:CX, cy:CY, r:R }));
+  svg.appendChild(el('circle', { 'class':'pulse p2', cx:CX, cy:CY, r:R }));
+  const bg = el('g', { id:'bg' });
+  bg.appendChild(latticeNode());
+  svg.appendChild(bg);
+  svg.appendChild(el('g', { id:'cells' }));
+  const core = el('g', { id:'core', 'class':'core', role:'button', tabindex:'0', 'aria-label':CORE.full });
+  core.appendChild(el('path', { d:hexPath(CX, CY, R * INSET) }));
+  core.appendChild(el('text', { 'class':'core-num',  x:CX,     y:CY + 8  }, CORE.num));
+  core.appendChild(el('text', { 'class':'core-word', x:CX + 2, y:CY + 27 }, CORE.word));
+  svg.appendChild(core);
+}
+
+/* підпис грані: компас із трьох рисок + імʼя зі знаком + підказка жесту.
+   Знак стоїть збоку своєї півосі: ∿ ліворуч від Лізи, → праворуч від Влада */
+function faceBar(id){
+  const f = FACES[id];
+  const t = document.getElementById('ftitle');
+  t.textContent = '';
+  if (f.sign && f.at[0] < 0){
+    const s = document.createElement('span');
+    s.className = 'f-sign'; s.textContent = f.sign;
+    t.appendChild(s);
+  }
+  t.appendChild(document.createTextNode(f.title));
+  if (f.sign && f.at[0] > 0){
+    const s = document.createElement('span');
+    s.className = 'f-sign'; s.textContent = f.sign;
+    t.appendChild(s);
+  }
+  document.getElementById('fhint').textContent = f.hint;
+  const comp = document.getElementById('fcompass');
+  comp.textContent = '';
+  FACE_ORDER.forEach(fid => {
+    const i = document.createElement('i');
+    if (fid === id) i.className = 'on';
+    comp.appendChild(i);
+  });
+}
+
+/* зміна грані: перемальовує ТІЛЬКИ g#cells; речовина — data-face на #frame */
+let face = null;
+let faceinTimer = null;
+function renderFace(id, prev){
+  face = id;
+  frame.dataset.face = id;
+  const svg = document.getElementById('hive');
+  svg.setAttribute('aria-label', FACES[id].aria);
+  const cells = document.getElementById('cells');
+  cells.textContent = '';
+  NODES.filter(n => n.face === id).sort((a, b) => a.slot - b.slot).forEach(n => {
+    const rad = DIRS[n.slot] * Math.PI / 180;
+    cells.appendChild(cellNode(n, CX + D * Math.cos(rad), CY + D * Math.sin(rad)));
+  });
+  faceBar(id);
+  if (prev && !reduceMotion()){
+    /* хвиля відгуку: після свайпу соти виходять від пальця назовні —
+       затримка = піксельна відстань × 0.0009с (тобто 0.9мс на піксель,
+       ритм flipDeck деки DAODEDO), кап 0.4с; інакше — по колу */
+    const o = swipeOrigin; swipeOrigin = null;
+    cells.querySelectorAll('.cell').forEach((c, i) => {
+      let dl = i * 0.05;
+      if (o){
+        const r = c.getBoundingClientRect();
+        dl = Math.min(0.4, Math.hypot(r.x + r.width / 2 - o.x, r.y + r.height / 2 - o.y) * 0.0009);
+      }
+      c.style.animationDelay = dl.toFixed(2) + 's';
+    });
+    svg.classList.add('facein');
+    clearTimeout(faceinTimer);
+    faceinTimer = setTimeout(() => svg.classList.remove('facein'), 900);
+  }
+}
+
+/* ── роутер: hashchange — ЄДИНЕ джерело зміни грані ──────────────────── */
+function faceFromHash(){
+  const m = (location.hash || '').match(/^#\/([a-z]+)$/);
+  return (m && FACES[m[1]]) ? m[1] : 'lab';   // невідома грань → lab
+}
+function applyHash(){
+  const id = faceFromHash();
+  if (id === face) return;
+  renderFace(id, face);
+}
+
+/* пружина: грані немає — решітка й соти пружинять, ядро стоїть */
+let springTimer = null;
+function springNudge(axis, px){
+  if (reduceMotion()) return;
+  const svg = document.getElementById('hive');
+  svg.style.setProperty(axis === 'x' ? '--sdx' : '--sdy', px + 'px');
+  svg.classList.remove('springx', 'springy');
+  void svg.getBoundingClientRect();   // рестарт анімації
+  svg.classList.add(axis === 'x' ? 'springx' : 'springy');
+  clearTimeout(springTimer);
+  springTimer = setTimeout(() => svg.classList.remove('springx', 'springy'), 300);
+}
+
+/* крок по осі: dx у координатах граней (+1 → бік Влада, −1 → бік Лізи).
+   Повертає true, якщо перехід відбувся; false — стіна (пружина). */
+function go(dx){
+  const [x, y] = FACES[face].at;
+  const target = Object.keys(FACES).find(f =>
+    FACES[f].at[0] === x + dx && FACES[f].at[1] === y);
+  if (!target){ springNudge('x', dx > 0 ? -14 : 14); return false; }
+  /* replace, не присвоєння hash: N свайпів не мають лишати N записів
+     history — «назад» у Telegram/Safari має виходити зі сторінки,
+     а не розмотувати фліпи. hashchange лишається єдиним джерелом. */
+  location.replace('#/' + target);
+  return true;
+}
+
+/* ── взаємодія ─────────────────────────────────────────────────────── */
+const frame = document.getElementById('frame');
+let lastFocus = null;
+let swipeOrigin = null;   // точка жесту: звідси розбігається хвиля нових сот
+
+function openSheet(cell){
+  if (!cell || !cell.full) return;   /* захист: шторка ніколи не відкривається порожньою */
+  document.querySelector('.s-kick').textContent = cell.kick || 'нода';
+  document.getElementById('sname').textContent = cell.full;
+  document.getElementById('sdesc').textContent = cell.desc;
+  const act = document.getElementById('sact');
+  act.textContent = '';
+  if (cell.href){
+    const a = document.createElement('a');
+    a.className = 's-open';
+    a.href = cell.href;
+    a.textContent = cell.act + ' →';
+    act.appendChild(a);
+  } else {
+    const s = document.createElement('span');
+    s.className = 's-status';
+    s.textContent = cell.status;
+    act.appendChild(s);
+  }
+  lastFocus = document.activeElement;
+  frame.classList.add('open');
+  /* preventScroll: фокус під час transition інакше скролить overflow-hidden
+     #frame на висоту шторки, і канвас назавжди з'їжджає вгору */
+  document.getElementById('sclose').focus({ preventScroll:true });
+}
+function closeSheet(){
+  frame.classList.remove('open');
+  if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll:true });
+}
+
+function activate(target){
+  /* click тієї ж серії летить ДО таймерів — swiped ще true і гасить його;
+     наступний тап уже вільний (DAODEDO-патерн, без часових ременів) */
+  if (gesture.swiped) return false;
+  if (SND.on) return false;   /* звуковий режим: тап = звук, не навігація */
+  if (target.closest('.core')){ openSheet(CORE); return true; }
+  const g = target.closest('.cell');
+  if (g){ openSheet(nodeOn(face, g.dataset.id)); return true; }
+  return false;
+}
+
+document.getElementById('hive').addEventListener('click', e => { activate(e.target); });
+
+document.getElementById('hive').addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  if (SND.on){
+    const pad = padFrom(e.target);
+    if (pad){
+      playPad(pad.id); spawnWave(pad.el, pad.id);
+      if (pad.id === 'core') spawnWord();
+      e.preventDefault();
+    }
+    return;
+  }
+  if (activate(e.target)) e.preventDefault();
+});
+
+/* педи: нота грає на pointerup з гейтом gesture.swiped — як чипи деки
+   DAODEDO (profile: pointerup + «if (swiped) return»). Інакше кожен свайп,
+   почавшись на соті, вистрілював би нотою старої грані, яку не можна
+   заглушити. Кореневий вулик грає на pointerdown — але там свайпа нема. */
+document.addEventListener('pointerup', e => {
+  if (!SND.on || gesture.swiped) return;
+  const pad = padFrom(e.target);
+  if (pad){
+    playPad(pad.id); spawnWave(pad.el, pad.id);
+    if (pad.id === 'core') spawnWord();
+  }
+});
+
+/* ── свайп по зоні гексагонів: механіка деки DAODEDO ───────────────────
+   Жест озброюється тільки на вулику (#hive = зона гексагонів).
+   Поріг 46px спрацьовує ПІД ЧАС руху (pointermove), не на відпусканні —
+   грань фліпається миттєво під пальцем, як дека. Без вікна часу.
+   Прапорець swiped гасить тап тієї ж серії; скидається у setTimeout(0),
+   бо click прилітає до таймерів. */
+const gesture = { id:null, x0:0, y0:0, swiped:false };
+const hiveEl = document.getElementById('hive');
+hiveEl.addEventListener('pointerdown', e => {
+  if (gesture.id !== null) return;
+  gesture.id = e.pointerId; gesture.x0 = e.clientX; gesture.y0 = e.clientY;
+  gesture.swiped = false;
+});
+hiveEl.addEventListener('pointermove', e => {
+  if (e.pointerId !== gesture.id || gesture.swiped) return;
+  if (frame.classList.contains('open')) return;   // шторка відкрита — жест не гортає
+  const dx = e.clientX - gesture.x0, dy = e.clientY - gesture.y0;
+  const adx = Math.abs(dx), ady = Math.abs(dy);
+  if (adx > 46 && adx > ady){
+    gesture.swiped = true;
+    swipeOrigin = { x:gesture.x0, y:gesture.y0 };   // хвиля відгуку — від пальця
+    // свайп вліво → мандрівка на X+ (бік Влада); стіна — пружина без сліду:
+    // інакше застарілий swipeOrigin присвоїть хвилю жесту, якого не було
+    if (!go(dx < 0 ? 1 : -1)) swipeOrigin = null;
+  } else if (ady > 46 && ady > adx){
+    gesture.swiped = true;
+    springNudge('y', dy < 0 ? -12 : 12);   // осі Y у прототипі нема — пружина
+  }
+});
+['pointerup', 'pointercancel'].forEach(n => hiveEl.addEventListener(n, e => {
+  if (e.pointerId === gesture.id) setTimeout(() => { gesture.id = null; gesture.swiped = false; }, 0);
+}));
+
+/* клавіатура: ← → по осі, ↑ ↓ пружинять, Esc закриває шторку */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape'){ closeSheet(); return; }
+  if (frame.classList.contains('open')) return;
+  if (e.key === 'ArrowRight'){ go(1); e.preventDefault(); }
+  else if (e.key === 'ArrowLeft'){ go(-1); e.preventDefault(); }
+  else if (e.key === 'ArrowUp'){ springNudge('y', -12); e.preventDefault(); }
+  else if (e.key === 'ArrowDown'){ springNudge('y', 12); e.preventDefault(); }
+});
+
+/* страховка для двигунів без overflow:clip: канвас не скролиться ніколи */
+frame.addEventListener('scroll', () => { if (frame.scrollTop) frame.scrollTop = 0; });
+document.getElementById('sound').addEventListener('click', sndToggle);
+document.getElementById('veil').addEventListener('click', closeSheet);
+document.getElementById('sclose').addEventListener('click', closeSheet);
+
+/* ── старт: сцена один раз, далі грань живе тільки через хеш ── */
+buildStage();
+renderFace(faceFromHash(), null);
+addEventListener('hashchange', applyHash);
+</script>
+</body>
+</html>

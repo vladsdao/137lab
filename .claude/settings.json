@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": ["Bash(git status)","Bash(git diff*)","Bash(git log*)","Bash(git add*)","Bash(git commit*)","Bash(python3 -m http.server*)","Bash(node *test*.mjs)","Bash(npm i jsdom*)"],
+    "ask": ["Bash(git push*)"],
+    "deny": ["Bash(git push --force*)","Bash(git reset --hard*)","Bash(rm -rf*)","Read(./.env)","Read(./.env.*)"]
+  },
+  "language": "russian",
+  "alwaysThinkingEnabled": true,
+  "effortLevel": "high"
+}
