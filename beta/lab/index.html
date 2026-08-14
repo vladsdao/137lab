@@ -393,7 +393,7 @@
   .nodescene{perspective:1100px}
   .nodehex{
     position:relative;
-    width:min(88vw,368px);aspect-ratio:1000/866;
+    width:min(80vw,320px);aspect-ratio:1000/866;
     transform-style:preserve-3d;
     transform:scale(.28) rotateY(0deg);
     transition:transform 560ms var(--ease);
@@ -412,17 +412,22 @@
     position:absolute;inset:0;
     clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%);
     display:grid;place-items:center;overflow:hidden;
+    /* матовий лист: прозорість відчувається, але ядро/кільце за сотою
+       не брудять композицію (сумарно з шаром ≈ .96 білого — контури як натяк) */
+    background:rgba(255,255,255,.8);
   }
-  .n-front{
-    background:var(--paper);border:1px solid var(--ink);
-    opacity:1;transition:opacity 0ms linear 280ms;
-  }
+  /* обидві грані — лист: прозорі, рамка = сота-контур (svg .n-frame),
+     бо CSS-border ріжеться clip-path'ом нерівно. Чорної плашки нема —
+     «колір як пробудження», зайвої драми теж (рішення Влада 2026-08-15) */
+  .n-frame{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+  .n-frame path{fill:none;stroke:var(--ink);stroke-width:1.5;vector-effect:non-scaling-stroke}
+  .n-front{opacity:1;transition:opacity 0ms linear 280ms}
   .nodelayer.on .n-front{opacity:0}
   .n-front .nf-label{
     font-family:var(--font-d);font-weight:600;font-size:22px;letter-spacing:.03em;
   }
   .n-back{
-    background:var(--ink);transform:rotateY(180deg);
+    transform:rotateY(180deg);
     opacity:0;transition:opacity 0ms linear 280ms;
   }
   .nodelayer.on .n-back{opacity:1}
@@ -432,23 +437,25 @@
     display:none;
   }
   .n-back.hasvideo video{display:block}
-  .n-effect{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;mix-blend-mode:screen}
-  .n-effect circle{fill:none;stroke:#fff;stroke-width:.7;opacity:.22;animation:nfx 7s ease-in-out infinite}
+  /* інтерференція: концентричні кола з центру соти — строго симетрично */
+  .n-effect{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+  .n-effect circle{fill:none;stroke:var(--ink);stroke-width:.7;opacity:.12;animation:nfx 7s ease-in-out infinite}
   .n-effect circle:nth-child(2n){animation-delay:1.4s}
   .n-effect circle:nth-child(3n){animation-delay:2.8s}
-  @keyframes nfx{0%,100%{opacity:.10}50%{opacity:.34}}
+  @keyframes nfx{0%,100%{opacity:.06}50%{opacity:.2}}
   @media (prefers-reduced-motion:reduce){.n-effect circle{animation:none}}
   .n-label{
     position:relative;z-index:2;
-    font-family:var(--font-d);font-weight:600;color:var(--paper);
-    font-size:clamp(26px,7vw,34px);letter-spacing:.06em;text-align:center;
-    text-shadow:0 0 18px rgba(10,10,10,.5);
+    font-family:var(--font-d);font-weight:600;color:var(--ink);
+    font-size:clamp(24px,6.4vw,30px);letter-spacing:.06em;text-align:center;
     pointer-events:none;
   }
+  /* поверх відео напис знову світлий — читається на будь-якому кадрі */
+  .n-back.hasvideo .n-label{color:var(--paper);text-shadow:0 0 18px rgba(10,10,10,.5)}
   .n-note{
     position:absolute;left:0;right:0;bottom:16%;z-index:2;text-align:center;
     font-family:var(--font-t);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
-    color:rgba(255,255,255,.55);pointer-events:none;
+    color:var(--muted);pointer-events:none;
   }
   .n-back.hasvideo .n-note{display:none}
   .n-close{
@@ -501,10 +508,14 @@
     <button class="n-close" id="nclose" aria-label="Закрити ноду">×</button>
     <div class="nodescene">
       <div class="nodehex" id="nodehex" role="dialog" aria-modal="true" aria-labelledby="nlabel">
-        <div class="n-face n-front"><div class="nf-label" id="nflabel"></div></div>
+        <div class="n-face n-front">
+          <svg class="n-frame" viewBox="0 0 1000 866" preserveAspectRatio="none" aria-hidden="true"><path d="M252,3.5L748,3.5L996,433L748,862.5L252,862.5L4,433Z"/></svg>
+          <div class="nf-label" id="nflabel"></div>
+        </div>
         <div class="n-face n-back" id="nback">
           <video id="nvideo" playsinline loop preload="none"></video>
           <svg class="n-effect" id="neffect" viewBox="0 0 600 520" aria-hidden="true"></svg>
+          <svg class="n-frame" viewBox="0 0 1000 866" preserveAspectRatio="none" aria-hidden="true"><path d="M252,3.5L748,3.5L996,433L748,862.5L252,862.5L4,433Z"/></svg>
           <div class="n-label" id="nlabel"></div>
           <div class="n-note">запис ще в дорозі</div>
         </div>
@@ -1179,12 +1190,11 @@ const nodelayer = document.getElementById('nodelayer');
 const nvideo = document.getElementById('nvideo');
 
 (function nfxInit(){
+  /* симетрія: концентричні кола з геометричного центру соти (рішення Влада 2026-08-15) */
   const s = document.getElementById('neffect');
-  [[190,170],[410,350],[300,260]].forEach(([cx,cy]) => {
-    for (let r = 26; r <= 240; r += 26){
-      s.appendChild(el('circle', { cx, cy, r }));
-    }
-  });
+  for (let r = 24; r <= 288; r += 24){
+    s.appendChild(el('circle', { cx:300, cy:260, r }));
+  }
 })();
 
 async function findNodeMedia(id){
