@@ -1,6 +1,7 @@
 /* Автотест прототипу осі граней · запуск: node beta/faces/test.mjs
-   Перевіряє закони, а не пікселі: якір ядра, 6 сот на грані, речовину,
-   DAO DE DO на vlad, одну кімнату іншого на сторону, фолбек хеша, a11y. */
+   Перевіряє закони, а не пікселі: якір ядра, 6 сот на грані, шість доменів
+   lab і їхній цикл, речовину, DAO DE DO на vlad, одну кімнату іншого на
+   сторону, фолбек хеша, a11y. */
 import { readFileSync } from 'node:fs';
 import { JSDOM, VirtualConsole } from 'jsdom';
 
@@ -43,6 +44,9 @@ function checkFaceCells(faceId){
 
 const frame = document.getElementById('frame');
 const svg = document.getElementById('hive');
+const click = el => el.dispatchEvent(new window.MouseEvent('click', { bubbles:true }));
+const esc = () => document.dispatchEvent(new window.KeyboardEvent('keydown', { key:'Escape', bubbles:true }));
+const styleText = [...document.querySelectorAll('style')].map(s => s.textContent).join('\n');
 
 console.log('\n137lab · вісь граней · автотест\n');
 
@@ -63,9 +67,54 @@ const coreXY  = coreNum.getAttribute('x') + ',' + coreNum.getAttribute('y');
 ok(frame.dataset.face === 'lab', 'старт без хеша → грань lab');
 checkFaceCells('lab');
 
+/* ── грань lab: шість доменів дослідження (фінальний набір 2026-08-14) ──
+   кільце читається проти годинникової від верхньої соти як цикл */
+const CYCLE = ['СВІТОГЛЯД', 'СТАН', 'РИТМ', 'ПОЛЕ', 'ДОСВІД', 'ПРОЯВ'];
+{
+  const bySlot = cellsOf();   // renderFace додає соти відсортовані за slot
+  const labels = bySlot.map(c => c.textContent);
+  ok(new Set(labels).size === 6 && CYCLE.every(w => labels.includes(w)),
+     'lab: підписи сот рівно — ' + CYCLE.join(' · '));
+  ok(labels[0] === 'СВІТОГЛЯД', 'lab: slot0 (верх) = СВІТОГЛЯД');
+  ok(labels[3] === 'ПОЛЕ', 'lab: slot3 (низ) = ПОЛЕ');
+  ok([0, 5, 4, 3, 2, 1].map(s => labels[s]).join('·') === CYCLE.join('·'),
+     'lab: проти годинникової від верхньої читається цикл, не список');
+
+  /* двері й «скоро» — поведінково, крізь саму шторку: відкриваємо кожну
+     соту і дивимось, що в зоні дії — посилання чи чесний статус */
+  const doors = [], soons = [];
+  let openedAll = true;
+  for (const c of bySlot){
+    click(c);
+    if (!frame.classList.contains('open')) openedAll = false;
+    const a = document.querySelector('#sact .s-open');
+    const s = document.querySelector('#sact .s-status');
+    if (a) doors.push(a.getAttribute('href'));
+    if (!a && s && s.textContent === 'скоро') soons.push(c.textContent);
+    esc();
+    await tick();
+  }
+  ok(openedAll, 'lab: кожна сота відкриває шторку — і «скоро» теж');
+  ok(doors.length === 4, 'lab: чотири соти мають href (двері живі)');
+  ok(soons.length === 2 && soons.includes('СВІТОГЛЯД') && soons.includes('РИТМ'),
+     'lab: дві соти — «скоро», шторка відкривається, дія чесно неактивна');
+  ok(doors.includes('/daodedo/'), 'lab: ДОСВІД — тимчасові двері у /daodedo/');
+
+  /* жодного кольору в спокої: ні інлайн-заливок, ні кольорових атрибутів;
+     канон Ч/Б (--paper:#ffffff / --ink:#0a0a0a) на місці */
+  ok(bySlot.every(c => {
+       const p = c.querySelector('path');
+       return !p.getAttribute('fill') && !p.getAttribute('style') && !c.getAttribute('style');
+     }) && styleText.includes('--paper:#ffffff') && styleText.includes('--ink:#0a0a0a'),
+     'lab: жодна нода не несе кольору/заливки у спокої — Ч/Б канону');
+}
+
 /* ── перехід 1: liza ── */
 await goFace('liza');
 ok(frame.dataset.face === 'liza', 'хеш #/liza → material liza (щільна)');
+ok(styleText.includes('#frame[data-face="liza"] .lattice path') &&
+   styleText.includes('#frame[data-face="vlad"] .lattice path'),
+   'CSS: речовина сторін (щільна/розріджена решітка) перемикається з гранню');
 checkFaceCells('liza');
 ok(document.querySelectorAll('#cells .cell.room').length === 1 &&
    !!document.querySelector('#cells .cell.room[data-id="kimnata-vlada"]'),
@@ -100,12 +149,9 @@ ok(typeof window.PointerEvent === 'function', 'jsdom має PointerEvent — id-
 function pev(type, x, y, id){
   svg.dispatchEvent(new window.PointerEvent(type, { bubbles:true, clientX:x, clientY:y, pointerId:id }));
 }
-const click = el => el.dispatchEvent(new window.MouseEvent('click', { bubbles:true }));
-const esc = () => document.dispatchEvent(new window.KeyboardEvent('keydown', { key:'Escape', bubbles:true }));
 
 /* несуча CSS-строка жесту: без touch-action:none браузер шле pointercancel
    посеред свайпу — jsdom цього не відтворить, тому smoke-перевірка тексту */
-const styleText = [...document.querySelectorAll('style')].map(s => s.textContent).join('\n');
 ok(styleText.includes('.hivewrap, #hive{touch-action:none}'), 'CSS: touch-action:none на зоні жесту на місці');
 
 /* жест 1: поріг, чужий палець, фліп у русі, один фліп на жест */
