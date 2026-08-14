@@ -1,5 +1,5 @@
 # Медіа сот (нода-розворот)
 
 Поклади файл `<id>.mp4` (портретне або квадратне, зі звуком) — зворотний бік соти оживе сам.
-id — з `../cells.json`: zadum · vaib · vtilennia · hra · tekhnolohii · freimvork.
+id — з `../cells.json`: ideia · vaib · vtilennia · hra · tekhnolohii · freimvork.
 Нема файла → сота показує ефект інтерференції та напис (чесно, без заглушок).

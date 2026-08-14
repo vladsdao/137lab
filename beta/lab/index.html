@@ -389,6 +389,10 @@
     background:rgba(255,255,255,.78);
     opacity:0;transition:opacity 280ms var(--ease);
   }
+  /* display:grid перебиває UA-правило [hidden] → без цього рядка закритий
+     шар лишався в хіт-тесті і зʼїдав УСІ кліки на сторінці (баг «нічого
+     не натискається»). hidden мусить справді ховати. */
+  .nodelayer[hidden]{display:none}
   .nodelayer.on{opacity:1}
   .nodescene{perspective:1100px}
   .nodehex{
@@ -539,7 +543,7 @@
    цей масив — фолбек на випадок недоступного fetch. Внутрішніх сторінок нема (Ф1-прим):
    тап → сота виїжджає вперед і розвертається зворотним боком (напис + відео + ефект). */
 let CELLS = [
-  { id:'zadum',       label:['ЗАДУМ'],       full:'Задум' },
+  { id:'ideia',       label:['ІДЕЯ'],        full:'Ідея' },
   { id:'vaib',        label:['ВАЙБ'],        full:'Вайб' },
   { id:'vtilennia',   label:['ВТІЛЕННЯ'],    full:'Втілення' },
   { id:'hra',         label:['ГРА'],         full:'Гра' },
@@ -656,7 +660,7 @@ const SND = {
   on:false, ctx:null, buffers:{}, loading:false, MAX_S:3,
   NOTES: {
     core:523.25,                       // C5 — ядро
-    zadum:587.33, vaib:659.25,             // D5 E5
+    ideia:587.33, vaib:659.25,             // D5 E5
     vtilennia:783.99, hra:880,             // G5 A5
     tekhnolohii:1046.5, freimvork:1174.66, // C6 D6
     qq:261.63,                         // C4 — питання
@@ -768,7 +772,7 @@ function padFrom(target){
    вища октава — світліша, нижча (кітч-панч) — глибша. ───────────── */
 const NOTE_COLOR = {
   core:      'hsl(4, 78%, 50%)',     /* C5 */
-  zadum:       'hsl(32, 82%, 50%)',  /* D5 */
+  ideia:       'hsl(32, 82%, 50%)',  /* D5 */
   vaib:        'hsl(52, 85%, 47%)',  /* E5 */
   vtilennia:   'hsl(210, 75%, 50%)', /* G5 */
   hra:         'hsl(276, 60%, 52%)', /* A5 */

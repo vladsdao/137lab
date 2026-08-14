@@ -1,5 +1,5 @@
 [
-  { "id": "zadum",       "label": ["ЗАДУМ"],       "full": "Задум" },
+  { "id": "ideia",       "label": ["ІДЕЯ"],        "full": "Ідея" },
   { "id": "vaib",        "label": ["ВАЙБ"],        "full": "Вайб" },
   { "id": "vtilennia",   "label": ["ВТІЛЕННЯ"],    "full": "Втілення" },
   { "id": "hra",         "label": ["ГРА"],         "full": "Гра" },
