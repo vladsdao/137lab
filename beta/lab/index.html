@@ -402,18 +402,30 @@
   @media (prefers-reduced-motion:reduce){
     .nodelayer{transition:none}
     .nodehex{transition:none;transform:scale(1) rotateY(180deg)}
+    .n-front,.n-back{transition:none}
   }
+  /* backface-visibility тут НЕ можна: clip-path — grouping property,
+     Chrome флаттенить грані всередині preserve-3d і обидві стають «задніми»
+     → сота невидима (баг Ф1). Грані перемикаємо самі: миттєво на середині
+     повороту (280ms із 560ms), коли сота стоїть ребром і зміни не видно. */
   .n-face{
     position:absolute;inset:0;
-    -webkit-backface-visibility:hidden;backface-visibility:hidden;
     clip-path:polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%);
     display:grid;place-items:center;overflow:hidden;
   }
-  .n-front{background:var(--paper);border:1px solid var(--ink)}
+  .n-front{
+    background:var(--paper);border:1px solid var(--ink);
+    opacity:1;transition:opacity 0ms linear 280ms;
+  }
+  .nodelayer.on .n-front{opacity:0}
   .n-front .nf-label{
     font-family:var(--font-d);font-weight:600;font-size:22px;letter-spacing:.03em;
   }
-  .n-back{background:var(--ink);transform:rotateY(180deg)}
+  .n-back{
+    background:var(--ink);transform:rotateY(180deg);
+    opacity:0;transition:opacity 0ms linear 280ms;
+  }
+  .nodelayer.on .n-back{opacity:1}
   .n-back video{
     position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
     filter:grayscale(1) contrast(1.05);   /* Ч/Б: колір лише як відгук */
@@ -444,6 +456,9 @@
     background:none;border:none;cursor:pointer;color:var(--ink);
     font-size:24px;line-height:1;
   }
+  /* програмний фокус після тапу не малює браузерну обводку поверх тумблера звуку;
+     клавіатурний focus-visible лишається */
+  .n-close:focus:not(:focus-visible){outline:none}
 </style>
 </head>
 <body>
