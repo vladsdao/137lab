@@ -35,11 +35,13 @@ function ok(cond, name){
 }
 
 function cellsOf(){ return [...document.querySelectorAll('#cells .cell')]; }
+function dotsOf(){ return [...document.querySelectorAll('#fcompass button.f-dot')]; }
 function checkFaceCells(faceId){
   const cs = cellsOf();
   ok(cs.length === 6, faceId + ': 6 сот у g#cells');
   ok(cs.every(c => c.getAttribute('tabindex') === '0'), faceId + ': у всіх сот tabindex=0');
   ok(cs.every(c => (c.getAttribute('aria-label') || '').length > 0), faceId + ': у всіх сот aria-label');
+  ok(dotsOf().length === 3, faceId + ': компас — рівно 3 кнопки-двері');
 }
 
 const frame = document.getElementById('frame');
@@ -232,6 +234,48 @@ await tick();
 ok(frame.dataset.face === 'vlad', 'вертикальний рух — пружина, грань не змінюється');
 pev('pointerup', 202, 380, 7);
 await tick();
+
+/* ── компас-двері (БРИФ 02): aria, тап = хеш, якір через нові двері ── */
+{
+  const comp = document.getElementById('fcompass');
+  ok(!comp.hasAttribute('aria-hidden'), 'компас: aria-hidden знято — орган, не декорація');
+  ok(dotsOf().every(b => (b.getAttribute('aria-label') || '').length > 0),
+     'компас: у кожної кнопки aria-label (імʼя грані)');
+  ok(dotsOf().every(b => b.tabIndex >= 0), 'компас: кнопки досяжні з клавіатури (tabindex ≥ 0)');
+  const cur = dotsOf().filter(b => b.getAttribute('aria-current') === 'true');
+  ok(cur.length === 1 && cur[0].dataset.face === frame.dataset.face,
+     'компас: рівно одна aria-current="true" — і це поточна грань');
+
+  /* тап по рисці liza: хеш міняється, hashchange рендерить, якір стоїть */
+  click(dotsOf().find(b => b.dataset.face === 'liza'));
+  await tick();
+  ok(window.location.hash === '#/liza' && frame.dataset.face === 'liza',
+     'компас: тап по рисці liza → hash #/liza і грань liza');
+  ok(dotsOf().length === 3, 'компас: після навігації — знову рівно 3 кнопки (зона не стрибає)');
+  const cur2 = dotsOf().filter(b => b.getAttribute('aria-current') === 'true');
+  ok(cur2.length === 1 && cur2[0].dataset.face === 'liza', 'компас: aria-current переїхав на liza');
+  const coreAfterDoor = document.getElementById('core');
+  ok(coreAfterDoor === coreRef && coreAfterDoor.querySelector('path').getAttribute('d') === coreD,
+     'якір: після навігації компасом #core — той самий вузол, та сама геометрія');
+  ok(styleText.includes('min-height:115px'),
+     'CSS: зона підпису тримає фіксовану висоту 115px');
+}
+
+/* ── ЕКСПЕРИМЕНТ · територія жесту: ?ta= керує data-атрибутом ── */
+ok(document.documentElement.dataset.ta === 'none',
+   'territory: без параметра — режим none (поточна поведінка)');
+async function taOf(search){
+  const d = new JSDOM(html, { url:'http://localhost:8137/beta/faces/' + search,
+    runScripts:'dangerously', pretendToBeVisual:true, virtualConsole:vc });
+  await tick();
+  const ta = d.window.document.documentElement.dataset.ta;
+  d.window.close();
+  return ta;
+}
+const taP = await taOf('?ta=pany'), taG = await taOf('?ta=guard');
+ok(taP === 'pany' && taG === 'guard' && taP !== taG,
+   'territory: ?ta=pany і ?ta=guard — різні значення data-ta');
+ok(await taOf('?ta=vygadka') === 'none', 'territory: невідоме значення падає в none');
 
 /* ── помилок на сторінці не було ── */
 ok(pageErrors.length === 0, 'жодної JS-помилки за весь прогін' +
