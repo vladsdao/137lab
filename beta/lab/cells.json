@@ -1,0 +1,8 @@
+[
+  { "id": "zadum",       "label": ["ЗАДУМ"],       "full": "Задум" },
+  { "id": "vaib",        "label": ["ВАЙБ"],        "full": "Вайб" },
+  { "id": "vtilennia",   "label": ["ВТІЛЕННЯ"],    "full": "Втілення" },
+  { "id": "hra",         "label": ["ГРА"],         "full": "Гра" },
+  { "id": "tekhnolohii", "label": ["ТЕХНОЛОГІЇ"],  "full": "Технології" },
+  { "id": "freimvork",   "label": ["ФРЕЙМВОРК"],   "full": "Фреймворк" }
+]
