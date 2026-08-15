@@ -215,20 +215,6 @@
   }
   @media (prefers-reduced-motion:reduce){.waves circle{animation-duration:1ms}}
 
-  /* ── слова з ядра: панк-вильоти у звуковому режимі ── */
-  .words{position:absolute;inset:0;z-index:2;pointer-events:none}
-  .words span{
-    position:absolute;
-    font-family:var(--font-d);font-weight:800;text-transform:uppercase;
-    color:var(--ink);white-space:nowrap;
-    animation:wordfly var(--dur) cubic-bezier(.2,.6,.3,1) forwards;
-  }
-  @keyframes wordfly{
-    0%  {transform:translate(-50%,-50%) rotate(var(--r0)) scale(.5);opacity:.7}
-    100%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) rotate(var(--r1)) scale(1.15);opacity:0}
-  }
-  @media (prefers-reduced-motion:reduce){.words span{animation-duration:1ms}}
-
   /* ── онбординг: ворота(квіз) → вулик ── */
   #frame:not([data-stage="hive"]):not([data-stage="quizgate"]) .quiz{display:none}
   #frame:not([data-stage="hive"]) .sound, #frame:not([data-stage="hive"]) .sndlabel{visibility:hidden}
@@ -394,7 +380,8 @@
      не натискається»). hidden мусить справді ховати. */
   .nodelayer[hidden]{display:none}
   .nodelayer.on{opacity:1}
-  .nodescene{perspective:1100px}
+  /* сцена стоїть точно на центрі ядра вулика (лишається якорем, JS ставить left/top) */
+  .nodescene{position:absolute;transform:translate(-50%,-50%);perspective:1100px}
   .nodehex{
     position:relative;
     width:min(80vw,320px);aspect-ratio:1000/866;
@@ -448,20 +435,41 @@
   .n-effect circle:nth-child(3n){animation-delay:2.8s}
   @keyframes nfx{0%,100%{opacity:.06}50%{opacity:.2}}
   @media (prefers-reduced-motion:reduce){.n-effect circle{animation:none}}
-  .n-label{
-    position:relative;z-index:2;
-    font-family:var(--font-d);font-weight:600;color:var(--ink);
-    font-size:clamp(24px,6.4vw,30px);letter-spacing:.06em;text-align:center;
+  /* зворотний бік = картка з розміткою: три відділи тонкими лініями
+     (імʼя · опис/контент · дія) — розмітка як на папері (правка Влада 2026-08-15) */
+  .n-card{
+    position:absolute;inset:0;z-index:2;
+    display:grid;grid-template-rows:34% 38% 28%;
     pointer-events:none;
   }
-  /* поверх відео напис знову світлий — читається на будь-якому кадрі */
-  .n-back.hasvideo .n-label{color:var(--paper);text-shadow:0 0 18px rgba(10,10,10,.5)}
-  .n-note{
-    position:absolute;left:0;right:0;bottom:16%;z-index:2;text-align:center;
-    font-family:var(--font-t);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
-    color:var(--muted);pointer-events:none;
+  .n-sec{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:6px;padding:0 17%;min-height:0;
   }
-  .n-back.hasvideo .n-note{display:none}
+  .n-sec + .n-sec{border-top:1px solid var(--rule)}
+  .n-kick{
+    font-family:var(--font-t);font-size:10px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--muted);
+  }
+  .n-label{
+    font-family:var(--font-d);font-weight:600;color:var(--ink);
+    font-size:clamp(20px,5.4vw,26px);letter-spacing:.05em;text-align:center;
+  }
+  .n-desc{
+    font-family:var(--font-t);font-size:12px;line-height:1.5;
+    text-align:center;color:var(--ink);max-width:30ch;
+  }
+  .n-note{
+    font-family:var(--font-t);font-size:10.5px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--muted);text-align:center;
+  }
+  .n-act{pointer-events:auto}
+  .n-act .s-open{padding:10px 20px;font-size:12.5px;min-height:0}
+  /* поверх відео: розмітка ховається, напис світлий — читається на будь-якому кадрі */
+  .n-back.hasvideo .n-sec + .n-sec{border-top-color:transparent}
+  .n-back.hasvideo .n-label{color:var(--paper);text-shadow:0 0 18px rgba(10,10,10,.5)}
+  .n-back.hasvideo .n-kick{color:rgba(255,255,255,.6)}
+  .n-back.hasvideo .n-note{visibility:hidden}
   .n-close{
     position:absolute;top:14px;right:14px;width:44px;height:44px;z-index:6;
     background:none;border:none;cursor:pointer;color:var(--ink);
@@ -507,7 +515,6 @@
   </div>
 
   <svg class="waves" id="waves" aria-hidden="true"></svg>
-  <div class="words" id="words" aria-hidden="true"></div>
   <div class="nodelayer" id="nodelayer" hidden>
     <button class="n-close" id="nclose" aria-label="Закрити ноду">×</button>
     <div class="nodescene">
@@ -520,8 +527,11 @@
           <video id="nvideo" playsinline loop preload="none"></video>
           <svg class="n-effect" id="neffect" viewBox="0 0 600 520" aria-hidden="true"></svg>
           <svg class="n-frame" viewBox="0 0 1000 866" preserveAspectRatio="none" aria-hidden="true"><path d="M252,3.5L748,3.5L996,433L748,862.5L252,862.5L4,433Z"/></svg>
-          <div class="n-label" id="nlabel"></div>
-          <div class="n-note">запис ще в дорозі</div>
+          <div class="n-card">
+            <div class="n-sec"><div class="n-kick" id="nkick">нода</div><div class="n-label" id="nlabel"></div></div>
+            <div class="n-sec"><p class="n-desc" id="ndesc"></p></div>
+            <div class="n-sec"><div class="n-note" id="nnote">запис ще в дорозі</div><div class="n-act" id="nact"></div></div>
+          </div>
         </div>
       </div>
     </div>
@@ -723,40 +733,8 @@ function playPad(id){
   }
 }
 
-/* панк-вильоти з ядра: і слово, і все інше — хаос і рандом */
-const WORDS = ['НЕМОЖЛИВО', 'ОПИСАТИ', 'СЛОВАМИ', 'ДАО'];
-
-function spawnWord(){
-  if (Math.random() < 0.5) return;   /* слова вилітають у 50% натисків */
-  const layer = document.getElementById('words');
-  const fr = frame.getBoundingClientRect();
-  const cr = document.querySelector('.core path').getBoundingClientRect();
-  const s = document.createElement('span');
-  /* 13.7% — ВІДЧУВАЙ: удвічі більше, червоне, живе довше.
-     22% — турбо: утричі швидше і закрученіше. Решта — звичайний панк. */
-  const isFeel = Math.random() < 0.137;
-  const turbo  = !isFeel && Math.random() < 0.22;
-  s.textContent = isFeel ? 'ВІДЧУВАЙ' : WORDS[Math.floor(Math.random() * WORDS.length)];
-  const a = Math.random() * Math.PI * 2;          // напрям — будь-куди
-  const d = 110 + Math.random() * 150;            // дальність
-  const fs = 6 + Math.random() * 3.4;
-  let dur = 4 + Math.random() * 3.5;
-  if (turbo)  dur /= 3;
-  if (isFeel) dur *= 1.6;
-  s.style.left = (cr.x + cr.width / 2 - fr.x).toFixed(1) + 'px';
-  s.style.top  = (cr.y + cr.height / 2 - fr.y).toFixed(1) + 'px';
-  s.style.fontSize = (isFeel ? fs * 2 : fs).toFixed(1) + 'px';
-  if (isFeel) s.style.color = '#d40000';
-  s.style.letterSpacing = (Math.random() * .2).toFixed(2) + 'em';
-  s.style.setProperty('--dx', (Math.cos(a) * d).toFixed(0) + 'px');
-  s.style.setProperty('--dy', (Math.sin(a) * d).toFixed(0) + 'px');
-  s.style.setProperty('--r0', (Math.random() * 60 - 30).toFixed(0) + 'deg');
-  s.style.setProperty('--r1', ((Math.random() * 720 - 360) * (turbo ? 3 : 1)).toFixed(0) + 'deg');
-  s.style.setProperty('--dur', dur.toFixed(2) + 's');
-  s.addEventListener('animationend', () => s.remove());
-  while (layer.childNodes.length > 16) layer.firstChild.remove();
-  layer.appendChild(s);
-}
+/* панк-вильоти слів з ядра прибрано (правка Влада 2026-08-15):
+   заважали читати екран; код — у git-історії до цього коміту */
 
 function padFrom(target){
   if (!target.closest) return null;
@@ -1136,7 +1114,9 @@ function activate(target){
   if (stage !== 'hive') return false;
   if (Date.now() < hiveRevealUntil) return false;   /* вулик щойно розкрився — тап ще з ворітної серії */
   if (SND.on) return false;   /* звуковий режим: тап = звук, не навігація */
-  if (target.closest('.core')){ openSheet(CORE); return true; }
+  /* ядро — той самий розворот, що й соти; шторка знизу прибрана (Влад 2026-08-15) */
+  const core = target.closest('.core');
+  if (core){ expandNode(CORE, core); return true; }
   const g = target.closest('.cell');
   if (g){ expandNode(CELLS.find(c => c.id === g.dataset.id), g); return true; }
   return false;
@@ -1162,7 +1142,6 @@ document.getElementById('hive').addEventListener('keydown', e => {
     const pad = padFrom(e.target);
     if (pad){
       playPad(pad.id); spawnWave(pad.el, pad.id);
-      if (pad.id === 'core') spawnWord();
       e.preventDefault();
     }
     return;
@@ -1173,10 +1152,7 @@ document.getElementById('hive').addEventListener('keydown', e => {
 document.addEventListener('pointerdown', e => {
   if (stage !== 'hive' || !SND.on) return;
   const pad = padFrom(e.target);
-  if (pad){
-    playPad(pad.id); spawnWave(pad.el, pad.id);
-    if (pad.id === 'core') spawnWord();
-  }
+  if (pad){ playPad(pad.id); spawnWave(pad.el, pad.id); }
 });
 /* страховка для двигунів без overflow:clip: канвас не скролиться ніколи */
 frame.addEventListener('scroll', () => { if (frame.scrollTop) frame.scrollTop = 0; });
@@ -1213,8 +1189,31 @@ function expandNode(cell, srcEl){
   if (!cell || nodeOpen) return;
   nodeOpen = cell;
   lastNodeFocus = srcEl || document.activeElement;
-  document.getElementById('nflabel').textContent = cell.label ? cell.label.join(' ') : cell.full;
+  /* сцена стоїть точно на центрі ядра — сота виростає з середини квітки */
+  const fr = frame.getBoundingClientRect();
+  const cr = document.querySelector('.core path').getBoundingClientRect();
+  const scene = document.querySelector('.nodescene');
+  scene.style.left = (cr.x + cr.width / 2 - fr.x).toFixed(1) + 'px';
+  scene.style.top  = (cr.y + cr.height / 2 - fr.y).toFixed(1) + 'px';
+  /* лице */
+  document.getElementById('nflabel').textContent = cell.label ? cell.label.join(' ') : (cell.num ? cell.num + ' ' + cell.word : cell.full);
+  /* зворот: три відділи — імʼя · опис · дія/примітка */
+  document.getElementById('nkick').textContent = cell.kick || 'нода';
   document.getElementById('nlabel').textContent = cell.full || '';
+  document.getElementById('ndesc').textContent = cell.desc || '';
+  const act = document.getElementById('nact');
+  act.textContent = '';
+  const note = document.getElementById('nnote');
+  if (cell.href){
+    note.hidden = true;
+    const a = document.createElement('a');
+    a.className = 's-open';
+    a.href = cell.href;
+    a.textContent = (cell.act || 'Відкрити') + ' →';
+    act.appendChild(a);
+  } else {
+    note.hidden = false;
+  }
   const back = document.getElementById('nback');
   back.classList.remove('hasvideo');
   nvideo.removeAttribute('src'); nvideo.load();
@@ -1236,13 +1235,19 @@ function collapseNode(){
   nodeOpen = null;
   nvideo.pause();
   nodelayer.classList.remove('on');
+  let tid = null;
   const done = () => {
-    nodelayer.hidden = true;
     nodelayer.removeEventListener('transitionend', done);
+    if (tid){ clearTimeout(tid); tid = null; }
+    if (nodeOpen) return;   /* за цей час відкрили нову ноду — шар лишається */
+    nodelayer.hidden = true;
     if (lastNodeFocus && lastNodeFocus.focus) lastNodeFocus.focus({ preventScroll:true });
   };
   if (matchMedia('(prefers-reduced-motion: reduce)').matches){ done(); }
-  else nodelayer.addEventListener('transitionend', done);
+  else {
+    nodelayer.addEventListener('transitionend', done);
+    tid = setTimeout(done, 450);   /* страховка: у фоновій вкладці transitionend може не прийти */
+  }
 }
 
 function turnRing(){
@@ -1251,9 +1256,10 @@ function turnRing(){
   if (!ring){ return; }
   if (matchMedia('(prefers-reduced-motion: reduce)').matches){ renderHive(true); return; }
   ring.style.transformOrigin = CX + 'px ' + CY + 'px';
-  ring.style.transition = 'transform 420ms var(--ease)';
+  /* повільніше і мʼякше: 420ms різало очі (правка Влада 2026-08-15) */
+  ring.style.transition = 'transform 1100ms cubic-bezier(.25,.1,.25,1)';
   ring.style.transform = 'rotate(60deg)';
-  setTimeout(() => renderHive(true), 440);   /* перерендер: підписи знову горизонтальні */
+  setTimeout(() => renderHive(true), 1120);   /* перерендер: підписи знову горизонтальні */
 }
 
 nodelayer.addEventListener('click', e => {
