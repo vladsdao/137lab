@@ -384,7 +384,7 @@
   .nodescene{position:absolute;transform:translate(-50%,-50%);perspective:1100px}
   .nodehex{
     position:relative;
-    width:min(80vw,320px);aspect-ratio:1000/866;
+    width:min(96vw,384px);aspect-ratio:1000/866;   /* контент важкий — сота росте (v3) */
     transform-style:preserve-3d;
     transform:scale(.28) rotateY(0deg);
     transition:transform 560ms var(--ease);
@@ -437,38 +437,83 @@
   @media (prefers-reduced-motion:reduce){.n-effect circle{animation:none}}
   /* зворотний бік = картка з розміткою: три відділи тонкими лініями
      (імʼя · опис/контент · дія) — розмітка як на папері (правка Влада 2026-08-15) */
+  /* гекс flat-top 1000×866: скіс від x=25% (y=0) до x=0 (y=50%). Верхній ярус
+     0–30% має ширину 50→80%, середній 30–74% — 80→100→~90%, нижній 74–100% — 76→50%.
+     Відступи по ярусах підігнані під ці межі — текст не торкається скосу. */
   .n-card{
     position:absolute;inset:0;z-index:2;
-    display:grid;grid-template-rows:34% 38% 28%;
+    display:grid;grid-template-rows:minmax(0,30fr) minmax(0,44fr) minmax(0,26fr);
     pointer-events:none;
   }
+  .n-card > *{min-height:0}
+  .n-mid{position:relative;display:grid;min-height:0}
   .n-sec{
     display:flex;flex-direction:column;align-items:center;justify-content:center;
-    gap:6px;padding:0 17%;min-height:0;
+    gap:5px;min-height:0;
   }
-  .n-sec + .n-sec{border-top:1px solid var(--rule)}
+  .n-sec:first-child{padding:8% 18% 2%}
+  .n-sec:last-child{padding:1% 18% 6%}
+  .n-card > * + *{border-top:1px solid var(--rule)}
   .n-kick{
-    font-family:var(--font-t);font-size:10px;letter-spacing:.22em;
+    font-family:var(--font-t);font-size:9.5px;letter-spacing:.22em;
     text-transform:uppercase;color:var(--muted);
   }
   .n-label{
     font-family:var(--font-d);font-weight:600;color:var(--ink);
-    font-size:clamp(20px,5.4vw,26px);letter-spacing:.05em;text-align:center;
+    font-size:clamp(19px,5vw,24px);letter-spacing:.05em;text-align:center;line-height:1.1;
   }
+  .n-tag{
+    font-family:var(--font-t);font-size:11px;line-height:1.35;color:var(--muted);
+    text-align:center;max-width:32ch;text-wrap:balance;
+  }
+  /* опис: перший абзац одразу; тап по зоні — решта абзаців, скрол у межах відділу */
+  /* height:100% + overflow — grid-item сам не обрізає, коли flex-діти більші за трек */
+  /* закрито: скрол-зона з масками показує початок першого абзацу, решта — за «далі».
+     відкрито: усі абзаци, скрол у межах ярусу. Обидва стани — згори, без центрування:
+     довгий перший абзац інакше обрізався з обох боків (Технології). */
+  .n-body{
+    pointer-events:auto;cursor:pointer;position:relative;
+    align-self:stretch;min-height:0;box-sizing:border-box;
+    overflow:hidden;
+    display:flex;flex-direction:column;justify-content:flex-start;
+    padding:8px 11% 22px;
+    -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 8px,#000 calc(100% - 34px),transparent calc(100% - 14px));
+            mask-image:linear-gradient(to bottom,transparent 0,#000 8px,#000 calc(100% - 34px),transparent calc(100% - 14px));
+  }
+  .n-body > *{flex:0 0 auto}
+  .n-body.open{overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding-bottom:12px;
+    -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 8px,#000 calc(100% - 12px),transparent 100%);
+            mask-image:linear-gradient(to bottom,transparent 0,#000 8px,#000 calc(100% - 12px),transparent 100%);
+  }
+  .n-body::-webkit-scrollbar{width:0;height:0}
   .n-desc{
-    font-family:var(--font-t);font-size:12px;line-height:1.5;
+    font-family:var(--font-t);font-size:11.5px;line-height:1.5;
+    text-align:center;color:var(--ink);margin:0 auto;max-width:34ch;
+  }
+  .n-desc + .n-desc{margin-top:8px}
+  .n-body:not(.open) .n-desc:nth-child(n+2){display:none}
+  /* «далі ↓» — прибитий до низу ярусу поза скролом (сусід n-body у сітці, не дитина) */
+  .n-more{
+    position:absolute;left:0;right:0;bottom:4px;z-index:3;
+    font-family:var(--font-t);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--muted);text-align:center;pointer-events:none;
+  }
+  .n-card.open .n-more,.n-card[data-single] .n-more{display:none}
+  .n-exp{
+    font-family:var(--font-t);font-size:11px;line-height:1.45;
     text-align:center;color:var(--ink);max-width:30ch;
   }
+  .n-exp b{font-weight:500;letter-spacing:.14em;text-transform:uppercase;font-size:9.5px;color:var(--muted);display:block;margin-bottom:3px}
   .n-note{
     font-family:var(--font-t);font-size:10.5px;letter-spacing:.18em;
     text-transform:uppercase;color:var(--muted);text-align:center;
   }
   .n-act{pointer-events:auto}
-  .n-act .s-open{padding:10px 20px;font-size:12.5px;min-height:0}
+  .n-act .s-open{padding:8px 16px;font-size:11.5px;min-height:0;border-radius:99px}
   /* поверх відео: розмітка ховається, напис світлий — читається на будь-якому кадрі */
-  .n-back.hasvideo .n-sec + .n-sec{border-top-color:transparent}
+  .n-back.hasvideo .n-card > * + *{border-top-color:transparent}
   .n-back.hasvideo .n-label{color:var(--paper);text-shadow:0 0 18px rgba(10,10,10,.5)}
-  .n-back.hasvideo .n-kick{color:rgba(255,255,255,.6)}
+  .n-back.hasvideo .n-kick,.n-back.hasvideo .n-tag{color:rgba(255,255,255,.6)}
   .n-back.hasvideo .n-note{visibility:hidden}
   .n-close{
     position:absolute;top:14px;right:14px;width:44px;height:44px;z-index:6;
@@ -528,9 +573,9 @@
           <svg class="n-effect" id="neffect" viewBox="0 0 600 520" aria-hidden="true"></svg>
           <svg class="n-frame" viewBox="0 0 1000 866" preserveAspectRatio="none" aria-hidden="true"><path d="M252,3.5L748,3.5L996,433L748,862.5L252,862.5L4,433Z"/></svg>
           <div class="n-card">
-            <div class="n-sec"><div class="n-kick" id="nkick">нода</div><div class="n-label" id="nlabel"></div></div>
-            <div class="n-sec"><p class="n-desc" id="ndesc"></p></div>
-            <div class="n-sec"><div class="n-note" id="nnote">запис ще в дорозі</div><div class="n-act" id="nact"></div></div>
+            <div class="n-sec"><div class="n-kick" id="nkick">нода</div><div class="n-label" id="nlabel"></div><div class="n-tag" id="ntag"></div></div>
+            <div class="n-mid"><div class="n-body" id="nbody" role="button" tabindex="0" aria-label="Розгорнути опис"><div id="ndesc"></div></div><div class="n-more">далі ↓</div></div>
+            <div class="n-sec"><p class="n-exp" id="nexp"></p><div class="n-note" id="nnote">запис ще в дорозі</div><div class="n-act" id="nact"></div></div>
           </div>
         </div>
       </div>
@@ -565,12 +610,19 @@ fetch('cells.json', { cache:'no-cache' })
   .then(j => { if (Array.isArray(j) && j.length === 6){ CELLS = j; if (stage === 'hive') renderHive(true); } })
   .catch(() => { /* фолбек лишається */ });
 
-/* центр-нода: відкриває шторку «Що таке 137lab» → маніфест /137 */
+/* центр-нода: той самий розворот, що й соти. Текст — Влада (2026-08-15, ДРАФТ — правиться потім) */
 const CORE = {
   id:'core',
   num:'137', word:'ЛАБ', door:'',
-  kick:'нода', full:'Що таке 137lab',
-  desc:'137lab — це не бренд, а скоріше координата. Ми обрали її, бо працюємо у точці, де невидимі стани, думки й енергія кристалізуються у фізичну форму.',
+  kick:'центр', full:'137 ЛАБ',
+  tagline:'Лабораторія метафізичної гри в себе.',
+  desc:[
+    'Центр — не сьома тема. Це те, що тримає шість разом.',
+    'Ми створюємо умови, де сходяться різні перспективи, і спираємось на твою творчість як на головний інструмент. Не даємо відповідей — тримаємо поле, в якому ти дістаєш свої.',
+    'Ми з Лізою — перший експеримент цієї лабораторії. Усе, що ми пропонуємо, спершу прогнали крізь себе і крізь свої стосунки: симбіоз спочатку всередині себе, потім між нами, далі — з іншими й зі світом.',
+    'Ми не лікуємо і не виправляємо. Ми режисуємо простір, у якому людина сама знаходить себе. А може, і більше того.',
+  ],
+  experiment:'Безпечне поле для твоєї проявленості.',
   href:'/137', act:'Дізнатись більше',
 };
 
@@ -1197,22 +1249,45 @@ function expandNode(cell, srcEl){
   scene.style.top  = (cr.y + cr.height / 2 - fr.y).toFixed(1) + 'px';
   /* лице */
   document.getElementById('nflabel').textContent = cell.label ? cell.label.join(' ') : (cell.num ? cell.num + ' ' + cell.word : cell.full);
-  /* зворот: три відділи — імʼя · опис · дія/примітка */
+  /* зворот: три яруси — імʼя+теглайн · опис (1 абзац, тап → решта) · експеримент/дія */
   document.getElementById('nkick').textContent = cell.kick || 'нода';
   document.getElementById('nlabel').textContent = cell.full || '';
-  document.getElementById('ndesc').textContent = cell.desc || '';
+  document.getElementById('ntag').textContent = cell.tagline || '';
+  const body = document.getElementById('nbody');
+  const descBox = document.getElementById('ndesc');
+  descBox.textContent = '';
+  const paras = Array.isArray(cell.desc) ? cell.desc : (cell.desc ? [cell.desc] : []);
+  paras.forEach(t => { const p = document.createElement('p'); p.className = 'n-desc'; p.textContent = t; descBox.appendChild(p); });
+  const card = document.querySelector('.n-card');
+  body.classList.remove('open'); card.classList.remove('open');
+  body.scrollTop = 0;
+  /* «далі» треба, якщо абзаців >1 АБО перший не вміщається — вирішуємо після розкладки */
+  card.removeAttribute('data-single');
+  requestAnimationFrame(() => {
+    if (nodeOpen !== cell) return;
+    if (paras.length <= 1 && body.scrollHeight <= body.clientHeight + 2) card.setAttribute('data-single', '');
+  });
+  const exp = document.getElementById('nexp');
+  exp.textContent = '';
+  const note = document.getElementById('nnote');
   const act = document.getElementById('nact');
   act.textContent = '';
-  const note = document.getElementById('nnote');
-  if (cell.href){
+  if (cell.experiment){
+    const b = document.createElement('b'); b.textContent = cell.id === 'core' ? '' : 'експеримент';
+    if (b.textContent) exp.appendChild(b);
+    exp.appendChild(document.createTextNode(cell.experiment));
+    exp.hidden = false;
     note.hidden = true;
+  } else {
+    exp.hidden = true;
+    note.hidden = false;
+  }
+  if (cell.href){
     const a = document.createElement('a');
     a.className = 's-open';
     a.href = cell.href;
     a.textContent = (cell.act || 'Відкрити') + ' →';
     act.appendChild(a);
-  } else {
-    note.hidden = false;
   }
   const back = document.getElementById('nback');
   back.classList.remove('hasvideo');
@@ -1263,7 +1338,19 @@ function turnRing(){
 }
 
 nodelayer.addEventListener('click', e => {
-  if (e.target === nodelayer || e.target.closest('#nclose')) collapseNode();
+  if (e.target === nodelayer || e.target.closest('#nclose')){ collapseNode(); return; }
+  /* тап по опису — розгорнути решту абзаців (скрол у межах відділу) */
+  const body = e.target.closest('#nbody');
+  if (body && !body.classList.contains('open')) openBody();
+});
+function openBody(){
+  const body = document.getElementById('nbody');
+  const card = document.querySelector('.n-card');
+  if (card.hasAttribute('data-single')) return;
+  body.classList.add('open'); card.classList.add('open');
+}
+document.getElementById('nbody').addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ' '){ openBody(); e.preventDefault(); }
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') collapseNode(); });
 
