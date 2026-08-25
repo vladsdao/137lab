@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" sizes="32x32" href="/icons/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="theme-color" content="#ffffff">
+<title>Менторство — 137lab · site beta</title>
+<style>
+  /* ── Лабораторія Ч/Б · канон 2026-06-11 · простий сайт, етап 1 (прототип)
+     Голос сторінки — Влад і Ліза (метафізика-продукти — їхня справа, DECISIONS 25.08).
+     Текст — UA-версія оферу v2 (data/daodedo/products/mentorstvo.md), драфт до approve.
+     CAL_URL: вставити посилання Cal.com, коли Влад створить акаунт. ── */
+  @font-face{
+    font-family:'Fixel Display';
+    src:url('/fonts/FixelDisplay-SemiBold.woff2') format('woff2');
+    font-weight:600;font-display:swap;
+  }
+  @font-face{
+    font-family:'Fixel Display';
+    src:url('/fonts/FixelDisplay-Regular.woff2') format('woff2');
+    font-weight:400;font-display:swap;
+  }
+  @font-face{
+    font-family:'Fixel Text';
+    src:url('/fonts/FixelText-Regular.woff2') format('woff2');
+    font-weight:400;font-display:swap;
+  }
+  @font-face{
+    font-family:'Fixel Text';
+    src:url('/fonts/FixelText-Medium.woff2') format('woff2');
+    font-weight:500;font-display:swap;
+  }
+
+  :root{
+    --paper:#ffffff;
+    --ink:#0a0a0a;
+    --muted:#6e6e6e;
+    --rule:#c9c9c9;
+    --font-d:'Fixel Display',sans-serif;
+    --font-t:'Fixel Text',sans-serif;
+    --speed:240ms;
+    --ease:cubic-bezier(.4,0,.2,1);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:var(--font-t);font-weight:400;
+    display:grid;place-items:center;
+    -webkit-font-smoothing:antialiased;
+    overscroll-behavior:none;
+  }
+
+  #frame{
+    position:fixed;inset:0;width:100vw;height:100dvh;
+    background:var(--paper);
+    display:flex;flex-direction:column;
+    overflow:hidden;
+    -webkit-tap-highlight-color:transparent;
+  }
+  #framecaption{display:none}
+  @media (min-width:700px) and (min-aspect-ratio:4/5){
+    body{height:100vh}
+    #frame{
+      position:relative;inset:auto;
+      height:min(92vh,880px);aspect-ratio:390/844;width:auto;
+      border:1px solid var(--ink);
+    }
+    #framecaption{
+      display:block;position:fixed;left:0;right:0;
+      bottom:calc((100vh - min(92vh,880px))/2 - 28px);
+      text-align:center;font-size:11px;letter-spacing:.18em;
+      text-transform:uppercase;color:var(--muted);
+    }
+  }
+
+  .top{
+    flex:0 0 auto;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:calc(env(safe-area-inset-top) + 18px) 20px 12px;
+  }
+  .top .mark{
+    font-family:var(--font-d);font-size:15px;line-height:1;
+    color:var(--ink);text-decoration:none;
+  }
+  .top .mark .n{font-weight:600;letter-spacing:-0.010em}
+  .top .mark .l{font-weight:400;letter-spacing:.02em;margin-left:1px}
+  .top-r{display:flex;align-items:center;gap:4px}
+  .sndlabel{font-size:10px;letter-spacing:.08em;color:var(--muted);margin-left:8px}
+  .voice{
+    width:44px;height:44px;margin:-11px -11px -11px 0;
+    display:grid;place-items:center;
+    background:none;border:none;color:var(--ink);cursor:pointer;
+  }
+  .voice:active:not([disabled]){opacity:.55}
+  .voice.on{background:var(--ink);color:var(--paper);border-radius:50%}
+  .voice[disabled]{color:var(--rule);cursor:default}
+
+  .scroll{
+    flex:1 1 auto;min-height:0;
+    overflow-y:auto;-webkit-overflow-scrolling:touch;
+    padding:0 22px calc(env(safe-area-inset-bottom) + 28px);
+  }
+
+  .t-kicker{
+    margin-top:18px;
+    font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);
+    text-align:center;
+  }
+  h1{
+    font-family:var(--font-d);font-weight:600;
+    font-size:clamp(34px,9vw,40px);letter-spacing:-0.010em;line-height:1.06;
+    text-align:center;margin-top:8px;
+  }
+
+  .m{margin-top:26px}
+  .m-p{font-size:16px;line-height:1.7}
+  .m-p + .m-p{margin-top:15px}
+  .m-p.lead{font-family:var(--font-d);font-weight:600;font-size:18px;line-height:1.5}
+
+  .cta{
+    margin-top:32px;display:flex;flex-direction:column;align-items:center;gap:10px;
+  }
+  .cta-btn{
+    display:flex;align-items:center;justify-content:center;
+    min-height:48px;padding:0 28px;
+    background:var(--ink);color:var(--paper);
+    border:none;border-radius:99px;cursor:pointer;
+    font-family:var(--font-d);font-weight:600;font-size:16px;letter-spacing:.01em;
+    text-decoration:none;
+  }
+  .cta-btn:active{opacity:.75}
+  .cta-note{
+    font-size:11px;letter-spacing:.06em;color:var(--muted);
+    opacity:0;transition:opacity var(--speed) var(--ease);
+  }
+  .cta-note.show{opacity:1}
+
+  .foot{
+    margin-top:30px;text-align:center;
+    font-size:11px;letter-spacing:.04em;color:var(--muted);line-height:1.7;
+  }
+  .foot a{color:var(--muted)}
+</style>
+</head>
+<body>
+
+<div id="frame">
+  <div class="top">
+    <a class="mark" href="../"><span class="n">137</span><span class="l">lab</span></a>
+    <div class="top-r">
+      <span class="sndlabel" aria-hidden="true">голос</span>
+      <button class="voice" id="voice" disabled aria-label="Голос-гід: записується" title="Голос-гід: записується">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <path d="M4 9.5v5h3l5 4.5v-14L7 9.5H4Z" fill="currentColor"/>
+          <path d="M15 8.5a5 5 0 0 1 0 7" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M17.6 6.3a8.5 8.5 0 0 1 0 11.4" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="scroll">
+    <div class="t-kicker" id="k"></div>
+    <h1 id="t"></h1>
+    <div class="m" id="m"></div>
+    <div class="cta" id="cta"></div>
+    <p class="foot">
+      <a href="../">← до маніфесту</a>
+    </p>
+  </div>
+
+  <audio id="guide"></audio>
+</div>
+<div id="framecaption">137лаб · менторство · beta</div>
+
+<script>
+/* ── контент = дані: UA-версія оферу v2 (голос Влада і Лізи; драфт до approve) ── */
+const CAL_URL = null;  /* ← посилання Cal.com, коли акаунт створено */
+const PAGE = {
+  kicker: 'ВЛАД · ЛІЗА',
+  title: 'Менторство',
+  paras: [
+    { lead: true, text: 'Гра в себе — найглибша з ігор. Ми в неї проводимо.' },
+    { text: 'Даємо інструменти і ключі. Налаштовуємо твоє поле так, щоб енергія циркулювала сама — духовність у бекграунді, а не за розкладом.' },
+    { text: 'Удвох — Влад і Ліза — ми бачимо людину цілком: справа, стосунки, сімʼя, сенс. Вигорають не від роботи — від гри, в якій загубився сенс.' },
+    { text: 'Це не швидкий фікс. Наскільки швидко — залежить від приймача. І це не для всіх. Просто.' },
+    { text: 'Один дзвінок — і ми покажемо на практиці. Ціна — за підсумками: коли ясно, з чим граємо.' }
+  ],
+  cta: 'Один дзвінок',
+  ctaNote: 'календар підключається'
+};
+
+(function build(){
+  document.getElementById('k').textContent = PAGE.kicker;
+  document.getElementById('t').textContent = PAGE.title;
+  const m = document.getElementById('m');
+  for (const p of PAGE.paras){
+    const el = document.createElement('p');
+    el.className = 'm-p' + (p.lead ? ' lead' : '');
+    el.textContent = p.text;
+    m.appendChild(el);
+  }
+  const cta = document.getElementById('cta');
+  if (CAL_URL){
+    const a = document.createElement('a');
+    a.className = 'cta-btn';
+    a.href = CAL_URL;
+    a.textContent = PAGE.cta;
+    cta.appendChild(a);
+  } else {
+    const b = document.createElement('button');
+    b.className = 'cta-btn';
+    b.textContent = PAGE.cta;
+    const note = document.createElement('span');
+    note.className = 'cta-note';
+    note.textContent = PAGE.ctaNote;
+    b.addEventListener('click', () => note.classList.add('show'));
+    cta.appendChild(b);
+    cta.appendChild(note);
+  }
+})();
+
+/* ── голос-гід: поклади sounds/pages/mentorstvo.m4a|mp3 — кнопка оживе ── */
+(function(){
+  const SLUG = 'mentorstvo';
+  const btn = document.getElementById('voice');
+  const audio = document.getElementById('guide');
+  let src = null;
+
+  async function findGuide(){
+    for (const ext of ['m4a', 'mp3']){
+      try{
+        const res = await fetch('/sounds/pages/' + SLUG + '.' + ext, { method:'HEAD' });
+        if (res.ok) return '/sounds/pages/' + SLUG + '.' + ext;
+      }catch(e){ /* нема — чесно мовчимо */ }
+    }
+    return null;
+  }
+
+  findGuide().then(s => {
+    if (!s) return;
+    src = s;
+    btn.disabled = false;
+    btn.title = 'Голос-гід сторінки';
+    btn.setAttribute('aria-label', 'Голос-гід сторінки');
+  });
+
+  btn.addEventListener('click', () => {
+    if (!src) return;
+    if (!audio.paused){ audio.pause(); return; }
+    if (!audio.src) audio.src = src;
+    audio.play();
+  });
+  audio.addEventListener('play',  () => btn.classList.add('on'));
+  audio.addEventListener('pause', () => btn.classList.remove('on'));
+  audio.addEventListener('ended', () => { btn.classList.remove('on'); audio.currentTime = 0; });
+})();
+</script>
+</body>
+</html>
