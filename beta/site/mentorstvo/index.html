@@ -180,7 +180,7 @@
 
 <script>
 /* ── контент = дані: UA-версія оферу v2 (голос Влада і Лізи; драфт до approve) ── */
-const CAL_URL = null;  /* ← посилання Cal.com, коли акаунт створено */
+const CAL_URL = 'https://cal.com/137lab-xyz/30min';  /* Cal.com Влада, 25.08 */
 const PAGE = {
   kicker: 'ВЛАД · ЛІЗА',
   title: 'Менторство',
@@ -210,6 +210,8 @@ const PAGE = {
     const a = document.createElement('a');
     a.className = 'cta-btn';
     a.href = CAL_URL;
+    a.target = '_blank';
+    a.rel = 'noopener';
     a.textContent = PAGE.cta;
     cta.appendChild(a);
   } else {
