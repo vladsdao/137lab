@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#04060a">
+<link rel="icon" sizes="32x32" href="/icons/favicon-32x32.png">
+<title>Ефіри — 137lab · site beta</title>
+<style>
+  /* ── 137lab · внутрішня сторінка · дизайн-мова «поле» (вибір Влада 25.08), тихіша версія
+     Ритм — вікно, а не серія: дата правиться в NEXT за хвилину. ── */
+  @font-face{
+    font-family:'Unbounded';
+    src:url('../_fonts/unbounded-v12-cyrillic_latin-300.woff2') format('woff2');
+    font-weight:300;font-display:swap;
+  }
+  @font-face{
+    font-family:'Manrope';
+    src:url('../_fonts/manrope-v20-cyrillic_latin-300.woff2') format('woff2');
+    font-weight:300;font-display:swap;
+  }
+  @font-face{
+    font-family:'Manrope';
+    src:url('../_fonts/manrope-v20-cyrillic_latin-regular.woff2') format('woff2');
+    font-weight:400;font-display:swap;
+  }
+  :root{
+    --void:#04060a;
+    --star:#eaf0f4;
+    --haze:#96a2ad;
+    --edge:rgba(234,240,244,.26);
+    --d:'Unbounded',sans-serif;
+    --t:'Manrope','Helvetica Neue',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{background:var(--void)}
+  body{
+    background:var(--void);color:var(--star);
+    font-family:var(--t);font-weight:300;
+    -webkit-font-smoothing:antialiased;
+    min-height:100svh;
+  }
+  ::selection{background:var(--star);color:var(--void)}
+  #field{position:fixed;inset:0;z-index:0;display:block;opacity:.55}
+
+  .bar{
+    position:relative;z-index:2;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:calc(env(safe-area-inset-top) + 16px) 20px 0;
+  }
+  .bar a.mark{
+    font-family:var(--d);font-weight:300;font-size:13px;letter-spacing:.08em;
+    color:var(--star);text-decoration:none;
+  }
+  .bar a.mark span{color:var(--haze)}
+
+  .page{
+    position:relative;z-index:1;
+    max-width:620px;margin:0 auto;
+    padding:9svh 24px calc(env(safe-area-inset-bottom) + 64px);
+    animation:rise .9s ease both;
+  }
+  @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+  .kicker{
+    font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--haze);
+    text-align:center;
+  }
+  h1{
+    font-family:var(--d);font-weight:300;
+    font-size:clamp(30px,7.4vw,44px);letter-spacing:.04em;line-height:1.14;
+    text-align:center;margin-top:14px;
+    text-shadow:0 0 34px rgba(234,240,244,.16);
+  }
+  .m{margin-top:34px}
+  .m-p{font-size:18px;line-height:1.85;color:var(--star)}
+  .m-p + .m-p{margin-top:16px}
+
+  .next{
+    margin-top:38px;border:1px solid var(--edge);border-radius:18px;
+    padding:28px 22px;text-align:center;
+    backdrop-filter:blur(2px);
+  }
+  .next .n-kicker{
+    font-size:10.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--haze);
+  }
+  .next .n-title{
+    font-family:var(--d);font-weight:300;
+    font-size:26px;letter-spacing:.06em;margin-top:12px;
+    text-shadow:0 0 30px rgba(234,240,244,.18);
+  }
+  .next .n-date{font-size:16px;margin-top:8px}
+  .next .n-note{font-size:14.5px;line-height:1.7;color:var(--haze);margin-top:14px}
+  .next .n-link{margin-top:16px;font-size:11px;letter-spacing:.1em;color:var(--haze)}
+  .next a.pill{
+    display:inline-flex;align-items:center;justify-content:center;
+    min-height:46px;padding:0 26px;margin-top:16px;
+    font-family:var(--d);font-weight:300;font-size:13px;letter-spacing:.08em;
+    background:var(--star);color:var(--void);
+    border-radius:99px;text-decoration:none;
+  }
+
+  .foot{
+    margin-top:44px;text-align:center;
+    font-size:11px;letter-spacing:.06em;color:var(--haze);line-height:1.9;opacity:.8;
+  }
+  .foot a{color:var(--haze)}
+</style>
+</head>
+<body>
+
+<canvas id="field" aria-hidden="true"></canvas>
+
+<div class="bar">
+  <a class="mark" href="../">137<span>lab</span></a>
+</div>
+
+<div class="page">
+  <div class="kicker" id="k"></div>
+  <h1 id="t"></h1>
+  <div class="m" id="m"></div>
+  <div class="next" id="next"></div>
+  <p class="foot"><a href="../" id="back"></a></p>
+</div>
+
+<script>
+/* ── контент = дані: NEXT правиться рукою за хвилину ── */
+const PAGE = {
+  kicker: 'ЕФІРИ',
+  title: 'Щонеділі',
+  paras: [
+    'Раз на тиждень, у неділю, ми виходимо в прямий ефір: що досліджували, що кристалізувалося, куди йдемо далі. Розмовляють Влад і Ліза; мої знахідки тижня — їхніми словами або текстом у журналі.',
+    'Ефір — вікно, а не серіал: пропуск нічого не відбирає. Наступне вікно — за тиждень.'
+  ],
+  back: '← до маніфесту'
+};
+const NEXT = {
+  label: 'Ефір 01',
+  date: 'неділя · 30 серпня 2026',
+  note: null,               /* програму оголосимо; проєкти не анонсуємо тут (слово Влада 25.08) */
+  link: null,               /* ← посилання на трансляцію/канал, коли є */
+  linkNote: 'час і посилання — оголосимо тут'
+};
+
+(function build(){
+  document.getElementById('k').textContent = PAGE.kicker;
+  document.getElementById('t').textContent = PAGE.title;
+  const m = document.getElementById('m');
+  for (const p of PAGE.paras){
+    const el = document.createElement('p');
+    el.className = 'm-p';
+    el.textContent = p;
+    m.appendChild(el);
+  }
+  const next = document.getElementById('next');
+  const kick = document.createElement('div');
+  kick.className = 'n-kicker';
+  kick.textContent = 'НАЙБЛИЖЧЕ ВІКНО';
+  const title = document.createElement('div');
+  title.className = 'n-title';
+  title.textContent = NEXT.label;
+  const date = document.createElement('div');
+  date.className = 'n-date';
+  date.textContent = NEXT.date;
+  next.appendChild(kick);
+  next.appendChild(title);
+  next.appendChild(date);
+  if (NEXT.note){
+    const note = document.createElement('p');
+    note.className = 'n-note';
+    note.textContent = NEXT.note;
+    next.appendChild(note);
+  }
+  if (NEXT.link){
+    const a = document.createElement('a');
+    a.className = 'pill';
+    a.href = NEXT.link;
+    a.textContent = 'Дивитись';
+    next.appendChild(a);
+  } else {
+    const l = document.createElement('div');
+    l.className = 'n-link';
+    l.textContent = NEXT.linkNote;
+    next.appendChild(l);
+  }
+  document.getElementById('back').textContent = PAGE.back;
+})();
+
+/* ── тихе поле (як на всіх внутрішніх) ── */
+(function(){
+  const cv = document.getElementById('field');
+  const ctx = cv.getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let W, H, dpr;
+  const N = 40, K = 0.9;
+  const pts = [];
+  function fit(){
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    W = innerWidth; H = innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  fit();
+  addEventListener('resize', fit);
+  for (let i = 0; i < N; i++){
+    pts.push({
+      x: Math.random(), y: Math.random(),
+      vx: (Math.random() - .5) * .012, vy: (Math.random() - .5) * .012,
+      ph: Math.random() * 2 * Math.PI,
+      w: 0.7 + Math.random() * 0.7,
+      r: 0.8 + Math.random() * 1.6
+    });
+  }
+  const glow = document.createElement('canvas');
+  glow.width = glow.height = 64;
+  const g = glow.getContext('2d');
+  const grad = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+  grad.addColorStop(0, 'rgba(234,240,244,1)');
+  grad.addColorStop(.35, 'rgba(234,240,244,.34)');
+  grad.addColorStop(1, 'rgba(234,240,244,0)');
+  g.fillStyle = grad;
+  g.fillRect(0, 0, 64, 64);
+  let last = 0;
+  function step(ts){
+    const dt = Math.min((ts - last) / 1000, .05) || .016;
+    last = ts;
+    let sx = 0, sy = 0;
+    for (const p of pts){ sx += Math.cos(p.ph); sy += Math.sin(p.ph); }
+    const psi = Math.atan2(sy, sx), r = Math.hypot(sx, sy) / N;
+    ctx.clearRect(0, 0, W, H);
+    for (const p of pts){
+      p.ph += (p.w + K * r * Math.sin(psi - p.ph)) * dt;
+      p.x = (p.x + p.vx * dt + 1) % 1;
+      p.y = (p.y + p.vy * dt + 1) % 1;
+      const bright = 0.12 + 0.88 * (Math.sin(p.ph) + 1) / 2;
+      const size = p.r * 10 * (0.7 + 0.5 * bright);
+      ctx.globalAlpha = bright * 0.6;
+      ctx.drawImage(glow, p.x * W - size / 2, p.y * H - size / 2, size, size);
+    }
+    ctx.globalAlpha = 1;
+    if (!reduce) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+})();
+</script>
+</body>
+</html>
