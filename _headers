@@ -8,3 +8,12 @@
 
 /beta/*
   X-Robots-Tag: noindex, nofollow
+
+# Рабочие документы этапа «простой сайт» и скелет публичного репо:
+# страховка к /*.md — явные пути на случай, если корневой паттерн
+# не матчит подкаталоги.
+/site/*
+  X-Robots-Tag: noindex, nofollow
+
+/synchronizator-repo/*
+  X-Robots-Tag: noindex, nofollow
