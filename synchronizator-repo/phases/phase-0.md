@@ -16,4 +16,4 @@ Preparing. Candidate: stream **01** (Sunday). Announcement — [137lab.xyz](http
 
 ## After
 
-Words gathered → short public note here (words only, no names — constitution, art. 1 applies to chat harvests too: we keep the words, never the people). Then Phase 0.5: one room, one Wi-Fi, real latency numbers.
+Words gathered → short public note here (words from the public stream chat only — no names, no handles; constitution, art. 1 applies to chat harvests too: we keep the words, never the people). Then Phase 0.5: one room, one Wi-Fi, real latency numbers.

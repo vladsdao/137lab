@@ -8,7 +8,7 @@
 
 ## What this is
 
-You pick six tags that resonate with you — alchemy, quantum mechanics, hermeticism, nonlinearity, renaissance, dao, anything. The system gathers a circle of people whose tags resonate with yours — by meaning, not by letters. At a set moment, everyone in the circle moves their phone along the same trajectory, eyes closed, guided by vibration and sound. The circle sees one thing afterwards: how close it came to moving as one.
+You pick six tags that resonate with you — alchemy, quantum mechanics, hermeticism, nonlinearity, renaissance, dao, anything. The system gathers a circle of people whose tags resonate with yours — by meaning, not by letters. At a set moment, everyone in the circle moves their phone along the same trajectory, eyes closed, guided by the phone's vibration and sound. The circle sees one thing afterwards: how close it came to moving as one.
 
 No login. No password. Nothing is collected. We don't want to take anything from a person — we want to give them a vibe. And that vibe is creativity.
 
