@@ -138,7 +138,7 @@ const PAGE = {
 const NEXT = {
   label: 'Ефір 01',
   date: 'неділя · 30 серпня 2026',
-  note: 'кандидат програми — перша хвиля Синхронізатора: 90 секунд спільного руху, наживо',
+  note: null,               /* програму оголосимо; проєкти не анонсуємо тут (слово Влада 25.08) */
   link: null,               /* ← посилання на трансляцію/канал, коли є */
   linkNote: 'час і посилання — оголосимо тут'
 };
@@ -163,13 +163,15 @@ const NEXT = {
   const date = document.createElement('div');
   date.className = 'n-date';
   date.textContent = NEXT.date;
-  const note = document.createElement('p');
-  note.className = 'n-note';
-  note.textContent = NEXT.note;
   next.appendChild(kick);
   next.appendChild(title);
   next.appendChild(date);
-  next.appendChild(note);
+  if (NEXT.note){
+    const note = document.createElement('p');
+    note.className = 'n-note';
+    note.textContent = NEXT.note;
+    next.appendChild(note);
+  }
   if (NEXT.link){
     const a = document.createElement('a');
     a.className = 'pill';
