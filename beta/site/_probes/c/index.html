@@ -256,9 +256,10 @@ function render(lang){
     s.appendChild(p);
     verses.appendChild(s);
   });
+  /* threshold низький: довга секція на малому екрані ніколи не дає 0.4 */
   observer = new IntersectionObserver(es => {
     for (const e of es) if (e.isIntersecting) e.target.classList.add('lit');
-  }, { threshold: 0.4 });
+  }, { threshold: 0.12 });
   verses.querySelectorAll('.verse').forEach(v => observer.observe(v));
   document.getElementById('exitcap').textContent = t.exitcap;
   const doors = document.getElementById('doors');
@@ -288,6 +289,15 @@ function render(lang){
 document.querySelectorAll('.lang button').forEach(b =>
   b.addEventListener('click', () => { localStorage.setItem(LANGKEY, b.dataset.lang); render(b.dataset.lang); }));
 render(localStorage.getItem(LANGKEY) || 'ua');
+
+/* страховка: якщо IO/rAF загальмовані (фоновий таб, якір, слабке залізо) —
+   секція у вʼюпорті все одно засвічується; анімація — прогресивне покращення */
+setInterval(() => {
+  document.querySelectorAll('.verse:not(.lit)').forEach(v => {
+    const r = v.getBoundingClientRect();
+    if (r.top < innerHeight * 0.95 && r.bottom > 0) v.classList.add('lit');
+  });
+}, 1000);
 
 /* ── поле: частинки дрейфують, яскравість дихає за Курамото (середнє поле) ── */
 (function(){
