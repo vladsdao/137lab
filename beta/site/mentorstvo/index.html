@@ -4,195 +4,133 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#04060a">
 <link rel="icon" sizes="32x32" href="/icons/favicon-32x32.png">
-<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
-<meta name="theme-color" content="#ffffff">
-<title>Менторство — 137lab · site beta</title>
+<title>Нова гра — 137lab · site beta</title>
 <style>
-  /* ── Лабораторія Ч/Б · канон 2026-06-11 · простий сайт, етап 1 (прототип)
-     Голос сторінки — Влад і Ліза (метафізика-продукти — їхня справа, DECISIONS 25.08).
-     Текст — UA-версія оферу v2 (data/daodedo/products/mentorstvo.md), драфт до approve.
-     CAL_URL: вставити посилання Cal.com, коли Влад створить акаунт. ── */
+  /* ── 137lab · внутрішня сторінка · дизайн-мова «поле» (вибір Влада 25.08), тихіша версія
+     Голос сторінки — Влад і Ліза. Текст — оффер v2 UA (тимчасово):
+     імʼя двері та оффер v3 — слово Влада, заміна = правка констант PAGE.
+     CAL_URL — живий (слово Влада 25.08). ── */
   @font-face{
-    font-family:'Fixel Display';
-    src:url('/fonts/FixelDisplay-SemiBold.woff2') format('woff2');
-    font-weight:600;font-display:swap;
+    font-family:'Unbounded';
+    src:url('../_fonts/unbounded-v12-cyrillic_latin-300.woff2') format('woff2');
+    font-weight:300;font-display:swap;
   }
   @font-face{
-    font-family:'Fixel Display';
-    src:url('/fonts/FixelDisplay-Regular.woff2') format('woff2');
+    font-family:'Manrope';
+    src:url('../_fonts/manrope-v20-cyrillic_latin-300.woff2') format('woff2');
+    font-weight:300;font-display:swap;
+  }
+  @font-face{
+    font-family:'Manrope';
+    src:url('../_fonts/manrope-v20-cyrillic_latin-regular.woff2') format('woff2');
     font-weight:400;font-display:swap;
   }
-  @font-face{
-    font-family:'Fixel Text';
-    src:url('/fonts/FixelText-Regular.woff2') format('woff2');
-    font-weight:400;font-display:swap;
-  }
-  @font-face{
-    font-family:'Fixel Text';
-    src:url('/fonts/FixelText-Medium.woff2') format('woff2');
-    font-weight:500;font-display:swap;
-  }
-
   :root{
-    --paper:#ffffff;
-    --ink:#0a0a0a;
-    --muted:#6e6e6e;
-    --rule:#c9c9c9;
-    --font-d:'Fixel Display',sans-serif;
-    --font-t:'Fixel Text',sans-serif;
-    --speed:240ms;
-    --ease:cubic-bezier(.4,0,.2,1);
+    --void:#04060a;
+    --star:#eaf0f4;
+    --haze:#96a2ad;
+    --edge:rgba(234,240,244,.26);
+    --d:'Unbounded',sans-serif;
+    --t:'Manrope','Helvetica Neue',sans-serif;
   }
-
   *{margin:0;padding:0;box-sizing:border-box}
-  html,body{height:100%}
+  html{background:var(--void)}
   body{
-    background:var(--paper);color:var(--ink);
-    font-family:var(--font-t);font-weight:400;
-    display:grid;place-items:center;
+    background:var(--void);color:var(--star);
+    font-family:var(--t);font-weight:300;
     -webkit-font-smoothing:antialiased;
-    overscroll-behavior:none;
+    min-height:100svh;
   }
+  ::selection{background:var(--star);color:var(--void)}
+  #field{position:fixed;inset:0;z-index:0;display:block;opacity:.55}
 
-  #frame{
-    position:fixed;inset:0;width:100vw;height:100dvh;
-    background:var(--paper);
-    display:flex;flex-direction:column;
-    overflow:hidden;
-    -webkit-tap-highlight-color:transparent;
-  }
-  #framecaption{display:none}
-  @media (min-width:700px) and (min-aspect-ratio:4/5){
-    body{height:100vh}
-    #frame{
-      position:relative;inset:auto;
-      height:min(92vh,880px);aspect-ratio:390/844;width:auto;
-      border:1px solid var(--ink);
-    }
-    #framecaption{
-      display:block;position:fixed;left:0;right:0;
-      bottom:calc((100vh - min(92vh,880px))/2 - 28px);
-      text-align:center;font-size:11px;letter-spacing:.18em;
-      text-transform:uppercase;color:var(--muted);
-    }
-  }
-
-  .top{
-    flex:0 0 auto;
+  .bar{
+    position:relative;z-index:2;
     display:flex;justify-content:space-between;align-items:center;
-    padding:calc(env(safe-area-inset-top) + 18px) 20px 12px;
+    padding:calc(env(safe-area-inset-top) + 16px) 20px 0;
   }
-  .top .mark{
-    font-family:var(--font-d);font-size:15px;line-height:1;
-    color:var(--ink);text-decoration:none;
+  .bar a.mark{
+    font-family:var(--d);font-weight:300;font-size:13px;letter-spacing:.08em;
+    color:var(--star);text-decoration:none;
   }
-  .top .mark .n{font-weight:600;letter-spacing:-0.010em}
-  .top .mark .l{font-weight:400;letter-spacing:.02em;margin-left:1px}
-  .top-r{display:flex;align-items:center;gap:4px}
-  .sndlabel{font-size:10px;letter-spacing:.08em;color:var(--muted);margin-left:8px}
-  .voice{
-    width:44px;height:44px;margin:-11px -11px -11px 0;
-    display:grid;place-items:center;
-    background:none;border:none;color:var(--ink);cursor:pointer;
-  }
-  .voice:active:not([disabled]){opacity:.55}
-  .voice.on{background:var(--ink);color:var(--paper);border-radius:50%}
-  .voice[disabled]{color:var(--rule);cursor:default}
+  .bar a.mark span{color:var(--haze)}
 
-  .scroll{
-    flex:1 1 auto;min-height:0;
-    overflow-y:auto;-webkit-overflow-scrolling:touch;
-    padding:0 22px calc(env(safe-area-inset-bottom) + 28px);
+  .page{
+    position:relative;z-index:1;
+    max-width:620px;margin:0 auto;
+    padding:9svh 24px calc(env(safe-area-inset-bottom) + 64px);
+    animation:rise .9s ease both;
   }
+  @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 
-  .t-kicker{
-    margin-top:18px;
-    font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);
+  .kicker{
+    font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--haze);
     text-align:center;
   }
   h1{
-    font-family:var(--font-d);font-weight:600;
-    font-size:clamp(34px,9vw,40px);letter-spacing:-0.010em;line-height:1.06;
-    text-align:center;margin-top:8px;
+    font-family:var(--d);font-weight:300;
+    font-size:clamp(30px,7.4vw,44px);letter-spacing:.04em;line-height:1.14;
+    text-align:center;margin-top:14px;
+    text-shadow:0 0 34px rgba(234,240,244,.16);
   }
+  .m{margin-top:34px}
+  .m-p{font-size:18px;line-height:1.85;color:var(--star)}
+  .m-p + .m-p{margin-top:16px}
+  .m-p.lead{font-size:21px;font-weight:400}
 
-  .m{margin-top:26px}
-  .m-p{font-size:16px;line-height:1.7}
-  .m-p + .m-p{margin-top:15px}
-  .m-p.lead{font-family:var(--font-d);font-weight:600;font-size:18px;line-height:1.5}
-
-  .cta{
-    margin-top:32px;display:flex;flex-direction:column;align-items:center;gap:10px;
+  .cta{margin-top:38px;display:flex;flex-direction:column;align-items:center;gap:12px}
+  .cta-note{font-size:13px;letter-spacing:.02em;color:var(--haze);text-align:center;line-height:1.6}
+  .pill{
+    display:inline-flex;align-items:center;justify-content:center;
+    min-height:50px;padding:0 30px;
+    font-family:var(--d);font-weight:300;font-size:14px;letter-spacing:.08em;
+    background:var(--star);color:var(--void);
+    border:1px solid var(--star);border-radius:99px;
+    text-decoration:none;cursor:pointer;
+    transition:opacity .3s ease;
   }
-  .cta-btn{
-    display:flex;align-items:center;justify-content:center;
-    min-height:48px;padding:0 28px;
-    background:var(--ink);color:var(--paper);
-    border:none;border-radius:99px;cursor:pointer;
-    font-family:var(--font-d);font-weight:600;font-size:16px;letter-spacing:.01em;
-    text-decoration:none;
-  }
-  .cta-btn:active{opacity:.75}
-  .cta-note{
-    font-size:11px;letter-spacing:.06em;color:var(--muted);
-    opacity:0;transition:opacity var(--speed) var(--ease);
-  }
-  .cta-note.show{opacity:1}
-
+  .pill:hover{opacity:.85}
   .foot{
-    margin-top:30px;text-align:center;
-    font-size:11px;letter-spacing:.04em;color:var(--muted);line-height:1.7;
+    margin-top:44px;text-align:center;
+    font-size:11px;letter-spacing:.06em;color:var(--haze);line-height:1.9;opacity:.8;
   }
-  .foot a{color:var(--muted)}
+  .foot a{color:var(--haze)}
 </style>
 </head>
 <body>
 
-<div id="frame">
-  <div class="top">
-    <a class="mark" href="../"><span class="n">137</span><span class="l">lab</span></a>
-    <div class="top-r">
-      <span class="sndlabel" aria-hidden="true">голос</span>
-      <button class="voice" id="voice" disabled aria-label="Голос-гід: записується" title="Голос-гід: записується">
-        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-          <path d="M4 9.5v5h3l5 4.5v-14L7 9.5H4Z" fill="currentColor"/>
-          <path d="M15 8.5a5 5 0 0 1 0 7" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linecap="round"/>
-          <path d="M17.6 6.3a8.5 8.5 0 0 1 0 11.4" stroke="currentColor" fill="none" stroke-width="1.6" stroke-linecap="round"/>
-        </svg>
-      </button>
-    </div>
-  </div>
+<canvas id="field" aria-hidden="true"></canvas>
 
-  <div class="scroll">
-    <div class="t-kicker" id="k"></div>
-    <h1 id="t"></h1>
-    <div class="m" id="m"></div>
-    <div class="cta" id="cta"></div>
-    <p class="foot">
-      <a href="../">← до маніфесту</a>
-    </p>
-  </div>
-
-  <audio id="guide"></audio>
+<div class="bar">
+  <a class="mark" href="../">137<span>lab</span></a>
 </div>
-<div id="framecaption">137лаб · менторство · beta</div>
+
+<div class="page">
+  <div class="kicker" id="k"></div>
+  <h1 id="t"></h1>
+  <div class="m" id="m"></div>
+  <div class="cta" id="cta"></div>
+  <p class="foot"><a href="../" id="back"></a></p>
+</div>
 
 <script>
-/* ── контент = дані: UA-версія оферу v2 (голос Влада і Лізи; драфт до approve) ── */
-const CAL_URL = 'https://cal.com/137lab-xyz/30min';  /* Cal.com Влада, 25.08 */
+/* ── контент = дані · оффер v3 UA + імʼя «Нова гра» (слово Влада 25.08; канон — data/daodedo/products/mentorstvo.md §v3) ── */
+const CAL_URL = 'https://cal.com/137lab-xyz/30min';
 const PAGE = {
   kicker: 'ВЛАД · ЛІЗА',
-  title: 'Менторство',
+  title: 'Нова гра',
   paras: [
-    { lead: true, text: 'Гра в себе — найглибша з ігор. Ми в неї проводимо.' },
-    { text: 'Даємо інструменти і ключі. Налаштовуємо твоє поле так, щоб енергія циркулювала сама — духовність у бекграунді, а не за розкладом.' },
+    { lead: true, text: 'Ми працюємо з фундаментальним рівнем — там, де свідомість безпосередньо створює реальність.' },
+    { text: 'Тому нам не важливо, з якої області твоя задача і наскільки вона складна: бізнес, творчість, стосунки, особисте. На поверхні це різні проблеми — на глибині один рівень, де вони розвʼязуються.' },
+    { text: 'Це звучить занадто сміливо. Ми знаємо. Саме тому перший крок — не оплата, а один дзвінок: приходь із найскладнішим, що маєш, і ми покажемо на практиці, як це працює.' },
     { text: 'Удвох — Влад і Ліза — ми бачимо людину цілком: справа, стосунки, сімʼя, сенс. Вигорають не від роботи — від гри, в якій загубився сенс.' },
-    { text: 'Це не швидкий фікс. Наскільки швидко — залежить від приймача. І це не для всіх. Просто.' },
-    { text: 'Один дзвінок — і ми покажемо на практиці. Ціна — за підсумками: коли ясно, з чим граємо.' }
+    { text: 'Це не швидкий фікс. Наскільки швидко — залежить від приймача. І це не для всіх. Просто.' }
   ],
   cta: 'Один дзвінок',
-  ctaNote: 'календар підключається'
+  ctaNote: 'Ціна — за підсумками дзвінка: коли ясно, з чим граємо.',
+  back: '← до маніфесту'
 };
 
 (function build(){
@@ -206,61 +144,75 @@ const PAGE = {
     m.appendChild(el);
   }
   const cta = document.getElementById('cta');
-  if (CAL_URL){
-    const a = document.createElement('a');
-    a.className = 'cta-btn';
-    a.href = CAL_URL;
-    a.target = '_blank';
-    a.rel = 'noopener';
-    a.textContent = PAGE.cta;
-    cta.appendChild(a);
-  } else {
-    const b = document.createElement('button');
-    b.className = 'cta-btn';
-    b.textContent = PAGE.cta;
-    const note = document.createElement('span');
-    note.className = 'cta-note';
-    note.textContent = PAGE.ctaNote;
-    b.addEventListener('click', () => note.classList.add('show'));
-    cta.appendChild(b);
-    cta.appendChild(note);
-  }
+  const a = document.createElement('a');
+  a.className = 'pill';
+  a.href = CAL_URL;
+  a.target = '_blank';
+  a.rel = 'noopener';
+  a.textContent = PAGE.cta;
+  cta.appendChild(a);
+  const note = document.createElement('span');
+  note.className = 'cta-note';
+  note.textContent = PAGE.ctaNote;
+  cta.appendChild(note);
+  document.getElementById('back').textContent = PAGE.back;
 })();
 
-/* ── голос-гід: поклади sounds/pages/mentorstvo.m4a|mp3 — кнопка оживе ── */
+/* ── тихе поле: менше частинок, нижча яскравість — текст головніший ── */
 (function(){
-  const SLUG = 'mentorstvo';
-  const btn = document.getElementById('voice');
-  const audio = document.getElementById('guide');
-  let src = null;
-
-  async function findGuide(){
-    for (const ext of ['m4a', 'mp3']){
-      try{
-        const res = await fetch('/sounds/pages/' + SLUG + '.' + ext, { method:'HEAD' });
-        if (res.ok) return '/sounds/pages/' + SLUG + '.' + ext;
-      }catch(e){ /* нема — чесно мовчимо */ }
-    }
-    return null;
+  const cv = document.getElementById('field');
+  const ctx = cv.getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let W, H, dpr;
+  const N = 40, K = 0.9;
+  const pts = [];
+  function fit(){
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    W = innerWidth; H = innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
-
-  findGuide().then(s => {
-    if (!s) return;
-    src = s;
-    btn.disabled = false;
-    btn.title = 'Голос-гід сторінки';
-    btn.setAttribute('aria-label', 'Голос-гід сторінки');
-  });
-
-  btn.addEventListener('click', () => {
-    if (!src) return;
-    if (!audio.paused){ audio.pause(); return; }
-    if (!audio.src) audio.src = src;
-    audio.play();
-  });
-  audio.addEventListener('play',  () => btn.classList.add('on'));
-  audio.addEventListener('pause', () => btn.classList.remove('on'));
-  audio.addEventListener('ended', () => { btn.classList.remove('on'); audio.currentTime = 0; });
+  fit();
+  addEventListener('resize', fit);
+  for (let i = 0; i < N; i++){
+    pts.push({
+      x: Math.random(), y: Math.random(),
+      vx: (Math.random() - .5) * .012, vy: (Math.random() - .5) * .012,
+      ph: Math.random() * 2 * Math.PI,
+      w: 0.7 + Math.random() * 0.7,
+      r: 0.8 + Math.random() * 1.6
+    });
+  }
+  const glow = document.createElement('canvas');
+  glow.width = glow.height = 64;
+  const g = glow.getContext('2d');
+  const grad = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+  grad.addColorStop(0, 'rgba(234,240,244,1)');
+  grad.addColorStop(.35, 'rgba(234,240,244,.34)');
+  grad.addColorStop(1, 'rgba(234,240,244,0)');
+  g.fillStyle = grad;
+  g.fillRect(0, 0, 64, 64);
+  let last = 0;
+  function step(ts){
+    const dt = Math.min((ts - last) / 1000, .05) || .016;
+    last = ts;
+    let sx = 0, sy = 0;
+    for (const p of pts){ sx += Math.cos(p.ph); sy += Math.sin(p.ph); }
+    const psi = Math.atan2(sy, sx), r = Math.hypot(sx, sy) / N;
+    ctx.clearRect(0, 0, W, H);
+    for (const p of pts){
+      p.ph += (p.w + K * r * Math.sin(psi - p.ph)) * dt;
+      p.x = (p.x + p.vx * dt + 1) % 1;
+      p.y = (p.y + p.vy * dt + 1) % 1;
+      const bright = 0.12 + 0.88 * (Math.sin(p.ph) + 1) / 2;
+      const size = p.r * 10 * (0.7 + 0.5 * bright);
+      ctx.globalAlpha = bright * 0.6;
+      ctx.drawImage(glow, p.x * W - size / 2, p.y * H - size / 2, size, size);
+    }
+    ctx.globalAlpha = 1;
+    if (!reduce) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
 })();
 </script>
 </body>
