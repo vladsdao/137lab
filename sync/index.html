@@ -101,7 +101,7 @@
 
 <script>
 (function(){
-  const TAU=Math.PI*2, PERIOD=4200, WAVE=60000, GATE=3000, EPOCH=1756684800000;
+  const TAU=Math.PI*2, PERIOD=6000, WAVE=60000, GATE=3000, EPOCH=1756684800000;
 
   const $=id=>document.getElementById(id);
   const cv=$('c'), ctx=cv.getContext('2d');
@@ -149,16 +149,24 @@
   }
   function buzz(ms){ if(vibeWorks){ try{ navigator.vibrate(ms); }catch(e){} } }
 
-  let tilt=0, gotEvent=false, live=false;
-  function feed(b,g){
+  let tilt=0, gotEvent=false, live=false, orientSeen=false;
+  let tgX=0, tgY=1, smX=0, smY=1, strength=0;
+  const DEAD=7;                 // градусів: менший нахил не рухає точку
+  const SMOOTH=0.17;            // стала часу згладжування, с
+
+  function feed(b,g,fromOrient){
+    if(fromOrient) orientSeen=true;
     if(!gotEvent){ gotEvent=true; diag('d-data','йдуть','yes'); }
     tTilt.textContent=Math.round(b)+' '+Math.round(g);
-    if(Math.hypot(b,g)>9){ tilt=Math.atan2(g,-b); live=true; }
+    const x=g, y=-b, m=Math.hypot(x,y);
+    strength=Math.min(1, m/26);
+    if(m>DEAD){ tgX=x/m; tgY=y/m; live=true; }
   }
-  function onOrient(e){ if(e.beta===null&&e.gamma===null) return; feed(e.beta||0,e.gamma||0); }
+  function onOrient(e){ if(e.beta===null&&e.gamma===null) return; feed(e.beta||0,e.gamma||0,true); }
   function onMotion(e){
+    if(orientSeen) return;                     // датчик орієнтації головніший — не змішуємо
     const a=e.accelerationIncludingGravity; if(!a||a.x===null||a.x===undefined) return;
-    feed(Math.atan2(-a.y,9.81)*57.2958, Math.atan2(a.x,9.81)*57.2958);
+    feed(Math.atan2(-a.y,9.81)*57.2958, Math.atan2(a.x,9.81)*57.2958, false);
   }
   function noData(){
     if(gotEvent) return;
@@ -192,12 +200,12 @@
     }catch(e){ diag('d-perm','збій','no'); noData(); return false; }
   }
 
-  let mode='perm', t0=0, myU=0, ghostU=0;
+  let mode='perm', t0=0, myU=0, ghostU=0, prevT=0;
   let lastMyEdge=-1, lastGhEdge=-1, corners=0, sum=0, cnt=0, holdMs=0, wake=null;
 
   function draw(){
     if(!W) resize();
-    ctx.fillStyle='rgba(7,8,10,0.22)'; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='rgba(7,8,10,0.10)'; ctx.fillRect(0,0,W,H);
     const cx=W/2, cy=H/2, R=Math.min(W,H)*0.34;
     const coh = mode==='wave' ? (Math.cos((myU-ghostU)*TAU)+1)/2 : 0;
 
@@ -209,7 +217,7 @@
     }
     ctx.closePath();
     ctx.strokeStyle='rgba(255,233,201,'+(0.20+coh*0.30).toFixed(3)+')';
-    ctx.lineWidth=1; ctx.stroke();
+    ctx.lineWidth=1.25; ctx.stroke();
 
     for(let i=0;i<6;i++){
       const a=-Math.PI/2+i*(TAU/6);
@@ -229,19 +237,46 @@
     }
     if(live && mode!=='perm'){
       const [x,y]=hexPoint(myU,R,cx,cy);
-      ctx.beginPath(); ctx.arc(x,y,7.5,0,TAU);
-      ctx.strokeStyle='rgba(255,233,201,0.92)'; ctx.lineWidth=1.5; ctx.stroke();
+      const a=0.25+strength*0.65;
+
+      // промінь з центру — куди зараз дивиться кисть
+      ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(x,y);
+      ctx.strokeStyle='rgba(255,233,201,'+(a*0.13).toFixed(3)+')';
+      ctx.lineWidth=1; ctx.stroke();
+
+      // м'яке світло навколо
+      ctx.globalCompositeOperation='lighter';
+      const rr=9+strength*5;
+      const gg=ctx.createRadialGradient(x,y,0,x,y,rr*2.1);
+      gg.addColorStop(0,'rgba(255,233,201,'+(a*0.40).toFixed(3)+')');
+      gg.addColorStop(1,'rgba(255,233,201,0)');
+      ctx.fillStyle=gg; ctx.beginPath(); ctx.arc(x,y,rr*2.1,0,TAU); ctx.fill();
+      ctx.globalCompositeOperation='source-over';
+
+      // обідок + ядро
+      ctx.beginPath(); ctx.arc(x,y,rr,0,TAU);
+      ctx.strokeStyle='rgba(255,233,201,'+a.toFixed(3)+')'; ctx.lineWidth=1.4; ctx.stroke();
+      ctx.beginPath(); ctx.arc(x,y,1.6,0,TAU);
+      ctx.fillStyle='rgba(255,233,201,'+a.toFixed(3)+')'; ctx.fill();
     }
   }
 
-  function loop(){
+  function loop(now){
     const ms=Date.now();
+    let dt=prevT? Math.min((now-prevT)/1000, 0.05) : 0.016; prevT=now;
     ghostU=(((ms-EPOCH)%PERIOD)/PERIOD);
-    if(live){ const u=tilt/TAU; myU=u-Math.floor(u); }
+
+    // інерція: вектор нахилу доганяє ціль, а не стрибає за нею
+    const k=1-Math.exp(-dt/SMOOTH);
+    smX+=(tgX-smX)*k; smY+=(tgY-smY)*k;
+    if(live){
+      tilt=Math.atan2(smX,smY);
+      const u=tilt/TAU; myU=u-Math.floor(u);
+    }
 
     if(live && mode!=='perm'){
       const me=Math.floor(myU*6);
-      if(me!==lastMyEdge){
+      if(me!==lastMyEdge && strength>0.28){
         if(lastMyEdge!==-1){ corners++; click(1180,0.05,0.035); if(mode!=='wave') buzz(10); }
         lastMyEdge=me;
       }
