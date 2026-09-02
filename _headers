@@ -17,3 +17,6 @@
 
 /synchronizator-repo/*
   X-Robots-Tag: noindex, nofollow
+
+/sync/*
+  X-Robots-Tag: noindex, nofollow
