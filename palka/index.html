@@ -8,9 +8,9 @@
 <link rel="icon" sizes="32x32" href="/icons/favicon-32x32.png">
 <title>Палка — 137lab</title>
 <style>
-  /* ── 137lab · /palka · v0.13 «белый лист» (слово Влада 09.09, ночь: новый текст экрана с воронкой вбирает договор о выдумке;
+  /* ── 137lab · /palka · v0.14 «белый лист» (слово Влада 09.09, ночь: новый текст экрана с воронкой вбирает договор о выдумке;
      подпись — удержание круглой кнопки со спиралью «4 секунды» (по факту 3,69 с — внутреннее); отдельный Login снят.
-     Порядок: Палка → Воронка (вступление) → Goal. Ранее: обложка-афиша, один тап; Goal — скролл со стрелкой вниз; стрелки ← → везде; индикатор и звук сняты)
+     Порядок: Палка → Воронка (вступление) → Кукай (цитата, одно слово) → Goal. Ранее: обложка-афиша, один тап; Goal — скролл со стрелкой вниз; стрелки ← → везде; индикатор и звук сняты)
      Шаблон — «9 граней» (vlad-space/palka/9-graney.csv); текст — vlad-space/palka/PAGE.md, один к одному.
      Контент = данные (SCREENS). Шрифты локальные ../beta/site/_fonts/. noindex до слова Влада. ── */
   @font-face{font-family:'Unbounded';src:url('../beta/site/_fonts/unbounded-v12-cyrillic_latin-200.woff2') format('woff2');font-weight:200;font-display:swap}
@@ -96,6 +96,15 @@
   .skip{display:block;margin-top:18px;padding:8px 0;font-size:13px;color:var(--muted)}
   .ask.sent .field,.ask.sent .skip{opacity:.35;transition:opacity .8s}
 
+  /* ── Кукай: цитата крупно, вопрос, одно слово ── */
+  #scr-kukai .col{display:flex;flex-direction:column;justify-content:center;min-height:100%;padding-top:calc(48px + env(safe-area-inset-top))}
+  .quote{margin:0 0 28px}
+  .qtext{font:300 clamp(22px,6.2vw,34px)/1.25 var(--d);letter-spacing:-.01em;color:var(--ink)}
+  .qauthor{margin-top:14px;font-size:12px;letter-spacing:.14em;color:var(--muted)}
+  #scr-kukai .p{font-size:16px;line-height:1.6;margin-bottom:26px}
+  .one{margin-top:8px;padding-top:0;border-top:0}
+  .one label{color:var(--ink);font-size:15px;letter-spacing:0;margin-bottom:14px}
+
   /* ── Воронка: воронка сверху, текст «одно важное», договор о выдумке, круглая кнопка-подпись в конце ── */
   #scr-voronka{transition:background-color .3s linear}
   .fcol{max-width:640px;margin:0 auto;padding:calc(40px + env(safe-area-inset-top)) 24px calc(24px + env(safe-area-inset-bottom));min-height:100%;display:flex;flex-direction:column}
@@ -165,6 +174,16 @@ const SCREENS = [
     ],
     cue: 'Чтобы подписать договор о выдумке, удерживайте палец на кнопке 4 секунды.',
     gate: { label: 'Я не рационализирую, это фантазия, я следую за интересом.', ms: 3690 }   /* «4 секунды» на странице, 3,69 с по факту — внутреннее */
+  },
+  {
+    id: 'kukai', name: 'Кукай', flow: true,
+    /* слово Влада 09.09 (ночь): «3 экран — начинается с цитаты Кукая… затем под цитатой текст… и вариант ответа: одно слово»;
+       цитата переведена с украинского («Не йди слідами людей давнини — шукай те, чого шукали вони»); текст подшлифован */
+    quote: 'Не иди по следам людей древности — ищи то, чего искали они.',
+    author: 'Кукай',
+    text: 'Что, по вашему мнению, искали мудрецы древности? Современным языком — как бы вы объяснили себе поступки Иисуса, который пошёл на крест, или Будды, который ушёл из дворца?',
+    ask: 'Чего, по вашему мнению, искали они?',
+    gate: { placeholder: 'одно слово', maxLen: 32, key: 'kukai' }
   },
   {
     id: 'goal', name: 'Goal', flow: true,
@@ -268,6 +287,25 @@ const BUILD = {
     cover.appendChild(head);
     cover.appendChild(el('p', 'cue', d.cover.cue));
     s.appendChild(cover);
+  },
+  kukai(s, d){
+    const c = el('div', 'col');
+    c.appendChild(el('div', 'k', kick(d)));
+    const q = el('blockquote', 'quote rise');
+    q.appendChild(el('p', 'qtext', d.quote));
+    q.appendChild(el('footer', 'qauthor', '— ' + d.author));
+    c.appendChild(q);
+    c.appendChild(el('p', 'p', d.text));
+    const one = el('div', 'ask one rise');
+    const lab = el('label', null, d.ask); lab.htmlFor = 'word';
+    one.appendChild(lab);
+    const field = el('div', 'field');
+    const inp = el('input'); inp.id = 'word'; inp.type = 'text'; inp.maxLength = d.gate.maxLen; inp.placeholder = d.gate.placeholder;
+    inp.autocomplete = 'off'; inp.setAttribute('enterkeyhint', 'done'); inp.setAttribute('autocapitalize', 'off'); inp.setAttribute('spellcheck', 'false');
+    const send = el('button', null, '→'); send.type = 'button'; send.setAttribute('aria-label', 'дальше');
+    field.appendChild(inp); field.appendChild(send); one.appendChild(field);
+    c.appendChild(one);
+    s.appendChild(c);
   },
   goal(s, d){
     const c = el('div', 'col');
@@ -420,6 +458,32 @@ const GATES = {
         s = sec;
         $('.cover', s).addEventListener('click', () => { if (done) return; done = true; s.classList.add('passed'); unlock(i, 500); });
         s.addEventListener('contextmenu', e => e.preventDefault());
+      }
+    };
+  })(),
+  /* Кукай: цитата → вопрос → одно слово */
+  kukai: (() => {
+    let lit = false;
+    return {
+      enter(s, d, i){
+        if (lit) return;
+        lit = true;
+        const rises = [...s.querySelectorAll('.p,.rise')];
+        const step = REDUCED() ? 0 : 400;
+        rises.forEach((n, k) => setTimeout(() => n.classList.add('lit'), 250 + k * step));
+        const inp = $('#word', s), send = $('.one .field button', s), one = $('.one', s);
+        let finished = false;
+        const submit = () => {
+          const v = (inp.value.trim().split(/\s+/)[0] || '');
+          if (!v) { inp.focus(); return; }
+          if (finished) return; finished = true;
+          inp.value = v; store.set(d.gate.key, v);
+          inp.blur(); inp.disabled = true; send.disabled = true;
+          one.classList.add('sent');
+          unlock(i, 700);
+        };
+        inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); submit(); } });
+        send.addEventListener('click', submit);
       }
     };
   })(),
