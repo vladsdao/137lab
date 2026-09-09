@@ -8,7 +8,7 @@
 <link rel="icon" sizes="32x32" href="/icons/favicon-32x32.png">
 <title>Палка — 137lab</title>
 <style>
-  /* ── 137lab · /palka · v0.8 «белый лист» (слово Влада 09.09: Палка — обложка-афиша, один тап; Воронка — стеклянная воронка, текст «одно важное»;
+  /* ── 137lab · /palka · v0.9 «белый лист» (слово Влада 09.09: Палка — обложка-афиша, один тап; Воронка — стеклянная воронка, текст «одно важное»;
      Login — круглая кнопка со спиралью из фразы: удержание 4 с разматывает спираль вверх поверх абзацев, белым по чёрному; звук снят «пока»;
      стрелки вперёд-назад на всех экранах; стремиться к белому)
      Шаблон — «9 граней» (vlad-space/palka/9-graney.csv); текст — vlad-space/palka/PAGE.md, один к одному.
@@ -121,12 +121,12 @@
   #s3 .col{position:relative;padding-bottom:calc(120px + env(safe-area-inset-bottom))}
   #s3 .k{color:var(--kc,var(--muted))}
   #s3 .p{color:var(--ptx,var(--ink))}
-  .spin{position:relative;width:184px;height:184px;margin:34px auto 0;opacity:0;transform:translateY(14px);transition:opacity .9s ease,transform .9s ease}
+  .spin{position:relative;width:216px;height:216px;margin:34px auto 0;opacity:0;transform:translateY(14px);transition:opacity .9s ease,transform .9s ease}
   .spin.lit{opacity:1;transform:none}
   .knob{position:absolute;inset:0;border-radius:50%;border:1px solid var(--kb,var(--ink));background:transparent;touch-action:none;cursor:pointer;z-index:1}
   .knob:active{border-width:2px}
-  .unwind{position:absolute;inset:0;width:184px;height:184px;overflow:visible;pointer-events:none;z-index:2}
-  .unwind text{font:400 13px var(--t);letter-spacing:.02em}
+  .unwind{position:absolute;inset:0;width:216px;height:216px;overflow:visible;pointer-events:none;z-index:2}
+  .unwind text{font:400 16px var(--t);letter-spacing:.02em}
   .exit{display:block;margin:26px auto 0;padding:10px;font-size:12px;letter-spacing:.14em;color:var(--rule)}
 
   /* ── 04 Goal ── */
@@ -174,7 +174,7 @@
 <aside id="palka" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></aside>
 <button id="mute" type="button" aria-label="звук" hidden>звук</button>
 <nav id="dev" hidden aria-label="экраны по номерам"></nav>
-<div id="closed" aria-hidden="true"></div>
+<div id="closed" inert></div>
 
 <script>
 /* ═══ Контент = данные. Текст Влада (09.09, ночь) один к одному; правки пунктуации ждут его слова. ═══ */
@@ -402,7 +402,7 @@ function build(){
   d3.paras.forEach(t => c3.appendChild(el('p', 'p', t)));
   const spin = el('div', 'spin');
   const knob = el('button', 'knob'); knob.type = 'button'; knob.setAttribute('aria-label', d3.gate.label);
-  const svg = svgEl('svg'); svg.setAttribute('class', 'unwind'); svg.setAttribute('viewBox', '0 0 184 184'); svg.setAttribute('aria-hidden', 'true');
+  const svg = svgEl('svg'); svg.setAttribute('class', 'unwind'); svg.setAttribute('viewBox', '0 0 216 216'); svg.setAttribute('aria-hidden', 'true');
   const path = svgEl('path'); path.id = 'spath'; path.setAttribute('fill', 'none');
   const text = svgEl('text'); const tp = svgEl('textPath');
   tp.setAttribute('href', '#spath'); tp.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#spath');
@@ -456,7 +456,7 @@ function build(){
 
 /* ═══ Спираль из фразы: точки спирали и точки прямой вверх, равные по длине дуги ═══ */
 const SPIRAL = (() => {
-  const CX = 92, CY = 92, TURNS = 2.15, N = 160, B = 5.1;
+  const CX = 108, CY = 108, TURNS = 2.15, N = 160, B = 6.0;
   let spiral = null, line = null, len = 0;
   function build(){
     const fine = [];
@@ -543,11 +543,13 @@ const GATES = [
     const HOLD = SCREENS[2].gate.seconds * 1000;
     function paintP(){
       path.setAttribute('d', SPIRAL.d(p));
-      const bg = Math.round(255 - 245 * p), tx = Math.round(10 + 80 * p), sp = Math.round(10 + 245 * p);
+      /* экран чернеет быстро (за первую треть удержания), размотка идёт все четыре секунды — движение видно */
+      const q = Math.min(1, p * 3.2);
+      const bg = Math.round(255 - 245 * q), tx = Math.round(10 + 80 * q), sp = Math.round(10 + 245 * q);
       s.style.backgroundColor = 'rgb(' + bg + ',' + bg + ',' + bg + ')';
       col.style.setProperty('--ptx', 'rgb(' + tx + ',' + tx + ',' + tx + ')');
       col.style.setProperty('--kc', 'rgb(' + tx + ',' + tx + ',' + tx + ')');
-      col.style.setProperty('--kb', 'rgba(' + sp + ',' + sp + ',' + sp + ',' + (.55 + .45 * p).toFixed(2) + ')');
+      col.style.setProperty('--kb', 'rgba(' + sp + ',' + sp + ',' + sp + ',' + (.55 + .45 * q).toFixed(2) + ')');
       text.setAttribute('fill', 'rgb(' + sp + ',' + sp + ',' + sp + ')');
     }
     function tick(){
@@ -597,7 +599,7 @@ const GATES = [
         ['pointerup', 'pointercancel', 'pointerleave', 'lostpointercapture'].forEach(ev => knob.addEventListener(ev, release));
         knob.addEventListener('contextmenu', e => e.preventDefault());
         document.addEventListener('visibilitychange', () => { if (document.hidden) release(); });
-        exit.addEventListener('click', () => { $('#closed').classList.add('on'); });
+        exit.addEventListener('click', () => { const c = $('#closed'); c.removeAttribute('inert'); c.classList.add('on'); });
       }
     };
   })(),
