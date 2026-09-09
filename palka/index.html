@@ -8,8 +8,8 @@
 <link rel="icon" sizes="32x32" href="/icons/favicon-32x32.png">
 <title>Палка — 137lab</title>
 <style>
-  /* ── 137lab · /palka · v0.6 «белый лист» (слово Влада 09.09: Палка — обложка-афиша, один тап; Воронка — стеклянная воронка и текст под ней,
-     мельче, со сноской, с архитектурой «лид + правило» (вариант A, ждёт выбора); стрелки вперёд-назад на всех экранах; стремиться к белому)
+  /* ── 137lab · /palka · v0.7 «белый лист» (слово Влада 09.09: Палка — обложка-афиша, один тап; Воронка — стеклянная воронка и текст под ней,
+     мельче, со сноской, архитектура «одно важное» (выбор Влада — B); стрелки вперёд-назад на всех экранах; стремиться к белому)
      Шаблон — «9 граней» (vlad-space/palka/9-graney.csv); текст — vlad-space/palka/PAGE.md, один к одному.
      01 Палка — фотография палки Влада (DSC05066, вырезана на белое), тап. 02 Воронка — lejka.jpg, текст Пролога под ней, вход — касание конуса или стрелка.
      03 Login. 04 Goal. Контент = данные (SCREENS). Шрифты локальные ../beta/site/_fonts/. noindex до слова Влада. ── */
@@ -89,7 +89,7 @@
     .stick{width:100vw;height:auto;left:50%;top:56%;transform:translate(-50%,-50%)}
   }
 
-  /* ── 02 Воронка: стеклянная воронка на белом, текст под ней — архитектура «лид + правило» ── */
+  /* ── 02 Воронка: стеклянная воронка на белом, текст под ней — «одно важное»: правило крупно, остальное тихо ── */
   .fcol{max-width:640px;margin:0 auto;padding:calc(56px + env(safe-area-inset-top)) 44px calc(96px + env(safe-area-inset-bottom)) 24px;min-height:100%;display:flex;flex-direction:column}
   .fig{position:relative;width:min(62vw,300px);margin:0 auto 18px;transform-origin:50% 24%;transition:transform 1.4s cubic-bezier(.7,0,.9,.5),opacity 1.2s ease}
   .funnel{display:block;width:100%;height:auto}
@@ -98,9 +98,9 @@
   .throat::after{content:'';position:absolute;inset:51px;border-radius:50%;background:var(--ink)}
   @keyframes ring{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.7);opacity:0}}
   .ftext{flex:1}
-  .ftext .flead{font:300 clamp(20px,5.6vw,26px)/1.3 var(--d);letter-spacing:-.01em;margin-bottom:16px}
-  .ftext .fbody{font-size:16px;line-height:1.6;color:var(--pad);margin-bottom:18px}
-  .ftext .frule{font-size:18px;line-height:1.5;font-weight:400;padding-left:14px;border-left:2px solid var(--ink);margin-bottom:20px}
+  .ftext .fintro{font-size:14px;line-height:1.55;color:var(--muted);margin-bottom:22px}
+  .ftext .frule{font:300 clamp(22px,6vw,32px)/1.22 var(--d);letter-spacing:-.01em;color:var(--ink);margin-bottom:10px}
+  .ftext .ftail{font-size:16px;line-height:1.5;color:var(--ink);margin-bottom:22px}
   .ftext .ffoot{font-size:13px;line-height:1.55;color:var(--muted);margin-bottom:14px}
   .ftext .fnote{font-size:13px;letter-spacing:.02em;color:var(--muted);padding-top:12px;border-top:1px solid var(--rule);margin-bottom:0}
   .stamp{margin-top:auto;padding-top:22px;text-align:center;opacity:0;transition:opacity .8s ease}
@@ -188,9 +188,9 @@ const SCREENS = [
   {
     id: 'voronka',
     figure: 'lejka.jpg', figureAlt: 'Воронка',   /* стеклянная воронка — картинка по ссылке Влада 09.09 (фон белый) */
-    lead: 'Говоря прямо — это воронка, в авторском формате.',
-    body: 'Её цель — объяснить суть того чем я могу быть полезным тем людям которым это необходимо. И отсеять тех, кому это не нужно.',
-    rule: 'Закрывай окно как только почувствуешь что это не твоё. Так будет честно.',
+    intro: 'Говоря прямо — это воронка, в авторском формате. Её цель — объяснить суть того чем я могу быть полезным тем людям которым это необходимо. И отсеять тех, кому это не нужно.',
+    rule: 'Закрывай окно как только почувствуешь что это не твоё.',
+    tail: 'Так будет честно.',
     foot: '*Формат авангардный, но я чувствую что именно таким он должен быть. Одна лишь просьба — не воспринимай все слишком серьезно.',
     note: 'Всего лишь девять экранов.',   /* по слову Влада «упомяни, что всего лишь 9 экранов будет» — формулировка ждёт его правки */
     gate: { type: 'throat', cue: 'коснись воронки' }
@@ -377,9 +377,9 @@ function build(){
   fig.appendChild(throat);
   fcol.appendChild(fig);
   const ftext = el('div', 'ftext');
-  ftext.appendChild(el('p', 'p flead', d2.lead));
-  ftext.appendChild(el('p', 'p fbody', d2.body));
+  ftext.appendChild(el('p', 'p fintro', d2.intro));
   ftext.appendChild(el('p', 'p frule', d2.rule));
+  ftext.appendChild(el('p', 'p ftail', d2.tail));
   if (d2.foot) ftext.appendChild(el('p', 'p ffoot', d2.foot));
   if (d2.note) ftext.appendChild(el('p', 'p fnote', d2.note));
   fcol.appendChild(ftext);
