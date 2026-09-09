@@ -8,10 +8,9 @@
 <link rel="icon" sizes="32x32" href="/icons/favicon-32x32.png">
 <title>Палка — 137lab</title>
 <style>
-  /* ── 137lab · /palka · v0.11 «белый лист» (слово Влада 09.09, ночь: после Палки — экран с интересом; порядок: Палка → Goal → Воронка → Login.
-     Экраны переставляются порядком в SCREENS; номера кикеров считаются сами. Ранее: обложка-афиша, один тап; Воронка — стеклянная воронка,
-     текст «одно важное», в один экран; Login — круглая кнопка со спиралью, удержание 4 с, в один экран; Goal — скролл со стрелкой вниз;
-     стрелки ← → везде; индикатор снят; звук снят)
+  /* ── 137lab · /palka · v0.12 «белый лист» (слово Влада 09.09, ночь: новый текст экрана с воронкой вбирает договор о выдумке;
+     подпись — удержание круглой кнопки со спиралью «4 секунды» (по факту 3,69 с — внутреннее); отдельный Login снят.
+     Порядок: Палка → Goal → Воронка. Ранее: обложка-афиша, один тап; Goal — скролл со стрелкой вниз; стрелки ← → везде; индикатор и звук сняты)
      Шаблон — «9 граней» (vlad-space/palka/9-graney.csv); текст — vlad-space/palka/PAGE.md, один к одному.
      Контент = данные (SCREENS). Шрифты локальные ../beta/site/_fonts/. noindex до слова Влада. ── */
   @font-face{font-family:'Unbounded';src:url('../beta/site/_fonts/unbounded-v12-cyrillic_latin-200.woff2') format('woff2');font-weight:200;font-display:swap}
@@ -97,45 +96,25 @@
   .skip{display:block;margin-top:18px;padding:8px 0;font-size:13px;color:var(--muted)}
   .ask.sent .field,.ask.sent .skip{opacity:.35;transition:opacity .8s}
 
-  /* ── Воронка: в один экран — воронка по высоте экрана, текст «одно важное» плотно ── */
-  .fcol{max-width:640px;margin:0 auto;padding:calc(40px + env(safe-area-inset-top)) 24px var(--navh);height:100%;display:flex;flex-direction:column}
-  .fig{position:relative;flex:0 0 auto;height:min(28svh,240px);margin:0 auto 12px;transform-origin:50% 24%;transition:transform 1.4s cubic-bezier(.7,0,.9,.5),opacity 1.2s ease}
+  /* ── Воронка: воронка сверху, текст «одно важное», договор о выдумке, круглая кнопка-подпись в конце ── */
+  #scr-voronka{transition:background-color .3s linear}
+  .fcol{max-width:640px;margin:0 auto;padding:calc(40px + env(safe-area-inset-top)) 24px calc(24px + env(safe-area-inset-bottom));min-height:100%;display:flex;flex-direction:column}
+  .fig{position:relative;flex:0 0 auto;height:min(22svh,190px);margin:0 auto 22px;transition:opacity 1.2s ease}
   .funnel{display:block;height:100%;width:auto}
-  .throat{position:absolute;left:50%;top:24%;width:96px;height:96px;transform:translate(-50%,-50%);border-radius:50%;opacity:0;visibility:hidden;transition:opacity 1.2s ease,visibility 0s linear 1.2s;touch-action:none}
-  .throat::before{content:'';position:absolute;inset:20px;border-radius:50%;border:1px solid var(--ink);animation:ring 2.4s ease-out infinite}
-  .throat::after{content:'';position:absolute;inset:44px;border-radius:50%;background:var(--ink)}
-  @keyframes ring{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.7);opacity:0}}
-  .ftext{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;min-height:0}
-  .ftext .p{margin-bottom:0}
-  .ftext .fintro{font-size:13px;line-height:1.5;color:var(--muted);margin-bottom:16px}
-  .ftext .frule{font:300 clamp(19px,5vw,26px)/1.22 var(--d);letter-spacing:-.01em;color:var(--ink);margin-bottom:8px}
-  .ftext .ftail{font-size:14px;line-height:1.5;color:var(--ink);margin-bottom:16px}
-  .ftext .ffoot{font-size:12px;line-height:1.5;color:var(--muted);margin-bottom:10px}
-  .ftext .fnote{font-size:12px;letter-spacing:.02em;color:var(--muted);padding-top:10px;border-top:1px solid var(--rule)}
-  #scr-voronka.gated .throat{opacity:1;visibility:visible;transition:opacity 1.2s ease}
-  #scr-voronka.fall{overflow:hidden}
-  #scr-voronka.fall .fig{transform:scale(9);opacity:0}
-  #scr-voronka.fall .ftext{opacity:0;transition:opacity .5s}
-  @media (orientation:landscape){
-    .fcol{flex-direction:row;align-items:center;gap:40px;max-width:980px}
-    .fig{height:min(60svh,420px);margin:0}
-    .ftext{flex:1}
-  }
-
-  /* ── Login: в один экран — три абзаца, круглая кнопка внизу между стрелками ── */
-  #scr-login{transition:background-color .3s linear}
-  #scr-login .col{position:relative;height:100%;display:flex;flex-direction:column;padding-top:calc(44px + env(safe-area-inset-top));padding-bottom:calc(14px + env(safe-area-inset-bottom))}
-  #scr-login .k{color:var(--kc,var(--muted));margin-bottom:22px}
-  #scr-login .p{color:var(--ptx,var(--ink));font-size:15.5px;line-height:1.5;margin-bottom:14px}
-  .spin{position:relative;width:200px;height:200px;margin:auto auto 0;flex:0 0 auto;opacity:0;transform:translateY(14px);transition:opacity .9s ease,transform .9s ease}
+  .ftext .p{color:var(--ptx,var(--ink));font-size:15px;line-height:1.55;margin-bottom:16px}
+  .ftext .fbig{font:300 clamp(20px,5.4vw,28px)/1.22 var(--d);letter-spacing:-.01em;margin:6px 0 20px}
+  .ftext .fcue{font-size:12px;letter-spacing:.06em;color:var(--pmu,var(--muted));margin:26px 0 0;text-align:center}
+  .spin{position:relative;width:200px;height:200px;margin:14px auto 0;flex:0 0 auto;opacity:0;transform:translateY(14px);transition:opacity .9s ease,transform .9s ease}
   .spin.lit{opacity:1;transform:none}
   .knob{position:absolute;inset:0;border-radius:50%;border:1px solid var(--kb,var(--ink));background:transparent;touch-action:none;cursor:pointer;z-index:1}
   .knob:active{border-width:2px}
   .unwind{position:absolute;inset:0;width:200px;height:200px;overflow:visible;pointer-events:none;z-index:2}
   .unwind text{font:400 15px var(--t);letter-spacing:.02em}
-  @media (max-height:640px){
-    #scr-login .p{font-size:14.5px;line-height:1.45;margin-bottom:10px}
-    .spin,.unwind{width:176px;height:176px}
+  #scr-voronka.dark .fig{opacity:.25}
+  @media (orientation:landscape){
+    .fcol{flex-direction:row;align-items:flex-start;gap:40px;max-width:980px}
+    .fig{height:min(50svh,380px);margin:0;position:sticky;top:0}
+    .ftext{flex:1}
   }
 
   /* ── конец собранного: белый лист, строка человека по центру ── */
@@ -143,8 +122,8 @@
   .pin.on{opacity:1}
 
   @media (prefers-reduced-motion: reduce){
-    .cover .cue::before,.throat::before,#nav .down{animation:none}
-    .p,.rise,.scr,.stick,.head,.fig,.throat,.spin{transition:none}
+    .cover .cue::before,#nav .down{animation:none}
+    .p,.rise,.scr,.stick,.head,.fig,.spin{transition:none}
   }
 </style>
 </head>
@@ -158,7 +137,7 @@
 <nav id="dev" hidden aria-label="экраны по номерам"></nav>
 
 <script>
-/* ═══ Контент = данные. Порядок экранов = порядок в этом списке (слово Влада 09.09, ночь: после Палки — интерес).
+/* ═══ Контент = данные. Порядок экранов = порядок в этом списке (слово Влада 09.09, ночь).
    Текст Влада один к одному; правки пунктуации ждут его слова. ═══ */
 const SCREENS = [
   {
@@ -190,21 +169,17 @@ const SCREENS = [
   {
     id: 'voronka', flow: true,
     figure: 'lejka.jpg', figureAlt: 'Воронка',   /* стеклянная воронка — картинка по ссылке Влада 09.09 (фон белый) */
-    intro: 'Говоря прямо — это воронка, в авторском формате. Её цель — объяснить суть того чем я могу быть полезным тем людям которым это необходимо. И отсеять тех, кому это не нужно.',
-    rule: 'Закрывай окно как только почувствуешь что это не твоё.',
-    tail: 'Так будет честно.',
-    foot: '*Формат авангардный, но я чувствую что именно таким он должен быть. Одна лишь просьба — не воспринимай все слишком серьезно.',
-    note: 'Всего лишь девять экранов.',   /* по слову Влада «упомяни, что всего лишь 9 экранов будет» — формулировка ждёт его правки */
-    gate: { cue: 'коснись воронки' }
-  },
-  {
-    id: 'login', name: 'Login', flow: true,
-    paras: [
-      'Некоторые аспекты идеи о которой пойдет речь — могут казаться безумными, а если нет — я плохо объясняю.',
-      'Давайте заранее договоримся о том что все что дальше — это выдумка. Расслабтесь и воспринимайте это как художественное произведение.',
-      'Это необходимый ход, который позволяет снять важность и расслабить защиту рационального разума.'
+    /* текст Влада 09.09 (ночь), «2 слайд», подшлифован по его слову («только подшлифуй текст»): опечатки и запятые, слова его;
+       big — единственная крупная строка (архитектура «одно важное») */
+    text: [
+      { t: 'Технически — это воронка из девяти экранов, которые помогут мне передать моё сообщение. А вы сможете понять, насколько это откликается вам.' },
+      { t: 'Но предупреждаю: некоторые аспекты могут показаться безумием. А если не покажутся — я плохо объясняю.' },
+      { t: 'Научиться безопасно и осознанно сходить с ума и полагаться на чувства — это, по сути, и есть продукт.', big: true },
+      { t: 'Но перед тем как мы начнём, давайте договоримся о том, что всё сказанное дальше — выдумка. Фантазия автора, которая не стремится вас чему-то научить, а скорее ищет возможность вдохновить.' },
+      { t: 'То, насколько вы будете открыты, определит, с чем вы выйдете.' }
     ],
-    gate: { label: 'Я не рационализирую, это фантазия, я следую за интересом.', seconds: 4 }
+    cue: 'Чтобы подписать договор о выдумке, удерживайте палец на кнопке 4 секунды.',
+    gate: { label: 'Я не рационализирую, это фантазия, я следую за интересом.', ms: 3690 }   /* «4 секунды» на странице, 3,69 с по факту — внутреннее */
   },
   { id: 'end' }
 ];
@@ -220,7 +195,6 @@ const REDUCED = () => window.matchMedia && matchMedia('(prefers-reduced-motion: 
 const $ = (s, r) => (r || document).querySelector(s);
 const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
 const svgEl = (tag) => document.createElementNS('http://www.w3.org/2000/svg', tag);
-const byId = id => SCREENS.find(s => s.id === id);
 const kick = (d) => String(SCREENS.indexOf(d) + 1).padStart(2, '0') + ' · ' + d.name;
 
 /* ═══ Движок: экраны, ворота, стрелки ═══ */
@@ -269,6 +243,19 @@ navNext.addEventListener('click', () => { reached = Math.max(reached, cur + 1); 
 navPrev.addEventListener('click', () => { go(cur - 1); });
 
 /* ═══ Сборка разметки из данных — по id экрана, порядок любой ═══ */
+function spinKnob(label){
+  const spin = el('div', 'spin');
+  const knob = el('button', 'knob'); knob.type = 'button'; knob.setAttribute('aria-label', label);
+  const svg = svgEl('svg'); svg.setAttribute('class', 'unwind'); svg.setAttribute('viewBox', '0 0 200 200'); svg.setAttribute('aria-hidden', 'true');
+  const path = svgEl('path'); path.id = 'spath'; path.setAttribute('fill', 'none');
+  const text = svgEl('text'); const tp = svgEl('textPath');
+  tp.setAttribute('href', '#spath'); tp.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#spath');
+  tp.setAttribute('startOffset', '0'); tp.textContent = label;
+  text.appendChild(tp); text.setAttribute('fill', '#0a0a0a');
+  svg.appendChild(path); svg.appendChild(text);
+  spin.appendChild(knob); spin.appendChild(svg);
+  return spin;
+}
 const BUILD = {
   palka(s, d){
     const cover = el('div', 'cover');
@@ -310,34 +297,13 @@ const BUILD = {
     const fig = el('div', 'fig');
     const funnel = el('img', 'funnel'); funnel.alt = d.figureAlt; funnel.decoding = 'async'; funnel.draggable = false; funnel.src = d.figure;
     fig.appendChild(funnel);
-    const throat = el('button', 'throat'); throat.type = 'button'; throat.setAttribute('aria-label', d.gate.cue);
-    fig.appendChild(throat);
     fcol.appendChild(fig);
     const ftext = el('div', 'ftext');
-    ftext.appendChild(el('p', 'p fintro', d.intro));
-    ftext.appendChild(el('p', 'p frule', d.rule));
-    ftext.appendChild(el('p', 'p ftail', d.tail));
-    if (d.foot) ftext.appendChild(el('p', 'p ffoot', d.foot));
-    if (d.note) ftext.appendChild(el('p', 'p fnote', d.note));
+    d.text.forEach(b => ftext.appendChild(el('p', 'p' + (b.big ? ' fbig' : ''), b.t)));
+    ftext.appendChild(el('p', 'p fcue', d.cue));
     fcol.appendChild(ftext);
+    fcol.appendChild(spinKnob(d.gate.label));
     s.appendChild(fcol);
-  },
-  login(s, d){
-    const c = el('div', 'col');
-    c.appendChild(el('div', 'k', kick(d)));
-    d.paras.forEach(t => c.appendChild(el('p', 'p', t)));
-    const spin = el('div', 'spin');
-    const knob = el('button', 'knob'); knob.type = 'button'; knob.setAttribute('aria-label', d.gate.label);
-    const svg = svgEl('svg'); svg.setAttribute('class', 'unwind'); svg.setAttribute('viewBox', '0 0 200 200'); svg.setAttribute('aria-hidden', 'true');
-    const path = svgEl('path'); path.id = 'spath'; path.setAttribute('fill', 'none');
-    const text = svgEl('text'); const tp = svgEl('textPath');
-    tp.setAttribute('href', '#spath'); tp.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#spath');
-    tp.setAttribute('startOffset', '0'); tp.textContent = d.gate.label;
-    text.appendChild(tp); text.setAttribute('fill', '#0a0a0a');
-    svg.appendChild(path); svg.appendChild(text);
-    spin.appendChild(knob); spin.appendChild(svg);
-    c.appendChild(spin);
-    s.appendChild(c);
   },
   end(s){ s.appendChild(el('p', 'pin')); }
 };
@@ -385,6 +351,64 @@ const SPIRAL = (() => {
   return { d, get length(){ if (!spiral) build(); return len; } };
 })();
 
+/* ═══ Подпись удержанием: спираль разматывается вверх, экран чернеет, текст белеет ═══ */
+function holdSpiral(s, col, idx, ms){
+  const knob = $('.knob', s), path = $('#spath', s), text = $('.unwind text', s), tp = $('textPath', s);
+  let p = 0, t0 = null, raf = 0, back = 0, fin = 0, done = false;
+  path.setAttribute('d', SPIRAL.d(0));
+  function complete(){
+    if (done) return;
+    done = true; t0 = null; cancelAnimationFrame(raf); clearTimeout(fin);
+    p = 1; paintP();
+    unlock(idx, 900);
+  }
+  tp.setAttribute('textLength', (SPIRAL.length * .97).toFixed(1)); tp.setAttribute('lengthAdjust', 'spacing');
+  function paintP(){
+    path.setAttribute('d', SPIRAL.d(p));
+    /* экран чернеет быстро (за первую треть удержания), размотка идёт всё время — движение видно */
+    const q = Math.min(1, p * 3.2);
+    const bg = Math.round(255 - 245 * q), tx = Math.round(10 + 80 * q), sp = Math.round(10 + 245 * q), mu = Math.round(110 + 40 * q);
+    s.style.backgroundColor = 'rgb(' + bg + ',' + bg + ',' + bg + ')';
+    s.classList.toggle('dark', q > .5);
+    col.style.setProperty('--ptx', 'rgb(' + tx + ',' + tx + ',' + tx + ')');
+    col.style.setProperty('--pmu', 'rgb(' + mu + ',' + mu + ',' + mu + ')');
+    col.style.setProperty('--kb', 'rgba(' + sp + ',' + sp + ',' + sp + ',' + (.55 + .45 * q).toFixed(2) + ')');
+    text.setAttribute('fill', 'rgb(' + sp + ',' + sp + ',' + sp + ')');
+  }
+  function tick(){
+    if (t0 === null) return;
+    p = Math.min(1, (performance.now() - t0) / ms);
+    paintP();
+    if (p >= 1) { complete(); return; }
+    raf = requestAnimationFrame(tick);
+  }
+  function start(e){
+    if (done) return;
+    e.preventDefault();
+    cancelAnimationFrame(back);
+    try { knob.setPointerCapture(e.pointerId); } catch (err) {}
+    t0 = performance.now() - p * ms;
+    raf = requestAnimationFrame(tick);
+    /* страховка от замирания кадров: подпись завершается по часам, не по кадрам */
+    clearTimeout(fin); fin = setTimeout(complete, ms * (1 - p) + 30);
+  }
+  function release(){
+    if (done || t0 === null) return;
+    cancelAnimationFrame(raf); clearTimeout(fin); t0 = null;
+    const from = p, t1 = performance.now();
+    const rewind = () => {
+      const k = Math.min(1, (performance.now() - t1) / 450);
+      p = from * (1 - k); paintP();
+      if (k < 1) back = requestAnimationFrame(rewind);
+    };
+    back = requestAnimationFrame(rewind);
+  }
+  knob.addEventListener('pointerdown', start);
+  ['pointerup', 'pointercancel', 'pointerleave', 'lostpointercapture'].forEach(ev => knob.addEventListener(ev, release));
+  knob.addEventListener('contextmenu', e => e.preventDefault());
+  document.addEventListener('visibilitychange', () => { if (document.hidden) release(); });
+}
+
 /* ═══ Ворота — по id экрана ═══ */
 const GATES = {
   /* Палка: один тап — дальше */
@@ -424,84 +448,18 @@ const GATES = {
       }
     };
   })(),
-  /* Воронка: текст появляется по частям → касание конуса — падение внутрь */
+  /* Воронка: текст по абзацам → кнопка-подпись; удержание — договор подписан */
   voronka: (() => {
-    let lit = false, shown = false, done = false, s;
+    let lit = false;
     return {
-      enter(sec, d, i){
+      enter(s, d, i){
         if (lit) return;
-        lit = true; s = sec;
-        const ps = [...s.querySelectorAll('.p')];
-        const step = REDUCED() ? 0 : 600;
-        ps.forEach((p, k) => setTimeout(() => p.classList.add('lit'), 350 + k * step));
-        setTimeout(() => { if (!shown) { shown = true; s.classList.add('gated'); } }, 350 + ps.length * step + 300);
-        const throat = $('.throat', s);
-        throat.addEventListener('pointerdown', e => {
-          if (done || !shown) return;
-          e.preventDefault(); done = true;
-          s.classList.add('fall');
-          unlock(i, 1200);
-        });
-        throat.addEventListener('contextmenu', e => e.preventDefault());
-      }
-    };
-  })(),
-  /* Login: абзацы по одному → круглая кнопка; удержание 4 с — спираль разматывается вверх, экран чернеет, текст белеет */
-  login: (() => {
-    let lit = false, done = false, s, col, knob, path, text, p = 0, t0 = null, raf = 0, back = 0, idx = 0, HOLD = 4000;
-    function paintP(){
-      path.setAttribute('d', SPIRAL.d(p));
-      /* экран чернеет быстро (за первую треть удержания), размотка идёт все четыре секунды — движение видно */
-      const q = Math.min(1, p * 3.2);
-      const bg = Math.round(255 - 245 * q), tx = Math.round(10 + 80 * q), sp = Math.round(10 + 245 * q);
-      s.style.backgroundColor = 'rgb(' + bg + ',' + bg + ',' + bg + ')';
-      col.style.setProperty('--ptx', 'rgb(' + tx + ',' + tx + ',' + tx + ')');
-      col.style.setProperty('--kc', 'rgb(' + tx + ',' + tx + ',' + tx + ')');
-      col.style.setProperty('--kb', 'rgba(' + sp + ',' + sp + ',' + sp + ',' + (.55 + .45 * q).toFixed(2) + ')');
-      text.setAttribute('fill', 'rgb(' + sp + ',' + sp + ',' + sp + ')');
-    }
-    function tick(){
-      if (t0 === null) return;
-      p = Math.min(1, (performance.now() - t0) / HOLD);
-      paintP();
-      if (p >= 1) { done = true; t0 = null; unlock(idx, 900); return; }
-      raf = requestAnimationFrame(tick);
-    }
-    function start(e){
-      if (done) return;
-      e.preventDefault();
-      cancelAnimationFrame(back);
-      try { knob.setPointerCapture(e.pointerId); } catch (err) {}
-      t0 = performance.now() - p * HOLD;
-      raf = requestAnimationFrame(tick);
-    }
-    function release(){
-      if (done || t0 === null) return;
-      cancelAnimationFrame(raf); t0 = null;
-      const from = p, t1 = performance.now();
-      const rewind = () => {
-        const k = Math.min(1, (performance.now() - t1) / 450);
-        p = from * (1 - k); paintP();
-        if (k < 1) back = requestAnimationFrame(rewind);
-      };
-      back = requestAnimationFrame(rewind);
-    }
-    return {
-      enter(sec, d, i){
-        if (lit) return;
-        lit = true; s = sec; idx = i; HOLD = (d.gate.seconds || 4) * 1000;
-        col = $('.col', s); knob = $('.knob', s); path = $('#spath', s); text = $('.unwind text', s);
-        const tp = $('textPath', s);
-        path.setAttribute('d', SPIRAL.d(0));
-        tp.setAttribute('textLength', (SPIRAL.length * .97).toFixed(1)); tp.setAttribute('lengthAdjust', 'spacing');
+        lit = true;
         const ps = [...s.querySelectorAll('.p')], spin = $('.spin', s);
-        const step = REDUCED() ? 0 : 900;
-        ps.forEach((q, k) => setTimeout(() => q.classList.add('lit'), 300 + k * step));
-        setTimeout(() => spin.classList.add('lit'), 300 + ps.length * step + 300);
-        knob.addEventListener('pointerdown', start);
-        ['pointerup', 'pointercancel', 'pointerleave', 'lostpointercapture'].forEach(ev => knob.addEventListener(ev, release));
-        knob.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('visibilitychange', () => { if (document.hidden) release(); });
+        const step = REDUCED() ? 0 : 500;
+        ps.forEach((p, k) => setTimeout(() => p.classList.add('lit'), 350 + k * step));
+        setTimeout(() => { spin.classList.add('lit'); paintDown(); }, 350 + ps.length * step + 200);
+        holdSpiral(s, $('.fcol', s), i, d.gate.ms || 4000);
       }
     };
   })(),
