@@ -178,6 +178,7 @@ const SCREENS = [
   },
   {
     id: 'kukai', name: 'Кукай', flow: true,
+    kicker: 'Zen with me',   /* слово Влада: вместо «03 · Кукай» сверху — «Zen with me» */
     /* слово Влада 09.09 (ночь): «3 экран — начинается с цитаты Кукая… затем под цитатой текст… и вариант ответа: одно слово»;
        цитата переведена с украинского («Не йди слідами людей давнини — шукай те, чого шукали вони»); текст подшлифован */
     quote: 'Не иди по следам людей древности — ищи то, чего искали они.',
@@ -292,7 +293,7 @@ const BUILD = {
   },
   kukai(s, d){
     const c = el('div', 'col');
-    c.appendChild(el('div', 'k', kick(d)));
+    c.appendChild(el('div', 'k', d.kicker || kick(d)));
     const q = el('blockquote', 'quote rise');
     q.appendChild(el('p', 'qtext', d.quote));
     const f = el('footer', 'qauthor', '— ' + d.author);
