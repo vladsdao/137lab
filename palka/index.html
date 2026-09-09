@@ -94,22 +94,25 @@
 
   /* ── 02 Воронка: фото лейки на белом, текст под ней, вход — касание воронки ── */
   .fcol{max-width:640px;margin:0 auto;padding:calc(56px + env(safe-area-inset-top)) 44px calc(40px + env(safe-area-inset-bottom)) 24px;min-height:100%;display:flex;flex-direction:column}
-  .fig{position:relative;width:min(70vw,340px);margin:0 auto 30px;transform-origin:50% 40%;transition:transform 1.4s cubic-bezier(.7,0,.9,.5),opacity 1.2s ease}
+  .fig{position:relative;width:min(78vw,380px);margin:0 auto 18px;transform-origin:50% 24%;transition:transform 1.4s cubic-bezier(.7,0,.9,.5),opacity 1.2s ease}
   .funnel{display:block;width:100%;height:auto}
-  .throat{position:absolute;left:50%;top:40%;width:110px;height:110px;transform:translate(-50%,-50%);border-radius:50%;opacity:0;visibility:hidden;transition:opacity 1.2s ease,visibility 0s linear 1.2s;touch-action:none}
+  .throat{position:absolute;left:50%;top:24%;width:110px;height:110px;transform:translate(-50%,-50%);border-radius:50%;opacity:0;visibility:hidden;transition:opacity 1.2s ease,visibility 0s linear 1.2s;touch-action:none}
   .throat::before{content:'';position:absolute;inset:22px;border-radius:50%;border:1px solid var(--ink);animation:ring 2.4s ease-out infinite}
   .throat::after{content:'';position:absolute;inset:51px;border-radius:50%;background:var(--ink)}
   @keyframes ring{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.7);opacity:0}}
   .ftext{flex:1}
+  .fnote{font-size:14px;letter-spacing:.02em;color:var(--muted)}
   .stamp{margin-top:auto;padding-top:26px;text-align:center;opacity:0;transition:opacity .8s ease}
   .stamp.on{opacity:1}
   #s2.gated .throat{opacity:1;visibility:visible;transition:opacity 1.2s ease}
+  #s2.fall{overflow:hidden}
   #s2.fall .fig{transform:scale(9);opacity:0}
   #s2.fall .ftext,#s2.fall .stamp{opacity:0;transition:opacity .5s}
   @media (orientation:landscape){
     .fcol{flex-direction:row;align-items:center;gap:40px;max-width:980px;padding-right:24px}
     .fig{width:min(34vw,420px);margin:0}
     .ftext{flex:1}
+  .fnote{font-size:14px;letter-spacing:.02em;color:var(--muted)}
     .stamp{position:absolute;left:0;right:0;bottom:calc(26px + env(safe-area-inset-bottom));margin:0;padding:0}
   }
 
@@ -181,11 +184,12 @@ const SCREENS = [
   },
   {
     id: 'voronka',
-    figure: '', figureAlt: 'Воронка',   /* путь к фото лейки Влада (lejka.png), пока пусто — рисунок-заглушка */
+    figure: 'lejka.jpg', figureAlt: 'Воронка',   /* стеклянная воронка — картинка по ссылке Влада 09.09 (fecom-media, 3840², фон белый) */
     paras: [
       'Говоря прямо — это воронка, в авторском формате. Её цель — объяснить суть того чем я могу быть полезным тем людям которым это необходимо. Закрывай окно как только почувствуешь что это не твоё. Так будет честно.',
       'Формат авангардный, но я чувствую что именно таким он должен быть. Одна лишь просьба — не воспринимай все слишком серьезно.'
     ],
+    note: 'Всего лишь девять экранов.',   /* по слову Влада «упомяни, что всего лишь 9 экранов будет» — формулировка ждёт его правки */
     gate: { type: 'throat', cue: 'коснись воронки' }
   },
   {
@@ -381,6 +385,7 @@ function build(){
   fcol.appendChild(fig);
   const ftext = el('div', 'ftext');
   d2.paras.forEach(t => ftext.appendChild(el('p', 'p', t)));
+  if (d2.note) ftext.appendChild(el('p', 'p fnote', d2.note));
   fcol.appendChild(ftext);
   fcol.appendChild(el('p', 'stamp cue', d2.gate.cue));
   s2.appendChild(fcol);
