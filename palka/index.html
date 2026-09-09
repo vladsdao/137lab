@@ -98,7 +98,7 @@
 
   /* ── Кукай: цитата крупно, вопрос, одно слово ── */
   #scr-kukai .col{display:flex;flex-direction:column;justify-content:center;min-height:100%;padding-top:calc(48px + env(safe-area-inset-top))}
-  .quote{margin:0 0 28px}
+  .quote{margin:0 0 40px}
   .qtext{font:300 clamp(22px,6.2vw,34px)/1.25 var(--d);letter-spacing:-.01em;color:var(--ink)}
   .qauthor{margin-top:14px;font-size:12px;letter-spacing:.14em;color:var(--muted)}
   #scr-kukai .p{font-size:16px;line-height:1.6;margin-bottom:26px}
@@ -181,7 +181,7 @@ const SCREENS = [
        цитата переведена с украинского («Не йди слідами людей давнини — шукай те, чого шукали вони»); текст подшлифован */
     quote: 'Не иди по следам людей древности — ищи то, чего искали они.',
     author: 'Кукай',
-    text: 'Что, по вашему мнению, искали мудрецы древности? Современным языком — как бы вы объяснили себе поступки Иисуса, который пошёл на крест, или Будды, который ушёл из дворца?',
+    /* абзац про мудрецов, Иисуса и Будду снят словом Влада — остаются цитата и вопрос */
     ask: 'Чего, по вашему мнению, искали они?',
     gate: { placeholder: 'одно слово', maxLen: 32, key: 'kukai' }
   },
@@ -295,7 +295,6 @@ const BUILD = {
     q.appendChild(el('p', 'qtext', d.quote));
     q.appendChild(el('footer', 'qauthor', '— ' + d.author));
     c.appendChild(q);
-    c.appendChild(el('p', 'p', d.text));
     const one = el('div', 'ask one rise');
     const lab = el('label', null, d.ask); lab.htmlFor = 'word';
     one.appendChild(lab);
