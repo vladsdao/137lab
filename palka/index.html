@@ -8,11 +8,11 @@
 <link rel="icon" sizes="32x32" href="/icons/favicon-32x32.png">
 <title>Палка — 137lab</title>
 <style>
-  /* ── 137lab · /palka · v0.7 «белый лист» (слово Влада 09.09: Палка — обложка-афиша, один тап; Воронка — стеклянная воронка и текст под ней,
-     мельче, со сноской, архитектура «одно важное» (выбор Влада — B); стрелки вперёд-назад на всех экранах; стремиться к белому)
+  /* ── 137lab · /palka · v0.8 «белый лист» (слово Влада 09.09: Палка — обложка-афиша, один тап; Воронка — стеклянная воронка, текст «одно важное»;
+     Login — круглая кнопка со спиралью из фразы: удержание 4 с разматывает спираль вверх поверх абзацев, белым по чёрному; звук снят «пока»;
+     стрелки вперёд-назад на всех экранах; стремиться к белому)
      Шаблон — «9 граней» (vlad-space/palka/9-graney.csv); текст — vlad-space/palka/PAGE.md, один к одному.
-     01 Палка — фотография палки Влада (DSC05066, вырезана на белое), тап. 02 Воронка — lejka.jpg, текст Пролога под ней, вход — касание конуса или стрелка.
-     03 Login. 04 Goal. Контент = данные (SCREENS). Шрифты локальные ../beta/site/_fonts/. noindex до слова Влада. ── */
+     Контент = данные (SCREENS). Шрифты локальные ../beta/site/_fonts/. noindex до слова Влада. ── */
   @font-face{font-family:'Unbounded';src:url('../beta/site/_fonts/unbounded-v12-cyrillic_latin-200.woff2') format('woff2');font-weight:200;font-display:swap}
   @font-face{font-family:'Unbounded';src:url('../beta/site/_fonts/unbounded-v12-cyrillic_latin-300.woff2') format('woff2');font-weight:300;font-display:swap}
   @font-face{font-family:'Manrope';src:url('../beta/site/_fonts/manrope-v20-cyrillic_latin-300.woff2') format('woff2');font-weight:300;font-display:swap}
@@ -116,12 +116,18 @@
     .stamp{position:absolute;left:0;right:0;bottom:calc(30px + env(safe-area-inset-bottom));margin:0;padding:0}
   }
 
-  /* ── 03 Login ── */
-  #s3 .col{position:relative}
-  #s3 .col::before{content:'';position:absolute;left:0;right:0;top:0;height:70vh;background:radial-gradient(ellipse at 50% 28%,rgba(10,10,10,.05),rgba(10,10,10,0) 62%);pointer-events:none}
-  .agree{display:block;width:100%;margin-top:18px;padding:18px 20px;border:1px solid var(--ink);border-radius:14px;font-size:17px;line-height:1.4;text-align:center;color:var(--ink);background:var(--paper);transition:background .25s,color .25s}
-  .agree:active{background:var(--ink);color:var(--paper)}
-  .exit{display:block;margin:22px auto 0;padding:10px;font-size:12px;letter-spacing:.14em;color:var(--rule)}
+  /* ── 03 Login: три абзаца → круглая кнопка со спиралью из фразы; удержание 4 с — спираль разматывается вверх, белым по чёрному ── */
+  #s3{transition:background-color .3s linear}
+  #s3 .col{position:relative;padding-bottom:calc(120px + env(safe-area-inset-bottom))}
+  #s3 .k{color:var(--kc,var(--muted))}
+  #s3 .p{color:var(--ptx,var(--ink))}
+  .spin{position:relative;width:184px;height:184px;margin:34px auto 0;opacity:0;transform:translateY(14px);transition:opacity .9s ease,transform .9s ease}
+  .spin.lit{opacity:1;transform:none}
+  .knob{position:absolute;inset:0;border-radius:50%;border:1px solid var(--kb,var(--ink));background:transparent;touch-action:none;cursor:pointer;z-index:1}
+  .knob:active{border-width:2px}
+  .unwind{position:absolute;inset:0;width:184px;height:184px;overflow:visible;pointer-events:none;z-index:2}
+  .unwind text{font:400 13px var(--t);letter-spacing:.02em}
+  .exit{display:block;margin:26px auto 0;padding:10px;font-size:12px;letter-spacing:.14em;color:var(--rule)}
 
   /* ── 04 Goal ── */
   #s4{--ink:#000;--paper:#fff;--muted:#8a8a8a;background:#fff}
@@ -149,7 +155,7 @@
   }
   @media (prefers-reduced-motion: reduce){
     .cover .cue::before,.throat::before{animation:none}
-    .p,.rise,.scr,.stick,.head,#palka,.fly,.fig,.throat{transition:none}
+    .p,.rise,.scr,.stick,.head,#palka,.fly,.fig,.throat,.spin{transition:none}
   }
 </style>
 </head>
@@ -166,12 +172,12 @@
   <button class="next" type="button" aria-label="вперёд">→</button>
 </nav>
 <aside id="palka" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></aside>
-<button id="mute" type="button" aria-label="звук">звук</button>
+<button id="mute" type="button" aria-label="звук" hidden>звук</button>
 <nav id="dev" hidden aria-label="экраны по номерам"></nav>
 <div id="closed" aria-hidden="true"></div>
 
 <script>
-/* ═══ Контент = данные. Текст Влада (09.09, вечер) один к одному; правки пунктуации ждут его слова. ═══ */
+/* ═══ Контент = данные. Текст Влада (09.09, ночь) один к одному; правки пунктуации ждут его слова. ═══ */
 const SCREENS = [
   {
     id: 'palka',
@@ -198,11 +204,11 @@ const SCREENS = [
   {
     id: 'login', kicker: '03 · Login',
     paras: [
-      'Забегая наперед, я хочу предупредить, некоторые аспекты идеи о которой пойдет речь — могут казаться безумными, а если нет — я плохо объясняю.',
-      'По этому давайте заранее договоримся о том что это выдумка. Воспринимайте это как художественное произведение.',
+      'Некоторые аспекты идеи о которой пойдет речь — могут казаться безумными, а если нет — я плохо объясняю.',
+      'Давайте заранее договоримся о том что все что дальше — это выдумка. Расслабтесь и воспринимайте это как художественное произведение.',
       'Это необходимый ход, который позволяет снять важность и расслабить защиту рационального разума.'
     ],
-    gate: { type: 'agree', label: 'Я не рационализирую, это фантазия, я следую за интересом.', exit: 'закрыть окно', exitLine: 'Окно закрыто.', exitHref: 'https://137lab.xyz', exitHrefLabel: '137lab.xyz' }
+    gate: { type: 'spiral', label: 'Я не рационализирую, это фантазия, я следую за интересом.', seconds: 4, exit: 'закрыть окно', exitLine: 'Окно закрыто.', exitHref: 'https://137lab.xyz', exitHrefLabel: '137lab.xyz' }
   },
   {
     id: 'goal', kicker: '04 · Goal',
@@ -233,12 +239,15 @@ const DEV = new URLSearchParams(location.search).has('dev');
 const REDUCED = () => window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $ = (s, r) => (r || document).querySelector(s);
 const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+const svgEl = (tag) => document.createElementNS('http://www.w3.org/2000/svg', tag);
 
-/* ═══ Звук: синтез, без файлов; тишина до первого касания ═══ */
+/* ═══ Звук: снят словом Влада 09.09 («звук частоты убери пока с сайта») — SOUND=false; модуль оставлен для возврата ═══ */
+const SOUND = false;
 const AUDIO = (() => {
   let ctx = null, master = null, drone = null, droneG = null, lastTick = 0;
   const muted = () => store.get('mute') === '1';
   function ensure(){
+    if (!SOUND) return false;
     const AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) return false;
     if (!ctx) {
@@ -342,10 +351,11 @@ function unlock(i, delay){
   setTimeout(() => go(i + 1), delay == null ? 800 : delay);
 }
 /* стрелки: вперёд — открывает следующий экран и считается пройденным шагом; назад — просто назад */
-navNext.addEventListener('click', () => { AUDIO.ensure(); AUDIO.click(); showMute(); reached = Math.max(reached, cur + 1); store.set('screen', String(reached)); go(cur + 1); });
+navNext.addEventListener('click', () => { AUDIO.ensure(); AUDIO.click(); reached = Math.max(reached, cur + 1); store.set('screen', String(reached)); go(cur + 1); });
 navPrev.addEventListener('click', () => { AUDIO.ensure(); AUDIO.click(); go(cur - 1); });
 function showMute(){
-  const m = $('#mute'); m.classList.add('on');
+  if (!SOUND) return;
+  const m = $('#mute'); m.hidden = false; m.classList.add('on');
   m.textContent = AUDIO.muted() ? 'без звука' : 'звук';
 }
 $('#mute').addEventListener('click', () => {
@@ -386,12 +396,21 @@ function build(){
   fcol.appendChild(el('p', 'stamp cue', d2.gate.cue));
   s2.appendChild(fcol);
 
-  /* 03 Login */
+  /* 03 Login: абзацы + круглая кнопка со спиралью */
   const d3 = SCREENS[2], s3 = secs[2], c3 = el('div', 'col');
   c3.appendChild(el('div', 'k', d3.kicker));
   d3.paras.forEach(t => c3.appendChild(el('p', 'p', t)));
-  const agree = el('button', 'agree rise', d3.gate.label); agree.type = 'button';
-  c3.appendChild(agree);
+  const spin = el('div', 'spin');
+  const knob = el('button', 'knob'); knob.type = 'button'; knob.setAttribute('aria-label', d3.gate.label);
+  const svg = svgEl('svg'); svg.setAttribute('class', 'unwind'); svg.setAttribute('viewBox', '0 0 184 184'); svg.setAttribute('aria-hidden', 'true');
+  const path = svgEl('path'); path.id = 'spath'; path.setAttribute('fill', 'none');
+  const text = svgEl('text'); const tp = svgEl('textPath');
+  tp.setAttribute('href', '#spath'); tp.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#spath');
+  tp.setAttribute('startOffset', '0'); tp.textContent = d3.gate.label;
+  text.appendChild(tp); text.setAttribute('fill', '#0a0a0a');
+  svg.appendChild(path); svg.appendChild(text);
+  spin.appendChild(knob); spin.appendChild(svg);
+  c3.appendChild(spin);
   const exit = el('button', 'exit rise', d3.gate.exit); exit.type = 'button';
   c3.appendChild(exit);
   s3.appendChild(c3);
@@ -434,6 +453,43 @@ function build(){
     SCREENS.forEach((s, k) => { const b = el('button', null, String(k + 1)); b.type = 'button'; b.addEventListener('click', () => go(k)); dev.appendChild(b); });
   }
 }
+
+/* ═══ Спираль из фразы: точки спирали и точки прямой вверх, равные по длине дуги ═══ */
+const SPIRAL = (() => {
+  const CX = 92, CY = 92, TURNS = 2.15, N = 160, B = 5.1;
+  let spiral = null, line = null, len = 0;
+  function build(){
+    const fine = [];
+    const thMax = TURNS * 2 * Math.PI;
+    for (let i = 0; i <= 2400; i++) {
+      const t = i / 2400, th = thMax * (1 - t), r = B * th;
+      fine.push([CX + r * Math.cos(th - Math.PI / 2), CY + r * Math.sin(th - Math.PI / 2)]);
+    }
+    const cum = [0];
+    for (let i = 1; i < fine.length; i++) cum.push(cum[i - 1] + Math.hypot(fine[i][0] - fine[i - 1][0], fine[i][1] - fine[i - 1][1]));
+    len = cum[cum.length - 1];
+    spiral = []; line = [];
+    let j = 0;
+    for (let k = 0; k < N; k++) {
+      const target = len * k / (N - 1);
+      while (j < cum.length - 2 && cum[j + 1] < target) j++;
+      const seg = cum[j + 1] - cum[j] || 1, f = (target - cum[j]) / seg;
+      spiral.push([fine[j][0] + (fine[j + 1][0] - fine[j][0]) * f, fine[j][1] + (fine[j + 1][1] - fine[j][1]) * f]);
+      line.push([spiral[0][0], spiral[0][1] - target]);
+    }
+  }
+  function d(p){
+    if (!spiral) build();
+    const e = p;
+    let out = '';
+    for (let k = 0; k < N; k++) {
+      const x = spiral[k][0] + (line[k][0] - spiral[k][0]) * e, y = spiral[k][1] + (line[k][1] - spiral[k][1]) * e;
+      out += (k ? 'L' : 'M') + x.toFixed(1) + ' ' + y.toFixed(1);
+    }
+    return out;
+  }
+  return { d, get length(){ if (!spiral) build(); return len; } };
+})();
 
 /* ═══ Ворота ═══ */
 const GATES = [
@@ -481,26 +537,71 @@ const GATES = [
       }
     };
   })(),
-  /* 03 Login: абзацы по одному → кнопка; честный выход */
+  /* 03 Login: абзацы по одному → круглая кнопка; удержание 4 с — спираль разматывается вверх, экран чернеет, текст белеет */
   (() => {
-    let timers = [], lit = false;
+    let lit = false, done = false, s, col, knob, path, text, p = 0, t0 = null, raf = 0, back = 0;
+    const HOLD = SCREENS[2].gate.seconds * 1000;
+    function paintP(){
+      path.setAttribute('d', SPIRAL.d(p));
+      const bg = Math.round(255 - 245 * p), tx = Math.round(10 + 80 * p), sp = Math.round(10 + 245 * p);
+      s.style.backgroundColor = 'rgb(' + bg + ',' + bg + ',' + bg + ')';
+      col.style.setProperty('--ptx', 'rgb(' + tx + ',' + tx + ',' + tx + ')');
+      col.style.setProperty('--kc', 'rgb(' + tx + ',' + tx + ',' + tx + ')');
+      col.style.setProperty('--kb', 'rgba(' + sp + ',' + sp + ',' + sp + ',' + (.55 + .45 * p).toFixed(2) + ')');
+      text.setAttribute('fill', 'rgb(' + sp + ',' + sp + ',' + sp + ')');
+    }
+    function tick(){
+      if (t0 === null) return;
+      p = Math.min(1, (performance.now() - t0) / HOLD);
+      paintP();
+      if (p >= 1) { complete(); return; }
+      raf = requestAnimationFrame(tick);
+    }
+    function start(e){
+      if (done) return;
+      e.preventDefault();
+      cancelAnimationFrame(back);
+      try { knob.setPointerCapture(e.pointerId); } catch (err) {}
+      t0 = performance.now() - p * HOLD;
+      raf = requestAnimationFrame(tick);
+    }
+    function release(){
+      if (done || t0 === null) return;
+      cancelAnimationFrame(raf); t0 = null;
+      const from = p, t1 = performance.now();
+      const rewind = () => {
+        const k = Math.min(1, (performance.now() - t1) / 450);
+        p = from * (1 - k); paintP();
+        if (k < 1) back = requestAnimationFrame(rewind);
+      };
+      back = requestAnimationFrame(rewind);
+    }
+    function complete(){
+      done = true; t0 = null;
+      AUDIO.ensure(); AUDIO.click();
+      unlock(2, 900);
+    }
     return {
-      enter(s){
-        AUDIO.droneOn();
+      enter(sec){
         if (lit) return;
-        lit = true;
-        const ps = [...s.querySelectorAll('.p')], agree = $('.agree', s), exit = $('.exit', s);
+        lit = true; s = sec; col = $('.col', s); knob = $('.knob', s); path = $('#spath', s); text = $('.unwind text', s);
+        const tp = $('textPath', s);
+        path.setAttribute('d', SPIRAL.d(0));
+        tp.setAttribute('textLength', (SPIRAL.length * .97).toFixed(1)); tp.setAttribute('lengthAdjust', 'spacing');
+        const ps = [...s.querySelectorAll('.p')], spin = $('.spin', s), exit = $('.exit', s);
         const step = REDUCED() ? 0 : 1000;
-        ps.forEach((p, k) => timers.push(setTimeout(() => p.classList.add('lit'), 300 + k * step)));
-        timers.push(setTimeout(() => agree.classList.add('lit'), 300 + ps.length * step + 400));
-        timers.push(setTimeout(() => exit.classList.add('lit'), 300 + ps.length * step + 1400));
-        agree.addEventListener('click', () => { AUDIO.ensure(); AUDIO.click(); unlock(2, 700); }, { once: true });
-        exit.addEventListener('click', () => { AUDIO.droneOff(); $('#closed').classList.add('on'); });
-      },
-      leave(){ AUDIO.droneOff(); }
+        ps.forEach((q, k) => setTimeout(() => q.classList.add('lit'), 300 + k * step));
+        setTimeout(() => spin.classList.add('lit'), 300 + ps.length * step + 400);
+        setTimeout(() => exit.classList.add('lit'), 300 + ps.length * step + 1400);
+        knob.addEventListener('pointerdown', start);
+        ['pointerup', 'pointercancel', 'pointerleave', 'lostpointercapture'].forEach(ev => knob.addEventListener(ev, release));
+        knob.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('visibilitychange', () => { if (document.hidden) release(); });
+        exit.addEventListener('click', () => { $('#closed').classList.add('on'); });
+      }
     };
   })(),
-  /* 04 Goal: текст → одно поле; тики; строка садится на палку */
+  /* 04 Goal: текст → одно поле; строка садится на палку */
   (() => {
     let lit = false;
     return {
