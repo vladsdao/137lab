@@ -8,9 +8,9 @@
 <link rel="icon" sizes="32x32" href="/icons/favicon-32x32.png">
 <title>Палка — 137lab</title>
 <style>
-  /* ── 137lab · /palka · v0.9 «белый лист» (слово Влада 09.09: Палка — обложка-афиша, один тап; Воронка — стеклянная воронка, текст «одно важное»;
-     Login — круглая кнопка со спиралью из фразы: удержание 4 с разматывает спираль вверх поверх абзацев, белым по чёрному; звук снят «пока»;
-     стрелки вперёд-назад на всех экранах; стремиться к белому)
+  /* ── 137lab · /palka · v0.10 «белый лист» (слово Влада 09.09, ночь: линию с насечками справа убрать; «коснись воронки» убрать;
+     Воронка и Login — в один экран без скролла; на Goal — стрелка вниз, анимированная. Ранее: Палка — обложка-афиша, один тап;
+     Воронка — стеклянная воронка, текст «одно важное»; Login — круглая кнопка со спиралью, удержание 4 с; звук снят; стрелки ← → везде)
      Шаблон — «9 граней» (vlad-space/palka/9-graney.csv); текст — vlad-space/palka/PAGE.md, один к одному.
      Контент = данные (SCREENS). Шрифты локальные ../beta/site/_fonts/. noindex до слова Влада. ── */
   @font-face{font-family:'Unbounded';src:url('../beta/site/_fonts/unbounded-v12-cyrillic_latin-200.woff2') format('woff2');font-weight:200;font-display:swap}
@@ -26,6 +26,7 @@
     --d:'Unbounded',sans-serif;
     --t:'Manrope','Helvetica Neue',sans-serif;
     --vvh:100svh;
+    --navh:calc(84px + env(safe-area-inset-bottom));
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{height:100%;overflow:hidden;overscroll-behavior:none;background:var(--paper)}
@@ -39,37 +40,26 @@
   .scr{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .7s ease,visibility 0s linear .7s;overflow:hidden;background:var(--paper)}
   .scr.on{opacity:1;visibility:visible;transition:opacity .7s ease}
   .scr.flow{overflow-y:auto;-webkit-overflow-scrolling:touch}
-  .col{max-width:640px;margin:0 auto;padding:calc(64px + env(safe-area-inset-top)) 44px calc(96px + env(safe-area-inset-bottom)) 24px;min-height:100%}
-  .k{font-size:12px;letter-spacing:.14em;color:var(--muted);margin-bottom:34px}
+  .col{max-width:640px;margin:0 auto;padding:calc(56px + env(safe-area-inset-top)) 24px var(--navh);min-height:100%}
+  .k{font-size:12px;letter-spacing:.14em;color:var(--muted);margin-bottom:26px}
   .p{font-size:18px;line-height:1.65;margin-bottom:22px;color:var(--ink);opacity:0;transform:translateY(14px);transition:opacity .9s ease,transform .9s ease}
   .p.lit{opacity:1;transform:none}
   .rise{opacity:0;transform:translateY(14px);transition:opacity .9s ease,transform .9s ease}
   .rise.lit{opacity:1;transform:none}
   .cue{font-size:12px;letter-spacing:.14em;color:var(--muted);line-height:1.5}
 
-  /* ── стрелки вперёд-назад — на всех экранах ── */
+  /* ── стрелки вперёд-назад — на всех экранах; стрелка вниз — где есть что листать ── */
   #nav button{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom));z-index:7;width:48px;height:48px;border-radius:50%;font-size:22px;line-height:1;color:var(--ink);background:var(--paper);border:1px solid var(--rule);display:grid;place-items:center;transition:opacity .5s,border-color .2s}
   #nav button:active{border-color:var(--ink)}
   #nav .prev{left:calc(16px + env(safe-area-inset-left))}
   #nav .next{right:calc(16px + env(safe-area-inset-right))}
+  #nav .down{left:50%;transform:translateX(-50%);border-color:transparent;pointer-events:none;animation:bounce 1.6s ease-in-out infinite}
   #nav button[hidden]{display:none}
+  @keyframes bounce{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,8px)}}
 
-  /* ── палка-индикатор: черта с девятью насечками ── */
-  #palka{position:fixed;right:calc(14px + env(safe-area-inset-right));top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:14px;z-index:6;opacity:0;transition:opacity 1.4s ease;pointer-events:none}
-  #palka.on{opacity:1}
-  #palka::before{content:'';position:absolute;left:50%;top:-10px;bottom:-10px;width:1px;background:var(--rule);transform:translateX(-50%)}
-  #palka i{display:block;width:10px;height:1.5px;background:var(--rule);transition:background .8s ease}
-  #palka i.lit{background:var(--ink)}
-
-  #mute{position:fixed;top:calc(14px + env(safe-area-inset-top));right:calc(16px + env(safe-area-inset-right));z-index:7;font-size:12px;letter-spacing:.08em;color:var(--muted);padding:8px 10px;opacity:0;transition:opacity .8s;pointer-events:none}
-  #mute.on{opacity:1;pointer-events:auto}
   #dev{position:fixed;top:calc(12px + env(safe-area-inset-top));left:calc(14px + env(safe-area-inset-left));z-index:7;display:flex;gap:6px}
   #dev button{width:30px;height:30px;border:1px solid var(--rule);border-radius:50%;font-size:12px;color:var(--muted);background:var(--paper)}
   #dev button.cur{color:var(--paper);background:var(--ink);border-color:var(--ink)}
-  #closed{position:fixed;inset:0;z-index:9;background:var(--paper);display:grid;place-items:center;text-align:center;opacity:0;pointer-events:none;transition:opacity 1.2s ease}
-  #closed.on{opacity:1;pointer-events:auto}
-  #closed p{font-size:17px;color:var(--ink)}
-  #closed a{display:block;margin-top:14px;font-size:13px;color:var(--muted);text-decoration:none;letter-spacing:.06em}
 
   /* ── 01 Палка: афиша — имя сверху по центру, палка по центру, один тап ── */
   .cover{position:absolute;inset:0;touch-action:manipulation;cursor:pointer}
@@ -89,48 +79,50 @@
     .stick{width:100vw;height:auto;left:50%;top:56%;transform:translate(-50%,-50%)}
   }
 
-  /* ── 02 Воронка: стеклянная воронка на белом, текст под ней — «одно важное»: правило крупно, остальное тихо ── */
-  .fcol{max-width:640px;margin:0 auto;padding:calc(56px + env(safe-area-inset-top)) 44px calc(96px + env(safe-area-inset-bottom)) 24px;min-height:100%;display:flex;flex-direction:column}
-  .fig{position:relative;width:min(62vw,300px);margin:0 auto 18px;transform-origin:50% 24%;transition:transform 1.4s cubic-bezier(.7,0,.9,.5),opacity 1.2s ease}
-  .funnel{display:block;width:100%;height:auto}
-  .throat{position:absolute;left:50%;top:24%;width:110px;height:110px;transform:translate(-50%,-50%);border-radius:50%;opacity:0;visibility:hidden;transition:opacity 1.2s ease,visibility 0s linear 1.2s;touch-action:none}
-  .throat::before{content:'';position:absolute;inset:22px;border-radius:50%;border:1px solid var(--ink);animation:ring 2.4s ease-out infinite}
-  .throat::after{content:'';position:absolute;inset:51px;border-radius:50%;background:var(--ink)}
+  /* ── 02 Воронка: в один экран — воронка по высоте экрана, текст «одно важное» плотно ── */
+  .fcol{max-width:640px;margin:0 auto;padding:calc(40px + env(safe-area-inset-top)) 24px var(--navh);height:100%;display:flex;flex-direction:column}
+  .fig{position:relative;flex:0 0 auto;height:min(28svh,240px);margin:0 auto 12px;transform-origin:50% 24%;transition:transform 1.4s cubic-bezier(.7,0,.9,.5),opacity 1.2s ease}
+  .funnel{display:block;height:100%;width:auto}
+  .throat{position:absolute;left:50%;top:24%;width:96px;height:96px;transform:translate(-50%,-50%);border-radius:50%;opacity:0;visibility:hidden;transition:opacity 1.2s ease,visibility 0s linear 1.2s;touch-action:none}
+  .throat::before{content:'';position:absolute;inset:20px;border-radius:50%;border:1px solid var(--ink);animation:ring 2.4s ease-out infinite}
+  .throat::after{content:'';position:absolute;inset:44px;border-radius:50%;background:var(--ink)}
   @keyframes ring{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.7);opacity:0}}
-  .ftext{flex:1}
-  .ftext .fintro{font-size:14px;line-height:1.55;color:var(--muted);margin-bottom:22px}
-  .ftext .frule{font:300 clamp(22px,6vw,32px)/1.22 var(--d);letter-spacing:-.01em;color:var(--ink);margin-bottom:10px}
-  .ftext .ftail{font-size:16px;line-height:1.5;color:var(--ink);margin-bottom:22px}
-  .ftext .ffoot{font-size:13px;line-height:1.55;color:var(--muted);margin-bottom:14px}
-  .ftext .fnote{font-size:13px;letter-spacing:.02em;color:var(--muted);padding-top:12px;border-top:1px solid var(--rule);margin-bottom:0}
-  .stamp{margin-top:auto;padding-top:22px;text-align:center;opacity:0;transition:opacity .8s ease}
-  .stamp.on{opacity:1}
+  .ftext{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;min-height:0}
+  .ftext .p{margin-bottom:0}
+  .ftext .fintro{font-size:13px;line-height:1.5;color:var(--muted);margin-bottom:16px}
+  .ftext .frule{font:300 clamp(19px,5vw,26px)/1.22 var(--d);letter-spacing:-.01em;color:var(--ink);margin-bottom:8px}
+  .ftext .ftail{font-size:14px;line-height:1.5;color:var(--ink);margin-bottom:16px}
+  .ftext .ffoot{font-size:12px;line-height:1.5;color:var(--muted);margin-bottom:10px}
+  .ftext .fnote{font-size:12px;letter-spacing:.02em;color:var(--muted);padding-top:10px;border-top:1px solid var(--rule)}
   #s2.gated .throat{opacity:1;visibility:visible;transition:opacity 1.2s ease}
   #s2.fall{overflow:hidden}
   #s2.fall .fig{transform:scale(9);opacity:0}
-  #s2.fall .ftext,#s2.fall .stamp{opacity:0;transition:opacity .5s}
+  #s2.fall .ftext{opacity:0;transition:opacity .5s}
   @media (orientation:landscape){
-    .fcol{flex-direction:row;align-items:center;gap:40px;max-width:980px;padding-right:24px}
-    .fig{width:min(30vw,380px);margin:0}
+    .fcol{flex-direction:row;align-items:center;gap:40px;max-width:980px}
+    .fig{height:min(60svh,420px);margin:0}
     .ftext{flex:1}
-    .stamp{position:absolute;left:0;right:0;bottom:calc(30px + env(safe-area-inset-bottom));margin:0;padding:0}
   }
 
-  /* ── 03 Login: три абзаца → круглая кнопка со спиралью из фразы; удержание 4 с — спираль разматывается вверх, белым по чёрному ── */
+  /* ── 03 Login: в один экран — три абзаца, круглая кнопка внизу между стрелками ── */
   #s3{transition:background-color .3s linear}
-  #s3 .col{position:relative;padding-bottom:calc(120px + env(safe-area-inset-bottom))}
-  #s3 .k{color:var(--kc,var(--muted))}
-  #s3 .p{color:var(--ptx,var(--ink))}
-  .spin{position:relative;width:216px;height:216px;margin:34px auto 0;opacity:0;transform:translateY(14px);transition:opacity .9s ease,transform .9s ease}
+  #s3 .col{position:relative;height:100%;display:flex;flex-direction:column;padding-top:calc(44px + env(safe-area-inset-top));padding-bottom:calc(14px + env(safe-area-inset-bottom))}
+  #s3 .k{color:var(--kc,var(--muted));margin-bottom:22px}
+  #s3 .p{color:var(--ptx,var(--ink));font-size:15.5px;line-height:1.5;margin-bottom:14px}
+  .spin{position:relative;width:200px;height:200px;margin:auto auto 0;flex:0 0 auto;opacity:0;transform:translateY(14px);transition:opacity .9s ease,transform .9s ease}
   .spin.lit{opacity:1;transform:none}
   .knob{position:absolute;inset:0;border-radius:50%;border:1px solid var(--kb,var(--ink));background:transparent;touch-action:none;cursor:pointer;z-index:1}
   .knob:active{border-width:2px}
-  .unwind{position:absolute;inset:0;width:216px;height:216px;overflow:visible;pointer-events:none;z-index:2}
-  .unwind text{font:400 16px var(--t);letter-spacing:.02em}
-  .exit{display:block;margin:26px auto 0;padding:10px;font-size:12px;letter-spacing:.14em;color:var(--rule)}
+  .unwind{position:absolute;inset:0;width:200px;height:200px;overflow:visible;pointer-events:none;z-index:2}
+  .unwind text{font:400 15px var(--t);letter-spacing:.02em}
+  @media (max-height:640px){
+    #s3 .p{font-size:14.5px;line-height:1.45;margin-bottom:10px}
+    .spin,.unwind{width:176px;height:176px}
+  }
 
-  /* ── 04 Goal ── */
+  /* ── 04 Goal: длинный текст, скролл; стрелка вниз подсказывает ── */
   #s4{--ink:#000;--paper:#fff;--muted:#8a8a8a;background:#fff}
+  #s4 .col{padding-top:calc(56px + env(safe-area-inset-top))}
   .q{font:300 clamp(26px,7vw,40px)/1.2 var(--d);margin:30px 0 30px;letter-spacing:-.01em;color:var(--ink)}
   #s4 dl{margin-bottom:22px}
   #s4 dt{font-size:12px;letter-spacing:.14em;color:var(--muted);margin-bottom:8px}
@@ -144,18 +136,15 @@
   .field button{width:54px;height:54px;border:1px solid var(--ink);border-radius:12px;font-size:22px;line-height:1;color:var(--ink);background:var(--paper);flex:none}
   .field button:active{background:var(--ink);color:var(--paper)}
   .skip{display:block;margin-top:18px;padding:8px 0;font-size:13px;color:var(--muted)}
-  .fly{position:fixed;z-index:8;font-size:18px;color:var(--ink);white-space:nowrap;pointer-events:none;transition:transform 1.3s cubic-bezier(.4,0,.2,1),opacity 1.3s ease;transform-origin:100% 50%}
+  .ask.sent .field,.ask.sent .skip{opacity:.35;transition:opacity .8s}
 
-  /* ── конец собранного: палка 4 из 9 ── */
-  .pin{position:absolute;right:calc(44px + env(safe-area-inset-right));top:calc(50% - 15.5px);transform:translateY(-50%);max-width:60vw;text-align:right;font-size:13px;line-height:1.4;color:var(--muted);opacity:0;transition:opacity 1.6s ease .6s}
+  /* ── конец собранного: белый лист, строка человека по центру ── */
+  .pin{position:absolute;left:24px;right:24px;top:50%;transform:translateY(-50%);text-align:center;font-size:15px;line-height:1.5;color:var(--muted);opacity:0;transition:opacity 1.6s ease .6s}
   .pin.on{opacity:1}
 
-  @media (min-width:900px){
-    .col{padding-right:24px}
-  }
   @media (prefers-reduced-motion: reduce){
-    .cover .cue::before,.throat::before{animation:none}
-    .p,.rise,.scr,.stick,.head,#palka,.fly,.fig,.throat,.spin{transition:none}
+    .cover .cue::before,.throat::before,#nav .down{animation:none}
+    .p,.rise,.scr,.stick,.head,.fig,.throat,.spin{transition:none}
   }
 </style>
 </head>
@@ -165,16 +154,14 @@
   <section class="scr flow" id="s2" aria-label="Воронка"></section>
   <section class="scr flow" id="s3" aria-label="Login"></section>
   <section class="scr flow" id="s4" aria-label="Goal"></section>
-  <section class="scr" id="s5" aria-label="Палка · четыре из девяти"></section>
+  <section class="scr" id="s5" aria-label="Дальше"></section>
 </div>
 <nav id="nav" aria-label="экраны">
   <button class="prev" type="button" aria-label="назад" hidden>←</button>
+  <button class="down" type="button" aria-label="листай вниз" hidden>↓</button>
   <button class="next" type="button" aria-label="вперёд">→</button>
 </nav>
-<aside id="palka" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></aside>
-<button id="mute" type="button" aria-label="звук" hidden>звук</button>
 <nav id="dev" hidden aria-label="экраны по номерам"></nav>
-<div id="closed" inert></div>
 
 <script>
 /* ═══ Контент = данные. Текст Влада (09.09, ночь) один к одному; правки пунктуации ждут его слова. ═══ */
@@ -208,7 +195,7 @@ const SCREENS = [
       'Давайте заранее договоримся о том что все что дальше — это выдумка. Расслабтесь и воспринимайте это как художественное произведение.',
       'Это необходимый ход, который позволяет снять важность и расслабить защиту рационального разума.'
     ],
-    gate: { type: 'spiral', label: 'Я не рационализирую, это фантазия, я следую за интересом.', seconds: 4, exit: 'закрыть окно', exitLine: 'Окно закрыто.', exitHref: 'https://137lab.xyz', exitHrefLabel: '137lab.xyz' }
+    gate: { type: 'spiral', label: 'Я не рационализирую, это фантазия, я следую за интересом.', seconds: 4 }
   },
   {
     id: 'goal', kicker: '04 · Goal',
@@ -223,7 +210,6 @@ const SCREENS = [
       'Для меня это самый важный вопрос. Я использую его как компас.',
       'Это то, чего я хочу, а не то, к чему меня вынуждают обстоятельства, каждого конкретного момента.'
     ],
-    pov: 'POV: В настоящий момент точка моего наивысшего интереса находится в этих строках. Я буквально только этим и живу сейчас.',
     gate: { type: 'point', ask: 'Где твоя точка наивысшего интереса?', placeholder: 'одной строкой', skip: 'пока не знаю', maxLen: 140 }
   },
   { id: 'end', gate: { type: 'none' } }
@@ -241,96 +227,25 @@ const $ = (s, r) => (r || document).querySelector(s);
 const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
 const svgEl = (tag) => document.createElementNS('http://www.w3.org/2000/svg', tag);
 
-/* ═══ Звук: снят словом Влада 09.09 («звук частоты убери пока с сайта») — SOUND=false; модуль оставлен для возврата ═══ */
-const SOUND = false;
-const AUDIO = (() => {
-  let ctx = null, master = null, drone = null, droneG = null, lastTick = 0;
-  const muted = () => store.get('mute') === '1';
-  function ensure(){
-    if (!SOUND) return false;
-    const AC = window.AudioContext || window.webkitAudioContext;
-    if (!AC) return false;
-    if (!ctx) {
-      ctx = new AC();
-      master = ctx.createGain(); master.gain.value = muted() ? 0 : 1;
-      master.connect(ctx.destination);
-    }
-    if (ctx.state !== 'running') ctx.resume();
-    return true;
-  }
-  function click(){
-    if (!ctx) return;
-    const t = ctx.currentTime;
-    const len = Math.floor(ctx.sampleRate * .012);
-    const buf = ctx.createBuffer(1, len, ctx.sampleRate), ch = buf.getChannelData(0);
-    for (let i = 0; i < len; i++) ch[i] = (Math.random() * 2 - 1) * (1 - i / len);
-    const src = ctx.createBufferSource(); src.buffer = buf;
-    const g = ctx.createGain(); g.gain.setValueAtTime(.45, t);
-    src.connect(g).connect(master); src.start(t);
-    const o = ctx.createOscillator(); o.type = 'sine';
-    o.frequency.setValueAtTime(330, t); o.frequency.exponentialRampToValueAtTime(96, t + 1.7);
-    const og = ctx.createGain();
-    og.gain.setValueAtTime(.0001, t); og.gain.exponentialRampToValueAtTime(.16, t + .012); og.gain.exponentialRampToValueAtTime(.0001, t + 1.9);
-    o.connect(og).connect(master); o.start(t); o.stop(t + 2);
-  }
-  function fall(){
-    if (!ctx) return;
-    const t = ctx.currentTime;
-    const o = ctx.createOscillator(); o.type = 'sine';
-    o.frequency.setValueAtTime(420, t); o.frequency.exponentialRampToValueAtTime(40, t + 1.3);
-    const g = ctx.createGain();
-    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.2, t + .05); g.gain.exponentialRampToValueAtTime(.0001, t + 1.4);
-    o.connect(g).connect(master); o.start(t); o.stop(t + 1.5);
-  }
-  function droneOn(){
-    if (!ctx || drone) return;
-    const t = ctx.currentTime;
-    droneG = ctx.createGain(); droneG.gain.setValueAtTime(.0001, t); droneG.gain.exponentialRampToValueAtTime(.11, t + 3.5);
-    const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 300;
-    droneG.connect(lp).connect(master);
-    drone = [55, 110.6, 164.6].map((f, i) => {
-      const o = ctx.createOscillator(); o.type = i ? 'sine' : 'triangle'; o.frequency.value = f;
-      const g = ctx.createGain(); g.gain.value = i ? .45 : .32;
-      o.connect(g).connect(droneG); o.start(t); return o;
-    });
-  }
-  function droneOff(){
-    if (!ctx || !drone) return;
-    const t = ctx.currentTime, oscs = drone; drone = null;
-    droneG.gain.cancelScheduledValues(t);
-    droneG.gain.setValueAtTime(Math.max(droneG.gain.value, .0001), t);
-    droneG.gain.exponentialRampToValueAtTime(.0001, t + 1.6);
-    oscs.forEach(o => o.stop(t + 1.7));
-  }
-  function tick(){
-    if (!ctx) return;
-    const now = performance.now(); if (now - lastTick < 28) return; lastTick = now;
-    const t = ctx.currentTime;
-    const o = ctx.createOscillator(); o.type = 'square'; o.frequency.value = 1700 + Math.random() * 700;
-    const g = ctx.createGain(); g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.07, t + .003); g.gain.exponentialRampToValueAtTime(.0001, t + .05);
-    o.connect(g).connect(master); o.start(t); o.stop(t + .06);
-  }
-  function setMute(m){
-    store.set('mute', m ? '1' : '0');
-    if (ctx) { const t = ctx.currentTime; master.gain.cancelScheduledValues(t); master.gain.linearRampToValueAtTime(m ? 0 : 1, t + .06); }
-  }
-  return { ensure, click, fall, droneOn, droneOff, tick, setMute, muted, get ready(){ return !!ctx; } };
-})();
-
-/* ═══ Движок: экраны, ворота, стрелки, палка ═══ */
+/* ═══ Движок: экраны, ворота, стрелки ═══ */
 const secs = [$('#s1'), $('#s2'), $('#s3'), $('#s4'), $('#s5')];
-const palka = $('#palka'), notches = [...palka.querySelectorAll('i')];
-const navPrev = $('#nav .prev'), navNext = $('#nav .next');
+const navPrev = $('#nav .prev'), navNext = $('#nav .next'), navDown = $('#nav .down');
 let cur = -1;
 let reached = Math.max(0, Math.min(parseInt(store.get('screen') || '0', 10) || 0, SCREENS.length - 1));
 
 function paint(){
-  notches.forEach((n, k) => n.classList.toggle('lit', k < reached));
-  palka.classList.toggle('on', reached >= 1 || (DEV && cur >= 1));
   navPrev.hidden = cur <= 0;
   navNext.hidden = cur >= SCREENS.length - 1;
   if (DEV) [...$('#dev').children].forEach((b, k) => b.classList.toggle('cur', k === cur));
 }
+/* стрелка вниз: только там, где текст длиннее экрана и ещё не листали */
+function paintDown(){
+  const s = secs[cur];
+  const long = s && s.classList.contains('flow') && s.scrollHeight > s.clientHeight + 24;
+  navDown.hidden = !(long && s.scrollTop < 24);
+}
+secs.forEach(s => s.addEventListener('scroll', paintDown, { passive: true }));
+addEventListener('resize', paintDown);
 function go(i){
   i = Math.max(0, Math.min(i, SCREENS.length - 1));
   if (!DEV && i > reached) i = reached;
@@ -342,6 +257,8 @@ function go(i){
   secs[i].classList.add('on');
   GATES[i].enter && GATES[i].enter(secs[i]);
   paint();
+  navDown.hidden = true;
+  setTimeout(paintDown, 900);
 }
 function unlock(i, delay){
   if (i !== cur) return;
@@ -351,17 +268,8 @@ function unlock(i, delay){
   setTimeout(() => go(i + 1), delay == null ? 800 : delay);
 }
 /* стрелки: вперёд — открывает следующий экран и считается пройденным шагом; назад — просто назад */
-navNext.addEventListener('click', () => { AUDIO.ensure(); AUDIO.click(); reached = Math.max(reached, cur + 1); store.set('screen', String(reached)); go(cur + 1); });
-navPrev.addEventListener('click', () => { AUDIO.ensure(); AUDIO.click(); go(cur - 1); });
-function showMute(){
-  if (!SOUND) return;
-  const m = $('#mute'); m.hidden = false; m.classList.add('on');
-  m.textContent = AUDIO.muted() ? 'без звука' : 'звук';
-}
-$('#mute').addEventListener('click', () => {
-  AUDIO.ensure();
-  const m = !AUDIO.muted(); AUDIO.setMute(m); showMute();
-});
+navNext.addEventListener('click', () => { reached = Math.max(reached, cur + 1); store.set('screen', String(reached)); go(cur + 1); });
+navPrev.addEventListener('click', () => { go(cur - 1); });
 
 /* ═══ Сборка разметки из данных ═══ */
 function build(){
@@ -393,7 +301,6 @@ function build(){
   if (d2.foot) ftext.appendChild(el('p', 'p ffoot', d2.foot));
   if (d2.note) ftext.appendChild(el('p', 'p fnote', d2.note));
   fcol.appendChild(ftext);
-  fcol.appendChild(el('p', 'stamp cue', d2.gate.cue));
   s2.appendChild(fcol);
 
   /* 03 Login: абзацы + круглая кнопка со спиралью */
@@ -402,7 +309,7 @@ function build(){
   d3.paras.forEach(t => c3.appendChild(el('p', 'p', t)));
   const spin = el('div', 'spin');
   const knob = el('button', 'knob'); knob.type = 'button'; knob.setAttribute('aria-label', d3.gate.label);
-  const svg = svgEl('svg'); svg.setAttribute('class', 'unwind'); svg.setAttribute('viewBox', '0 0 216 216'); svg.setAttribute('aria-hidden', 'true');
+  const svg = svgEl('svg'); svg.setAttribute('class', 'unwind'); svg.setAttribute('viewBox', '0 0 200 200'); svg.setAttribute('aria-hidden', 'true');
   const path = svgEl('path'); path.id = 'spath'; path.setAttribute('fill', 'none');
   const text = svgEl('text'); const tp = svgEl('textPath');
   tp.setAttribute('href', '#spath'); tp.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#spath');
@@ -411,8 +318,6 @@ function build(){
   svg.appendChild(path); svg.appendChild(text);
   spin.appendChild(knob); spin.appendChild(svg);
   c3.appendChild(spin);
-  const exit = el('button', 'exit rise', d3.gate.exit); exit.type = 'button';
-  c3.appendChild(exit);
   s3.appendChild(c3);
 
   /* 04 Goal */
@@ -425,7 +330,6 @@ function build(){
   d4.blocks.forEach(b => { dl.appendChild(el('dt', null, b.k)); dl.appendChild(el('dd', null, b.v)); });
   c4.appendChild(dl);
   d4.compass.forEach(t => c4.appendChild(el('p', 'p', t)));
-  c4.appendChild(el('p', 'p', d4.pov));
   const ask = el('div', 'ask rise');
   const lab = el('label', null, d4.gate.ask); lab.htmlFor = 'point';
   ask.appendChild(lab);
@@ -442,12 +346,6 @@ function build(){
   /* конец собранного */
   secs[4].appendChild(el('p', 'pin'));
 
-  const closed = $('#closed');
-  const box = el('div');
-  box.appendChild(el('p', null, d3.gate.exitLine));
-  const a = el('a', null, d3.gate.exitHrefLabel); a.href = d3.gate.exitHref;
-  box.appendChild(a); closed.appendChild(box);
-
   if (DEV) {
     const dev = $('#dev'); dev.hidden = false;
     SCREENS.forEach((s, k) => { const b = el('button', null, String(k + 1)); b.type = 'button'; b.addEventListener('click', () => go(k)); dev.appendChild(b); });
@@ -456,7 +354,7 @@ function build(){
 
 /* ═══ Спираль из фразы: точки спирали и точки прямой вверх, равные по длине дуги ═══ */
 const SPIRAL = (() => {
-  const CX = 108, CY = 108, TURNS = 2.15, N = 160, B = 6.0;
+  const CX = 100, CY = 100, TURNS = 2.15, N = 160, B = 5.55;
   let spiral = null, line = null, len = 0;
   function build(){
     const fine = [];
@@ -480,10 +378,9 @@ const SPIRAL = (() => {
   }
   function d(p){
     if (!spiral) build();
-    const e = p;
     let out = '';
     for (let k = 0; k < N; k++) {
-      const x = spiral[k][0] + (line[k][0] - spiral[k][0]) * e, y = spiral[k][1] + (line[k][1] - spiral[k][1]) * e;
+      const x = spiral[k][0] + (line[k][0] - spiral[k][0]) * p, y = spiral[k][1] + (line[k][1] - spiral[k][1]) * p;
       out += (k ? 'L' : 'M') + x.toFixed(1) + ' ' + y.toFixed(1);
     }
     return out;
@@ -493,13 +390,12 @@ const SPIRAL = (() => {
 
 /* ═══ Ворота ═══ */
 const GATES = [
-  /* 01 Палка: один тап — дальше; палка-индикатор рождается */
+  /* 01 Палка: один тап — дальше */
   (() => {
     let done = false, s;
     function tap(){
       if (done) return;
       done = true;
-      AUDIO.ensure(); AUDIO.click(); showMute();
       s.classList.add('passed');
       unlock(0, 500);
     }
@@ -512,26 +408,25 @@ const GATES = [
       }
     };
   })(),
-  /* 02 Воронка: текст под воронкой появляется по частям → касание конуса — падение внутрь */
+  /* 02 Воронка: текст появляется по частям → касание конуса — падение внутрь */
   (() => {
-    let lit = false, shown = false, done = false, s, throat, stamp;
-    function showGate(){ if (shown) return; shown = true; s.classList.add('gated'); stamp.classList.add('on'); }
+    let lit = false, shown = false, done = false, s, throat;
+    function showGate(){ if (shown) return; shown = true; s.classList.add('gated'); }
     function fallIn(e){
       if (done || !shown) return;
       if (e) e.preventDefault();
       done = true;
-      AUDIO.ensure(); AUDIO.fall();
       s.classList.add('fall');
       unlock(1, 1200);
     }
     return {
       enter(sec){
         if (lit) return;
-        lit = true; s = sec; throat = $('.throat', s); stamp = $('.stamp', s);
+        lit = true; s = sec; throat = $('.throat', s);
         const ps = [...s.querySelectorAll('.p')];
-        const step = REDUCED() ? 0 : 700;
-        ps.forEach((p, k) => setTimeout(() => p.classList.add('lit'), 400 + k * step));
-        setTimeout(showGate, 400 + ps.length * step + 400);
+        const step = REDUCED() ? 0 : 600;
+        ps.forEach((p, k) => setTimeout(() => p.classList.add('lit'), 350 + k * step));
+        setTimeout(showGate, 350 + ps.length * step + 300);
         throat.addEventListener('pointerdown', fallIn);
         throat.addEventListener('contextmenu', e => e.preventDefault());
       }
@@ -580,7 +475,6 @@ const GATES = [
     }
     function complete(){
       done = true; t0 = null;
-      AUDIO.ensure(); AUDIO.click();
       unlock(2, 900);
     }
     return {
@@ -590,20 +484,18 @@ const GATES = [
         const tp = $('textPath', s);
         path.setAttribute('d', SPIRAL.d(0));
         tp.setAttribute('textLength', (SPIRAL.length * .97).toFixed(1)); tp.setAttribute('lengthAdjust', 'spacing');
-        const ps = [...s.querySelectorAll('.p')], spin = $('.spin', s), exit = $('.exit', s);
-        const step = REDUCED() ? 0 : 1000;
+        const ps = [...s.querySelectorAll('.p')], spin = $('.spin', s);
+        const step = REDUCED() ? 0 : 900;
         ps.forEach((q, k) => setTimeout(() => q.classList.add('lit'), 300 + k * step));
-        setTimeout(() => spin.classList.add('lit'), 300 + ps.length * step + 400);
-        setTimeout(() => exit.classList.add('lit'), 300 + ps.length * step + 1400);
+        setTimeout(() => spin.classList.add('lit'), 300 + ps.length * step + 300);
         knob.addEventListener('pointerdown', start);
         ['pointerup', 'pointercancel', 'pointerleave', 'lostpointercapture'].forEach(ev => knob.addEventListener(ev, release));
         knob.addEventListener('contextmenu', e => e.preventDefault());
         document.addEventListener('visibilitychange', () => { if (document.hidden) release(); });
-        exit.addEventListener('click', () => { const c = $('#closed'); c.removeAttribute('inert'); c.classList.add('on'); });
       }
     };
   })(),
-  /* 04 Goal: текст → одно поле; строка садится на палку */
+  /* 04 Goal: текст → одно поле */
   (() => {
     let lit = false;
     return {
@@ -613,45 +505,27 @@ const GATES = [
         const rises = [...s.querySelectorAll('.p,.rise')];
         const step = REDUCED() ? 0 : 260;
         rises.forEach((n, k) => setTimeout(() => n.classList.add('lit'), 250 + k * step));
-        const inp = $('#point', s), send = $('.field button', s), skip = $('.skip', s);
-        inp.addEventListener('input', () => { AUDIO.ensure(); AUDIO.tick(); });
+        const inp = $('#point', s), send = $('.field button', s), skip = $('.skip', s), ask = $('.ask', s);
         inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); submit(); } });
         send.addEventListener('click', submit);
-        skip.addEventListener('click', () => { store.set('point', ''); finish(''); });
+        skip.addEventListener('click', () => { store.set('point', ''); finish(); });
         function submit(){
           const v = inp.value.trim();
           if (!v) { inp.focus(); return; }
           store.set('point', v);
-          finish(v);
+          finish();
         }
         let finished = false;
-        function finish(v){
+        function finish(){
           if (finished) return; finished = true;
           inp.blur(); inp.disabled = true; send.disabled = true; skip.disabled = true;
-          AUDIO.ensure(); AUDIO.click();
-          if (v && !REDUCED()) {
-            const r = inp.getBoundingClientRect(), target = notches[3].getBoundingClientRect();
-            const fly = el('span', 'fly', v);
-            fly.style.left = (r.left + 16) + 'px'; fly.style.top = (r.top + r.height / 2 - 11) + 'px';
-            fly.style.maxWidth = (r.width - 32) + 'px'; fly.style.overflow = 'hidden'; fly.style.textOverflow = 'ellipsis';
-            document.body.appendChild(fly);
-            inp.value = '';
-            requestAnimationFrame(() => {
-              const fr = fly.getBoundingClientRect();
-              const dx = target.right - fr.right, dy = (target.top + target.height / 2) - (fr.top + fr.height / 2);
-              fly.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(.18)';
-              fly.style.opacity = '0';
-            });
-            setTimeout(() => fly.remove(), 1500);
-            unlock(3, 1300);
-          } else {
-            unlock(3, 700);
-          }
+          ask.classList.add('sent');
+          unlock(3, 700);
         }
       }
     };
   })(),
-  /* конец собранного: палка стоит, строка при четвёртой насечке */
+  /* конец собранного: белый лист, строка человека по центру */
   {
     enter(s){
       const pin = $('.pin', s), v = store.get('point');
@@ -673,7 +547,6 @@ build();
   visualViewport.addEventListener('resize', set);
   document.addEventListener('focusin', set); document.addEventListener('focusout', () => setTimeout(set, 60));
 })();
-document.addEventListener('visibilitychange', () => { if (!document.hidden && AUDIO.ready) AUDIO.ensure(); });
 document.addEventListener('keydown', e => {
   if (e.target && e.target.tagName === 'INPUT') return;
   if (e.key === 'ArrowRight' && !navNext.hidden) navNext.click();
