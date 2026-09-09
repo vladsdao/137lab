@@ -20,3 +20,7 @@
 
 /sync/*
   X-Robots-Tag: noindex, nofollow
+
+# /palka — «Палка», страница-игра (09.09): noindex до слова Влада.
+/palka/*
+  X-Robots-Tag: noindex, nofollow
