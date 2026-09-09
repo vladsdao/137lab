@@ -8,7 +8,7 @@
 <link rel="icon" sizes="32x32" href="/icons/favicon-32x32.png">
 <title>Палка — 137lab</title>
 <style>
-  /* ── 137lab · /palka · v0.15 «белый лист» (слово Влада 09.09, ночь): Палка → Воронка (картинка-символ + договор о выдумке + подпись удержанием)
+  /* ── 137lab · /palka · v0.16 «белый лист» (слово Влада 09.09, ночь): Палка → Воронка (картинка-символ + договор о выдумке + подпись удержанием)
      → три странички «The Framework» · «Game Over» · «Gameplay»: цитата, тап раскрывает текст, в конце одно слово-отпечаток → Goal.
      Экраны переставляются порядком в SCREENS; кикеры считаются сами, если не заданы. Индикатор и звук сняты; стрелки ← → везде.
      Шаблон — «9 граней» (vlad-space/palka/9-graney.csv); текст — vlad-space/palka/PAGE.md, один к одному.
@@ -110,12 +110,12 @@
   .page .k{margin-bottom:22px}
   .quote{margin:auto 0;cursor:pointer;transition:margin .6s ease}
   .qtext{font:300 clamp(21px,5.8vw,32px)/1.28 var(--d);letter-spacing:-.01em;color:var(--ink)}
-  .qauthor{margin-top:14px;font-size:12px;letter-spacing:.14em;color:var(--muted)}
-  .qbio{display:block;margin-top:6px;letter-spacing:.08em;color:var(--rule)}
-  .qcue{margin-top:26px;font-size:12px;letter-spacing:.14em;color:var(--muted);transition:opacity .4s}
-  .page.open .quote{margin:0 0 30px}
-  .page.open .qtext{font-size:clamp(17px,4.4vw,22px);color:var(--pad)}
-  .page.open .qcue{opacity:0;height:0;margin:0;overflow:hidden}
+  .qauthor{margin-top:16px;font-size:12px;letter-spacing:.14em;color:var(--muted)}
+  .qsrc{display:block;margin-top:6px;letter-spacing:.04em;color:var(--rule);font-size:11px}
+  .swipe{position:relative;width:2px;height:40px;margin:34px 0 0 6px;background:var(--rule);border-radius:1px}
+  .swipe i{position:absolute;left:50%;top:0;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:var(--ink);animation:swipe 1.8s ease-in-out infinite}
+  @keyframes swipe{0%{transform:translateY(34px);opacity:0}20%{opacity:1}70%{transform:translateY(-2px);opacity:1}100%{transform:translateY(-6px);opacity:0}}
+  .page.open .quote{display:none}
   .unfold{display:none}
   .page.open .unfold{display:block}
   .unfold .p{font-size:16px;line-height:1.6;margin-bottom:18px}
@@ -153,7 +153,7 @@
   .pin.on{opacity:1}
 
   @media (prefers-reduced-motion: reduce){
-    .cover .cue::before,#nav .down{animation:none}
+    .cover .cue::before,#nav .down,.swipe i{animation:none}
     .p,.rise,.scr,.stick,.head,.fig,.spin,.quote{transition:none}
   }
 </style>
@@ -187,15 +187,15 @@ const SCREENS = [
     id: 'voronka', flow: true,
     figure: 'lejka.jpg', figureAlt: 'Воронка',   /* воронка — символ, только картинка (слово Влада) */
     text: [
-      { t: 'Но перед тем как мы начнём, давайте договоримся о том, что всё сказанное дальше — выдумка. Фантазия автора, которая не стремится вас чему-то научить, а скорее ищет возможность вдохновить.' }
+      { t: 'Но перед тем как мы начнём, давай договоримся о том, что всё сказанное дальше — выдумка. Фантазия автора, которая не стремится тебя чему-то научить, а скорее ищет возможность вдохновить.' }
     ],
-    cue: 'Чтобы подписать договор о выдумке, удерживайте палец на кнопке 4 секунды.',
+    cue: 'Чтобы подписать договор о выдумке, удерживай палец на кнопке 4 секунды.',
     gate: { label: 'Я не рационализирую, это фантазия, я следую за интересом.', ms: 3690 }   /* «4 секунды» на странице, 3,69 с по факту — внутреннее */
   },
   {
     id: 'framework', kicker: 'The Framework', page: true, flow: true, key: 'fw',
     quote: 'Мудрый, услышав о Дао, усердно следует ему. Обычный человек, услышав о Дао, то следует ему, то нет. Глупый, услышав о Дао, смеётся над ним. Если бы он не смеялся, это не было бы истинным Дао.',
-    author: 'Лао-цзы',
+    author: 'Лао-цзы', tradition: 'Даосизм', source: '«Дао дэ цзин», глава 41',
     blocks: [
       { t: 'Я создал путь из девяти экранов, которые помогут мне найти близких по духу людей. С ними я планирую разделить личный опыт, инструменты и идеи о том, как использовать многомерность Сознания в своём творчестве.' },
       { t: 'Возможно, кто-то найдёт здесь вдохновение, понимание или даже смысл. Но по большому счёту я хочу, чтобы через моё самовыражение эти люди смогли обрести себя.' },
@@ -208,7 +208,7 @@ const SCREENS = [
   {
     id: 'gameover', kicker: 'Game Over', page: true, flow: true, key: 'go',
     quote: 'Молодое вино не наливают в старые бурдюки.',
-    author: 'Иисус',
+    author: 'Иисус', tradition: 'Христианство', source: 'Евангелие от Матфея 9:17 · Марка 2:22 · Луки 5:37',
     blocks: [
       { t: 'Мы живём в сингулярности: перед нами точка входа в новое восприятие реальности. Пост-трудовая экономика, психоделический ренессанс, эволюционный сдвиг Сознания на планетарном уровне.' },
       { t: 'Но…', but: true },
@@ -221,8 +221,7 @@ const SCREENS = [
   {
     id: 'gameplay', kicker: 'Gameplay', page: true, flow: true, key: 'gp',
     quote: 'Не иди по следам людей древности — ищи то, чего искали они.',
-    author: 'Кукай',
-    bio: 'монах · Япония · IX век',
+    author: 'Кукай', tradition: 'Дзен', source: 'в передаче Басё, «Прощальное слово Кёрику», 1693',   /* Кукай — монах Сингон (IX век); фраза живёт в дзен через Басё */
     blocks: [
       { t: 'Ускоренная эволюция Сознания в формате мультиплеер-игры.', big: true },
       { t: 'Духовность в нынешнем виде устарела. Предположим, что существует новый формат, соответствующий современным параметрам нервной системы и возможностям разума человека.' },
@@ -249,7 +248,6 @@ const SCREENS = [
 ];
 /* общие слова страничек: подсказка под цитатой и вопрос-отпечаток в конце */
 const PAGE = {
-  tap: 'коснись цитаты',
   ask: 'Одним словом: что осталось после этой страницы? Слово, вопрос или состояние.',
   placeholder: 'одно слово',
   maxLen: 80
@@ -369,10 +367,11 @@ const BUILD = {
     c.appendChild(el('div', 'k', kick(d)));
     const q = el('blockquote', 'quote rise');
     q.appendChild(el('p', 'qtext', d.quote));
-    const f = el('footer', 'qauthor', '— ' + d.author);
-    if (d.bio) f.appendChild(el('span', 'qbio', d.bio));
+    const f = el('footer', 'qauthor', '— ' + d.author + ' · ' + d.tradition);
+    if (d.source) f.appendChild(el('span', 'qsrc', d.source));
     q.appendChild(f);
-    q.appendChild(el('p', 'qcue', PAGE.tap));
+    const sw = el('div', 'swipe'); sw.setAttribute('aria-label', 'смахни вверх'); sw.appendChild(el('i'));
+    q.appendChild(sw);
     c.appendChild(q);
     const u = el('div', 'unfold');
     d.blocks.forEach(b => {
@@ -560,7 +559,12 @@ const GATES = {
         ps.forEach((p, k) => setTimeout(() => p.classList.add('lit'), 150 + k * step));
         setTimeout(paintDown, 400);
       };
-      q.addEventListener('click', open);
+      /* смахнуть вверх — или тап по цитате */
+      let y0 = null;
+      s.addEventListener('pointerdown', e => { if (!s.classList.contains('open')) y0 = e.clientY; });
+      s.addEventListener('pointerup', e => { if (y0 === null) return; const dy = e.clientY - y0; y0 = null; if (dy < -24 || (Math.abs(dy) < 10 && e.target.closest('.quote'))) open(); });
+      s.addEventListener('wheel', e => { if (!s.classList.contains('open') && e.deltaY > 12) open(); }, { passive: true });
+      s.addEventListener('keydown', e => { if (e.key === 'ArrowDown' || e.key === ' ') open(); });
       bindWord($('.mark', s), d.key, () => unlock(i, 700));
     }
   },
