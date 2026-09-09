@@ -8,9 +8,9 @@
 <link rel="icon" sizes="32x32" href="/icons/favicon-32x32.png">
 <title>Палка — 137lab</title>
 <style>
-  /* ── 137lab · /palka · v0.14 «белый лист» (слово Влада 09.09, ночь: новый текст экрана с воронкой вбирает договор о выдумке;
-     подпись — удержание круглой кнопки со спиралью «4 секунды» (по факту 3,69 с — внутреннее); отдельный Login снят.
-     Порядок: Палка → Воронка (вступление) → Кукай (цитата, одно слово) → Goal. Ранее: обложка-афиша, один тап; Goal — скролл со стрелкой вниз; стрелки ← → везде; индикатор и звук сняты)
+  /* ── 137lab · /palka · v0.15 «белый лист» (слово Влада 09.09, ночь): Палка → Воронка (картинка-символ + договор о выдумке + подпись удержанием)
+     → три странички «The Framework» · «Game Over» · «Gameplay»: цитата, тап раскрывает текст, в конце одно слово-отпечаток → Goal.
+     Экраны переставляются порядком в SCREENS; кикеры считаются сами, если не заданы. Индикатор и звук сняты; стрелки ← → везде.
      Шаблон — «9 граней» (vlad-space/palka/9-graney.csv); текст — vlad-space/palka/PAGE.md, один к одному.
      Контент = данные (SCREENS). Шрифты локальные ../beta/site/_fonts/. noindex до слова Влада. ── */
   @font-face{font-family:'Unbounded';src:url('../beta/site/_fonts/unbounded-v12-cyrillic_latin-200.woff2') format('woff2');font-weight:200;font-display:swap}
@@ -79,6 +79,58 @@
     .stick{width:100vw;height:auto;left:50%;top:56%;transform:translate(-50%,-50%)}
   }
 
+  /* ── Воронка: картинка-символ, договор о выдумке, круглая кнопка-подпись — в один экран ── */
+  #scr-voronka{transition:background-color .3s linear}
+  .fcol{max-width:640px;margin:0 auto;padding:calc(40px + env(safe-area-inset-top)) 24px calc(24px + env(safe-area-inset-bottom));min-height:100%;display:flex;flex-direction:column}
+  .fig{position:relative;flex:0 0 auto;height:min(30svh,260px);margin:0 auto 26px;transition:opacity 1.2s ease}
+  .funnel{display:block;height:100%;width:auto}
+  .ftext{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;min-height:0}
+  .ftext .p{color:var(--ptx,var(--ink));font-size:17px;line-height:1.55;margin-bottom:14px}
+  .ftext .fcue{font-size:12px;letter-spacing:.06em;color:var(--pmu,var(--muted));margin:18px 0 0;text-align:center}
+  .spin{position:relative;width:200px;height:200px;margin:14px auto 0;flex:0 0 auto;opacity:0;transform:translateY(14px);transition:opacity .9s ease,transform .9s ease}
+  .spin.lit{opacity:1;transform:none}
+  .knob{position:absolute;inset:0;border-radius:50%;border:1px solid var(--kb,var(--ink));background:transparent;touch-action:none;cursor:pointer;z-index:1}
+  .knob:active{border-width:2px}
+  .unwind{position:absolute;inset:0;width:200px;height:200px;overflow:visible;pointer-events:none;z-index:2}
+  .unwind text{font:400 15px var(--t);letter-spacing:.02em}
+  #scr-voronka.dark .fig{opacity:.25}
+  @media (max-height:700px){
+    .fig{height:min(24svh,200px);margin-bottom:16px}
+    .ftext .p{font-size:16px;margin-bottom:12px}
+    .spin,.unwind{width:176px;height:176px}
+  }
+  @media (orientation:landscape){
+    .fcol{flex-direction:row;align-items:center;gap:40px;max-width:980px}
+    .fig{height:min(50svh,380px);margin:0}
+    .ftext{flex:1}
+  }
+
+  /* ── Странички: цитата → тап → текст → одно слово ── */
+  .page .col{padding-top:calc(48px + env(safe-area-inset-top));display:flex;flex-direction:column;min-height:100%}
+  .page .k{margin-bottom:22px}
+  .quote{margin:auto 0;cursor:pointer;transition:margin .6s ease}
+  .qtext{font:300 clamp(21px,5.8vw,32px)/1.28 var(--d);letter-spacing:-.01em;color:var(--ink)}
+  .qauthor{margin-top:14px;font-size:12px;letter-spacing:.14em;color:var(--muted)}
+  .qbio{display:block;margin-top:6px;letter-spacing:.08em;color:var(--rule)}
+  .qcue{margin-top:26px;font-size:12px;letter-spacing:.14em;color:var(--muted);transition:opacity .4s}
+  .page.open .quote{margin:0 0 30px}
+  .page.open .qtext{font-size:clamp(17px,4.4vw,22px);color:var(--pad)}
+  .page.open .qcue{opacity:0;height:0;margin:0;overflow:hidden}
+  .unfold{display:none}
+  .page.open .unfold{display:block}
+  .unfold .p{font-size:16px;line-height:1.6;margin-bottom:18px}
+  .unfold .pbig{font:300 clamp(20px,5.2vw,27px)/1.25 var(--d);letter-spacing:-.01em;margin:8px 0 22px}
+  .unfold .pnote{font-size:14px;line-height:1.55;color:var(--pad);padding:14px 16px;border:1px solid var(--rule);border-radius:12px;margin:6px 0 22px}
+  .unfold .pnote b{display:block;font-weight:400;font-size:12px;letter-spacing:.14em;color:var(--muted);margin-bottom:8px}
+  .unfold .pbut{font:400 16px/1.6 var(--t);margin-bottom:8px}
+  .mark{margin-top:26px;padding-top:22px;border-top:1px solid var(--rule)}
+  .mark label{display:block;font-size:13px;line-height:1.5;color:var(--muted);margin-bottom:12px}
+  .mark .field input{height:48px;font-size:16px;border-color:var(--rule)}
+  .mark .field input:focus{border-color:var(--ink)}
+  .mark .field button{width:48px;height:48px;border-color:var(--rule)}
+  .mark.sent .field{opacity:.35;transition:opacity .8s}
+  .page:not(.open) .mark{display:none}
+
   /* ── Goal: длинный текст, скролл; стрелка вниз подсказывает ── */
   #scr-goal{--ink:#000;--paper:#fff;--muted:#8a8a8a;background:#fff}
   .q{font:300 clamp(26px,7vw,40px)/1.2 var(--d);margin:30px 0 30px;letter-spacing:-.01em;color:var(--ink)}
@@ -90,50 +142,19 @@
   .field{display:flex;gap:10px;align-items:stretch}
   .field input{flex:1;min-width:0;height:54px;padding:0 16px;font:300 18px/1 var(--t);color:var(--ink);background:var(--paper);border:1px solid var(--ink);border-radius:12px;outline:none;-webkit-user-select:text;user-select:text;-webkit-appearance:none;appearance:none;caret-color:var(--ink)}
   .field input::placeholder{color:#9a9a9a}
-  .field input:focus{box-shadow:0 0 0 2px rgba(0,0,0,.18)}
+  .field input:focus{box-shadow:0 0 0 2px rgba(0,0,0,.12)}
   .field button{width:54px;height:54px;border:1px solid var(--ink);border-radius:12px;font-size:22px;line-height:1;color:var(--ink);background:var(--paper);flex:none}
   .field button:active{background:var(--ink);color:var(--paper)}
   .skip{display:block;margin-top:18px;padding:8px 0;font-size:13px;color:var(--muted)}
   .ask.sent .field,.ask.sent .skip{opacity:.35;transition:opacity .8s}
 
-  /* ── Кукай: цитата крупно, вопрос, одно слово ── */
-  #scr-kukai .col{display:flex;flex-direction:column;justify-content:center;min-height:100%;padding-top:calc(48px + env(safe-area-inset-top))}
-  .quote{margin:0 0 40px}
-  .qtext{font:300 clamp(22px,6.2vw,34px)/1.25 var(--d);letter-spacing:-.01em;color:var(--ink)}
-  .qauthor{margin-top:14px;font-size:12px;letter-spacing:.14em;color:var(--muted)}
-  .qbio{display:block;margin-top:6px;letter-spacing:.08em;color:var(--rule)}
-  #scr-kukai .p{font-size:16px;line-height:1.6;margin-bottom:26px}
-  .one{margin-top:8px;padding-top:0;border-top:0}
-  .one label{color:var(--ink);font-size:15px;letter-spacing:0;margin-bottom:14px}
-
-  /* ── Воронка: воронка сверху, текст «одно важное», договор о выдумке, круглая кнопка-подпись в конце ── */
-  #scr-voronka{transition:background-color .3s linear}
-  .fcol{max-width:640px;margin:0 auto;padding:calc(40px + env(safe-area-inset-top)) 24px calc(24px + env(safe-area-inset-bottom));min-height:100%;display:flex;flex-direction:column}
-  .fig{position:relative;flex:0 0 auto;height:min(22svh,190px);margin:0 auto 22px;transition:opacity 1.2s ease}
-  .funnel{display:block;height:100%;width:auto}
-  .ftext .p{color:var(--ptx,var(--ink));font-size:15px;line-height:1.55;margin-bottom:16px}
-  .ftext .fbig{font:300 clamp(20px,5.4vw,28px)/1.22 var(--d);letter-spacing:-.01em;margin:6px 0 20px}
-  .ftext .fcue{font-size:12px;letter-spacing:.06em;color:var(--pmu,var(--muted));margin:26px 0 0;text-align:center}
-  .spin{position:relative;width:200px;height:200px;margin:14px auto 0;flex:0 0 auto;opacity:0;transform:translateY(14px);transition:opacity .9s ease,transform .9s ease}
-  .spin.lit{opacity:1;transform:none}
-  .knob{position:absolute;inset:0;border-radius:50%;border:1px solid var(--kb,var(--ink));background:transparent;touch-action:none;cursor:pointer;z-index:1}
-  .knob:active{border-width:2px}
-  .unwind{position:absolute;inset:0;width:200px;height:200px;overflow:visible;pointer-events:none;z-index:2}
-  .unwind text{font:400 15px var(--t);letter-spacing:.02em}
-  #scr-voronka.dark .fig{opacity:.25}
-  @media (orientation:landscape){
-    .fcol{flex-direction:row;align-items:flex-start;gap:40px;max-width:980px}
-    .fig{height:min(50svh,380px);margin:0;position:sticky;top:0}
-    .ftext{flex:1}
-  }
-
-  /* ── конец собранного: белый лист, строка человека по центру ── */
-  .pin{position:absolute;left:24px;right:24px;top:50%;transform:translateY(-50%);text-align:center;font-size:15px;line-height:1.5;color:var(--muted);opacity:0;transition:opacity 1.6s ease .6s}
+  /* ── конец собранного: белый лист, слова человека по центру ── */
+  .pin{position:absolute;left:24px;right:24px;top:50%;transform:translateY(-50%);text-align:center;font-size:15px;line-height:1.7;color:var(--muted);opacity:0;transition:opacity 1.6s ease .6s}
   .pin.on{opacity:1}
 
   @media (prefers-reduced-motion: reduce){
     .cover .cue::before,#nav .down{animation:none}
-    .p,.rise,.scr,.stick,.head,.fig,.spin{transition:none}
+    .p,.rise,.scr,.stick,.head,.fig,.spin,.quote{transition:none}
   }
 </style>
 </head>
@@ -148,7 +169,8 @@
 
 <script>
 /* ═══ Контент = данные. Порядок экранов = порядок в этом списке (слово Влада 09.09, ночь).
-   Текст Влада один к одному; правки пунктуации ждут его слова. ═══ */
+   Тексты Влада, подшлифованы по его слову («подшлифуй», «красиво, элегантно, легко»): опечатки, запятые, короткие абзацы; слова его.
+   Что изменено по смыслу — помечено в PAGE.md и ждёт слова. ═══ */
 const SCREENS = [
   {
     id: 'palka',
@@ -163,30 +185,50 @@ const SCREENS = [
   },
   {
     id: 'voronka', flow: true,
-    figure: 'lejka.jpg', figureAlt: 'Воронка',   /* стеклянная воронка — картинка по ссылке Влада 09.09 (фон белый) */
-    /* текст Влада 09.09 (ночь), «2 слайд», подшлифован по его слову («только подшлифуй текст»): опечатки и запятые, слова его;
-       big — единственная крупная строка (архитектура «одно важное») */
+    figure: 'lejka.jpg', figureAlt: 'Воронка',   /* воронка — символ, только картинка (слово Влада) */
     text: [
-      { t: 'Технически — это воронка из девяти экранов, которые помогут мне передать моё сообщение. А вы сможете понять, насколько это откликается вам.' },
-      { t: 'Но предупреждаю: некоторые аспекты могут показаться безумием. А если не покажутся — я плохо объясняю.' },
-      { t: 'Научиться безопасно и осознанно сходить с ума и полагаться на чувства — это, по сути, и есть продукт.', big: true },
-      { t: 'Но перед тем как мы начнём, давайте договоримся о том, что всё сказанное дальше — выдумка. Фантазия автора, которая не стремится вас чему-то научить, а скорее ищет возможность вдохновить.' },
-      { t: 'Нажимайте на кнопку, только если вам действительно интересно.' }
+      { t: 'Но перед тем как мы начнём, давайте договоримся о том, что всё сказанное дальше — выдумка. Фантазия автора, которая не стремится вас чему-то научить, а скорее ищет возможность вдохновить.' }
     ],
     cue: 'Чтобы подписать договор о выдумке, удерживайте палец на кнопке 4 секунды.',
     gate: { label: 'Я не рационализирую, это фантазия, я следую за интересом.', ms: 3690 }   /* «4 секунды» на странице, 3,69 с по факту — внутреннее */
   },
   {
-    id: 'kukai', name: 'Кукай', flow: true,
-    kicker: 'Zen with me',   /* слово Влада: вместо «03 · Кукай» сверху — «Zen with me» */
-    /* слово Влада 09.09 (ночь): «3 экран — начинается с цитаты Кукая… затем под цитатой текст… и вариант ответа: одно слово»;
-       цитата переведена с украинского («Не йди слідами людей давнини — шукай те, чого шукали вони»); текст подшлифован */
+    id: 'framework', kicker: 'The Framework', page: true, flow: true, key: 'fw',
+    quote: 'Мудрый, услышав о Дао, усердно следует ему. Обычный человек, услышав о Дао, то следует ему, то нет. Глупый, услышав о Дао, смеётся над ним. Если бы он не смеялся, это не было бы истинным Дао.',
+    author: 'Лао-цзы',
+    blocks: [
+      { t: 'Я создал путь из девяти экранов, которые помогут мне найти близких по духу людей. С ними я планирую разделить личный опыт, инструменты и идеи о том, как использовать многомерность Сознания в своём творчестве.' },
+      { t: 'Возможно, кто-то найдёт здесь вдохновение, понимание или даже смысл. Но по большому счёту я хочу, чтобы через моё самовыражение эти люди смогли обрести себя.' },
+      { t: 'Это не курс, а скорее со-настройка и выход на новый уровень восприятия.', big: true },
+      { t: 'Вместо того чтобы учиться строить новые модели, нам предстоит отучиваться использовать устаревшие программы. Это деконструкция разума, в ходе которой мы будем работать над гибкостью и проводимостью его архитектуры.' },
+      { t: 'Я буду делиться личным опытом и ключами, которые помогут вам высвободить заблокированные эмоции и принять тень. Вспомнить свой стиль нелинейной игры можно, лишь приняв себя.' },
+      { t: 'Никаких сладких обещаний о суперсиле или чудесах не будет. Успех, удача и состояние — следствие индивидуальной работы с внутренними процессами, за которые каждый отвечает сам.', note: 'Важно' }
+    ]
+  },
+  {
+    id: 'gameover', kicker: 'Game Over', page: true, flow: true, key: 'go',
+    quote: 'Молодое вино не наливают в старые бурдюки.',
+    author: 'Иисус',
+    blocks: [
+      { t: 'Мы живём в сингулярности: перед нами точка входа в новое восприятие реальности. Пост-трудовая экономика, психоделический ренессанс, эволюционный сдвиг Сознания на планетарном уровне.' },
+      { t: 'Но…', but: true },
+      { t: '95 % людей не приспособлены к тому настоящему, которое уже наступило.', big: true },
+      { t: 'Система по инерции продолжает обучать детей по прусской классно-партовой модели, которой 200 лет, в то время как подходы к обучению ИИ меняются постоянно. В 95 % случаев дети перестают быть гениями в семь лет — как только идут в школу.' },
+      { t: 'Нас учат, как делать работу, но не учат тому, что такое внимание, интерес или абстрактное мышление. У людей просто нет ключей к восприятию тонких процессов внутри психики, и эти сигналы фильтруются базовым мировоззрением как спам.' },
+      { t: 'Старый майндсет — главная проблема. Его не исправит никакая AI/blockchain-инфраструктура.' }
+    ]
+  },
+  {
+    id: 'gameplay', kicker: 'Gameplay', page: true, flow: true, key: 'gp',
     quote: 'Не иди по следам людей древности — ищи то, чего искали они.',
     author: 'Кукай',
-    bio: 'монах · Япония · IX век',   /* три слова по слову Влада; Кукай — Сингон, не дзен; мост к дзену честно — «в передаче Басё» (ждёт слова) */
-    /* абзац про мудрецов, Иисуса и Будду снят словом Влада — остаются цитата и вопрос */
-    ask: 'Чего, по вашему мнению, искали они?',
-    gate: { placeholder: 'одно слово', maxLen: 32, key: 'kukai' }
+    bio: 'монах · Япония · IX век',
+    blocks: [
+      { t: 'Ускоренная эволюция Сознания в формате мультиплеер-игры.', big: true },
+      { t: 'Духовность в нынешнем виде устарела. Предположим, что существует новый формат, соответствующий современным параметрам нервной системы и возможностям разума человека.' },
+      { t: 'Фреймворк, который передаётся в общем поле через синхронизацию ритмов и мировоззрений. Этот апгрейд системы мировоззрения позволяет осознанно использовать и линейный, и волновой аспекты Сознания — и рассматривает духовность как технологию. Резонансный майндсет — система, нацеленная на сотрудничество и аутентичность.' },
+      { t: 'Представьте, что коллективное намерение и синергия работают как духовная практика в фоне, пробуждая ваш естественный интерес и поддерживая высокое психоэмоциональное состояние, в котором рождается творчество.' }
+    ]
   },
   {
     id: 'goal', name: 'Goal', flow: true,
@@ -205,6 +247,13 @@ const SCREENS = [
   },
   { id: 'end' }
 ];
+/* общие слова страничек: подсказка под цитатой и вопрос-отпечаток в конце */
+const PAGE = {
+  tap: 'коснись цитаты',
+  ask: 'Одним словом: что осталось после этой страницы? Слово, вопрос или состояние.',
+  placeholder: 'одно слово',
+  maxLen: 80
+};
 
 /* ═══ Память браузера ═══ */
 const KEY = 'palka:v1:';
@@ -217,11 +266,11 @@ const REDUCED = () => window.matchMedia && matchMedia('(prefers-reduced-motion: 
 const $ = (s, r) => (r || document).querySelector(s);
 const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
 const svgEl = (tag) => document.createElementNS('http://www.w3.org/2000/svg', tag);
-const kick = (d) => String(SCREENS.indexOf(d) + 1).padStart(2, '0') + ' · ' + d.name;
+const kick = (d) => d.kicker || (String(SCREENS.indexOf(d) + 1).padStart(2, '0') + ' · ' + d.name);
 
 /* ═══ Движок: экраны, ворота, стрелки ═══ */
 const stage = $('#stage');
-const secs = SCREENS.map(d => { const s = el('section', 'scr' + (d.flow ? ' flow' : '')); s.id = 'scr-' + d.id; s.setAttribute('aria-label', d.name || d.id); stage.appendChild(s); return s; });
+const secs = SCREENS.map(d => { const s = el('section', 'scr' + (d.flow ? ' flow' : '') + (d.page ? ' page' : '')); s.id = 'scr-' + d.id; s.setAttribute('aria-label', d.kicker || d.name || d.id); stage.appendChild(s); return s; });
 const navPrev = $('#nav .prev'), navNext = $('#nav .next'), navDown = $('#nav .down');
 let cur = -1;
 let reached = Math.max(0, Math.min(parseInt(store.get('screen') || '0', 10) || 0, SCREENS.length - 1));
@@ -244,11 +293,11 @@ function go(i){
   if (!DEV && i > reached) i = reached;
   if (i === cur) return;
   const prev = cur; cur = i;
-  if (prev >= 0) { const g = GATES[SCREENS[prev].id]; g && g.leave && g.leave(secs[prev]); secs[prev].classList.remove('on'); }
+  if (prev >= 0) { const g = GATES[SCREENS[prev].id] || (SCREENS[prev].page && GATES.page); g && g.leave && g.leave(secs[prev]); secs[prev].classList.remove('on'); }
   history.replaceState(null, '', '#' + (i + 1));
   secs[i].scrollTop = 0;
   secs[i].classList.add('on');
-  const g = GATES[SCREENS[i].id]; g && g.enter && g.enter(secs[i], SCREENS[i], i);
+  const g = GATES[SCREENS[i].id] || (SCREENS[i].page && GATES.page); g && g.enter && g.enter(secs[i], SCREENS[i], i);
   paint();
   navDown.hidden = true;
   setTimeout(paintDown, 900);
@@ -278,6 +327,17 @@ function spinKnob(label){
   spin.appendChild(knob); spin.appendChild(svg);
   return spin;
 }
+function wordField(id, label, placeholder, maxLen, cls){
+  const box = el('div', cls);
+  const lab = el('label', null, label); lab.htmlFor = id;
+  box.appendChild(lab);
+  const field = el('div', 'field');
+  const inp = el('input'); inp.id = id; inp.type = 'text'; inp.maxLength = maxLen; inp.placeholder = placeholder;
+  inp.autocomplete = 'off'; inp.setAttribute('enterkeyhint', 'done'); inp.setAttribute('autocapitalize', 'off'); inp.setAttribute('spellcheck', 'false');
+  const send = el('button', null, '→'); send.type = 'button'; send.setAttribute('aria-label', 'дальше');
+  field.appendChild(inp); field.appendChild(send); box.appendChild(field);
+  return box;
+}
 const BUILD = {
   palka(s, d){
     const cover = el('div', 'cover');
@@ -291,24 +351,36 @@ const BUILD = {
     cover.appendChild(el('p', 'cue', d.cover.cue));
     s.appendChild(cover);
   },
-  kukai(s, d){
+  voronka(s, d){
+    const fcol = el('div', 'fcol');
+    const fig = el('div', 'fig');
+    const funnel = el('img', 'funnel'); funnel.alt = d.figureAlt; funnel.decoding = 'async'; funnel.draggable = false; funnel.src = d.figure;
+    fig.appendChild(funnel);
+    fcol.appendChild(fig);
+    const ftext = el('div', 'ftext');
+    d.text.forEach(b => ftext.appendChild(el('p', 'p', b.t)));
+    ftext.appendChild(el('p', 'p fcue', d.cue));
+    fcol.appendChild(ftext);
+    fcol.appendChild(spinKnob(d.gate.label));
+    s.appendChild(fcol);
+  },
+  page(s, d){
     const c = el('div', 'col');
-    c.appendChild(el('div', 'k', d.kicker || kick(d)));
+    c.appendChild(el('div', 'k', kick(d)));
     const q = el('blockquote', 'quote rise');
     q.appendChild(el('p', 'qtext', d.quote));
     const f = el('footer', 'qauthor', '— ' + d.author);
     if (d.bio) f.appendChild(el('span', 'qbio', d.bio));
     q.appendChild(f);
+    q.appendChild(el('p', 'qcue', PAGE.tap));
     c.appendChild(q);
-    const one = el('div', 'ask one rise');
-    const lab = el('label', null, d.ask); lab.htmlFor = 'word';
-    one.appendChild(lab);
-    const field = el('div', 'field');
-    const inp = el('input'); inp.id = 'word'; inp.type = 'text'; inp.maxLength = d.gate.maxLen; inp.placeholder = d.gate.placeholder;
-    inp.autocomplete = 'off'; inp.setAttribute('enterkeyhint', 'done'); inp.setAttribute('autocapitalize', 'off'); inp.setAttribute('spellcheck', 'false');
-    const send = el('button', null, '→'); send.type = 'button'; send.setAttribute('aria-label', 'дальше');
-    field.appendChild(inp); field.appendChild(send); one.appendChild(field);
-    c.appendChild(one);
+    const u = el('div', 'unfold');
+    d.blocks.forEach(b => {
+      if (b.note) { const n = el('div', 'p pnote'); n.appendChild(el('b', null, b.note)); n.appendChild(document.createTextNode(b.t)); u.appendChild(n); return; }
+      u.appendChild(el('p', 'p' + (b.big ? ' pbig' : '') + (b.but ? ' pbut' : ''), b.t));
+    });
+    u.appendChild(wordField('w-' + d.id, PAGE.ask, PAGE.placeholder, PAGE.maxLen, 'mark'));
+    c.appendChild(u);
     s.appendChild(c);
   },
   goal(s, d){
@@ -321,36 +393,16 @@ const BUILD = {
     d.blocks.forEach(b => { dl.appendChild(el('dt', null, b.k)); dl.appendChild(el('dd', null, b.v)); });
     c.appendChild(dl);
     d.compass.forEach(t => c.appendChild(el('p', 'p', t)));
-    const ask = el('div', 'ask rise');
-    const lab = el('label', null, d.gate.ask); lab.htmlFor = 'point';
-    ask.appendChild(lab);
-    const field = el('div', 'field');
-    const inp = el('input'); inp.id = 'point'; inp.type = 'text'; inp.maxLength = d.gate.maxLen; inp.placeholder = d.gate.placeholder;
-    inp.autocomplete = 'off'; inp.setAttribute('enterkeyhint', 'done'); inp.setAttribute('autocapitalize', 'sentences');
-    const send = el('button', null, '→'); send.type = 'button'; send.setAttribute('aria-label', 'дальше');
-    field.appendChild(inp); field.appendChild(send); ask.appendChild(field);
+    const ask = wordField('point', d.gate.ask, d.gate.placeholder, d.gate.maxLen, 'ask rise');
     const skip = el('button', 'skip', d.gate.skip); skip.type = 'button';
     ask.appendChild(skip);
     c.appendChild(ask);
     s.appendChild(c);
   },
-  voronka(s, d){
-    const fcol = el('div', 'fcol');
-    const fig = el('div', 'fig');
-    const funnel = el('img', 'funnel'); funnel.alt = d.figureAlt; funnel.decoding = 'async'; funnel.draggable = false; funnel.src = d.figure;
-    fig.appendChild(funnel);
-    fcol.appendChild(fig);
-    const ftext = el('div', 'ftext');
-    d.text.forEach(b => ftext.appendChild(el('p', 'p' + (b.big ? ' fbig' : ''), b.t)));
-    ftext.appendChild(el('p', 'p fcue', d.cue));
-    fcol.appendChild(ftext);
-    fcol.appendChild(spinKnob(d.gate.label));
-    s.appendChild(fcol);
-  },
   end(s){ s.appendChild(el('p', 'pin')); }
 };
 function build(){
-  SCREENS.forEach((d, i) => { BUILD[d.id] && BUILD[d.id](secs[i], d); });
+  SCREENS.forEach((d, i) => { const b = BUILD[d.id] || (d.page && BUILD.page); b && b(secs[i], d); });
   if (DEV) {
     const dev = $('#dev'); dev.hidden = false;
     SCREENS.forEach((s, k) => { const b = el('button', null, String(k + 1)); b.type = 'button'; b.addEventListener('click', () => go(k)); dev.appendChild(b); });
@@ -393,21 +445,14 @@ const SPIRAL = (() => {
   return { d, get length(){ if (!spiral) build(); return len; } };
 })();
 
-/* ═══ Подпись удержанием: спираль разматывается вверх, экран чернеет, текст белеет ═══ */
+/* ═══ Подпись удержанием: спираль разматывается вверх, экран чернеет, текст белеет; завершается по часам ═══ */
 function holdSpiral(s, col, idx, ms){
   const knob = $('.knob', s), path = $('#spath', s), text = $('.unwind text', s), tp = $('textPath', s);
   let p = 0, t0 = null, raf = 0, back = 0, fin = 0, done = false;
   path.setAttribute('d', SPIRAL.d(0));
-  function complete(){
-    if (done) return;
-    done = true; t0 = null; cancelAnimationFrame(raf); clearTimeout(fin);
-    p = 1; paintP();
-    unlock(idx, 900);
-  }
   tp.setAttribute('textLength', (SPIRAL.length * .97).toFixed(1)); tp.setAttribute('lengthAdjust', 'spacing');
   function paintP(){
     path.setAttribute('d', SPIRAL.d(p));
-    /* экран чернеет быстро (за первую треть удержания), размотка идёт всё время — движение видно */
     const q = Math.min(1, p * 3.2);
     const bg = Math.round(255 - 245 * q), tx = Math.round(10 + 80 * q), sp = Math.round(10 + 245 * q), mu = Math.round(110 + 40 * q);
     s.style.backgroundColor = 'rgb(' + bg + ',' + bg + ',' + bg + ')';
@@ -416,6 +461,12 @@ function holdSpiral(s, col, idx, ms){
     col.style.setProperty('--pmu', 'rgb(' + mu + ',' + mu + ',' + mu + ')');
     col.style.setProperty('--kb', 'rgba(' + sp + ',' + sp + ',' + sp + ',' + (.55 + .45 * q).toFixed(2) + ')');
     text.setAttribute('fill', 'rgb(' + sp + ',' + sp + ',' + sp + ')');
+  }
+  function complete(){
+    if (done) return;
+    done = true; t0 = null; cancelAnimationFrame(raf); clearTimeout(fin);
+    p = 1; paintP();
+    unlock(idx, 900);
   }
   function tick(){
     if (t0 === null) return;
@@ -431,7 +482,6 @@ function holdSpiral(s, col, idx, ms){
     try { knob.setPointerCapture(e.pointerId); } catch (err) {}
     t0 = performance.now() - p * ms;
     raf = requestAnimationFrame(tick);
-    /* страховка от замирания кадров: подпись завершается по часам, не по кадрам */
     clearTimeout(fin); fin = setTimeout(complete, ms * (1 - p) + 30);
   }
   function release(){
@@ -451,7 +501,22 @@ function holdSpiral(s, col, idx, ms){
   document.addEventListener('visibilitychange', () => { if (document.hidden) release(); });
 }
 
-/* ═══ Ворота — по id экрана ═══ */
+/* ═══ Ворота — по id экрана; странички — общие ═══ */
+function bindWord(box, key, onDone){
+  const inp = $('input', box), send = $('.field button', box);
+  let finished = false;
+  const submit = () => {
+    const v = inp.value.trim().replace(/\s+/g, ' ');
+    if (!v) { inp.focus(); return; }
+    if (finished) return; finished = true;
+    store.set(key, v);
+    inp.blur(); inp.disabled = true; send.disabled = true;
+    box.classList.add('sent');
+    onDone(v);
+  };
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); submit(); } });
+  send.addEventListener('click', submit);
+}
 const GATES = {
   /* Палка: один тап — дальше */
   palka: (() => {
@@ -465,58 +530,7 @@ const GATES = {
       }
     };
   })(),
-  /* Кукай: цитата → вопрос → одно слово */
-  kukai: (() => {
-    let lit = false;
-    return {
-      enter(s, d, i){
-        if (lit) return;
-        lit = true;
-        const rises = [...s.querySelectorAll('.p,.rise')];
-        const step = REDUCED() ? 0 : 400;
-        rises.forEach((n, k) => setTimeout(() => n.classList.add('lit'), 250 + k * step));
-        const inp = $('#word', s), send = $('.one .field button', s), one = $('.one', s);
-        let finished = false;
-        const submit = () => {
-          const v = (inp.value.trim().split(/\s+/)[0] || '');
-          if (!v) { inp.focus(); return; }
-          if (finished) return; finished = true;
-          inp.value = v; store.set(d.gate.key, v);
-          inp.blur(); inp.disabled = true; send.disabled = true;
-          one.classList.add('sent');
-          unlock(i, 700);
-        };
-        inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); submit(); } });
-        send.addEventListener('click', submit);
-      }
-    };
-  })(),
-  /* Goal: текст → одно поле */
-  goal: (() => {
-    let lit = false;
-    return {
-      enter(s, d, i){
-        if (lit) return;
-        lit = true;
-        const rises = [...s.querySelectorAll('.p,.rise')];
-        const step = REDUCED() ? 0 : 260;
-        rises.forEach((n, k) => setTimeout(() => n.classList.add('lit'), 250 + k * step));
-        const inp = $('#point', s), send = $('.field button', s), skip = $('.skip', s), ask = $('.ask', s);
-        let finished = false;
-        const finish = () => {
-          if (finished) return; finished = true;
-          inp.blur(); inp.disabled = true; send.disabled = true; skip.disabled = true;
-          ask.classList.add('sent');
-          unlock(i, 700);
-        };
-        const submit = () => { const v = inp.value.trim(); if (!v) { inp.focus(); return; } store.set('point', v); finish(); };
-        inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); submit(); } });
-        send.addEventListener('click', submit);
-        skip.addEventListener('click', () => { store.set('point', ''); finish(); });
-      }
-    };
-  })(),
-  /* Воронка: текст по абзацам → кнопка-подпись; удержание — договор подписан */
+  /* Воронка: договор → кнопка-подпись; удержание — подписано */
   voronka: (() => {
     let lit = false;
     return {
@@ -531,12 +545,48 @@ const GATES = {
       }
     };
   })(),
-  /* конец собранного: белый лист, строка человека по центру */
+  /* Страничка: цитата → тап → текст по абзацам → одно слово */
+  page: {
+    enter(s, d, i){
+      if (s.dataset.lit) return;
+      s.dataset.lit = '1';
+      const q = $('.quote', s);
+      setTimeout(() => q.classList.add('lit'), 250);
+      const open = () => {
+        if (s.classList.contains('open')) return;
+        s.classList.add('open');
+        const ps = [...s.querySelectorAll('.unfold .p')];
+        const step = REDUCED() ? 0 : 220;
+        ps.forEach((p, k) => setTimeout(() => p.classList.add('lit'), 150 + k * step));
+        setTimeout(paintDown, 400);
+      };
+      q.addEventListener('click', open);
+      bindWord($('.mark', s), d.key, () => unlock(i, 700));
+    }
+  },
+  /* Goal: текст → одно поле */
+  goal: (() => {
+    let lit = false;
+    return {
+      enter(s, d, i){
+        if (lit) return;
+        lit = true;
+        const rises = [...s.querySelectorAll('.p,.rise')];
+        const step = REDUCED() ? 0 : 260;
+        rises.forEach((n, k) => setTimeout(() => n.classList.add('lit'), 250 + k * step));
+        const ask = $('.ask', s), skip = $('.skip', s), inp = $('#point', s);
+        bindWord(ask, 'point', () => { skip.disabled = true; unlock(i, 700); });
+        skip.addEventListener('click', () => { store.set('point', ''); inp.disabled = true; skip.disabled = true; ask.classList.add('sent'); unlock(i, 700); });
+      }
+    };
+  })(),
+  /* конец собранного: белый лист, слова человека по центру */
   end: {
     enter(s){
-      const pin = $('.pin', s), v = store.get('point');
-      pin.textContent = v || '';
-      pin.classList.toggle('on', !!v);
+      const pin = $('.pin', s);
+      const words = ['fw', 'go', 'gp', 'point'].map(k => store.get(k)).filter(Boolean);
+      pin.textContent = words.join(' · ');
+      pin.classList.toggle('on', words.length > 0);
     }
   }
 };
