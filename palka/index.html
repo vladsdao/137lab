@@ -4,156 +4,159 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#ffffff">
 <link rel="icon" sizes="32x32" href="/icons/favicon-32x32.png">
 <title>Палка — 137lab</title>
 <style>
-  /* ── 137lab · /palka · v0 «три экрана» (слово Влада 09.09: Пролог · Login · Goal; дальше — вместе)
+  /* ── 137lab · /palka · v0.4 «белый лист» (слово Влада 09.09: Палка — обложка, афиша; Воронка — фото лейки на белом и текст под ней; стремиться к белому)
      Страница-игра: между экранами нет скролла — только действие (ворота).
      Шаблон — «9 граней» (vlad-space/palka/9-graney.csv); текст — vlad-space/palka/PAGE.md, один к одному.
-     Обложка — живая воронка: гравитационная сетка в ультрафиолете (канвас), титры скатываются в горловину.
+     01 Палка — фотография палки Влада (DSC05066, вырезана на белое), удержание 4 с. 02 Воронка — фото лейки (lejka.png; до файла — рисунок-заглушка),
+     текст Пролога под ней, вход — касание воронки. 03 Login. 04 Goal.
      Контент = данные (SCREENS). Шрифты локальные ../beta/site/_fonts/. noindex до слова Влада. ── */
   @font-face{font-family:'Unbounded';src:url('../beta/site/_fonts/unbounded-v12-cyrillic_latin-200.woff2') format('woff2');font-weight:200;font-display:swap}
   @font-face{font-family:'Unbounded';src:url('../beta/site/_fonts/unbounded-v12-cyrillic_latin-300.woff2') format('woff2');font-weight:300;font-display:swap}
   @font-face{font-family:'Manrope';src:url('../beta/site/_fonts/manrope-v20-cyrillic_latin-300.woff2') format('woff2');font-weight:300;font-display:swap}
   @font-face{font-family:'Manrope';src:url('../beta/site/_fonts/manrope-v20-cyrillic_latin-regular.woff2') format('woff2');font-weight:400;font-display:swap}
   :root{
-    --void:#04060a;
-    --star:#eaf0f4;
-    --haze:#96a2ad;
-    --edge:rgba(234,240,244,.26);
-    --ivory:#efe7d6;
+    --paper:#ffffff;
+    --ink:#0a0a0a;
+    --pad:#333333;
+    --muted:#6e6e6e;
+    --rule:#c9c9c9;
     --d:'Unbounded',sans-serif;
     --t:'Manrope','Helvetica Neue',sans-serif;
     --vvh:100svh;
-    --throat:30%;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  html,body{height:100%;overflow:hidden;overscroll-behavior:none;background:#000}
-  body{color:var(--star);font-family:var(--t);font-weight:300;-webkit-font-smoothing:antialiased;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-  ::selection{background:var(--star);color:var(--void)}
+  html,body{height:100%;overflow:hidden;overscroll-behavior:none;background:var(--paper)}
+  body{color:var(--ink);font-family:var(--t);font-weight:300;-webkit-font-smoothing:antialiased;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  ::selection{background:var(--ink);color:var(--paper)}
   button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
   a{color:inherit}
+  img{-webkit-user-drag:none;user-select:none}
 
-  #stage{position:fixed;inset:0;height:var(--vvh);overflow:hidden;background:var(--void);-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
-  .scr{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .7s ease,visibility 0s linear .7s;overflow:hidden}
+  #stage{position:fixed;inset:0;height:var(--vvh);overflow:hidden;background:var(--paper);-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+  .scr{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .7s ease,visibility 0s linear .7s;overflow:hidden;background:var(--paper)}
   .scr.on{opacity:1;visibility:visible;transition:opacity .7s ease}
   .scr.flow{overflow-y:auto;-webkit-overflow-scrolling:touch}
   .col{max-width:640px;margin:0 auto;padding:calc(64px + env(safe-area-inset-top)) 44px calc(48px + env(safe-area-inset-bottom)) 24px;min-height:100%}
-  .k{font-size:12px;letter-spacing:.14em;color:var(--haze);margin-bottom:34px}
-  .p{font-size:18px;line-height:1.65;margin-bottom:22px;opacity:0;transform:translateY(14px);transition:opacity .9s ease,transform .9s ease}
+  .k{font-size:12px;letter-spacing:.14em;color:var(--muted);margin-bottom:34px}
+  .p{font-size:18px;line-height:1.65;margin-bottom:22px;color:var(--ink);opacity:0;transform:translateY(14px);transition:opacity .9s ease,transform .9s ease}
   .p.lit{opacity:1;transform:none}
   .rise{opacity:0;transform:translateY(14px);transition:opacity .9s ease,transform .9s ease}
   .rise.lit{opacity:1;transform:none}
+  .cue{font-size:12px;letter-spacing:.14em;color:var(--muted);line-height:1.5}
 
-  /* ── палка: черта с девятью насечками ── */
+  /* ── палка-индикатор: черта с девятью насечками ── */
   #palka{position:fixed;right:calc(14px + env(safe-area-inset-right));top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:14px;z-index:6;opacity:0;transition:opacity 1.4s ease;pointer-events:none}
   #palka.on{opacity:1}
-  #palka::before{content:'';position:absolute;left:50%;top:-10px;bottom:-10px;width:1px;background:var(--edge);transform:translateX(-50%)}
-  #palka i{display:block;width:10px;height:1.5px;background:var(--edge);transition:background .8s ease}
-  #palka i.lit{background:var(--star)}
+  #palka::before{content:'';position:absolute;left:50%;top:-10px;bottom:-10px;width:1px;background:var(--rule);transform:translateX(-50%)}
+  #palka i{display:block;width:10px;height:1.5px;background:var(--rule);transition:background .8s ease}
+  #palka i.lit{background:var(--ink)}
 
-  #mute{position:fixed;top:calc(14px + env(safe-area-inset-top));right:calc(16px + env(safe-area-inset-right));z-index:7;font-size:12px;letter-spacing:.08em;color:var(--haze);padding:8px 10px;opacity:0;transition:opacity .8s;pointer-events:none}
+  #mute{position:fixed;top:calc(14px + env(safe-area-inset-top));right:calc(16px + env(safe-area-inset-right));z-index:7;font-size:12px;letter-spacing:.08em;color:var(--muted);padding:8px 10px;opacity:0;transition:opacity .8s;pointer-events:none}
   #mute.on{opacity:1;pointer-events:auto}
   #dev{position:fixed;top:calc(12px + env(safe-area-inset-top));left:calc(14px + env(safe-area-inset-left));z-index:7;display:flex;gap:6px}
-  #dev button{width:30px;height:30px;border:1px solid var(--edge);border-radius:50%;font-size:12px;color:var(--haze)}
-  #dev button.cur{color:var(--void);background:var(--star);border-color:var(--star)}
-  #closed{position:fixed;inset:0;z-index:9;background:#000;display:grid;place-items:center;text-align:center;opacity:0;pointer-events:none;transition:opacity 1.2s ease}
+  #dev button{width:30px;height:30px;border:1px solid var(--rule);border-radius:50%;font-size:12px;color:var(--muted);background:var(--paper)}
+  #dev button.cur{color:var(--paper);background:var(--ink);border-color:var(--ink)}
+  #closed{position:fixed;inset:0;z-index:9;background:var(--paper);display:grid;place-items:center;text-align:center;opacity:0;pointer-events:none;transition:opacity 1.2s ease}
   #closed.on{opacity:1;pointer-events:auto}
-  #closed p{font-size:17px;color:var(--ivory)}
-  #closed a{display:block;margin-top:14px;font-size:13px;color:var(--haze);text-decoration:none;letter-spacing:.06em}
+  #closed p{font-size:17px;color:var(--ink)}
+  #closed a{display:block;margin-top:14px;font-size:13px;color:var(--muted);text-decoration:none;letter-spacing:.06em}
 
-  /* ── 01 Пролог: обложка — воронка ── */
-  #s1{background:#000}
-  .cover{position:absolute;inset:0}
-  #well{position:absolute;inset:0;width:100%;height:100%;display:block;transition:opacity 2s ease}
-  .photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transform-origin:50% var(--throat);clip-path:circle(71% at 50% 50%);transition:transform 2.2s cubic-bezier(.5,0,.3,1),opacity 2.2s ease,clip-path 2.2s cubic-bezier(.5,0,.3,1)}
-  .plate{position:absolute;left:0;right:0;bottom:0;padding:34px 24px calc(22px + env(safe-area-inset-bottom));background:linear-gradient(to top,#000 0,#000 52%,rgba(0,0,0,0) 100%)}
-  .plate .title{font:200 clamp(46px,13vw,84px)/1 var(--d);color:var(--star);letter-spacing:-.01em;transform-origin:50% 0;transition:transform 1.4s cubic-bezier(.55,0,.85,.35),opacity 1.2s ease}
-  .plate .sub{margin-top:14px;font-size:15px;line-height:1.4;color:var(--star);transform-origin:50% 0;transition:transform 1.4s cubic-bezier(.55,0,.85,.35),opacity 1s ease}
-  .plate .note{margin-top:8px;font-size:13px;color:var(--haze);transition:opacity .8s ease}
-  .stroke{display:grid;place-items:center;width:72px;height:72px;margin:18px auto 0;touch-action:none}
-  .stroke .bar{width:2px;height:28px;background:var(--star);animation:blink 1.1s steps(1,end) infinite}
+  /* ── 01 Палка: афиша — имя сверху по центру, палка по центру, «держи» внизу ── */
+  .cover{position:absolute;inset:0;touch-action:none}
+  .stick{position:absolute;display:block;pointer-events:none;transition:opacity 1.8s ease}
+  .head{position:absolute;left:24px;right:24px;top:calc(44px + env(safe-area-inset-top));text-align:center;transition:opacity 1.1s ease}
+  .head .title{font:200 clamp(44px,12vw,72px)/1 var(--d);color:var(--ink);letter-spacing:-.01em}
+  .head .sub{margin-top:14px;font-size:15px;line-height:1.4;color:var(--pad)}
+  .head .note{margin-top:8px;font-size:12px;color:var(--muted)}
+  .cover .cue{position:absolute;left:50%;bottom:calc(30px + env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--paper);border-radius:8px;white-space:nowrap;max-width:calc(100% - 48px);transition:opacity .5s}
+  .cover .cue::before{content:'';display:block;width:2px;height:16px;background:var(--ink);animation:blink 1.1s steps(1,end) infinite;flex:none}
   @keyframes blink{50%{opacity:0}}
-  .touch{text-align:center;font-size:12px;letter-spacing:.14em;color:var(--haze);margin-top:2px;transition:opacity .6s}
-  .crawlwrap{position:absolute;inset:0;perspective:360px;perspective-origin:50% var(--throat);overflow:hidden;opacity:0;transition:opacity .8s ease;-webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 24%,#000 48%);mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 24%,#000 48%)}
-  .crawl{position:absolute;left:7%;right:7%;top:100%;transform-origin:50% 0;transform:rotateX(26deg);font-size:clamp(23px,6.2vw,36px);line-height:1.38;color:var(--ivory);text-align:justify;will-change:transform}
-  .crawl p{margin-bottom:1.1em}
-  .speed{position:absolute;left:0;right:0;top:calc(58px + env(safe-area-inset-top));text-align:center;font-size:12px;letter-spacing:.14em;color:var(--haze);opacity:0;transition:opacity .6s}
-  .speed.on{opacity:1}
-  .gatewrap{position:absolute;inset:0;display:grid;place-items:center;opacity:0;visibility:hidden;transition:opacity 1.2s ease,visibility 0s linear 1.2s}
-  .gatewrap.on{opacity:1;visibility:visible;transition:opacity 1.2s ease}
-  .hold{display:grid;place-items:center;width:140px;height:220px;touch-action:none}
-  .track{position:relative;display:block;width:3px;height:120px;background:var(--edge);overflow:hidden}
-  .fill{position:absolute;left:0;right:0;bottom:0;height:100%;background:var(--star);transform:scaleY(var(--fill,0));transform-origin:50% 100%}
-  .glabel{position:absolute;left:0;right:0;top:calc(50% + 122px);text-align:center;font-size:12px;letter-spacing:.14em;color:var(--haze)}
-  .ghint{position:absolute;left:0;right:0;top:calc(50% + 146px);text-align:center;font-size:12px;color:rgba(150,162,173,.55)}
-  /* фаза: титры */
-  #s1.crawling .plate .title{transform:translateY(-48vh) scale(.1);opacity:0}
-  #s1.crawling .plate .sub{transform:translateY(-36vh) scale(.25);opacity:0}
-  #s1.crawling .plate .note,#s1.crawling .stroke,#s1.crawling .touch{opacity:0;pointer-events:none}
-  #s1.crawling .plate{background:none;pointer-events:none}
-  #s1.crawling #well{opacity:.62}
-  #s1.crawling .photo{transform:translateY(-34vh) scale(.34);opacity:.3;clip-path:circle(24% at 50% 50%)}
-  #s1.crawling .crawlwrap{opacity:1}
-  #s1.gated #well{opacity:.3}
-  /* фаза: без движения — статичный текст */
-  #s1.static{overflow-y:auto;-webkit-overflow-scrolling:touch}
-  #s1.static .cover{display:none}
-  #s1.static .crawlwrap{position:static;perspective:none;-webkit-mask-image:none;mask-image:none;overflow:visible;opacity:1}
-  #s1.static .crawl{position:static;transform:none;font-size:18px;line-height:1.65;text-align:left;color:var(--star);max-width:640px;margin:0 auto;padding:calc(64px + env(safe-area-inset-top)) 44px 20px 24px;will-change:auto}
-  #s1.static .speed{display:none}
-  #s1.static .gatewrap{position:relative;height:340px}
-  #s1.static .glabel{top:calc(50% + 78px)}
-  #s1.static .ghint{top:calc(50% + 102px)}
+  .hold{position:absolute;inset:0;touch-action:none;cursor:pointer}
+  .track{position:absolute;display:block;background:var(--rule);opacity:0;transition:opacity 1.2s ease}
+  .fill{position:absolute;left:0;top:0;width:100%;height:100%;background:var(--ink)}
+  #s1.holding .track,#s1.tried .track{opacity:1}
+  #s1.passed .track{opacity:0}
+  #s1.passed .cover .cue{opacity:0}
+  @media (orientation:portrait){
+    .stick{width:94vh;height:auto;left:calc(50% + 2.67vh);top:50%;transform:translate(-50%,-50%) rotate(-90deg) translateX(-13vh)}
+    .track{left:calc(50% - 1px);bottom:-13vh;width:2px;height:68vh}
+    .fill{transform:scaleY(var(--fill,0));transform-origin:50% 100%}
+  }
+  @media (orientation:landscape){
+    .stick{width:100vw;height:auto;left:50%;top:56%;transform:translate(-50%,-50%)}
+    .track{left:-2vw;top:calc(56% - 2.84vw - 1px);width:94vw;height:2px}
+    .fill{transform:scaleX(var(--fill,0));transform-origin:0 50%}
+  }
 
-  /* ── 02 Login ── */
-  #s2 .col{position:relative}
-  #s2 .col::before{content:'';position:absolute;left:0;right:0;top:0;height:70vh;background:radial-gradient(ellipse at 50% 28%,rgba(234,240,244,.07),rgba(234,240,244,0) 62%);pointer-events:none}
-  .agree{display:block;width:100%;margin-top:18px;padding:18px 20px;border:1px solid var(--star);border-radius:14px;font-size:17px;line-height:1.4;text-align:center;color:var(--star);transition:background .25s,color .25s}
-  .agree:active{background:var(--star);color:var(--void)}
-  .exit{display:block;margin:22px auto 0;padding:10px;font-size:12px;letter-spacing:.14em;color:rgba(150,162,173,.45)}
+  /* ── 02 Воронка: фото лейки на белом, текст под ней, вход — касание воронки ── */
+  .fcol{max-width:640px;margin:0 auto;padding:calc(56px + env(safe-area-inset-top)) 44px calc(40px + env(safe-area-inset-bottom)) 24px;min-height:100%;display:flex;flex-direction:column}
+  .fig{position:relative;width:min(70vw,340px);margin:0 auto 30px;transform-origin:50% 40%;transition:transform 1.4s cubic-bezier(.7,0,.9,.5),opacity 1.2s ease}
+  .funnel{display:block;width:100%;height:auto}
+  .throat{position:absolute;left:50%;top:40%;width:110px;height:110px;transform:translate(-50%,-50%);border-radius:50%;opacity:0;visibility:hidden;transition:opacity 1.2s ease,visibility 0s linear 1.2s;touch-action:none}
+  .throat::before{content:'';position:absolute;inset:22px;border-radius:50%;border:1px solid var(--ink);animation:ring 2.4s ease-out infinite}
+  .throat::after{content:'';position:absolute;inset:51px;border-radius:50%;background:var(--ink)}
+  @keyframes ring{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.7);opacity:0}}
+  .ftext{flex:1}
+  .stamp{margin-top:auto;padding-top:26px;text-align:center;opacity:0;transition:opacity .8s ease}
+  .stamp.on{opacity:1}
+  #s2.gated .throat{opacity:1;visibility:visible;transition:opacity 1.2s ease}
+  #s2.fall .fig{transform:scale(9);opacity:0}
+  #s2.fall .ftext,#s2.fall .stamp{opacity:0;transition:opacity .5s}
+  @media (orientation:landscape){
+    .fcol{flex-direction:row;align-items:center;gap:40px;max-width:980px;padding-right:24px}
+    .fig{width:min(34vw,420px);margin:0}
+    .ftext{flex:1}
+    .stamp{position:absolute;left:0;right:0;bottom:calc(26px + env(safe-area-inset-bottom));margin:0;padding:0}
+  }
 
-  /* ── 03 Goal ── */
-  #s3{background:#000;--star:#fff;--haze:#9a9a9a;--edge:rgba(255,255,255,.3)}
-  #s3 .p,#s3 .q,#s3 dl,#s3 .ask{color:#fff}
-  .q{font:300 clamp(26px,7vw,40px)/1.2 var(--d);margin:30px 0 30px;letter-spacing:-.01em}
-  #s3 dl{margin-bottom:22px}
-  #s3 dt{font-size:12px;letter-spacing:.14em;color:var(--haze);margin-bottom:8px}
-  #s3 dd{font-size:18px;line-height:1.65;margin-bottom:22px}
-  .ask{margin-top:48px;padding-top:36px;border-top:1px solid var(--edge)}
-  .ask label{display:block;font-size:12px;letter-spacing:.14em;color:var(--haze);margin-bottom:16px}
+  /* ── 03 Login ── */
+  #s3 .col{position:relative}
+  #s3 .col::before{content:'';position:absolute;left:0;right:0;top:0;height:70vh;background:radial-gradient(ellipse at 50% 28%,rgba(10,10,10,.05),rgba(10,10,10,0) 62%);pointer-events:none}
+  .agree{display:block;width:100%;margin-top:18px;padding:18px 20px;border:1px solid var(--ink);border-radius:14px;font-size:17px;line-height:1.4;text-align:center;color:var(--ink);background:var(--paper);transition:background .25s,color .25s}
+  .agree:active{background:var(--ink);color:var(--paper)}
+  .exit{display:block;margin:22px auto 0;padding:10px;font-size:12px;letter-spacing:.14em;color:var(--rule)}
+
+  /* ── 04 Goal ── */
+  #s4{--ink:#000;--paper:#fff;--muted:#8a8a8a;background:#fff}
+  .q{font:300 clamp(26px,7vw,40px)/1.2 var(--d);margin:30px 0 30px;letter-spacing:-.01em;color:var(--ink)}
+  #s4 dl{margin-bottom:22px}
+  #s4 dt{font-size:12px;letter-spacing:.14em;color:var(--muted);margin-bottom:8px}
+  #s4 dd{font-size:18px;line-height:1.65;margin-bottom:22px;color:var(--ink)}
+  .ask{margin-top:48px;padding-top:36px;border-top:1px solid var(--ink)}
+  .ask label{display:block;font-size:12px;letter-spacing:.14em;color:var(--muted);margin-bottom:16px}
   .field{display:flex;gap:10px;align-items:stretch}
-  .field input{flex:1;min-width:0;height:54px;padding:0 16px;font:300 18px/1 var(--t);color:#fff;background:none;border:1px solid #fff;border-radius:12px;outline:none;-webkit-user-select:text;user-select:text;-webkit-appearance:none;appearance:none;caret-color:#fff}
-  .field input::placeholder{color:#7a7a7a}
-  .field input:focus{box-shadow:0 0 0 2px rgba(255,255,255,.25)}
-  .field button{width:54px;height:54px;border:1px solid #fff;border-radius:12px;font-size:22px;line-height:1;color:#fff;flex:none}
-  .field button:active{background:#fff;color:#000}
-  .skip{display:block;margin-top:18px;padding:8px 0;font-size:13px;color:#7a7a7a}
-  .fly{position:fixed;z-index:8;font-size:18px;color:#fff;white-space:nowrap;pointer-events:none;transition:transform 1.3s cubic-bezier(.4,0,.2,1),opacity 1.3s ease;transform-origin:100% 50%}
+  .field input{flex:1;min-width:0;height:54px;padding:0 16px;font:300 18px/1 var(--t);color:var(--ink);background:var(--paper);border:1px solid var(--ink);border-radius:12px;outline:none;-webkit-user-select:text;user-select:text;-webkit-appearance:none;appearance:none;caret-color:var(--ink)}
+  .field input::placeholder{color:#9a9a9a}
+  .field input:focus{box-shadow:0 0 0 2px rgba(0,0,0,.18)}
+  .field button{width:54px;height:54px;border:1px solid var(--ink);border-radius:12px;font-size:22px;line-height:1;color:var(--ink);background:var(--paper);flex:none}
+  .field button:active{background:var(--ink);color:var(--paper)}
+  .skip{display:block;margin-top:18px;padding:8px 0;font-size:13px;color:var(--muted)}
+  .fly{position:fixed;z-index:8;font-size:18px;color:var(--ink);white-space:nowrap;pointer-events:none;transition:transform 1.3s cubic-bezier(.4,0,.2,1),opacity 1.3s ease;transform-origin:100% 50%}
 
-  /* ── конец собранного: палка 3 из 9 ── */
-  #s4{background:var(--void)}
-  .pin{position:absolute;right:calc(44px + env(safe-area-inset-right));top:calc(50% - 31px);transform:translateY(-50%);max-width:60vw;text-align:right;font-size:13px;line-height:1.4;color:var(--haze);opacity:0;transition:opacity 1.6s ease .6s}
+  /* ── конец собранного: палка 4 из 9 ── */
+  .pin{position:absolute;right:calc(44px + env(safe-area-inset-right));top:calc(50% - 15.5px);transform:translateY(-50%);max-width:60vw;text-align:right;font-size:13px;line-height:1.4;color:var(--muted);opacity:0;transition:opacity 1.6s ease .6s}
   .pin.on{opacity:1}
 
   @media (min-width:900px){
     .col{padding-right:24px}
-    .crawl{left:22%;right:22%;font-size:34px}
-    .plate{padding-left:max(24px,calc(50vw - 320px));padding-right:max(24px,calc(50vw - 320px))}
   }
   @media (prefers-reduced-motion: reduce){
-    .stroke .bar{animation:none}
-    .p,.rise,.scr,.photo,.plate .title,.plate .sub,.crawlwrap,.gatewrap,#palka,.fly,#well{transition:none}
+    .cover .cue::before,.throat::before{animation:none}
+    .p,.rise,.scr,.stick,.head,.track,#palka,.fly,.fig,.throat{transition:none}
   }
 </style>
 </head>
 <body>
 <div id="stage">
-  <section class="scr" id="s1" aria-label="Пролог"></section>
-  <section class="scr flow" id="s2" aria-label="Login"></section>
-  <section class="scr flow" id="s3" aria-label="Goal"></section>
-  <section class="scr" id="s4" aria-label="Палка"></section>
+  <section class="scr" id="s1" aria-label="Палка"></section>
+  <section class="scr flow" id="s2" aria-label="Воронка"></section>
+  <section class="scr flow" id="s3" aria-label="Login"></section>
+  <section class="scr flow" id="s4" aria-label="Goal"></section>
+  <section class="scr" id="s5" aria-label="Палка · четыре из девяти"></section>
 </div>
 <aside id="palka" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></aside>
 <button id="mute" type="button" aria-label="звук">звук</button>
@@ -164,23 +167,29 @@
 /* ═══ Контент = данные. Текст Влада (09.09) один к одному; правки пунктуации ждут его слова. ═══ */
 const SCREENS = [
   {
-    id: 'prolog', kicker: '01 · Пролог',
+    id: 'palka',
     cover: {
       title: 'Палка.',
       sub: 'Мультиплеер Игра в Духовность для Мужчин',
       note: '*это не то что вы подумали',
-      touch: 'коснись',
-      photo: ''
+      cue: 'держи палку — четыре секунды, вдох',
+      retry: 'держи, не отпускай',
+      stick: 'palka.png',
+      stickAlt: 'Палка'
     },
-    crawl: [
+    gate: { type: 'hold', seconds: 4 }
+  },
+  {
+    id: 'voronka',
+    figure: '', figureAlt: 'Воронка',   /* путь к фото лейки Влада (lejka.png), пока пусто — рисунок-заглушка */
+    paras: [
       'Говоря прямо — это воронка, в авторском формате. Её цель — объяснить суть того чем я могу быть полезным тем людям которым это необходимо. Закрывай окно как только почувствуешь что это не твоё. Так будет честно.',
       'Формат авангардный, но я чувствую что именно таким он должен быть. Одна лишь просьба — не воспринимай все слишком серьезно.'
     ],
-    speedHint: 'тап — втрое быстрее',
-    gate: { type: 'hold', seconds: 4, label: 'держи', hint: 'четыре секунды — вдох', retry: 'держи, не отпускай' }
+    gate: { type: 'throat', cue: 'коснись воронки' }
   },
   {
-    id: 'login', kicker: '02 · Login',
+    id: 'login', kicker: '03 · Login',
     paras: [
       'Забегая наперед, я хочу предупредить, некоторые аспекты идеи о которой пойдет речь — могут казаться безумными, а если нет — я плохо объясняю.',
       'По этому давайте заранее договоримся о том что это выдумка. Воспринимайте это как художественное произведение.',
@@ -189,7 +198,7 @@ const SCREENS = [
     gate: { type: 'agree', label: 'Я не рационализирую, это фантазия, я следую за интересом.', exit: 'закрыть окно', exitLine: 'Окно закрыто.', exitHref: 'https://137lab.xyz', exitHrefLabel: '137lab.xyz' }
   },
   {
-    id: 'goal', kicker: '03 · Goal',
+    id: 'goal', kicker: '04 · Goal',
     lead: 'Раскрыть творческий потенциал, выйти из кризиса(пиздеца), обрести уверенность, понять женщину, вспомнить себя или выйти на новый уровень — где-то так я вижу описание ауткама от прохождения этой игры.',
     deeper: 'Но давайте еще глубже.',
     question: '«Где твоя точка наивысшего интереса?»',
@@ -206,6 +215,17 @@ const SCREENS = [
   },
   { id: 'end', gate: { type: 'none' } }
 ];
+
+/* заглушка лейки до фотографии Влада: белый пластик на белом, рисунок */
+const FUNNEL_FALLBACK = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">' +
+  '<ellipse cx="300" cy="180" rx="250" ry="120" fill="#e9e9e9" stroke="#bdbdbd" stroke-width="3"/>' +
+  '<ellipse cx="300" cy="180" rx="222" ry="98" fill="#d6d6d6"/>' +
+  '<path d="M78 180 Q300 470 522 180 Q300 300 78 180Z" fill="#dcdcdc"/>' +
+  '<path d="M262 380 L338 380 L326 470 L330 590 L270 590 L274 470Z" fill="#e2e2e2" stroke="#bdbdbd" stroke-width="3"/>' +
+  '<ellipse cx="300" cy="180" rx="222" ry="98" fill="none" stroke="#c6c6c6" stroke-width="2"/>' +
+  '<path d="M150 150 Q300 120 420 140" fill="none" stroke="#f7f7f7" stroke-width="10" stroke-linecap="round"/>' +
+  '</svg>');
 
 /* ═══ Память браузера ═══ */
 const KEY = 'palka:v1:';
@@ -248,6 +268,15 @@ const AUDIO = (() => {
     og.gain.setValueAtTime(.0001, t); og.gain.exponentialRampToValueAtTime(.16, t + .012); og.gain.exponentialRampToValueAtTime(.0001, t + 1.9);
     o.connect(og).connect(master); o.start(t); o.stop(t + 2);
   }
+  function fall(){
+    if (!ctx) return;
+    const t = ctx.currentTime;
+    const o = ctx.createOscillator(); o.type = 'sine';
+    o.frequency.setValueAtTime(420, t); o.frequency.exponentialRampToValueAtTime(40, t + 1.3);
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.2, t + .05); g.gain.exponentialRampToValueAtTime(.0001, t + 1.4);
+    o.connect(g).connect(master); o.start(t); o.stop(t + 1.5);
+  }
   function droneOn(){
     if (!ctx || drone) return;
     const t = ctx.currentTime;
@@ -280,93 +309,11 @@ const AUDIO = (() => {
     store.set('mute', m ? '1' : '0');
     if (ctx) { const t = ctx.currentTime; master.gain.cancelScheduledValues(t); master.gain.linearRampToValueAtTime(m ? 0 : 1, t + .06); }
   }
-  return { ensure, click, droneOn, droneOff, tick, setMute, muted, get ready(){ return !!ctx; } };
-})();
-
-/* ═══ Воронка: гравитационная сетка в ультрафиолете (живой рендер на канвасе) ═══ */
-const WELL = (() => {
-  let cv, g, w = 0, h = 0, dpr = 1, raf = 0, on = false, start = 0;
-  const A = 7.6, R = 2.4, P = 1.9, HALF = 12, STEP = .5, THROAT = .30;
-  const depth = r => -A / (1 + Math.pow(r / R, P));
-  const violet = [122, 92, 255], magenta = [255, 79, 208];
-  const mix = (a, b, k) => 'rgb(' + Math.round(a[0] + (b[0] - a[0]) * k) + ',' + Math.round(a[1] + (b[1] - a[1]) * k) + ',' + Math.round(a[2] + (b[2] - a[2]) * k) + ')';
-  function size(){
-    const r = cv.parentElement.getBoundingClientRect();
-    dpr = Math.min(2, window.devicePixelRatio || 1);
-    w = Math.max(1, Math.round(r.width)); h = Math.max(1, Math.round(r.height));
-    cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
-    g.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-  function frame(now){
-    const t = (now - start) / 1000;
-    const az = .07 * Math.sin(t / 9), breathe = 1 + .025 * Math.sin(t / 5.2);
-    const camH = 6.2, camD = 15.5, yT = -A * .42;
-    const L = Math.hypot(yT - camH, camD), fy = (yT - camH) / L, fz = camD / L;
-    const f = h * .62, ca = Math.cos(az), sa = Math.sin(az);
-    const proj = (x, y, z) => {
-      const xr = x * ca - z * sa, zr = x * sa + z * ca;
-      const vx = xr, vy = (y - camH), vz = zr + camD;
-      const d = vy * fy + vz * fz;
-      if (d < .8) return null;
-      const u = vy * fz - vz * fy;
-      return [w / 2 + f * vx / d, h / 2 - f * u / d, d];
-    };
-    const th = proj(0, depth(0) * breathe, 0);
-    const oy = th ? h * THROAT - th[1] : 0;
-    g.clearRect(0, 0, w, h);
-    g.fillStyle = '#000'; g.fillRect(0, 0, w, h);
-    g.lineCap = 'round'; g.lineJoin = 'round';
-    const drawLine = (pts, k) => {
-      const col = mix(violet, magenta, k);
-      for (let pass = 0; pass < 2; pass++) {
-        g.beginPath(); let pen = false;
-        for (let i = 0; i < pts.length; i++) {
-          const p = pts[i];
-          if (!p) { pen = false; continue; }
-          const y = p[1] + oy;
-          if (y < -40 || y > h + 40 || p[0] < -80 || p[0] > w + 80) { pen = false; continue; }
-          if (!pen) { g.moveTo(p[0], y); pen = true; } else g.lineTo(p[0], y);
-        }
-        g.strokeStyle = col;
-        g.globalAlpha = pass ? .62 - .34 * (1 - k) : .10;
-        g.lineWidth = pass ? 1 : 3.2;
-        g.stroke();
-      }
-    };
-    for (let i = -HALF; i <= HALF + 1e-6; i += STEP) {
-      const k = Math.max(0, 1 - Math.abs(i) / HALF);
-      const a = [], b = [];
-      for (let j = -HALF; j <= HALF + 1e-6; j += STEP / 2) {
-        const r1 = Math.hypot(i, j);
-        a.push(proj(i, depth(r1) * breathe, j));
-        b.push(proj(j, depth(r1) * breathe, i));
-      }
-      drawLine(a, k * k); drawLine(b, k * k);
-    }
-    g.globalAlpha = 1;
-    if (th) {
-      const glow = g.createRadialGradient(w / 2, h * THROAT, 0, w / 2, h * THROAT, Math.min(w, h) * .28);
-      glow.addColorStop(0, 'rgba(255,79,208,.34)'); glow.addColorStop(.45, 'rgba(122,92,255,.12)'); glow.addColorStop(1, 'rgba(0,0,0,0)');
-      g.fillStyle = glow; g.fillRect(0, 0, w, h);
-      const hole = g.createRadialGradient(w / 2, h * THROAT, 0, w / 2, h * THROAT, Math.min(w, h) * .09);
-      hole.addColorStop(0, 'rgba(0,0,0,.95)'); hole.addColorStop(.6, 'rgba(0,0,0,.55)'); hole.addColorStop(1, 'rgba(0,0,0,0)');
-      g.fillStyle = hole; g.fillRect(0, 0, w, h);
-    }
-    if (on && !REDUCED()) raf = requestAnimationFrame(frame);
-  }
-  return {
-    mount(canvas){
-      cv = canvas; g = cv.getContext('2d'); size();
-      addEventListener('resize', () => { size(); if (!on) frame(performance.now()); });
-      start = performance.now();
-    },
-    play(){ if (on) return; on = true; cancelAnimationFrame(raf); raf = requestAnimationFrame(frame); },
-    stop(){ on = false; cancelAnimationFrame(raf); }
-  };
+  return { ensure, click, fall, droneOn, droneOff, tick, setMute, muted, get ready(){ return !!ctx; } };
 })();
 
 /* ═══ Движок: экраны, ворота, палка ═══ */
-const secs = [$('#s1'), $('#s2'), $('#s3'), $('#s4')];
+const secs = [$('#s1'), $('#s2'), $('#s3'), $('#s4'), $('#s5')];
 const palka = $('#palka'), notches = [...palka.querySelectorAll('i')];
 let cur = -1;
 let reached = Math.max(0, Math.min(parseInt(store.get('screen') || '0', 10) || 0, SCREENS.length - 1));
@@ -406,74 +353,79 @@ $('#mute').addEventListener('click', () => {
 
 /* ═══ Сборка разметки из данных ═══ */
 function build(){
+  /* 01 Палка */
   const d1 = SCREENS[0], s1 = secs[0];
   const cover = el('div', 'cover');
-  const well = el('canvas'); well.id = 'well'; well.setAttribute('aria-hidden', 'true');
-  cover.appendChild(well);
-  if (d1.cover.photo) {
-    const img = el('img', 'photo'); img.alt = ''; img.decoding = 'async'; img.src = d1.cover.photo;
-    cover.appendChild(img);
-  }
-  const plate = el('div', 'plate');
-  plate.appendChild(el('h1', 'title', d1.cover.title));
-  plate.appendChild(el('p', 'sub', d1.cover.sub));
-  plate.appendChild(el('p', 'note', d1.cover.note));
-  const stroke = el('button', 'stroke'); stroke.type = 'button'; stroke.setAttribute('aria-label', d1.cover.touch);
-  stroke.appendChild(el('span', 'bar'));
-  plate.appendChild(stroke);
-  plate.appendChild(el('p', 'touch', d1.cover.touch));
-  cover.appendChild(plate);
-  s1.appendChild(cover);
-  const wrap = el('div', 'crawlwrap'), crawl = el('div', 'crawl');
-  d1.crawl.forEach(t => crawl.appendChild(el('p', null, t)));
-  wrap.appendChild(crawl); s1.appendChild(wrap);
-  s1.appendChild(el('p', 'speed', d1.speedHint));
-  const gw = el('div', 'gatewrap'), hold = el('button', 'hold'); hold.type = 'button'; hold.setAttribute('aria-label', d1.gate.label);
+  const stick = el('img', 'stick'); stick.src = d1.cover.stick; stick.alt = d1.cover.stickAlt; stick.decoding = 'async'; stick.draggable = false;
+  cover.appendChild(stick);
+  const head = el('div', 'head');
+  head.appendChild(el('h1', 'title', d1.cover.title));
+  head.appendChild(el('p', 'sub', d1.cover.sub));
+  head.appendChild(el('p', 'note', d1.cover.note));
+  cover.appendChild(head);
+  cover.appendChild(el('p', 'cue', d1.cover.cue));
+  const hold = el('button', 'hold'); hold.type = 'button'; hold.setAttribute('aria-label', d1.cover.cue);
   const track = el('span', 'track'); track.appendChild(el('span', 'fill')); hold.appendChild(track);
-  gw.appendChild(hold);
-  gw.appendChild(el('p', 'glabel', d1.gate.label));
-  gw.appendChild(el('p', 'ghint', d1.gate.hint));
-  s1.appendChild(gw);
-  WELL.mount(well);
+  cover.appendChild(hold);
+  s1.appendChild(cover);
 
-  const d2 = SCREENS[1], s2 = secs[1], c2 = el('div', 'col');
-  c2.appendChild(el('div', 'k', d2.kicker));
-  d2.paras.forEach(t => c2.appendChild(el('p', 'p', t)));
-  const agree = el('button', 'agree rise', d2.gate.label); agree.type = 'button';
-  c2.appendChild(agree);
-  const exit = el('button', 'exit rise', d2.gate.exit); exit.type = 'button';
-  c2.appendChild(exit);
-  s2.appendChild(c2);
+  /* 02 Воронка */
+  const d2 = SCREENS[1], s2 = secs[1], fcol = el('div', 'fcol');
+  const fig = el('div', 'fig');
+  const funnel = el('img', 'funnel'); funnel.alt = d2.figureAlt; funnel.decoding = 'async'; funnel.draggable = false;
+  funnel.addEventListener('error', () => { funnel.src = FUNNEL_FALLBACK; }, { once: true });
+  funnel.src = d2.figure || FUNNEL_FALLBACK;
+  fig.appendChild(funnel);
+  const throat = el('button', 'throat'); throat.type = 'button'; throat.setAttribute('aria-label', d2.gate.cue);
+  fig.appendChild(throat);
+  fcol.appendChild(fig);
+  const ftext = el('div', 'ftext');
+  d2.paras.forEach(t => ftext.appendChild(el('p', 'p', t)));
+  fcol.appendChild(ftext);
+  fcol.appendChild(el('p', 'stamp cue', d2.gate.cue));
+  s2.appendChild(fcol);
 
+  /* 03 Login */
   const d3 = SCREENS[2], s3 = secs[2], c3 = el('div', 'col');
   c3.appendChild(el('div', 'k', d3.kicker));
-  c3.appendChild(el('p', 'p', d3.lead));
-  c3.appendChild(el('p', 'p', d3.deeper));
-  c3.appendChild(el('h2', 'q rise', d3.question));
+  d3.paras.forEach(t => c3.appendChild(el('p', 'p', t)));
+  const agree = el('button', 'agree rise', d3.gate.label); agree.type = 'button';
+  c3.appendChild(agree);
+  const exit = el('button', 'exit rise', d3.gate.exit); exit.type = 'button';
+  c3.appendChild(exit);
+  s3.appendChild(c3);
+
+  /* 04 Goal */
+  const d4 = SCREENS[3], s4 = secs[3], c4 = el('div', 'col');
+  c4.appendChild(el('div', 'k', d4.kicker));
+  c4.appendChild(el('p', 'p', d4.lead));
+  c4.appendChild(el('p', 'p', d4.deeper));
+  c4.appendChild(el('h2', 'q rise', d4.question));
   const dl = el('dl', 'rise');
-  d3.blocks.forEach(b => { dl.appendChild(el('dt', null, b.k)); dl.appendChild(el('dd', null, b.v)); });
-  c3.appendChild(dl);
-  d3.compass.forEach(t => c3.appendChild(el('p', 'p', t)));
-  c3.appendChild(el('p', 'p', d3.pov));
+  d4.blocks.forEach(b => { dl.appendChild(el('dt', null, b.k)); dl.appendChild(el('dd', null, b.v)); });
+  c4.appendChild(dl);
+  d4.compass.forEach(t => c4.appendChild(el('p', 'p', t)));
+  c4.appendChild(el('p', 'p', d4.pov));
   const ask = el('div', 'ask rise');
-  const lab = el('label', null, d3.gate.ask); lab.htmlFor = 'point';
+  const lab = el('label', null, d4.gate.ask); lab.htmlFor = 'point';
   ask.appendChild(lab);
   const field = el('div', 'field');
-  const inp = el('input'); inp.id = 'point'; inp.type = 'text'; inp.maxLength = d3.gate.maxLen; inp.placeholder = d3.gate.placeholder;
+  const inp = el('input'); inp.id = 'point'; inp.type = 'text'; inp.maxLength = d4.gate.maxLen; inp.placeholder = d4.gate.placeholder;
   inp.autocomplete = 'off'; inp.setAttribute('enterkeyhint', 'done'); inp.setAttribute('autocapitalize', 'sentences');
   const send = el('button', null, '→'); send.type = 'button'; send.setAttribute('aria-label', 'дальше');
   field.appendChild(inp); field.appendChild(send); ask.appendChild(field);
-  const skip = el('button', 'skip', d3.gate.skip); skip.type = 'button';
+  const skip = el('button', 'skip', d4.gate.skip); skip.type = 'button';
   ask.appendChild(skip);
-  c3.appendChild(ask);
-  s3.appendChild(c3);
+  c4.appendChild(ask);
+  s4.appendChild(c4);
 
-  secs[3].appendChild(el('p', 'pin'));
+  /* конец собранного */
+  secs[4].appendChild(el('p', 'pin'));
 
   const closed = $('#closed');
   const box = el('div');
-  box.appendChild(el('p', null, d2.gate.exitLine));
-  const a = el('a', null, d2.gate.exitHrefLabel); a.href = d2.gate.exitHref;
+  box.appendChild(el('p', null, d3.gate.exitLine));
+  const a = el('a', null, d3.gate.exitHrefLabel); a.href = d3.gate.exitHref;
   box.appendChild(a); closed.appendChild(box);
 
   if (DEV) {
@@ -484,44 +436,9 @@ function build(){
 
 /* ═══ Ворота ═══ */
 const GATES = [
-  /* 01 Пролог: касание → титры в воронку → удержание */
+  /* 01 Палка: удержание четыре секунды — палка рождается */
   (() => {
-    let anim = null, raf = 0, shown = false, t0 = null, holdRaf = 0, done = false, phase = 'cover';
-    let s, stroke, wrap, crawl, speed, gw, hold, fill, glabel;
-    function showGate(){ if (shown) return; shown = true; gw.classList.add('on'); s.classList.add('gated'); }
-    function startCrawl(){
-      phase = 'crawl';
-      s.classList.add('crawling');
-      speed.classList.add('on'); setTimeout(() => speed.classList.remove('on'), 4200);
-      const words = SCREENS[0].crawl.join(' ').split(/\s+/).length;
-      const dur = Math.max(24000, words / 1.6 * 1000);
-      const dist = crawl.offsetHeight * 1.05 + s.clientHeight * 1.7;
-      anim = crawl.animate(
-        [{ transform: 'rotateX(26deg) translate3d(0,0,0)' }, { transform: 'rotateX(26deg) translate3d(0,' + (-dist) + 'px,0)' }],
-        { duration: dur, easing: 'linear', fill: 'forwards', delay: 1200 }
-      );
-      anim.onfinish = showGate;
-      const watch = () => {
-        if (!anim) return;
-        const t = anim.currentTime || 0;
-        if (t >= dur * .6) showGate();
-        if (!shown) raf = requestAnimationFrame(watch);
-      };
-      raf = requestAnimationFrame(watch);
-    }
-    function onTouch(e){
-      if (phase !== 'cover') return;
-      e.preventDefault();
-      AUDIO.ensure(); AUDIO.click(); showMute();
-      if (REDUCED()) { phase = 'crawl'; s.classList.add('static'); s.classList.add('crawling'); showGate(); return; }
-      startCrawl();
-    }
-    function onSpeed(e){
-      if (phase !== 'crawl' || !anim || e.target.closest('.hold') || e.target.closest('#mute') || e.target.closest('#dev')) return;
-      anim.playbackRate = anim.playbackRate > 1 ? 1 : 3;
-      speed.textContent = anim.playbackRate > 1 ? '×3' : SCREENS[0].speedHint;
-      speed.classList.add('on'); setTimeout(() => speed.classList.remove('on'), 1600);
-    }
+    let t0 = null, holdRaf = 0, done = false, s, hold, fill, cue;
     const HOLD = SCREENS[0].gate.seconds * 1000;
     function hTick(){
       if (t0 === null) return;
@@ -531,45 +448,65 @@ const GATES = [
       holdRaf = requestAnimationFrame(hTick);
     }
     function hStart(e){
-      if (done || !shown) return;
-      e.preventDefault(); e.stopPropagation();
-      AUDIO.ensure();
+      if (done) return;
+      e.preventDefault();
+      AUDIO.ensure(); AUDIO.click(); showMute();
       try { hold.setPointerCapture(e.pointerId); } catch (err) {}
+      s.classList.add('holding');
       t0 = performance.now(); fill.style.transition = 'none';
-      glabel.textContent = SCREENS[0].gate.label;
+      cue.textContent = SCREENS[0].cover.cue;
       holdRaf = requestAnimationFrame(hTick);
     }
     function hCancel(){
       if (done || t0 === null) return;
       cancelAnimationFrame(holdRaf); t0 = null;
+      s.classList.remove('holding'); s.classList.add('tried');
       fill.style.transition = 'transform .35s ease'; fill.style.setProperty('--fill', '0');
-      glabel.textContent = SCREENS[0].gate.retry;
+      cue.textContent = SCREENS[0].cover.retry;
     }
     function complete(){
       done = true; t0 = null;
       AUDIO.click();
-      glabel.textContent = '';
-      if (anim) { try { anim.pause(); } catch (err) {} }
+      s.classList.add('passed');
       unlock(0, 900);
     }
     return {
       enter(sec){
-        WELL.play();
         if (s) return;
-        s = sec; stroke = $('.stroke', s); wrap = $('.crawlwrap', s); crawl = $('.crawl', s); speed = $('.speed', s);
-        gw = $('.gatewrap', s); hold = $('.hold', s); fill = $('.fill', s); glabel = $('.glabel', s);
-        stroke.addEventListener('pointerdown', onTouch);
-        stroke.addEventListener('contextmenu', e => e.preventDefault());
-        wrap.addEventListener('pointerdown', onSpeed);
+        s = sec; hold = $('.hold', s); fill = $('.fill', s); cue = $('.cover .cue', s);
         hold.addEventListener('pointerdown', hStart);
         ['pointerup', 'pointercancel', 'pointerleave', 'lostpointercapture'].forEach(ev => hold.addEventListener(ev, hCancel));
         hold.addEventListener('contextmenu', e => e.preventDefault());
         document.addEventListener('visibilitychange', () => { if (document.hidden) hCancel(); });
-      },
-      leave(){ if (raf) cancelAnimationFrame(raf); setTimeout(() => WELL.stop(), 800); }
+      }
     };
   })(),
-  /* 02 Login: абзацы по одному → кнопка; честный выход */
+  /* 02 Воронка: текст под лейкой появляется по абзацам → касание воронки — падение внутрь */
+  (() => {
+    let lit = false, shown = false, done = false, s, throat, stamp;
+    function showGate(){ if (shown) return; shown = true; s.classList.add('gated'); stamp.classList.add('on'); }
+    function fallIn(e){
+      if (done || !shown) return;
+      if (e) e.preventDefault();
+      done = true;
+      AUDIO.ensure(); AUDIO.fall();
+      s.classList.add('fall');
+      unlock(1, 1200);
+    }
+    return {
+      enter(sec){
+        if (lit) return;
+        lit = true; s = sec; throat = $('.throat', s); stamp = $('.stamp', s);
+        const ps = [...s.querySelectorAll('.p')];
+        const step = REDUCED() ? 0 : 1100;
+        ps.forEach((p, k) => setTimeout(() => p.classList.add('lit'), 500 + k * step));
+        setTimeout(showGate, 500 + ps.length * step + 600);
+        throat.addEventListener('pointerdown', fallIn);
+        throat.addEventListener('contextmenu', e => e.preventDefault());
+      }
+    };
+  })(),
+  /* 03 Login: абзацы по одному → кнопка; честный выход */
   (() => {
     let timers = [], lit = false;
     return {
@@ -582,13 +519,13 @@ const GATES = [
         ps.forEach((p, k) => timers.push(setTimeout(() => p.classList.add('lit'), 300 + k * step)));
         timers.push(setTimeout(() => agree.classList.add('lit'), 300 + ps.length * step + 400));
         timers.push(setTimeout(() => exit.classList.add('lit'), 300 + ps.length * step + 1400));
-        agree.addEventListener('click', () => { AUDIO.ensure(); AUDIO.click(); unlock(1, 700); }, { once: true });
+        agree.addEventListener('click', () => { AUDIO.ensure(); AUDIO.click(); unlock(2, 700); }, { once: true });
         exit.addEventListener('click', () => { AUDIO.droneOff(); $('#closed').classList.add('on'); });
       },
       leave(){ AUDIO.droneOff(); }
     };
   })(),
-  /* 03 Goal: текст → одно поле; тики; строка садится на палку */
+  /* 04 Goal: текст → одно поле; тики; строка садится на палку */
   (() => {
     let lit = false;
     return {
@@ -615,7 +552,7 @@ const GATES = [
           inp.blur(); inp.disabled = true; send.disabled = true; skip.disabled = true;
           AUDIO.ensure(); AUDIO.click();
           if (v && !REDUCED()) {
-            const r = inp.getBoundingClientRect(), target = notches[2].getBoundingClientRect();
+            const r = inp.getBoundingClientRect(), target = notches[3].getBoundingClientRect();
             const fly = el('span', 'fly', v);
             fly.style.left = (r.left + 16) + 'px'; fly.style.top = (r.top + r.height / 2 - 11) + 'px';
             fly.style.maxWidth = (r.width - 32) + 'px'; fly.style.overflow = 'hidden'; fly.style.textOverflow = 'ellipsis';
@@ -628,15 +565,15 @@ const GATES = [
               fly.style.opacity = '0';
             });
             setTimeout(() => fly.remove(), 1500);
-            unlock(2, 1300);
+            unlock(3, 1300);
           } else {
-            unlock(2, 700);
+            unlock(3, 700);
           }
         }
       }
     };
   })(),
-  /* конец собранного: палка стоит, строка при третьей насечке */
+  /* конец собранного: палка стоит, строка при четвёртой насечке */
   {
     enter(s){
       const pin = $('.pin', s), v = store.get('point');
