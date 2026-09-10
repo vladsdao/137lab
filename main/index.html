@@ -55,7 +55,7 @@
   .js .row.on .a{display:block}
   .row:focus-visible{outline:2px solid var(--w);outline-offset:-2px}
   @media (hover:hover){ .row:hover{background:var(--w);color:var(--k)} }
-  .fine{padding:14px var(--x) 18px;border-bottom:1px solid var(--w);font-size:11px;line-height:1.45;max-width:56ch;color:#6b6b6b}
+  .fine{font-size:11px;line-height:1.45;max-width:56ch;color:#6b6b6b}
 
   .what{padding:28px var(--x);border-bottom:1px solid var(--w);display:grid;gap:18px;max-width:64ch}
   .what p{font-size:clamp(16px,4.2vw,21px);line-height:1.35}
@@ -63,8 +63,8 @@
     font-size:clamp(28px,9vw,96px);line-height:1;letter-spacing:-.02em;padding:26px var(--x);border-bottom:1px solid var(--w)}
   @media (hover:hover){ .call:hover{background:var(--w);color:var(--k)} }
   .call:active{background:var(--w);color:var(--k)}
-  footer{margin-top:auto;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
-    padding:14px var(--x) calc(env(safe-area-inset-bottom) + 16px)}
+  footer{margin-top:auto;display:grid;gap:18px;
+    padding:22vh var(--x) calc(env(safe-area-inset-bottom) + 18px)}
 </style>
 </head>
 <body>
@@ -95,11 +95,10 @@
 </section>
 
 <a class="call" href="https://cal.com/137lab-xyz/30min" rel="noopener">One tap →</a>
-<p class="fine">We can solve any problem of any person, regardless of the field or the level of complexity — by working at the fundamental levels where consciousness creates physical reality. On one condition: the person is ready for transformation.</p>
 
 <footer>
+  <p class="fine">We can solve any problem of any person, regardless of the field or the level of complexity — by working at the fundamental levels where consciousness creates physical reality. On one condition: the person is ready for transformation.</p>
   <span class="mono">137lab — Consciousness Research Playground</span>
-  <span class="mono">Get your money back if we do not exceed your expectations.</span>
 </footer>
 
 <script>
