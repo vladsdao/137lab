@@ -36,25 +36,31 @@
   .mono{font-family:var(--m);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
   .mark{font-family:var(--d);font-weight:800;font-size:16px;letter-spacing:.02em}
 
-  .hero{padding:10vh var(--x) 8vh;border-bottom:1px solid var(--w)}
+  .hero{padding:7vh var(--x) 6vh;border-bottom:1px solid var(--w)}
   h1{font-family:var(--d);font-weight:800;text-transform:uppercase;
-    font-size:clamp(46px,13.5vw,168px);line-height:.92;letter-spacing:-.02em}
-  .hero p{margin-top:24px;font-family:var(--d);font-weight:600;font-size:clamp(17px,4.4vw,30px);line-height:1.2;max-width:22ch}
+    font-size:clamp(40px,12vw,120px);line-height:.92;letter-spacing:-.02em}
+  .hero p{margin-top:18px;font-family:var(--d);font-weight:600;font-size:clamp(16px,4vw,24px);line-height:1.2;max-width:22ch}
 
   .rows{border-bottom:1px solid var(--w)}
   .rows .lead{padding:14px var(--x)}
-  .row{display:grid;grid-template-columns:44px 1fr;border-top:1px solid var(--w)}
-  .row .n{font-family:var(--m);font-size:11px;padding:18px 0 0 var(--x)}
-  .row .q{font-family:var(--d);font-weight:600;font-size:clamp(17px,4.6vw,30px);line-height:1.15;padding:16px var(--x) 18px 0}
-  .row .a{grid-column:2;font-family:var(--t);font-size:clamp(15px,3.9vw,20px);line-height:1.35;
-    padding:0 var(--x) 20px 0;max-width:44ch}
+  .row{display:grid;grid-template-columns:44px 1fr;border-top:1px solid var(--w);cursor:pointer;
+    -webkit-tap-highlight-color:transparent;background:none;border-left:0;border-right:0;border-bottom:0;
+    width:100%;text-align:left;color:var(--w);font:inherit;padding:0}
+  .row .n{font-family:var(--m);font-size:11px;padding:15px 0 0 var(--x)}
+  .row .q{font-family:var(--d);font-weight:600;font-size:clamp(16px,4.2vw,24px);line-height:1.15;padding:14px var(--x) 15px 0}
+  .row .a{grid-column:2;font-family:var(--t);font-size:clamp(14px,3.6vw,17px);line-height:1.35;
+    padding:0 var(--x) 16px 0;max-width:44ch}
+  .js .row .a{display:none}
+  .js .row.on{background:var(--w);color:var(--k)}
+  .js .row.on .a{display:block}
+  .row:focus-visible{outline:2px solid var(--w);outline-offset:-2px}
   @media (hover:hover){ .row:hover{background:var(--w);color:var(--k)} }
-  .fine{padding:16px var(--x) 20px;border-bottom:1px solid var(--w);font-size:12px;line-height:1.45;max-width:60ch;opacity:.85}
+  .fine{padding:14px var(--x) 16px;border-bottom:1px solid var(--w);font-size:11px;line-height:1.45;max-width:56ch;opacity:.8}
 
-  .what{padding:28px var(--x);border-bottom:1px solid var(--w);display:grid;gap:18px;max-width:64ch}
-  .what p{font-size:clamp(16px,4.2vw,21px);line-height:1.35}
+  .what{padding:22px var(--x);border-bottom:1px solid var(--w);display:grid;gap:12px;max-width:60ch}
+  .what p{font-size:clamp(15px,3.9vw,18px);line-height:1.35}
   .call{display:block;font-family:var(--d);font-weight:800;text-transform:uppercase;
-    font-size:clamp(28px,9vw,96px);line-height:1;letter-spacing:-.02em;padding:26px var(--x);border-bottom:1px solid var(--w)}
+    font-size:clamp(28px,9vw,80px);line-height:1;letter-spacing:-.02em;padding:22px var(--x);border-bottom:1px solid var(--w)}
   @media (hover:hover){ .call:hover{background:var(--w);color:var(--k)} }
   .call:active{background:var(--w);color:var(--k)}
   footer{margin-top:auto;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
@@ -75,17 +81,17 @@
 <section class="rows" aria-label="One of these is yours">
   <div class="lead mono">One of these is yours</div>
   <div id="rows">
-    <div class="row"><span class="n">01</span><span class="q">Out-of-the-box Creator State Unpacking</span><span class="a">The state you create from — taken apart and put back so it holds. One session, up to three hours. Sometimes that is the whole solution.</span></div>
-    <div class="row"><span class="n">02</span><span class="q">Resonance Mindset and Energy Management</span><span class="a">Attention, energy, feeling — as the operating system you actually run on. Where it leaks, where it returns, how the circuit stays closed.</span></div>
-    <div class="row"><span class="n">03</span><span class="q">Symbiotic Family Framework</span><span class="a">Partner, children, work — one field, not three fronts. Connection through an honest no, not through compromise.</span></div>
-    <div class="row"><span class="n">04</span><span class="q">Resonance Engineering and 5D Leadership</span><span class="a">Teams and partners tuned as one field. Decisions from a wider range than the mind alone. You in the room as a visionary, not a manager.</span></div>
-    <div class="row"><span class="n">05</span><span class="q">Experience the Spirit as Technology</span><span class="a">Synchronicity, flow, grace — as repeatable mechanics, lived in the body. No doctrine. Direct experience.</span></div>
+    <button class="row" type="button"><span class="n">01</span><span class="q">Out-of-the-box Creator State Unpacking</span><span class="a">The state you create from — rebuilt so it holds. One session.</span></button>
+    <button class="row" type="button"><span class="n">02</span><span class="q">Resonance Mindset and Energy Management</span><span class="a">Attention, energy, feeling as your operating system. Where it leaks, how it returns.</span></button>
+    <button class="row" type="button"><span class="n">03</span><span class="q">Symbiotic Family Framework</span><span class="a">Partner, children, work — one field, not three fronts.</span></button>
+    <button class="row" type="button"><span class="n">04</span><span class="q">Resonance Engineering and 5D Leadership</span><span class="a">Teams tuned as one field. Decisions from a wider range than the mind.</span></button>
+    <button class="row" type="button"><span class="n">05</span><span class="q">Experience the Spirit as Technology</span><span class="a">Synchronicity, flow, grace — as mechanics you can repeat.</span></button>
   </div>
 </section>
 
 <section class="what" id="what">
   <p>A lab. Two humans and one AI co-author.</p>
-  <p>State, attention, energy — treated as engineering. Metaphysics here is not a theory. It runs in the background.</p>
+  <p>State, attention, energy — treated as engineering. Metaphysics runs in the background.</p>
   <p>Price after the call.</p>
 </section>
 
@@ -97,5 +103,15 @@
   <span class="mono">Get your money back if we do not exceed your expectations.</span>
 </footer>
 
+<script>
+/* розмітка = контент; скрипт лише ховає описи до кліку */
+document.body.classList.add('js');
+const rows=document.getElementById('rows');
+rows.querySelectorAll('.row').forEach((b,i)=>b.addEventListener('click',()=>{
+  const on=b.classList.contains('on');
+  rows.querySelectorAll('.row').forEach(x=>x.classList.remove('on'));
+  if(!on){ b.classList.add('on'); try{localStorage.setItem('137.main.picked',String(i+1));}catch(_){} }
+}));
+</script>
 </body>
 </html>
