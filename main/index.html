@@ -55,6 +55,12 @@
   @media (hover:hover){ .row:hover{background:var(--w);color:var(--k)} }
   .row:focus-visible{outline:2px solid var(--w);outline-offset:-2px}
 
+  .how{border-bottom:1px solid var(--w)}
+  .how .lead{padding:14px var(--x)}
+  .how ol{list-style:none}
+  .how li{display:grid;grid-template-columns:44px 1fr;border-top:1px solid var(--w)}
+  .how li .n{font-family:var(--m);font-size:11px;padding:18px 0 0 var(--x)}
+  .how li .q{font-family:var(--d);font-weight:600;font-size:clamp(17px,4.6vw,30px);line-height:1.15;padding:16px var(--x) 18px 0}
   .what{padding:28px var(--x);border-bottom:1px solid var(--w);display:grid;gap:18px;max-width:64ch}
   .what p{font-size:clamp(16px,4.2vw,21px);line-height:1.35}
   .call{display:block;font-family:var(--d);font-weight:800;text-transform:uppercase;
@@ -68,7 +74,7 @@
 <body>
 <header>
   <a class="mark" href="/">137lab</a>
-  <span class="mono" style="text-transform:none">α⁻¹ = 137.036</span>
+  <span class="mono">House of Unicorns</span>
 </header>
 
 <section class="hero">
@@ -81,13 +87,18 @@
   <div id="rows"></div>
 </section>
 
+<section class="how" aria-label="How we help">
+  <div class="lead mono">How we help</div>
+  <ol id="how"></ol>
+</section>
+
 <section class="what" id="what"></section>
 
-<a class="call" href="https://cal.com/137lab-xyz/30min" rel="noopener">One call →</a>
+<a class="call" href="https://cal.com/137lab-xyz/30min" rel="noopener">One tap →</a>
 
 <footer>
+  <span class="mono">137lab — Consciousness Research Playground</span>
   <span class="mono">Applied metaphysics. Direct experience only.</span>
-  <span class="mono">Woo-woo removed for engineering reasons.</span>
 </footer>
 
 <script>
@@ -117,6 +128,14 @@ ROWS.forEach((r,i)=>{
   });
   rows.appendChild(b);
 });
+const HOW = [
+  'Any-area problem solving. One session, up to three hours. Sometimes that is the whole solution.',
+  'Root patterns — the ones running you below awareness.',
+  'Teams and partners tuned as one field.',
+  'Creativity unblocked. Family, work, business back in one circuit.'
+];
+const how=document.getElementById('how');
+HOW.forEach((t,i)=>{ const li=el('li'); li.append(el('span','n','0'+(i+1)), el('span','q',t)); how.appendChild(li); });
 const what=document.getElementById('what');
 WHAT.forEach(t=>what.appendChild(el('p',null,t)));
 </script>
