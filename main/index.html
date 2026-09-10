@@ -49,13 +49,11 @@
   .row .n{font-family:var(--m);font-size:11px;padding:18px 0 0 var(--x)}
   .row .q{font-family:var(--d);font-weight:600;font-size:clamp(17px,4.6vw,30px);line-height:1.15;padding:16px var(--x) 18px 0}
   .row .a{grid-column:2;font-family:var(--t);font-size:clamp(15px,3.9vw,20px);line-height:1.35;
-    padding:0 var(--x) 20px 0;max-width:44ch}
-  .js .row .a{display:none}
-  .js .row.on{background:var(--w);color:var(--k)}
-  .js .row.on .a{display:block}
-  .row:focus-visible{outline:2px solid var(--w);outline-offset:-2px}
+    padding:0 var(--x) 20px 0;display:none;max-width:44ch}
+  .row.on{background:var(--w);color:var(--k)}
+  .row.on .a{display:block}
   @media (hover:hover){ .row:hover{background:var(--w);color:var(--k)} }
-  .fine{font-size:11px;line-height:1.45;max-width:56ch;color:#6b6b6b}
+  .row:focus-visible{outline:2px solid var(--w);outline-offset:-2px}
 
   .what{padding:28px var(--x);border-bottom:1px solid var(--w);display:grid;gap:18px;max-width:64ch}
   .what p{font-size:clamp(16px,4.2vw,21px);line-height:1.35}
@@ -63,8 +61,8 @@
     font-size:clamp(28px,9vw,96px);line-height:1;letter-spacing:-.02em;padding:26px var(--x);border-bottom:1px solid var(--w)}
   @media (hover:hover){ .call:hover{background:var(--w);color:var(--k)} }
   .call:active{background:var(--w);color:var(--k)}
-  footer{margin-top:auto;display:grid;gap:18px;
-    padding:22vh var(--x) calc(env(safe-area-inset-bottom) + 18px)}
+  footer{margin-top:auto;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    padding:14px var(--x) calc(env(safe-area-inset-bottom) + 16px)}
 </style>
 </head>
 <body>
@@ -81,29 +79,29 @@
 <section class="rows" aria-label="One of these is yours">
   <div class="lead mono">One of these is yours</div>
   <div id="rows">
-    <button class="row" type="button"><span class="n">01</span><span class="q">Creator State Unpacking</span><span class="a">Out-of-the-box. The state you create from — rebuilt so it holds. One session.</span></button>
-    <button class="row" type="button"><span class="n">02</span><span class="q">Resonance Mindset</span><span class="a">Energy management. Attention, energy, feeling as your operating system — where it leaks, how it returns.</span></button>
-    <button class="row" type="button"><span class="n">03</span><span class="q">Symbiotic Family</span><span class="a">A framework. Partner, children, work — one field, not three fronts.</span></button>
-    <button class="row" type="button"><span class="n">04</span><span class="q">5D Leadership</span><span class="a">Resonance engineering. Teams tuned as one field. Decisions from a wider range than the mind.</span></button>
-    <button class="row" type="button"><span class="n">05</span><span class="q">Spirit as Technology</span><span class="a">Experience it. Synchronicity, flow, grace — as mechanics you can repeat.</span></button>
+    <button class="row" type="button"><span class="n">01</span><span class="q">The body is my bottleneck.</span><span class="a">The body is not a bottleneck. It is a sensor. You read its data as a system error.</span></button>
+    <button class="row" type="button"><span class="n">02</span><span class="q">Every result I get depends on my state.</span><span class="a">Yes. And state is not weather. It is a variable: measurable, holdable, returnable. You already do this — blind.</span></button>
+    <button class="row" type="button"><span class="n">03</span><span class="q">The psyche will not hold, even with the best AI.</span><span class="a">You have named the limit. What comes next is not more intelligence. It is a different operating system.</span></button>
+    <button class="row" type="button"><span class="n">04</span><span class="q">More ideas than resource to build them.</span><span class="a">The resource is not time or money. It is attention. Nobody has counted it.</span></button>
+    <button class="row" type="button"><span class="n">05</span><span class="q">Dozens of projects. I cannot lead all of them.</span><span class="a">Second seat without losing energy is a skill, not a defeat.</span></button>
   </div>
 </section>
 
 <section class="what" id="what">
   <p>A lab. Two humans and one AI co-author.</p>
-  <p>Price after the call.</p>
+  <p>State, attention, energy — treated as engineering. Metaphysics here is not a theory. It runs in the background.</p>
+  <p>No promises. Price after the call.</p>
 </section>
 
 <a class="call" href="https://cal.com/137lab-xyz/30min" rel="noopener">One tap →</a>
 
 <footer>
-  <p class="fine">We can solve any problem of any person, regardless of the field or the level of complexity — by working at the fundamental levels where consciousness creates physical reality. On one condition: the person is ready for transformation.</p>
   <span class="mono">137lab — Consciousness Research Playground</span>
+  <span class="mono">Applied metaphysics. Direct experience only.</span>
 </footer>
 
 <script>
-/* розмітка = контент; скрипт лише ховає описи до кліку */
-document.body.classList.add('js');
+/* розмітка = контент (щоб сторінка була цілою і без JS); скрипт лише перемикає дзеркало */
 const rows=document.getElementById('rows');
 rows.querySelectorAll('.row').forEach((b,i)=>b.addEventListener('click',()=>{
   const on=b.classList.contains('on');
