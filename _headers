@@ -20,3 +20,7 @@
 
 /sync/*
   X-Robots-Tag: noindex, nofollow
+
+# /main — головна для засновників «зріз на порозі» (10.09): noindex до слова Влада.
+/main/*
+  X-Robots-Tag: noindex, nofollow
