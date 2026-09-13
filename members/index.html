@@ -11,7 +11,7 @@
   /* ── 137lab · <домен>/members · страница 1: порог + слово-ключ (House of Unicorns, 13.09.2026).
      Язык /main: чёрное · белое · Fixel Display 800 · моно для меты · линии 1px · без анимаций.
      Открывается только по личной ссылке <домен>/members/?u=<slug>; слово-ключ приходит отдельным сообщением.
-     Ни одной ссылки на эту страницу с главной. noindex. Раскадровка — база, docs/plans/2026-09-13-house-of-unicorns-member-storyboard.md ── */
+     Функция — Supabase Edge (supabase/functions/member/index.ts); токен сессии — localStorage m137. Ни одной ссылки на эту страницу с главной. noindex. Раскадровка — база, docs/plans/2026-09-13-house-of-unicorns-member-storyboard.md ── */
   @font-face{font-family:'Fixel Display';src:url('/fonts/FixelDisplay-ExtraBold.woff2') format('woff2');font-weight:800;font-display:swap}
   @font-face{font-family:'Fixel Text';src:url('/fonts/FixelText-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
   :root{--k:#000;--w:#fff;--g:#9a9a9a;
@@ -67,11 +67,12 @@
 <script>
 (function(){
   var u = new URLSearchParams(location.search).get('u');
-  var api = '/.netlify/functions/member';
-  var post = function(b){ return fetch(api,{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify(b)}); };
+  var api = 'https://bnfkicmzxljkhahqxfla.supabase.co/functions/v1/member';
+  var tok = function(){ try{ return localStorage.getItem('m137')||''; }catch(e){ return ''; } };
+  var post = function(b){ return fetch(api,{method:'POST',headers:{'Content-Type':'application/json','x-member':tok()},body:JSON.stringify(b)}); };
   if(!u){ document.getElementById('nolink').hidden=false; return; }
   // уже входил — сразу в комнату
-  post({action:'state'}).then(function(r){ if(r.ok){ location.replace('/members/room/'); } else { show(); } }).catch(show);
+  if(tok()){ post({action:'state'}).then(function(r){ if(r.ok){ location.replace('/members/room/'); } else { show(); } }).catch(show); } else { show(); }
   function show(){ document.getElementById('gate').hidden=false; document.getElementById('go').hidden=false; document.getElementById('key').focus(); }
   var f=document.getElementById('f'), go=document.getElementById('go'), err=document.getElementById('err');
   document.getElementById('key').addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); if(f.requestSubmit) f.requestSubmit(); else go.click(); } });
@@ -80,7 +81,7 @@
     var key=document.getElementById('key').value.trim(); if(!key) return;
     go.disabled=true; err.textContent='';
     post({action:'enter',u:u,key:key}).then(function(r){
-      if(r.ok){ location.replace('/members/room/'); return; }
+      if(r.ok){ return r.json().then(function(d){ try{ localStorage.setItem('m137', d.token||''); }catch(e){} location.replace('/members/room/'); }); }
       err.textContent = r.status===429 ? 'слишком часто. подождите минуту' : 'не то слово';
       go.disabled=false;
     }).catch(function(){ err.textContent='нет связи'; go.disabled=false; });

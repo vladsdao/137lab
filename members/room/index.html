@@ -9,7 +9,7 @@
 <title>137lab</title>
 <style>
   /* ── 137lab · <домен>/members/room · страница 2, четыре состояния: video → window → yes | closed.
-     Состояние и время живут на сервере (функция member): окно считается от события «видео до конца»,
+     Состояние и время живут на сервере (Supabase Edge Function member; токен — localStorage m137): окно считается от события «видео до конца»,
      перезагрузка ничего не сбрасывает. На экране окна — ни строки описания: всё говорит видео.
      «Да» — одно касание: слово Владу в Telegram + отметка боту. ── */
   @font-face{font-family:'Fixel Display';src:url('/fonts/FixelDisplay-ExtraBold.woff2') format('woff2');font-weight:800;font-display:swap}
@@ -72,9 +72,10 @@
 
 <script>
 (function(){
-  var api='/.netlify/functions/member';
+  var api='https://bnfkicmzxljkhahqxfla.supabase.co/functions/v1/member';
+  var tok=function(){ try{ return localStorage.getItem('m137')||''; }catch(e){ return ''; } };
   var $=function(id){return document.getElementById(id);};
-  var post=function(b,ka){ return fetch(api,{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',keepalive:!!ka,body:JSON.stringify(b)}).then(function(r){return r.json();}); };
+  var post=function(b,ka){ return fetch(api,{method:'POST',headers:{'Content-Type':'application/json','x-member':tok()},keepalive:!!ka,body:JSON.stringify(b)}).then(function(r){return r.json();}); };
   var v=$('v'), st=null, deadline=0, tick=null, endedSent=false;
   var hhmm=function(iso){ var d=new Date(iso); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); };
 
