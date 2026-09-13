@@ -72,7 +72,8 @@
   var post = function(b){ return fetch(api,{method:'POST',headers:{'Content-Type':'application/json','x-member':tok()},body:JSON.stringify(b)}); };
   if(!u){ document.getElementById('nolink').hidden=false; return; }
   // уже входил — сразу в комнату
-  if(tok()){ post({action:'state'}).then(function(r){ if(r.ok){ location.replace('/members/room/'); } else { show(); } }).catch(show); } else { show(); }
+  // уже входил с этой же личной ссылки — сразу в комнату (токен = slug.exp.sig; чужой slug — порог заново)
+  if(tok() && tok().split('.')[0]===u){ post({action:'state'}).then(function(r){ if(r.ok){ location.replace('/members/room/'); } else { show(); } }).catch(show); } else { show(); }
   function show(){
     document.getElementById('gate').hidden=false; document.getElementById('go').hidden=false;
     // видео-инструкция до ключа (слово Влада 13.09: порог не пугает текстом, а показывает)
