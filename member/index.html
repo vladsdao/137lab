@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#000000">
+<link rel="icon" sizes="32x32" href="/icons/favicon-32x32.png">
+<title>137lab</title>
+<style>
+  /* ── 137lab · /member · страница 1: порог + слово-ключ (House of Unicorns, 13.09.2026).
+     Язык /main: чёрное · белое · Fixel Display 800 · моно для меты · линии 1px · без анимаций.
+     Открывается только по личной ссылке ?u=<slug>; слово-ключ приходит отдельным сообщением.
+     Ни одной ссылки на эту страницу с главной. noindex. Раскадровка — база, docs/plans/2026-09-13-house-of-unicorns-member-storyboard.md ── */
+  @font-face{font-family:'Fixel Display';src:url('/fonts/FixelDisplay-ExtraBold.woff2') format('woff2');font-weight:800;font-display:swap}
+  @font-face{font-family:'Fixel Text';src:url('/fonts/FixelText-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+  :root{--k:#000;--w:#fff;--g:#9a9a9a;
+    --d:'Fixel Display','Helvetica Neue',Arial,sans-serif;--t:'Fixel Text','Helvetica Neue',Arial,sans-serif;
+    --m:ui-monospace,'SF Mono',Menlo,Consolas,monospace;--x:20px}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{background:var(--k);color:var(--w);-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%}
+  body{font-family:var(--t);font-size:17px;line-height:1.38;min-height:100dvh;display:flex;flex-direction:column}
+  ::selection{background:var(--w);color:var(--k)}
+  a{color:inherit;text-decoration:none}
+  header{display:flex;justify-content:space-between;align-items:baseline;padding:calc(env(safe-area-inset-top) + 14px) var(--x) 12px;border-bottom:1px solid var(--w)}
+  .mono{font-family:var(--m);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+  .mark{font-family:var(--d);font-weight:800;font-size:16px;letter-spacing:.02em}
+  main{padding:34px var(--x) 24px;display:grid;gap:18px;align-content:start}
+  .h{font-family:var(--d);font-weight:800;text-transform:uppercase;font-size:clamp(46px,13.5vw,120px);line-height:.92;letter-spacing:-.02em}
+  p{max-width:30ch}
+  .dim{color:var(--g)}
+  form{display:grid;gap:8px;margin-top:6px}
+  label{color:var(--w)}
+  input{width:100%;background:none;border:0;border-bottom:1px solid var(--w);border-radius:0;color:var(--w);font:inherit;font-family:var(--m);font-size:20px;letter-spacing:.12em;padding:10px 0 8px;outline:none;-webkit-appearance:none}
+  input:focus-visible{border-bottom-width:2px}
+  .err{color:var(--g);min-height:1.4em}
+  .call{margin-top:auto;display:block;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--w);color:var(--w);cursor:pointer;
+    font-family:var(--d);font-weight:800;text-transform:uppercase;font-size:clamp(28px,9vw,96px);line-height:1;letter-spacing:-.02em;padding:26px var(--x) calc(env(safe-area-inset-bottom) + 26px)}
+  @media (hover:hover){.call:hover{background:var(--w);color:var(--k)}}
+  .call:active{background:var(--w);color:var(--k)}
+  .call:disabled{color:var(--g);background:none;cursor:default}
+  [hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header>
+  <a class="mark" href="/">137lab</a>
+  <span class="mono">House of Unicorns</span>
+</header>
+
+<main>
+  <div id="nolink" hidden><p class="dim">Эта страница открывается по личной ссылке.</p></div>
+  <div id="gate" hidden style="display:grid;gap:18px">
+    <div class="h">Вы<br>один?</div>
+    <p>Это видео — вам. Одному. Полчаса, где никого. Наушники.</p>
+    <p class="dim">После видео — десять минут и одно слово.</p>
+    <form id="f" autocomplete="off">
+      <label class="mono" for="key">слово-ключ</label>
+      <input id="key" name="key" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="text" required>
+      <div class="err mono" id="err" aria-live="polite"></div>
+    </form>
+  </div>
+</main>
+
+<button class="call" id="go" type="submit" form="f" hidden>Я один →</button>
+
+<script>
+(function(){
+  var u = new URLSearchParams(location.search).get('u');
+  var api = '/.netlify/functions/member';
+  var post = function(b){ return fetch(api,{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify(b)}); };
+  if(!u){ document.getElementById('nolink').hidden=false; return; }
+  // уже входил — сразу в комнату
+  post({action:'state'}).then(function(r){ if(r.ok){ location.replace('/member/room/'); } else { show(); } }).catch(show);
+  function show(){ document.getElementById('gate').hidden=false; document.getElementById('go').hidden=false; document.getElementById('key').focus(); }
+  var f=document.getElementById('f'), go=document.getElementById('go'), err=document.getElementById('err');
+  document.getElementById('key').addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); if(f.requestSubmit) f.requestSubmit(); else go.click(); } });
+  f.addEventListener('submit', function(e){
+    e.preventDefault();
+    var key=document.getElementById('key').value.trim(); if(!key) return;
+    go.disabled=true; err.textContent='';
+    post({action:'enter',u:u,key:key}).then(function(r){
+      if(r.ok){ location.replace('/member/room/'); return; }
+      err.textContent = r.status===429 ? 'слишком часто. подождите минуту' : 'не то слово';
+      go.disabled=false;
+    }).catch(function(){ err.textContent='нет связи'; go.disabled=false; });
+  });
+})();
+</script>
+</body>
+</html>

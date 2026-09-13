@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#000000">
+<link rel="icon" sizes="32x32" href="/icons/favicon-32x32.png">
+<title>137lab</title>
+<style>
+  /* ── 137lab · /member/room · страница 2, четыре состояния: video → window → yes | closed.
+     Состояние и время живут на сервере (функция member): окно считается от события «видео до конца»,
+     перезагрузка ничего не сбрасывает. На экране окна — ни строки описания: всё говорит видео.
+     «Да» — одно касание: слово Владу в Telegram + отметка боту. ── */
+  @font-face{font-family:'Fixel Display';src:url('/fonts/FixelDisplay-ExtraBold.woff2') format('woff2');font-weight:800;font-display:swap}
+  @font-face{font-family:'Fixel Text';src:url('/fonts/FixelText-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+  :root{--k:#000;--w:#fff;--g:#9a9a9a;
+    --d:'Fixel Display','Helvetica Neue',Arial,sans-serif;--t:'Fixel Text','Helvetica Neue',Arial,sans-serif;
+    --m:ui-monospace,'SF Mono',Menlo,Consolas,monospace;--x:20px}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{background:var(--k);color:var(--w);-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%}
+  body{font-family:var(--t);font-size:17px;line-height:1.38;min-height:100dvh;display:flex;flex-direction:column}
+  ::selection{background:var(--w);color:var(--k)}
+  a{color:inherit;text-decoration:none}
+  .mono{font-family:var(--m);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+  .mark{font-family:var(--d);font-weight:800;font-size:16px;letter-spacing:.02em}
+  header{display:flex;justify-content:space-between;align-items:baseline;padding:calc(env(safe-area-inset-top) + 14px) var(--x) 12px;border-bottom:1px solid var(--w)}
+  .win{padding:calc(env(safe-area-inset-top) + 18px) var(--x) 0;display:grid;gap:8px}
+  .track{height:1px;background:rgba(255,255,255,.25);position:relative}
+  .track i{position:absolute;left:0;top:-1px;height:3px;width:100%;background:var(--w)}
+  .win .row{display:flex;justify-content:space-between;color:var(--g)}
+  .v{padding:34px 0 0;display:grid;gap:18px}
+  video{display:block;width:calc(100% - 2*var(--x));margin:0 var(--x);aspect-ratio:16/9;background:#000;border:1px solid var(--w);outline:none}
+  .v p{padding:0 var(--x)}
+  .band{margin:22px var(--x) 0;border:1px solid var(--w);display:flex;justify-content:space-between;align-items:center;padding:10px 12px;cursor:pointer;background:none;color:var(--w);width:calc(100% - 2*var(--x));text-align:left}
+  .txt{padding:34px var(--x) 0;display:grid;gap:18px}
+  .h{font-family:var(--d);font-weight:800;text-transform:uppercase;font-size:clamp(46px,13.5vw,120px);line-height:.92;letter-spacing:-.02em}
+  p{max-width:30ch}
+  .dim{color:var(--g)}
+  .call{margin-top:auto;display:block;background:var(--w);color:var(--k);font-family:var(--d);font-weight:800;text-transform:uppercase;
+    font-size:clamp(72px,26vw,220px);line-height:1;letter-spacing:-.02em;padding:22px var(--x) calc(env(safe-area-inset-bottom) + 26px);cursor:pointer}
+  .call:active{background:#e6e6e6}
+  footer{margin-top:auto;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px var(--x) calc(env(safe-area-inset-bottom) + 16px)}
+  footer.line{border-top:1px solid var(--w)}
+  [hidden]{display:none!important}
+</style>
+</head>
+<body data-state="loading">
+<header id="hdr"><a class="mark" href="/">137lab</a><span class="mono">House of Unicorns</span></header>
+<div class="win" id="win" hidden><div class="track"><i id="bar"></i></div><div class="row mono"><span id="wl">десять минут</span><span id="wr"></span></div></div>
+
+<section class="v" id="vsec" hidden>
+  <video id="v" playsinline controls controlsList="nodownload noplaybackrate noremoteplayback" disablepictureinpicture preload="metadata"></video>
+  <p class="mono dim">Влад · Лиза · картина</p>
+</section>
+<button class="band mono" id="band" type="button" hidden><span>видео</span><span id="bandr">ещё раз ▶</span></button>
+
+<section class="txt" id="yes" hidden>
+  <div class="h">Так.</div>
+</section>
+<section class="txt" id="closed" hidden>
+  <div class="h">Окно<br>закрылось.</div>
+  <p>Это тоже ответ. Картина — ваша. Видео — тоже.</p>
+</section>
+<section class="txt" id="off" hidden><p class="dim">Нет связи. Обновите страницу.</p></section>
+
+<a class="call" id="da" href="#" hidden>Да</a>
+
+<footer id="f1" class="mono" hidden><span>не скачивается · не пересылается</span><span>просим</span></footer>
+<footer id="f2" class="mono line" hidden><span>Влад · Лиза</span><span>House of Unicorns</span></footer>
+<footer id="f3" class="mono line" hidden><a href="https://cal.com/137lab-xyz/30min" rel="noopener">Обычная дверь — один звонок →</a></footer>
+
+<script>
+(function(){
+  var api='/.netlify/functions/member';
+  var $=function(id){return document.getElementById(id);};
+  var post=function(b,ka){ return fetch(api,{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',keepalive:!!ka,body:JSON.stringify(b)}).then(function(r){return r.json();}); };
+  var v=$('v'), st=null, deadline=0, tick=null, endedSent=false;
+  var hhmm=function(iso){ var d=new Date(iso); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); };
+
+  function showOnly(ids){ ['hdr','win','vsec','band','yes','closed','off','da','f1','f2','f3'].forEach(function(i){ $(i).hidden = ids.indexOf(i)<0; }); }
+
+  function render(s){
+    st=s; document.body.dataset.state=s.state;
+    if(s.video && v.getAttribute('src')!==s.video){ v.src=s.video; }
+    clearInterval(tick);
+    if(s.state==='video'){ showOnly(['hdr','vsec','f1']); return; }
+    if(s.state==='window'){
+      showOnly(['win','band','da']); $('wl').textContent='десять минут'; $('wr').textContent='';
+      deadline=Date.now()+s.remaining*1000; $('bar').style.width=(100*s.remaining/s.window)+'%';
+      tick=setInterval(function(){
+        var r=Math.max(0,(deadline-Date.now())/1000);
+        $('bar').style.width=(100*r/s.window)+'%';
+        $('wr').textContent = r<60 ? '0:'+String(Math.ceil(r)).padStart(2,'0') : '';
+        if(r<=0){ clearInterval(tick); post({action:'event',type:'closed'}).then(render).catch(function(){}); }
+      },250);
+      return;
+    }
+    if(s.state==='yes'){ showOnly(['win','band','yes','f2']); $('bar').style.width='0'; $('wl').textContent='слово отправлено · '+hhmm(s.yes_at); $('wr').textContent=''; return; }
+    if(s.state==='closed'){ showOnly(['win','band','closed','f3']); $('bar').style.width='0'; $('wl').textContent='окно закрылось · '+hhmm(new Date(new Date(s.ended_at).getTime()+s.window*1000).toISOString()); $('wr').textContent=''; return; }
+  }
+
+  v.addEventListener('ended', function(){
+    if(st && st.state==='video' && !endedSent){ endedSent=true; post({action:'event',type:'ended'}).then(render).catch(function(){ endedSent=false; }); }
+  });
+  // видео ещё раз — в любом состоянии после конца
+  $('band').addEventListener('click', function(){
+    var open=$('vsec').hidden; $('vsec').hidden=!open; $('bandr').textContent = open ? 'свернуть' : 'ещё раз ▶';
+    if(open){ try{ v.currentTime=0; v.play(); }catch(e){} } else { v.pause(); }
+  });
+  // ДА: слово Владу в Telegram (синхронно, до сети) + отметка боту
+  var da=$('da');
+  da.addEventListener('click', function(e){
+    if(!(st && st.state==='window')){ e.preventDefault(); return; }
+    if(st.tg){ da.href='https://t.me/'+st.tg+'?text='+encodeURIComponent('Так'); da.target='_blank'; da.rel='noopener'; } else { e.preventDefault(); }
+    post({action:'event',type:'yes'},true).then(render).catch(function(){});
+  });
+
+  post({action:'state'}).then(function(s){
+    if(!s.ok){ location.replace('/member/'); return; }
+    render(s);
+  }).catch(function(){ showOnly(['hdr','off']); });
+})();
+</script>
+</body>
+</html>

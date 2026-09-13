@@ -4,8 +4,20 @@
     {
       "name": "137lab-dev",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8137"],
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8137"
+      ],
       "port": 8137
+    },
+    {
+      "name": "137lab-functions",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "netlify/dev.js"
+      ],
+      "port": 8138
     }
   ]
 }
