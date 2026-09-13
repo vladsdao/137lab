@@ -1,13 +1,18 @@
 // /members — personal room (House of Unicorns). Supabase Edge Function: key entry, room state, events, Telegram signal.
 // Pages (static, Netlify): <домен>/members/ → /members/room/. They call this function with a signed token in header x-member.
-// Uses only what the Edge runtime already has: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY (auto), TELEGRAM_BOT_TOKEN (project secret).
-// Config lives in public.member_config: tg_chat_id (signals), tg_username (link «Так»), tz (timestamps).
+// Uses only what the Edge runtime already has: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY (auto); signal — own bot token (member_config.bot_token) and/or e-mail via RESEND_API_KEY (project secret).
+// Config lives in public.member_config: tg_chat_id, bot_token (signals), mail_to, mail_from (e-mail signal), tg_username (link «Так»), tz (timestamps).
 // Deployed with verify_jwt=false: auth is the guest key + HMAC token (see below), no Supabase users.
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 const SUPA = Deno.env.get("SUPABASE_URL")!.replace(/\/$/, "");
 const KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const BOT = Deno.env.get("TELEGRAM_BOT_TOKEN") || "";
+// bot token for signals: member_config.bot_token (own bot for House of Unicorns) → env TELEGRAM_BOT_TOKEN. Never another product's bot (слово Влада 13.09).
+async function botToken(): Promise<string> {
+  const c = await config();
+  return c.bot_token || Deno.env.get("TELEGRAM_BOT_TOKEN") || "";
+}
+const RESEND = Deno.env.get("RESEND_API_KEY") || "";
 const WINDOW = 600; // seconds — the ten minutes
 const BUCKET = "member";
 const TOKEN_DAYS = 30;
@@ -76,16 +81,33 @@ async function hhmm(iso: string) {
   return new Intl.DateTimeFormat("ru-RU", { hour: "2-digit", minute: "2-digit", timeZone: tz }).format(new Date(iso));
 }
 const mmss = (sec: number) => Math.floor(sec / 60) + ":" + String(Math.floor(sec % 60)).padStart(2, "0");
+// signal: Telegram (own bot, if set) and e-mail (Resend, key already in project secrets) — both when available
 async function notify(text: string) {
-  const chat = (await config()).tg_chat_id;
-  if (!BOT || !chat) { console.log("[member] signal (not configured):", text.replace(/\n/g, " · ")); return; }
-  try {
-    const r = await fetch(`https://api.telegram.org/bot${BOT}/sendMessage`, {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: chat, text, disable_web_page_preview: true }),
-    });
-    if (!r.ok) console.log("[member] signal failed", r.status, (await r.text()).slice(0, 200));
-  } catch (e) { console.log("[member] signal error", (e as Error).message); }
+  const c = await config();
+  const out: Record<string, unknown> = { tg: null, mail: null };
+  const BOT = await botToken();
+  if (BOT && c.tg_chat_id) {
+    try {
+      const r = await fetch(`https://api.telegram.org/bot${BOT}/sendMessage`, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: c.tg_chat_id, text, disable_web_page_preview: true }),
+      });
+      const d = await r.json().catch(() => ({}));
+      out.tg = { ok: !!d.ok, description: d.description || null };
+    } catch (e) { out.tg = { ok: false, description: (e as Error).message }; }
+  }
+  if (RESEND && c.mail_to) {
+    try {
+      const r = await fetch("https://api.resend.com/emails", {
+        method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${RESEND}` },
+        body: JSON.stringify({ from: c.mail_from || "137lab <noreply@onlygods.xyz>", to: c.mail_to, subject: text.split("\n").join(" · "), text }),
+      });
+      const d = await r.json().catch(() => ({}));
+      out.mail = { ok: r.ok && !!d.id, description: d.message || d.name || null };
+    } catch (e) { out.mail = { ok: false, description: (e as Error).message }; }
+  }
+  if (!out.tg && !out.mail) console.log("[member] signal (not configured):", text.replace(/\n/g, " · "));
+  return out;
 }
 const head = (g: Guest) => `/members · ${g.name}\n`;
 
@@ -133,9 +155,11 @@ Deno.serve(async (req: Request) => {
   try {
     if (action === "probe") { // diagnostics without secrets: is the signal wired?
       const c = await config();
+      const BOT = await botToken();
       let bot: string | null = null;
       if (BOT) { try { const r = await fetch(`https://api.telegram.org/bot${BOT}/getMe`); const d = await r.json(); bot = d?.result?.username || null; } catch { bot = null; } }
-      return json(200, { ok: true, bot, chat: !!c.tg_chat_id, tg_username: c.tg_username || null, tz: c.tz || null });
+      const test = data.test ? await notify("/members · проверка связи · " + await hhmm(new Date().toISOString())) : null;
+      return json(200, { ok: true, bot, chat: !!c.tg_chat_id, tg_username: c.tg_username || null, tz: c.tz || null, test });
     }
 
     if (action === "enter") {
