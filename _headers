@@ -21,6 +21,6 @@
 /sync/*
   X-Robots-Tag: noindex, nofollow
 
-# /members — личная комната House of Unicorns (13.09; отдельный домен, путь /members): по личной ссылке и слову; noindex.
+# /members — личная комната House of Unicorns (13.09; house.137lab.xyz/members): по личной ссылке и слову; noindex.
 /members/*
   X-Robots-Tag: noindex, nofollow

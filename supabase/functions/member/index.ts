@@ -1,5 +1,5 @@
 // /members — personal room (House of Unicorns). Supabase Edge Function: key entry, room state, events, Telegram signal.
-// Pages (static, Netlify): <домен>/members/ → /members/room/. They call this function with a signed token in header x-member.
+// Pages (static, Netlify): house.137lab.xyz/members/ → /members/room/. They call this function with a signed token in header x-member.
 // Uses only what the Edge runtime already has: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY (auto); signal — own bot token (member_config.bot_token) and/or e-mail via RESEND_API_KEY (project secret).
 // Config lives in public.member_config: tg_chat_id, bot_token (signals), mail_to, mail_from (e-mail signal), tg_username (link «Так»), tz (timestamps).
 // Deployed with verify_jwt=false: auth is the guest key + HMAC token (see below), no Supabase users.
