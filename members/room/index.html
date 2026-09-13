@@ -8,7 +8,7 @@
 <link rel="icon" sizes="32x32" href="/icons/favicon-32x32.png">
 <title>137lab</title>
 <style>
-  /* ── 137lab · /member/room · страница 2, четыре состояния: video → window → yes | closed.
+  /* ── 137lab · <домен>/members/room · страница 2, четыре состояния: video → window → yes | closed.
      Состояние и время живут на сервере (функция member): окно считается от события «видео до конца»,
      перезагрузка ничего не сбрасывает. На экране окна — ни строки описания: всё говорит видео.
      «Да» — одно касание: слово Владу в Telegram + отметка боту. ── */
@@ -117,7 +117,7 @@
   });
 
   post({action:'state'}).then(function(s){
-    if(!s.ok){ location.replace('/member/'); return; }
+    if(!s.ok){ location.replace('/members/'); return; }
     render(s);
   }).catch(function(){ showOnly(['hdr','off']); });
 })();

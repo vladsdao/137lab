@@ -8,9 +8,9 @@
 <link rel="icon" sizes="32x32" href="/icons/favicon-32x32.png">
 <title>137lab</title>
 <style>
-  /* ── 137lab · /member · страница 1: порог + слово-ключ (House of Unicorns, 13.09.2026).
+  /* ── 137lab · <домен>/members · страница 1: порог + слово-ключ (House of Unicorns, 13.09.2026).
      Язык /main: чёрное · белое · Fixel Display 800 · моно для меты · линии 1px · без анимаций.
-     Открывается только по личной ссылке ?u=<slug>; слово-ключ приходит отдельным сообщением.
+     Открывается только по личной ссылке <домен>/members/?u=<slug>; слово-ключ приходит отдельным сообщением.
      Ни одной ссылки на эту страницу с главной. noindex. Раскадровка — база, docs/plans/2026-09-13-house-of-unicorns-member-storyboard.md ── */
   @font-face{font-family:'Fixel Display';src:url('/fonts/FixelDisplay-ExtraBold.woff2') format('woff2');font-weight:800;font-display:swap}
   @font-face{font-family:'Fixel Text';src:url('/fonts/FixelText-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
@@ -71,7 +71,7 @@
   var post = function(b){ return fetch(api,{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify(b)}); };
   if(!u){ document.getElementById('nolink').hidden=false; return; }
   // уже входил — сразу в комнату
-  post({action:'state'}).then(function(r){ if(r.ok){ location.replace('/member/room/'); } else { show(); } }).catch(show);
+  post({action:'state'}).then(function(r){ if(r.ok){ location.replace('/members/room/'); } else { show(); } }).catch(show);
   function show(){ document.getElementById('gate').hidden=false; document.getElementById('go').hidden=false; document.getElementById('key').focus(); }
   var f=document.getElementById('f'), go=document.getElementById('go'), err=document.getElementById('err');
   document.getElementById('key').addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); if(f.requestSubmit) f.requestSubmit(); else go.click(); } });
@@ -80,7 +80,7 @@
     var key=document.getElementById('key').value.trim(); if(!key) return;
     go.disabled=true; err.textContent='';
     post({action:'enter',u:u,key:key}).then(function(r){
-      if(r.ok){ location.replace('/member/room/'); return; }
+      if(r.ok){ location.replace('/members/room/'); return; }
       err.textContent = r.status===429 ? 'слишком часто. подождите минуту' : 'не то слово';
       go.disabled=false;
     }).catch(function(){ err.textContent='нет связи'; go.disabled=false; });

@@ -1,7 +1,7 @@
 // Local runner: static site + /.netlify/functions/* handlers, zero deps.
 //   node netlify/dev.js            → http://localhost:8138
 // Serves the repo root; routes /.netlify/functions/<name> to netlify/functions/<name>.js (exports.handler).
-// MEMBER_LOCAL_DIR (optional) — extra folder mounted at /member/_local/ (sample video for /member).
+// MEMBER_LOCAL_DIR (optional) — extra folder mounted at /members/_local/ (sample video for /members).
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
@@ -45,8 +45,8 @@ http.createServer((req, res) => {
     return;
   }
   const LOCAL = process.env.MEMBER_LOCAL_DIR || path.join(require("os").tmpdir(), "member-local");
-  if (u.pathname.startsWith('/member/_local/')) {
-    return serveFile(path.join(LOCAL, u.pathname.slice('/member/_local/'.length)), req, res);
+  if (u.pathname.startsWith('/members/_local/')) {
+    return serveFile(path.join(LOCAL, u.pathname.slice('/members/_local/'.length)), req, res);
   }
   let file = path.join(ROOT, decodeURIComponent(u.pathname));
   if (!file.startsWith(ROOT)) { res.writeHead(403); return res.end(); }

@@ -1,5 +1,5 @@
-// /member — personal room (House of Unicorns): key entry, room state, events, Telegram signal.
-// Pages: /member/ (threshold + key) → /member/room/ (video → window → yes | closed).
+// /members — personal room (House of Unicorns): key entry, room state, events, Telegram signal.
+// Pages: <домен>/members/ (threshold + key) → /members/room/ (video → window → yes | closed).
 //
 // Env (Netlify → Site settings → Environment):
 //   SUPABASE_URL, SUPABASE_SERVICE_KEY  — table public.member_guests + private bucket "member"
@@ -9,7 +9,7 @@
 //   MEMBER_TZ                           — time zone for signal timestamps (default Europe/Lisbon)
 //   TELEGRAM_BOT_TOKEN, TELEGRAM_MEMBER_CHAT_ID (fallback TELEGRAM_KONTRAKT_CHAT_ID, TELEGRAM_CHAT_ID)
 // Local (no SUPABASE_URL): guests live in a JSON file in os.tmpdir(); demo guest slug "demo", key "слово";
-//   video = MEMBER_LOCAL_VIDEO (default /member/_local/sample.mp4, served by netlify/dev.js).
+//   video = MEMBER_LOCAL_VIDEO (default /member/_local/sample.mp4, served by netlify/dev.js at /members/_local/).
 //
 // Node 18+ runtime provides global fetch.
 
@@ -79,7 +79,7 @@ function local() {
   return {
     async get(slug) { return read()[slug] || null; },
     async patch(slug, fields) { const d = read(); d[slug] = Object.assign({}, d[slug], fields); write(d); return d[slug]; },
-    async sign() { return process.env.MEMBER_LOCAL_VIDEO || '/member/_local/sample.mp4'; },
+    async sign() { return process.env.MEMBER_LOCAL_VIDEO || '/members/_local/sample.mp4'; },
   };
 }
 

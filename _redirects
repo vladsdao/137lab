@@ -7,3 +7,10 @@
 # /beta/index.html і /beta/lab/.
 /beta   /beta/site/  302!
 /beta/  /beta/site/  302!
+
+# House of Unicorns (13.09): комната живёт на отдельном домене (слово Влада), путь /members.
+# Домен добавляется в Netlify как alias этого сайта (Domain management → Add domain alias) — тогда
+# <домен>/members/ отдаёт те же файлы. Когда домен известен, раскомментировать и подставить его:
+# https://137lab.xyz/members/*      https://<домен>/members/:splat  301!
+# https://www.137lab.xyz/members/*  https://<домен>/members/:splat  301!
+# https://<домен>/                  /members/  302
