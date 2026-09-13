@@ -13,4 +13,5 @@
 # корень поддомена — в /members/.
 https://137lab.xyz/members/*      https://house.137lab.xyz/members/:splat  301!
 https://www.137lab.xyz/members/*  https://house.137lab.xyz/members/:splat  301!
-https://house.137lab.xyz/         /members/  302
+# корень поддомена — страница House of Unicorns (/house/), force (!) — иначе перекрывает корневой index.html
+https://house.137lab.xyz/         /house/    200!

@@ -24,3 +24,7 @@
 # /members — личная комната House of Unicorns (13.09; house.137lab.xyz/members): по личной ссылке и слову; noindex.
 /members/*
   X-Robots-Tag: noindex, nofollow
+
+# /house — House of Unicorns, корень house.137lab.xyz (13.09): noindex до слова Влада, как /main.
+/house/*
+  X-Robots-Tag: noindex, nofollow
