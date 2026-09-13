@@ -30,8 +30,8 @@
   .track i{position:absolute;left:0;top:-1px;height:3px;width:100%;background:var(--w)}
   .win .row{display:flex;justify-content:space-between;color:var(--g)}
   .v{padding:34px 0 0;display:grid;gap:18px}
-  video{display:block;width:calc(100% - 2*var(--x));margin:0 var(--x);aspect-ratio:16/9;background:#000;border:1px solid var(--w);outline:none}
-  .v p{padding:0 var(--x)}
+  video{display:block;width:calc(100% - 2*var(--x));max-width:720px;margin:0 var(--x);aspect-ratio:16/9;background:#000;border:1px solid var(--w);outline:none}
+  .v p{padding:0 var(--x);max-width:52ch}
   .band{margin:22px var(--x) 0;border:1px solid var(--w);display:flex;justify-content:space-between;align-items:center;padding:10px 12px;cursor:pointer;background:none;color:var(--w);width:calc(100% - 2*var(--x));text-align:left}
   .txt{padding:34px var(--x) 0;display:grid;gap:18px}
   .h{font-family:var(--d);font-weight:800;text-transform:uppercase;font-size:clamp(46px,13.5vw,120px);line-height:.92;letter-spacing:-.02em}
@@ -51,7 +51,7 @@
 
 <section class="v" id="vsec" hidden>
   <video id="v" playsinline controls controlsList="nodownload noplaybackrate noremoteplayback" disablepictureinpicture preload="metadata"></video>
-  <p class="mono dim">Влад · Лиза · картина</p>
+  <p class="dim">Персональная диагностика архитектуры сознания для выявления точек потери энергии и возможностей нелинейного роста.</p>
 </section>
 <button class="band mono" id="band" type="button" hidden><span>видео</span><span id="bandr">ещё раз ▶</span></button>
 

@@ -162,6 +162,13 @@ Deno.serve(async (req: Request) => {
       return json(200, { ok: true, bot, chat: !!c.tg_chat_id, tg_username: c.tg_username || null, tz: c.tz || null, test });
     }
 
+    if (action === "intro") { // видео-инструкция на пороге, до ключа: только по личной ссылке
+      const slug = clean(data.u, 40).toLowerCase();
+      const g = slug ? await getGuest(slug) : null;
+      if (!g) return json(404, { ok: false });
+      return json(200, { ok: true, video: await signVideo(`${slug}/intro.mp4`) });
+    }
+
     if (action === "enter") {
       const slug = clean(data.u, 40).toLowerCase();
       const key = clean(data.key, 80).toLowerCase().replace(/\s+/g, " ");
