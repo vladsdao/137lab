@@ -32,3 +32,7 @@
 # /v — три проби української головної house.137lab.xyz (23.09), для перегляду Владом з телефона; noindex.
 /v/*
   X-Robots-Tag: noindex, nofollow
+
+# /vulyk — старий вулик (головна до 23.09), збережено словом Влада «замість вулика»; noindex.
+/vulyk/*
+  X-Robots-Tag: noindex, nofollow
