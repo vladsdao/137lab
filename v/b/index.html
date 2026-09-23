@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#ffffff">
+<title>137lab — Нелінійна еволюція</title>
+<link rel="icon" sizes="32x32" href="/icons/favicon-32x32.png">
+<style>
+/* 137lab · house.137lab.xyz — варіант B «Грані»: пʼять кроків як грані у двоколонковій таблиці з волосяними лініями.
+   Текст Влада 23.09 дослівно (UA). Папір #ffffff, чорнило #0a0a0a, лінії #c9c9c9; Fixel Display Light — заголовки, Fixel Text Light — тіло.
+   Один мотив — тонколінійний діамант у хіро. Без скриптів, без анімацій, без зовнішніх ресурсів. */
+
+@font-face{font-family:"Fixel Display";src:url("/fonts/FixelDisplay-Light.woff2") format("woff2");font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:"Fixel Display";src:url("/fonts/FixelDisplay-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Fixel Display";src:url("/fonts/FixelDisplay-SemiBold.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:"Fixel Text";src:url("/fonts/FixelText-Light.woff2") format("woff2");font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:"Fixel Text";src:url("/fonts/FixelText-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Fixel Text";src:url("/fonts/FixelText-Medium.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
+
+:root{
+  --paper:#ffffff;
+  --ink:#0a0a0a;
+  --hair:#c9c9c9;
+  --display:"Fixel Display",system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --text:"Fixel Text",system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --u:8px;                                   /* базовий модуль відступів */
+  --gx:20px;                                 /* бокове поле */
+  --pad-l:calc(var(--gx) + env(safe-area-inset-left,0px));
+  --pad-r:calc(var(--gx) + env(safe-area-inset-right,0px));
+  --wrap:1312px;                             /* 1440 − 2×64 */
+  --measure:64ch;                            /* міра тіла */
+  --body:17px;
+}
+@media (min-width:768px){ :root{ --gx:40px; --body:18px } }
+@media (min-width:1200px){ :root{ --gx:64px } }
+
+*,*::before,*::after{box-sizing:border-box}
+html{background:var(--paper);-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--text);font-weight:300;font-size:var(--body);line-height:1.55;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  overflow-wrap:break-word;min-height:100dvh;display:flex;flex-direction:column;
+}
+::selection{background:var(--ink);color:var(--paper)}
+a{color:inherit;text-decoration:none}
+a:focus-visible{outline:1px solid var(--ink);outline-offset:6px}
+h1,h2,h3,p{margin:0;font-weight:inherit}
+p{text-wrap:pretty}
+
+.wrap{max-width:var(--wrap);margin-inline:auto;padding-inline:var(--pad-l) var(--pad-r)}
+.meta{font-family:var(--text);font-weight:400;font-size:12px;letter-spacing:.14em;text-transform:uppercase;line-height:1}
+
+/* шапка */
+.head{border-bottom:1px solid var(--hair)}
+.head .wrap{display:flex;justify-content:space-between;align-items:baseline;gap:calc(var(--u)*3);
+  padding-top:calc(env(safe-area-inset-top,0px) + var(--u)*3);padding-bottom:calc(var(--u)*3)}
+.mark{font-family:var(--display);font-weight:400;font-size:19px;letter-spacing:-.015em;line-height:1;white-space:nowrap}
+.mark b{font-weight:600}
+.head .meta{text-align:right}
+
+/* хіро */
+.hero{padding-top:clamp(64px,12vh,152px);padding-bottom:clamp(56px,10vh,128px)}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:clamp(20px,3vw,48px);align-items:start}
+.hero h1{font-family:var(--display);font-weight:300;font-size:clamp(48px,7.6vw,116px);line-height:1.02;letter-spacing:-.02em}
+.hero .sub{grid-column:1;margin-top:clamp(28px,4vh,48px);font-size:clamp(19px,1.65vw,24px);line-height:1.4;max-width:30ch}
+.gem{grid-column:2;grid-row:1 / span 2;width:clamp(56px,8.4vw,128px);height:auto;margin-top:clamp(6px,.9vw,14px)}
+.gem path{fill:none;stroke:var(--ink);stroke-width:1px;vector-effect:non-scaling-stroke}
+
+/* мапа: грані */
+.map{padding-top:clamp(40px,7vh,88px);padding-bottom:clamp(40px,7vh,88px)}
+.map h2{font-family:var(--display);font-weight:300;font-size:clamp(28px,3.2vw,44px);line-height:1.1;letter-spacing:-.015em;
+  margin-bottom:clamp(28px,4vh,56px);text-wrap:balance}
+.facets{border-top:1px solid var(--hair)}
+.facet{border-bottom:1px solid var(--hair);display:grid;grid-template-columns:minmax(0,1fr);
+  padding-block:calc(var(--u)*3) calc(var(--u)*3.5);row-gap:calc(var(--u)*2)}
+.facet h3{display:flex;align-items:baseline;flex-wrap:wrap;gap:0 .6em;
+  font-family:var(--display);font-weight:400;font-size:clamp(22px,2.1vw,30px);line-height:1.15;letter-spacing:-.01em}
+.facet .num{font-family:var(--text);font-weight:400;font-size:13px;letter-spacing:.12em;white-space:nowrap}
+.facet p{max-width:var(--measure)}
+@media (min-width:768px){
+  .facet{grid-template-columns:minmax(0,5fr) minmax(0,7fr);column-gap:0;row-gap:0;padding-block:0}
+  .facet h3{padding-block:calc(var(--u)*4) calc(var(--u)*4.5);padding-right:calc(var(--u)*4);align-content:start}
+  .facet .cell{border-left:1px solid var(--hair);padding:calc(var(--u)*4) 0 calc(var(--u)*4.5) calc(var(--u)*5)}
+}
+
+/* маніфест */
+.manifesto{padding-top:clamp(48px,9vh,112px);padding-bottom:clamp(56px,10vh,128px)}
+.manifesto .col{max-width:calc(var(--measure) - 4ch)}
+@media (min-width:768px){
+  .manifesto .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);align-items:start}
+  .manifesto h2{padding-right:calc(var(--u)*4)}
+  .manifesto .col{padding-left:calc(var(--u)*5 + 1px)}   /* +1px = товщина лінії у гранях: текст в одну вертикаль */
+  .manifesto .lead{margin-top:.35em}
+}
+.manifesto h2{font-family:var(--display);font-weight:300;font-size:clamp(30px,3.9vw,54px);line-height:1.1;letter-spacing:-.02em;
+  max-width:24ch;text-wrap:balance}
+.manifesto .lead{margin-top:clamp(32px,5vh,56px);font-size:clamp(20px,1.9vw,26px);line-height:1.35;max-width:44ch}
+.manifesto .lead strong{font-weight:500}
+.manifesto .lead + p{margin-top:clamp(32px,5vh,56px)}
+.manifesto p + p{margin-top:1.4em}
+.manifesto .apart{margin-top:2.6em}
+
+/* один дотик */
+.cta{display:block;border-top:1px solid var(--hair);width:100%;min-height:44px;
+  font-family:var(--display);font-weight:300;font-size:clamp(44px,7.6vw,120px);line-height:1;letter-spacing:-.02em;
+  padding-top:clamp(36px,6vh,80px);padding-bottom:clamp(36px,6vh,80px);
+  -webkit-tap-highlight-color:transparent}
+.cta:hover,.cta:focus-visible{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.12em}
+.cta:focus-visible{outline:none}
+
+/* підвал */
+.foot{margin-top:auto;border-top:1px solid var(--hair)}
+.foot .wrap{padding-top:calc(var(--u)*3);padding-bottom:calc(env(safe-area-inset-bottom,0px) + var(--u)*3)}
+.foot .meta{font-size:11px;letter-spacing:.1em;line-height:1.7}
+</style>
+</head>
+<body>
+
+<header class="head">
+  <div class="wrap">
+    <a class="mark" href="/"><b>137</b>lab</a>
+    <span class="meta">Дім Зірок та&nbsp;Єдинорогів</span>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <h1>Нелінійна<br>еволюція.</h1>
+      <svg class="gem" viewBox="0 0 120 100" aria-hidden="true" focusable="false">
+        <path d="M30 6 H90 L114 34 L60 96 L6 34 Z"/>
+        <path d="M6 34 H114"/>
+        <path d="M48 6 L36 34 L60 96"/>
+        <path d="M72 6 L84 34 L60 96"/>
+      </svg>
+      <p class="sub">Супроводжуємо лідерів до&nbsp;наступного стратегічного горизонту.</p>
+    </div>
+  </section>
+
+  <section class="map">
+    <div class="wrap">
+      <h2>Мапа вашого досвіду</h2>
+      <ol class="facets" style="list-style:none;margin:0;padding:0">
+        <li class="facet">
+          <h3><span class="num">01&nbsp;·</span> <span>Перший контакт</span></h3>
+          <div class="cell"><p>Онлайн сесія 30&nbsp;хвилин. Ми знайомимося та показуємо нашу методику на прикладі вашого запиту.</p></div>
+        </li>
+        <li class="facet">
+          <h3><span class="num">02&nbsp;·</span> <span>Мапа скарбів</span></h3>
+          <div class="cell"><p>Онлайн сесія 2&nbsp;години. Глибокий дайвінг у&nbsp;архітектуру вашої Свідомості. Ми виявляємо головні точки росту та сценарії зливу енергії. Виносимо на поверхню те, що ви від себе приховуєте.</p></div>
+        </li>
+        <li class="facet">
+          <h3><span class="num">03&nbsp;·</span> <span>Рефакторинг системи.</span></h3>
+          <div class="cell"><p>4-7&nbsp;тижнів онлайн або офлайн зустрічей. Це період трансформації Свідомості та інтеграції досвіду. Ми не розказуємо вам як треба жити, а&nbsp;навпаки&nbsp;— прибираємо зайве. Мета&nbsp;— відновити стан та стабілізувати природу вашої справжньої особистості.</p></div>
+        </li>
+        <li class="facet">
+          <h3><span class="num">04&nbsp;·</span> <span>Симбіотичні стосунки.</span></h3>
+          <div class="cell"><p>4-8&nbsp;тижнів онлайн сесій, або індивідуальні ретрити. Ми відновлюємо глибокий контакт та пристрасть у&nbsp;родинному колі. Збільшуємо пропускний діапазон почуттів та робимо ваші відносини джерелом енергії, яка тримає психоемоційний стан та високий рівень свідомості для вашої максимальної реалізації.</p></div>
+        </li>
+        <li class="facet">
+          <h3><span class="num">05&nbsp;·</span> <span>Holy Business.</span></h3>
+          <div class="cell"><p>Метафізика як система інтегрується у&nbsp;ваш бізнес, творчість, команду, або продукт. Ніяких медитацій та езотерики. Це наука роботи з&nbsp;ідеями, егрегорами, почуттями через ритм, увагу, енергетичний менеджмент. Ідея полягає в&nbsp;тому, щоб налаштувати синергію та зробити вашу справу джерелом натхнення.</p></div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="manifesto">
+    <div class="wrap">
+      <h2>137lab&nbsp;— Каталізатор Свідомості та&nbsp;Ковчег Нової Парадигми.</h2>
+      <div class="col">
+        <p class="lead"><strong>Ми бачимо Людину та потенціал її творчості&nbsp;— головним активом пост-трудового періоду. Розкриваючи індивідуальний потенціал, ми збираємо спільноту, яка бачить себе архітекторами нової реальності.</strong></p>
+        <p>В&nbsp;нашій роботі стан, увага, цікавість та енергія&nbsp;— це інженерія, і&nbsp;метафізика тут не теорія, а&nbsp;операційна система, яка працює у&nbsp;фоні.</p>
+        <p>Поєднуючи духовність, науку, технології та творчість, ми створюємо унікальний спільний досвід для учасників та відкриваємо можливості примножити свої індивідуальні можливості у&nbsp;спільному полі обʼєднаної Свідомості.</p>
+        <p class="apart">Якщо ви чекали на диво&nbsp;— можливо, це воно і&nbsp;є.</p>
+        <p>Ціна та деталі&nbsp;— після дзвінка.</p>
+      </div>
+    </div>
+  </section>
+
+  <a class="cta" href="https://cal.com/137lab-xyz/30min" rel="noopener"><span class="wrap" style="display:block">Один дотик&nbsp;→</span></a>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <span class="meta">137lab&nbsp;— Consciousness Research Playground</span>
+  </div>
+</footer>
+
+</body>
+</html>

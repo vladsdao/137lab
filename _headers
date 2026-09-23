@@ -28,3 +28,7 @@
 # /house — House of Unicorns, корень house.137lab.xyz (13.09): noindex до слова Влада, как /main.
 /house/*
   X-Robots-Tag: noindex, nofollow
+
+# /v — три проби української головної house.137lab.xyz (23.09), для перегляду Владом з телефона; noindex.
+/v/*
+  X-Robots-Tag: noindex, nofollow
