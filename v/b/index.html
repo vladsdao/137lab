@@ -42,7 +42,7 @@ body{
   margin:0;background:var(--paper);color:var(--ink);
   font-family:var(--text);font-weight:300;font-size:var(--body);line-height:1.55;
   -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
-  overflow-wrap:break-word;min-height:100dvh;display:flex;flex-direction:column;
+  overflow-wrap:break-word;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;
 }
 ::selection{background:var(--ink);color:var(--paper)}
 a{color:inherit;text-decoration:none}
@@ -66,6 +66,7 @@ p{text-wrap:pretty}
 .hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:clamp(20px,3vw,48px);align-items:start}
 .hero h1{font-family:var(--display);font-weight:300;font-size:clamp(48px,7.6vw,116px);line-height:1.02;letter-spacing:-.02em}
 .hero .sub{grid-column:1;margin-top:clamp(28px,4vh,48px);font-size:clamp(19px,1.65vw,24px);line-height:1.4;max-width:30ch}
+@media (max-width:359px){ .hero h1{font-size:clamp(38px,12.3vw,48px)} }   /* 320–359: «Нелінійна» одним словом поруч із діамантом, без розриву слова */
 .gem{grid-column:2;grid-row:1 / span 2;width:clamp(56px,8.4vw,128px);height:auto;margin-top:clamp(6px,.9vw,14px)}
 .gem path{fill:none;stroke:var(--ink);stroke-width:1px;vector-effect:non-scaling-stroke}
 
@@ -73,7 +74,7 @@ p{text-wrap:pretty}
 .map{padding-top:clamp(40px,7vh,88px);padding-bottom:clamp(40px,7vh,88px)}
 .map h2{font-family:var(--display);font-weight:300;font-size:clamp(28px,3.2vw,44px);line-height:1.1;letter-spacing:-.015em;
   margin-bottom:clamp(28px,4vh,56px);text-wrap:balance}
-.facets{border-top:1px solid var(--hair)}
+.facets{list-style:none;margin:0;padding:0;border-top:1px solid var(--hair)}
 .facet{border-bottom:1px solid var(--hair);display:grid;grid-template-columns:minmax(0,1fr);
   padding-block:calc(var(--u)*3) calc(var(--u)*3.5);row-gap:calc(var(--u)*2)}
 .facet h3{display:flex;align-items:baseline;flex-wrap:wrap;gap:0 .6em;
@@ -89,12 +90,6 @@ p{text-wrap:pretty}
 /* маніфест */
 .manifesto{padding-top:clamp(48px,9vh,112px);padding-bottom:clamp(56px,10vh,128px)}
 .manifesto .col{max-width:calc(var(--measure) - 4ch)}
-@media (min-width:768px){
-  .manifesto .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);align-items:start}
-  .manifesto h2{padding-right:calc(var(--u)*4)}
-  .manifesto .col{padding-left:calc(var(--u)*5 + 1px)}   /* +1px = товщина лінії у гранях: текст в одну вертикаль */
-  .manifesto .lead{margin-top:.35em}
-}
 .manifesto h2{font-family:var(--display);font-weight:300;font-size:clamp(30px,3.9vw,54px);line-height:1.1;letter-spacing:-.02em;
   max-width:24ch;text-wrap:balance}
 .manifesto .lead{margin-top:clamp(32px,5vh,56px);font-size:clamp(20px,1.9vw,26px);line-height:1.35;max-width:44ch}
@@ -102,12 +97,19 @@ p{text-wrap:pretty}
 .manifesto .lead + p{margin-top:clamp(32px,5vh,56px)}
 .manifesto p + p{margin-top:1.4em}
 .manifesto .apart{margin-top:2.6em}
+@media (min-width:768px){
+  .manifesto .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);align-items:start}
+  .manifesto h2{padding-right:calc(var(--u)*4)}
+  .manifesto .col{padding-left:calc(var(--u)*5 + 1px)}   /* +1px = товщина лінії у гранях: текст в одну вертикаль */
+  .manifesto .lead{margin-top:.35em}
+}
 
 /* один дотик */
 .cta{display:block;border-top:1px solid var(--hair);width:100%;min-height:44px;
   font-family:var(--display);font-weight:300;font-size:clamp(44px,7.6vw,120px);line-height:1;letter-spacing:-.02em;
   padding-top:clamp(36px,6vh,80px);padding-bottom:clamp(36px,6vh,80px);
   -webkit-tap-highlight-color:transparent}
+.cta .wrap{display:block}
 .cta:hover,.cta:focus-visible{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.12em}
 .cta:focus-visible{outline:none}
 
@@ -143,26 +145,26 @@ p{text-wrap:pretty}
   <section class="map">
     <div class="wrap">
       <h2>Мапа вашого досвіду</h2>
-      <ol class="facets" style="list-style:none;margin:0;padding:0">
+      <ol class="facets">
         <li class="facet">
           <h3><span class="num">01&nbsp;·</span> <span>Перший контакт</span></h3>
-          <div class="cell"><p>Онлайн сесія 30&nbsp;хвилин. Ми знайомимося та показуємо нашу методику на прикладі вашого запиту.</p></div>
+          <div class="cell"><p>Онлайн сесія 30&nbsp;хвилин. Ми знайомимося та&nbsp;показуємо нашу методику на&nbsp;прикладі вашого запиту.</p></div>
         </li>
         <li class="facet">
           <h3><span class="num">02&nbsp;·</span> <span>Мапа скарбів</span></h3>
-          <div class="cell"><p>Онлайн сесія 2&nbsp;години. Глибокий дайвінг у&nbsp;архітектуру вашої Свідомості. Ми виявляємо головні точки росту та сценарії зливу енергії. Виносимо на поверхню те, що ви від себе приховуєте.</p></div>
+          <div class="cell"><p>Онлайн сесія 2&nbsp;години. Глибокий дайвінг у&nbsp;архітектуру вашої Свідомості. Ми виявляємо головні точки росту та&nbsp;сценарії зливу енергії. Виносимо на&nbsp;поверхню те, що ви від себе приховуєте.</p></div>
         </li>
         <li class="facet">
           <h3><span class="num">03&nbsp;·</span> <span>Рефакторинг системи.</span></h3>
-          <div class="cell"><p>4-7&nbsp;тижнів онлайн або офлайн зустрічей. Це період трансформації Свідомості та інтеграції досвіду. Ми не розказуємо вам як треба жити, а&nbsp;навпаки&nbsp;— прибираємо зайве. Мета&nbsp;— відновити стан та стабілізувати природу вашої справжньої особистості.</p></div>
+          <div class="cell"><p>4-7&nbsp;тижнів онлайн або офлайн зустрічей. Це період трансформації Свідомості та&nbsp;інтеграції досвіду. Ми не&nbsp;розказуємо вам як треба жити, а&nbsp;навпаки&nbsp;— прибираємо зайве. Мета&nbsp;— відновити стан та&nbsp;стабілізувати природу вашої справжньої особистості.</p></div>
         </li>
         <li class="facet">
           <h3><span class="num">04&nbsp;·</span> <span>Симбіотичні стосунки.</span></h3>
-          <div class="cell"><p>4-8&nbsp;тижнів онлайн сесій, або індивідуальні ретрити. Ми відновлюємо глибокий контакт та пристрасть у&nbsp;родинному колі. Збільшуємо пропускний діапазон почуттів та робимо ваші відносини джерелом енергії, яка тримає психоемоційний стан та високий рівень свідомості для вашої максимальної реалізації.</p></div>
+          <div class="cell"><p>4-8&nbsp;тижнів онлайн сесій, або індивідуальні ретрити. Ми відновлюємо глибокий контакт та&nbsp;пристрасть у&nbsp;родинному колі. Збільшуємо пропускний діапазон почуттів та&nbsp;робимо ваші відносини джерелом енергії, яка тримає психоемоційний стан та&nbsp;високий рівень свідомості для вашої максимальної реалізації.</p></div>
         </li>
         <li class="facet">
           <h3><span class="num">05&nbsp;·</span> <span>Holy Business.</span></h3>
-          <div class="cell"><p>Метафізика як система інтегрується у&nbsp;ваш бізнес, творчість, команду, або продукт. Ніяких медитацій та езотерики. Це наука роботи з&nbsp;ідеями, егрегорами, почуттями через ритм, увагу, енергетичний менеджмент. Ідея полягає в&nbsp;тому, щоб налаштувати синергію та зробити вашу справу джерелом натхнення.</p></div>
+          <div class="cell"><p>Метафізика як система інтегрується у&nbsp;ваш бізнес, творчість, команду, або продукт. Ніяких медитацій та&nbsp;езотерики. Це наука роботи з&nbsp;ідеями, егрегорами, почуттями через ритм, увагу, енергетичний менеджмент. Ідея полягає в&nbsp;тому, щоб налаштувати синергію та&nbsp;зробити вашу справу джерелом натхнення.</p></div>
         </li>
       </ol>
     </div>
@@ -172,16 +174,16 @@ p{text-wrap:pretty}
     <div class="wrap">
       <h2>137lab&nbsp;— Каталізатор Свідомості та&nbsp;Ковчег Нової Парадигми.</h2>
       <div class="col">
-        <p class="lead"><strong>Ми бачимо Людину та потенціал її творчості&nbsp;— головним активом пост-трудового періоду. Розкриваючи індивідуальний потенціал, ми збираємо спільноту, яка бачить себе архітекторами нової реальності.</strong></p>
-        <p>В&nbsp;нашій роботі стан, увага, цікавість та енергія&nbsp;— це інженерія, і&nbsp;метафізика тут не теорія, а&nbsp;операційна система, яка працює у&nbsp;фоні.</p>
-        <p>Поєднуючи духовність, науку, технології та творчість, ми створюємо унікальний спільний досвід для учасників та відкриваємо можливості примножити свої індивідуальні можливості у&nbsp;спільному полі обʼєднаної Свідомості.</p>
-        <p class="apart">Якщо ви чекали на диво&nbsp;— можливо, це воно і&nbsp;є.</p>
-        <p>Ціна та деталі&nbsp;— після дзвінка.</p>
+        <p class="lead"><strong>Ми бачимо Людину та&nbsp;потенціал її творчості&nbsp;— головним активом пост-трудового періоду. Розкриваючи індивідуальний потенціал, ми збираємо спільноту, яка бачить себе архітекторами нової реальності.</strong></p>
+        <p>В&nbsp;нашій роботі стан, увага, цікавість та&nbsp;енергія&nbsp;— це інженерія, і&nbsp;метафізика тут не&nbsp;теорія, а&nbsp;операційна система, яка працює у&nbsp;фоні.</p>
+        <p>Поєднуючи духовність, науку, технології та&nbsp;творчість, ми створюємо унікальний спільний досвід для учасників та&nbsp;відкриваємо можливості примножити свої індивідуальні можливості у&nbsp;спільному полі обʼєднаної Свідомості.</p>
+        <p class="apart">Якщо ви чекали на&nbsp;диво&nbsp;— можливо, це воно і&nbsp;є.</p>
+        <p>Ціна та&nbsp;деталі&nbsp;— після дзвінка.</p>
       </div>
     </div>
   </section>
 
-  <a class="cta" href="https://cal.com/137lab-xyz/30min" rel="noopener"><span class="wrap" style="display:block">Один дотик&nbsp;→</span></a>
+  <a class="cta" href="https://cal.com/137lab-xyz/30min" rel="noopener"><span class="wrap">Один дотик&nbsp;→</span></a>
 </main>
 
 <footer class="foot">
