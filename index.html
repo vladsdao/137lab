@@ -44,7 +44,7 @@
   --fs-mark:16px;
   --fs-cta:17px;
   --fs-sub:clamp(18px,.5vw + 16px,22px);
-  --fs-h1:clamp(36px,3vw + 24px,60px);
+  --fs-h1:clamp(26px,min(7.6vw,3vw + 24px),60px);   /* один рядок на будь-якому екрані (слово Влада 23.09) */
   --fs-h2:clamp(27px,1.4vw + 21px,40px);
   --fs-h3:clamp(22px,.8vw + 19px,30px);
   --fs-lead:clamp(20px,.7vw + 17px,26px);
@@ -102,7 +102,7 @@ p{text-wrap:pretty}
   display:grid;align-content:center;justify-items:center;text-align:center;
   padding:var(--s-5) var(--gx-r) clamp(96px,14vh,160px) var(--gx-l);
 }
-.h1{font-size:var(--fs-h1);line-height:1.1;letter-spacing:.015em;max-width:var(--measure-wide)}
+.h1{font-size:var(--fs-h1);line-height:1.1;letter-spacing:.015em;max-width:var(--measure-wide);white-space:nowrap}
 .sub{margin-top:clamp(20px,2.5vw,32px);font-size:var(--fs-sub);line-height:1.5;font-weight:300;max-width:26em}
 
 /* розділи */
