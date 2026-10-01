@@ -36,3 +36,7 @@
 # /vulyk — старий вулик (головна до 23.09), збережено словом Влада «замість вулика»; noindex.
 /vulyk/*
   X-Robots-Tag: noindex, nofollow
+
+# /edgency — Cutting Edgency, корень edgency.137lab.xyz (01.10): noindex до слова Влада, как /house.
+/edgency/*
+  X-Robots-Tag: noindex, nofollow

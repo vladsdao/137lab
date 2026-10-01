@@ -15,3 +15,12 @@ https://137lab.xyz/members/*      https://house.137lab.xyz/members/:splat  301!
 https://www.137lab.xyz/members/*  https://house.137lab.xyz/members/:splat  301!
 # корень поддомена — страница House of Unicorns (/house/), force (!) — иначе перекрывает корневой index.html
 https://house.137lab.xyz/         /house/    200!
+
+# Cutting Edgency (01.10, слово Влада: «дай эту страничку на сабдомене 137lab»): страница живёт в /edgency/,
+# корень поддомена edgency.137lab.xyz отдаёт её же (200!, как у house). Поддомен — alias этого сайта в Netlify
+# + CNAME edgency → 137lab.netlify.app у регистратора; пока alias не добавлен, правило просто не срабатывает.
+https://edgency.137lab.xyz/       /edgency/  200!
+# три эскиза для выбора Влада с телефона (01.10): A «Ось» · B «Грань» · C «Лист»; noindex; снять после его слова
+https://edgency.137lab.xyz/a      /edgency/v/a/  200!
+https://edgency.137lab.xyz/b      /edgency/v/b/  200!
+https://edgency.137lab.xyz/c      /edgency/v/c/  200!

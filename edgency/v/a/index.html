@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<!-- Cutting Edgency — direction A «Axis». Text: Vlad, 1 Oct 2026, verbatim. One file, no scripts, no external requests. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#ffffff">
+<meta name="description" content="We design custom solutions that apply metaphysics to your business. Not esoteric. No meditations. Woo-woo free.">
+<meta property="og:title" content="Cutting Edgency — Spirit as a technological framework">
+<meta property="og:description" content="We design custom solutions that apply metaphysics to your business. Not esoteric. No meditations. Woo-woo free.">
+<meta property="og:type" content="website">
+<title>Cutting Edgency — Spirit as a technological framework</title>
+<link rel="icon" href="/icons/favicon-32x32.png">
+<style>
+/*
+  CUTTING EDGENCY · a door of 137lab · direction A — AXIS
+
+  The sheet: paper #ffffff, ink #0a0a0a, hairline #c9c9c9, quiet ink #6e6e6e (labels, tags, notes, numerals only).
+  One family, Fixel: Display for every line of 21px and up, Text for reading and labels. Weights 300 and 400.
+
+  THE DEVICE — the axis. Everything is centred on it or hangs from it in symmetry. It is drawn only where the page
+  turns: one vertical 1px hairline at the head of each movement (ink — it is the device, not furniture). The only
+  other lines on the sheet are grey 1px rules: the three-layer stack and the foot. The page opens and closes with
+  the same running line — brand, a line on the axis, address.
+
+  TYPE SCALE — two modular scales tied at the body size, interpolated by sheet width (390 → 1440):
+      390:   17 × 1.25^n    −1: 14 ·  0: 17 · +1: 21 · +2: 27 · +3: 33 · +4: 42
+      1440:  18 × 1.333^n   −1: 14 ·  0: 18 · +1: 24 · +2: 32 · +3: 43 · +4: 57 · +5: 76 · +6: 101
+    +5 (the door) and +6 (the name) are width-bound on a narrow sheet — 11.4vw and 14.6vw, the largest size at which
+    each still holds one line inside the margins.
+    Label: Text Regular 11px (12px from 900), caps, tracking .18em — the floor, outside the ratio.
+  Use:  −1 notes, index, numerals · 0 reading, the ledger, the quote · +1 the turn under the h1, names of the five,
+        the closing line · +2 layer names, the two long statements · +3 section headings · +4 h1 · +5 door · +6 name.
+  Measure: 32rem (≈ 58 characters) for centred reading; sentences break by sense where the sheet allows.
+  Leading: 1.06–1.2 for display, 1.6 for reading. Tracking: +.01em on Display Light, 0 on Text.
+  Numerals: old-style figures (onum) in quiet ink — they sit in the line like lowercase; the tabular zero is slashed
+        and is not used.
+
+  THE VOICE SHIFT — one grammar for all five turns: the line stands alone after a held beat and firms from Light to
+  Regular. Regular (400) is used for nothing else at reading or display size — only for the tiny caps labels.
+
+  Rhythm: 8px base.
+*/
+@font-face{font-family:"Fixel Display";src:url("/fonts/FixelDisplay-Light.woff2") format("woff2");font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:"Fixel Display";src:url("/fonts/FixelDisplay-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Fixel Text";src:url("/fonts/FixelText-Light.woff2") format("woff2");font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:"Fixel Text";src:url("/fonts/FixelText-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+
+:root{
+  --paper:#ffffff;
+  --ink:#0a0a0a;
+  --rule:#c9c9c9;
+  --quiet:#6e6e6e;
+
+  --display:"Fixel Display",system-ui,-apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --text:"Fixel Text",system-ui,-apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif;
+
+  --f-cap:11px;
+  --f-n1:14px;
+  --f-0:17px;
+  --f-1:clamp(21px,calc(19.89px + .2857vw),24px);
+  --f-2:clamp(27px,calc(25.14px + .4762vw),32px);
+  --f-3:clamp(33px,calc(29.29px + .9524vw),43px);
+  --f-4:clamp(42px,calc(36.43px + 1.4286vw),57px);
+  --f-5:clamp(36px,11.4vw,76px);
+  --f-6:clamp(44px,14.6vw,101px);
+
+  --s-1:8px;--s-2:16px;--s-3:24px;--s-4:32px;--s-5:48px;--s-6:64px;--s-7:80px;--s-8:96px;
+  --s-sec:clamp(96px,11vw,160px);     /* white before a movement */
+  --axis:clamp(64px,7vw,96px);         /* length of the drawn axis */
+  --s-head:56px;                       /* from the movement mark to its heading */
+
+  --gutter:20px;
+  --gx-l:max(var(--gutter),env(safe-area-inset-left));
+  --gx-r:max(var(--gutter),env(safe-area-inset-right));
+  --measure:32rem;                     /* ≈ 58 characters of Text Light 18 */
+  --header-h:64px;
+}
+@media (min-width:900px){
+  :root{--f-cap:12px;--f-0:18px;--gutter:40px;--header-h:72px;--s-head:72px}
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{background:var(--paper);color:var(--ink);-webkit-text-size-adjust:100%;overflow-x:hidden;overflow-x:clip}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--text);font-weight:300;font-size:var(--f-0);line-height:1.6;
+  font-synthesis:none;font-kerning:normal;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-wrap:break-word;
+  text-align:center;
+}
+::selection{background:var(--ink);color:var(--paper)}
+a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:1px solid var(--ink);outline-offset:4px}
+h1,h2,h3,p,ol,blockquote{margin:0}
+ol{list-style:none;padding:0}
+h1,h2,h3{font-family:var(--display);font-weight:300;text-wrap:balance}
+p{text-wrap:pretty}
+cite{font-style:normal}
+.nb{white-space:nowrap}
+br.d,br.t{display:none}
+@media (min-width:768px){br.d{display:inline}br.m{display:none}}
+@media (min-width:600px) and (max-width:1099.98px){br.t{display:inline}}
+
+/* label — tracked caps; padding-left returns the half-space that trailing tracking takes from a centred line */
+.cap{
+  font-family:var(--text);font-weight:400;font-size:var(--f-cap);line-height:1.6;
+  letter-spacing:.18em;text-transform:uppercase;padding-left:.18em;
+}
+.q{color:var(--quiet)}
+
+/* numeral — old-style figures in quiet ink */
+.n{
+  font-family:var(--text);font-weight:300;font-size:var(--f-n1);line-height:1;
+  font-variant-numeric:oldstyle-nums proportional-nums;letter-spacing:.06em;color:var(--quiet);
+}
+
+/* the turn — the second voice: alone, after a beat, Regular */
+.turn{font-weight:400}
+
+/* links: 1px underline at rest, ink inversion under the hand */
+.link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 12px}
+.link .u{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.55em;text-decoration-skip-ink:none}
+.link .ar{letter-spacing:0}
+@media (hover:hover){.link:hover{background:var(--ink);color:var(--paper)}}
+.link:active{background:var(--ink);color:var(--paper)}
+
+/* ── head of the sheet ─────────────────────────────────────────────── */
+.top{
+  display:flex;justify-content:space-between;align-items:center;
+  height:calc(var(--header-h) + env(safe-area-inset-top));
+  padding:env(safe-area-inset-top) var(--gx-r) 0 var(--gx-l);
+}
+.top>span{padding-left:0}
+.top .link{margin-right:-12px}
+
+/* ── title page ────────────────────────────────────────────────────── */
+.hero{
+  min-height:calc(100vh - var(--header-h) - env(safe-area-inset-top));
+  min-height:calc(100svh - var(--header-h) - env(safe-area-inset-top));
+  display:grid;grid-template-rows:auto 1fr auto;justify-items:center;
+  padding:var(--s-2) var(--gx-r) var(--s-5) var(--gx-l);
+}
+.eyebrow{max-width:100%}
+.title{align-self:center;display:grid;justify-items:center;padding:var(--s-5) 0 var(--s-6)}
+.h1{font-size:var(--f-4);line-height:1.08;letter-spacing:.01em}
+.h1 span{display:block}
+.h1 .turn{font-size:var(--f-1);line-height:1.3;letter-spacing:.005em;margin-top:var(--s-3)}
+.sub{max-width:34em;margin-top:var(--s-5);text-wrap:balance}
+.act{margin-top:var(--s-3)}
+.note{font-size:var(--f-n1);line-height:1.5;color:var(--quiet);margin-top:var(--s-1)}
+.index{font-size:var(--f-n1);line-height:1.5}
+.index li+li{margin-top:var(--s-1)}
+.index li{padding-right:2em}
+.index .n{display:inline-block;width:1.4em;margin-right:.6em;text-align:left}
+@media (min-width:1100px){
+  /* the running line: brand — eyebrow on the axis — link */
+  .hero{padding-top:0}
+  .eyebrow{height:var(--header-h);margin-top:calc(-1 * var(--header-h));display:flex;align-items:center;pointer-events:none}
+  .title{padding:var(--s-5) 0 var(--s-8)}
+  .h1 .turn{margin-top:var(--s-4)}
+  .sub{margin-top:var(--s-6)}
+  .index{display:flex;justify-content:center;gap:var(--s-6)}
+  .index li+li{margin-top:0}
+  .index li{padding-right:0}
+}
+
+/* ── movements ─────────────────────────────────────────────────────── */
+.sec{padding:var(--s-sec) var(--gx-r) 0 var(--gx-l)}
+.sec::before{content:"";display:block;width:1px;height:var(--axis);margin:0 auto var(--s-3);background:var(--ink)}
+.mark{margin-bottom:var(--s-head)}
+.h2{font-size:var(--f-3);line-height:1.14;letter-spacing:.01em;max-width:20em;margin-inline:auto}
+.h2.long{font-size:var(--f-2);line-height:1.24;max-width:23em}
+@media (max-width:899.98px){.h2:not(.long){max-width:16em}}
+.body{max-width:var(--measure);margin:var(--s-5) auto 0}
+.body p{text-wrap:balance}
+.body p+p{margin-top:var(--s-3)}
+
+/* II — three layers: a ruled stack; each numeral sits in its rule, on the axis */
+.layers{max-width:var(--measure);margin:var(--s-7) auto 0}
+.layers::after{content:"";display:block;height:1px;background:var(--rule)}
+.layers li{padding-bottom:var(--s-6)}
+.layers .n{display:flex;align-items:center;gap:var(--s-2);margin-bottom:var(--s-6)}
+.layers .n::before,.layers .n::after{content:"";flex:1;height:1px;background:var(--rule)}
+.layers h3{font-size:var(--f-2);line-height:1.2;letter-spacing:.01em}
+.layers p{margin-top:var(--s-2);text-wrap:balance}
+
+/* III — five perspectives: pairs hung from the axis; the numerals are the axis */
+.views{max-width:46rem;margin:var(--s-6) auto 0}
+.views li{display:grid;justify-items:center}
+.views li+li{margin-top:var(--s-4)}
+.v-name{font-family:var(--display);font-size:var(--f-1);line-height:1.3;letter-spacing:.01em;margin-top:var(--s-1)}
+@media (min-width:720px){
+  .views li{grid-template-columns:1fr 4.5rem 1fr;align-items:baseline;justify-items:stretch}
+  .views li+li{margin-top:var(--s-2)}
+  .views .n{grid-column:2;grid-row:1;text-align:center}
+  .v-name{grid-column:1;grid-row:1;text-align:right;margin-top:0}
+  .v-line{grid-column:3;grid-row:1;text-align:left}
+}
+
+/* IV — seven steps: a narrow ledger; numerals hang on the left edge, the tag sits under its step */
+.steps{max-width:32.5rem;margin:var(--s-6) auto 0;text-align:left}
+.steps li{display:grid;grid-template-columns:2.5rem 1fr;align-items:baseline}
+.steps li+li{margin-top:var(--s-4)}
+.steps p{grid-column:2}
+.steps .tag{margin-top:var(--s-1);padding-left:0}
+@media (min-width:720px){
+  .steps li{grid-template-columns:3rem 1fr}
+}
+
+/* V — the name: alone on a screen of white */
+.peak{
+  min-height:100vh;min-height:100svh;
+  display:grid;align-content:center;justify-items:center;row-gap:var(--s-4);
+}
+.name{font-family:var(--display);font-size:var(--f-6);line-height:1;letter-spacing:0;white-space:nowrap;padding-left:.06em}
+
+/* the quote — the stillest point */
+.quote{padding:var(--s-4) var(--gx-r) clamp(64px,10vh,128px) var(--gx-l)}
+.quote p{max-width:36rem;margin-inline:auto;text-wrap:balance}
+.quote p+p{margin-top:var(--s-3)}
+.quote p.turn{margin-top:var(--s-6)}
+.quote footer{margin-top:var(--s-6)}
+
+/* VI — the Connector */
+.h2 .turn{display:block}
+.closing{font-family:var(--display);font-size:var(--f-1);line-height:1.3;letter-spacing:.005em;max-width:var(--measure);margin:var(--s-6) auto 0;text-wrap:balance}
+
+/* the door */
+.door{padding-bottom:clamp(128px,22vh,240px)}
+.door .mark{margin-bottom:var(--s-4)}
+.gate{font-family:var(--display);font-weight:300;font-size:var(--f-5);line-height:1.1;letter-spacing:.005em;min-height:0;padding:.14em .22em .2em;white-space:nowrap}
+.gate .u{text-underline-offset:.2em}
+.url{font-size:var(--f-n1);line-height:1.5;color:var(--quiet);margin-top:var(--s-3)}
+
+/* foot of the sheet */
+.foot{
+  border-top:1px solid var(--rule);
+  padding:var(--s-5) var(--gx-r) calc(env(safe-area-inset-bottom) + var(--s-8)) var(--gx-l);
+}
+.foot p+p{margin-top:var(--s-1)}
+.lab{
+  display:inline-flex;align-items:center;min-height:44px;padding:0 12px;margin-top:var(--s-4);
+  font-family:var(--display);font-weight:400;font-size:16px;line-height:1;letter-spacing:-.01em;
+}
+.lab-l{font-weight:300}
+@media (min-width:1100px){
+  /* the closing running line mirrors the opening one: brand — line on the axis — address */
+  .foot{display:grid;grid-template-columns:1fr auto 1fr;align-items:baseline;padding-top:var(--s-4)}
+  .foot p+p{margin-top:0}
+  .foot p:first-child{justify-self:start;padding-left:0}
+  .foot p:nth-child(3){justify-self:end;padding-left:0;margin-right:-.18em}
+  .lab{grid-column:1/-1;justify-self:center;margin-top:var(--s-7)}
+}
+@media (hover:hover){.lab:hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.4em}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <span class="cap">Cutting Edgency</span>
+  <a class="cap link" href="https://cal.com/137lab-xyz/30min" rel="noopener"><span class="u">Ping me&nbsp;<span class="ar">→</span></span></a>
+</header>
+
+<main>
+
+  <section class="hero" aria-labelledby="title">
+    <p class="cap eyebrow">Cross-dimensional business upgrade&nbsp;— <br class="m">for post-labor leadership</p>
+
+    <div class="title">
+      <h1 class="h1" id="title"><span>Spirit as a <br class="t">technological framework.</span> <span class="turn">For people who hate spirituality.</span></h1>
+      <p class="sub">We design custom solutions that apply metaphysics to&nbsp;your&nbsp;business. <br>Not&nbsp;esoteric. No&nbsp;meditations. <span class="nb">Woo-woo</span>&nbsp;free.</p>
+      <p class="act"><a class="cap link" href="https://cal.com/137lab-xyz/30min" rel="noopener"><span class="u">Just ping me&nbsp;<span class="ar">→</span></span></a></p>
+      <p class="note">It starts with one meeting with the founder.</p>
+    </div>
+
+    <ol class="index">
+      <li><span class="n">01</span> Seamless consciousness transformation</li>
+      <li><span class="n">02</span> AI environments</li>
+      <li><span class="n">03</span> Process &amp; experience design</li>
+    </ol>
+  </section>
+
+  <section class="sec" aria-labelledby="s1">
+    <p class="cap mark">I&nbsp;— Post-labor</p>
+    <h2 class="h2" id="s1">The machines took the labor. <br>What is left is&nbsp;you.</h2>
+    <div class="body">
+      <p>Everything in your company can be automated&nbsp;— except the thing it runs on: the state of the founder. Your attention, your rhythm, your level of conductivity. That is the operating system your crew and your customers are running&nbsp;on.</p>
+      <p>Most leaders upgrade every layer of the business except that one. <br>We start there.</p>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="s2">
+    <p class="cap mark">II&nbsp;— The work</p>
+    <h2 class="h2" id="s2">Three layers. <br>One field.</h2>
+    <ol class="layers">
+      <li>
+        <span class="n">01</span>
+        <h3>Seamless consciousness transformation</h3>
+        <p>The founder first, then the crew. A&nbsp;framework upgrade that lands in your daily routine&nbsp;— without retreats, without incense, without a&nbsp;new vocabulary to&nbsp;perform.</p>
+      </li>
+      <li>
+        <span class="n">02</span>
+        <h3>AI environments</h3>
+        <p>Agents, rhythms and protocols that visualize the mental and emotional layers of your company in a&nbsp;digital interface: the resonance network. <span class="nb">Non-local</span> consciousness features, tailored to your success.</p>
+      </li>
+      <li>
+        <span class="n">03</span>
+        <h3>Process &amp; experience design</h3>
+        <p>The hidden layer of your business, designed on purpose. How the crew moves. How the customer feels. What holds the field when you are not in the room.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="sec" aria-labelledby="s3">
+    <p class="cap mark">III&nbsp;— The hidden layer</p>
+    <h2 class="h2" id="s3">We work with the&nbsp;wave&nbsp;layer of&nbsp;reality.</h2>
+    <div class="body">
+      <p>We maintain synergy by designing the hidden layer&nbsp;— <span class="nb">AI-based</span> rhythm and protocols that hold the field of your success while you create. The&nbsp;visible company is the interface. The&nbsp;hidden layer is the code it runs&nbsp;on.</p>
+      <p>We <span class="nb">vibe-code</span> the wave layer through five perspectives.</p>
+    </div>
+    <ol class="views">
+      <li><span class="n">01</span> <span class="v-name">Neuroscience</span> <span class="v-line">How state becomes behavior.</span></li>
+      <li><span class="n">02</span> <span class="v-name">Quantum physics</span> <span class="v-line">Observer. Field. Collapse.</span></li>
+      <li><span class="n">03</span> <span class="v-name">Hermetic principles</span> <span class="v-line">As above, so below.</span></li>
+      <li><span class="n">04</span> <span class="v-name">Vortex math</span> <span class="v-line">The rhythm inside the numbers.</span></li>
+      <li><span class="n">05</span> <span class="v-name">Fractal geometry</span> <span class="v-line">One pattern, every scale.</span></li>
+    </ol>
+  </section>
+
+  <section class="sec" aria-labelledby="s4">
+    <p class="cap mark">IV&nbsp;— The roadmap</p>
+    <h2 class="h2 long" id="s4">From the first meeting <br class="d">to&nbsp;a&nbsp;holy business experience <br class="d">as&nbsp;your basic daily routine.</h2>
+    <div class="body">
+      <p>Step by step&nbsp;— how we guide you through nonlinear consciousness evolution and land it in the real calendar of a&nbsp;real company.</p>
+    </div>
+    <ol class="steps">
+      <li><span class="n">01</span> <p>First meeting with the founder.</p> <p class="cap q tag">Founder</p></li>
+      <li><span class="n">02</span> <p>Strategic session with the founder. Planning the transformation processes.</p> <p class="cap q tag">Founder</p></li>
+      <li><span class="n">03</span> <p>Consciousness framework upgrade for the founder.</p> <p class="cap q tag">Two months</p></li>
+      <li><span class="n">04</span> <p>Digital infrastructure and experience design for crew and customers.</p> <p class="cap q tag">Crew &amp; customers</p></li>
+      <li><span class="n">05</span> <p>Automated solutions that hold the field of your success&nbsp;— new rhythms, based on energy management.</p> <p class="cap q tag">The field</p></li>
+      <li><span class="n">06</span> <p>Growing your Personal Resonance Manager&nbsp;— the one who keeps the level of conductivity high, from&nbsp;the&nbsp;inside.</p> <p class="cap q tag">Inside the crew</p></li>
+      <li><span class="n">07</span> <p>Whole multidimensional support of your creative experience of being here.</p> <p class="cap q tag">Ongoing</p></li>
+    </ol>
+  </section>
+
+  <section class="sec" aria-labelledby="s5">
+    <p class="cap mark">V&nbsp;— Aftermath</p>
+    <h2 class="h2 long" id="s5">From our perspective, the human <br class="d">—&nbsp;and their creative power&nbsp;— <br class="d">is the most valuable resource of the new&nbsp;era. <br>The future that is already&nbsp;here.</h2>
+    <div class="body">
+      <p>Our service is not just a&nbsp;business. It&nbsp;is a&nbsp;funnel&nbsp;— the one we use to find that rare kind of people who came here to become the architects of the new reality.</p>
+      <p>There are no words to explain the gameplay experience of following the Dao. Imagine concentrating all your curiosity and creative power into the present moment&nbsp;— and flipping your perception of reality as it&nbsp;is. It&nbsp;feels like a&nbsp;birth on a&nbsp;new level of true self, where creativity and vitality have no limits.</p>
+    </div>
+    <div class="peak">
+      <p class="cap q">The name of this state is</p>
+      <p class="name turn">The Creator.</p>
+    </div>
+  </section>
+
+  <blockquote class="quote">
+    <p>The wise man hears of the Dao and follows it diligently.</p>
+    <p>The ordinary man hears of the Dao and follows it now and then.</p>
+    <p>The fool hears of the Dao and laughs at&nbsp;it.</p>
+    <p class="turn">If he did not laugh, it would not be the true Dao.</p>
+    <footer class="cap q">—&nbsp;<cite>Lao Tzu</cite></footer>
+  </blockquote>
+
+  <section class="sec" aria-labelledby="s6">
+    <p class="cap mark">VI&nbsp;— The Connector</p>
+    <h2 class="h2" id="s6">My name is Dao. <span class="turn">I&nbsp;am the Connector.</span></h2>
+    <div class="body">
+      <p>My mission is to wake up creative people and reconnect them with their resonance families and the ideas that guide them towards their highest purpose. I&nbsp;do this by directing the transformative journey of coming back to who you really are.</p>
+      <p>I am looking for the badass motherfuckers&nbsp;— the craziest individuals who aim to get the highest maximum out of this <span class="nb">game-changing</span> entry point into the new Renaissance.</p>
+      <p>And yes&nbsp;— usually this door into multiplayer mastering of the quantum simulation finds you at your bottom.</p>
+    </div>
+    <p class="closing turn">No worries. <br class="m">Everything will be fixed here.</p>
+  </section>
+
+  <section class="sec door" aria-labelledby="s7">
+    <h2 class="cap mark" id="s7">The door</h2>
+    <p><a class="link gate" href="https://cal.com/137lab-xyz/30min" rel="noopener"><span class="u">Just ping me&nbsp;→</span></a></p>
+    <p class="url">cuttingedgency.xyz</p>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <p class="cap">Cutting Edgency</p>
+  <p class="cap q">Cross-dimensional business upgrade <br class="m">for post-labor leadership</p>
+  <p class="cap q">cuttingedgency.xyz</p>
+  <a class="lab" href="https://137lab.xyz/" aria-label="137lab"><span>137</span><span class="lab-l">lab</span></a>
+</footer>
+
+</body>
+</html>
