@@ -144,18 +144,19 @@ br.d,br.t,br.hb{display:none}
 .n .d + .d{margin-left:.07em}
 .nb{white-space:nowrap}
 
-/* links. The two small ones carry a 1px underline and invert under the hand;
-   the door and the lab's mark are bare and take the underline under the hand. */
-.ping,.cta{display:inline-flex;align-items:center;min-height:44px;white-space:nowrap}
-.ping span,.cta span{
+/* links. The small one in the header carries a 1px underline and inverts under the hand;
+   the door and the lab's mark are bare and take the underline under the hand.
+   The first screen has no link of its own (Vlad, 01.10): «Connect» above, the door at the end. */
+.ping{display:inline-flex;align-items:center;min-height:44px;white-space:nowrap}
+.ping span{
   padding:7px 10px;margin:0 -10px;
   text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.5em;
 }
 @media (hover:hover){
-  .ping:hover span,.cta:hover span{background:var(--ink);color:var(--paper);text-decoration-line:none}
+  .ping:hover span{background:var(--ink);color:var(--paper);text-decoration-line:none}
   .knock:hover,.mark:hover{text-decoration-line:underline}
 }
-.ping:active span,.cta:active span{background:var(--ink);color:var(--paper);text-decoration-line:none}
+.ping:active span{background:var(--ink);color:var(--paper);text-decoration-line:none}
 .knock,.mark{text-decoration-line:none;text-decoration-thickness:1px}
 .knock:active{text-decoration-line:underline}
 
@@ -199,8 +200,7 @@ br.d,br.t,br.hb{display:none}
   margin-top:var(--s3);max-width:26em;
   font-family:var(--display);font-weight:300;font-size:var(--fs-lead);line-height:1.4;letter-spacing:.005em;
 }
-.act{margin-top:var(--s3);display:flex;flex-direction:column;align-items:flex-start}
-.note{font-size:var(--fs-note);line-height:1.5;color:var(--quiet)}
+.note{margin-top:var(--s3);font-size:var(--fs-note);line-height:1.5;color:var(--quiet)}
 .index{margin-top:var(--s6)}
 .index li + li{margin-top:var(--s1)}
 .index .name{grid-column:2;line-height:1.45}
@@ -310,7 +310,7 @@ br.d,br.t,br.hb{display:none}
   .sub{max-width:none}
   .h1{grid-row:1;margin-top:0;line-height:1.08}
   .sub{margin-top:var(--s5)}
-  .act{margin-top:var(--s4);flex-direction:row;align-items:baseline;gap:var(--s4)}
+  .note{margin-top:var(--s4)}
   .index{margin-top:clamp(64px,10vh,112px)}
 
   .h2{grid-row:1;margin-top:0}
@@ -345,7 +345,7 @@ br.d,br.t,br.hb{display:none}
 
 <header class="top">
   <span class="cap brand">Cutting Edgency</span>
-  <a class="cap ping" href="https://cal.com/137lab-xyz/30min" rel="noopener"><span>Ping me&nbsp;→</span></a>
+  <a class="cap ping" href="https://cal.com/137lab-xyz/30min" rel="noopener"><span>Connect&nbsp;→</span></a>
 </header>
 
 <main>
@@ -356,7 +356,7 @@ br.d,br.t,br.hb{display:none}
       <h1 class="h1" id="h"><span class="say">Spirit as&nbsp;a <br class="hb">technological framework.</span> <span class="turn">For&nbsp;people who hate spirituality.</span></h1>
     </div>
     <p class="v sub">We design custom solutions that apply metaphysics to&nbsp;your business. <br class="sb">Not esoteric. No&nbsp;meditations. <span class="nb">Woo-woo</span> free.</p>
-    <p class="v act"><a class="cap cta" href="https://cal.com/137lab-xyz/30min" rel="noopener"><span>Just ping me&nbsp;→</span></a> <span class="note">It starts with one meeting with the founder.</span></p>
+    <p class="v note">It starts with one meeting with the founder.</p>
     <ol class="index">
       <li class="row"><span class="n"><span class="d">0</span><span class="d">1</span></span><span class="name">Seamless consciousness transformation</span></li>
       <li class="row"><span class="n"><span class="d">0</span><span class="d">2</span></span><span class="name">AI environments</span></li>
