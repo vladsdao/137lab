@@ -145,7 +145,7 @@ br.d,br.t,br.hb{display:none}
 .nb{white-space:nowrap}
 
 /* links. The small one in the header carries a 1px underline and inverts under the hand;
-   the door and the lab's mark are bare and take the underline under the hand.
+   the door and the lab's address are bare and take the underline under the hand.
    The first screen has no link of its own (Vlad, 01.10): «Connect» above, the door at the end. */
 .ping{display:inline-flex;align-items:center;min-height:44px;white-space:nowrap}
 .ping span{
@@ -154,10 +154,10 @@ br.d,br.t,br.hb{display:none}
 }
 @media (hover:hover){
   .ping:hover span{background:var(--ink);color:var(--paper);text-decoration-line:none}
-  .knock:hover,.mark:hover{text-decoration-line:underline}
+  .knock:hover,.home:hover{text-decoration-line:underline}
 }
 .ping:active span{background:var(--ink);color:var(--paper);text-decoration-line:none}
-.knock,.mark{text-decoration-line:none;text-decoration-thickness:1px}
+.knock{text-decoration-line:none;text-decoration-thickness:1px}
 .knock:active{text-decoration-line:underline}
 
 /* voice blocks start on x1 */
@@ -190,18 +190,50 @@ br.d,br.t,br.hb{display:none}
 .hero{padding-top:var(--s5)}
 .hero-head{display:grid;grid-template-columns:var(--x1) minmax(0,1fr);align-items:baseline;padding-right:var(--gx-r)}
 .eyebrow{grid-column:2;max-width:26em;text-wrap:balance}
+/* the first message stands alone (Vlad, 01.10): air above and below, nothing leaning on it. */
 .h1{
-  grid-column:2;margin-top:var(--s3);
+  grid-column:2;margin-top:calc(var(--s6) + .9em);margin-left:-.03em;   /* room for the halo, then air */
   font-size:var(--fs-h1);line-height:1.1;letter-spacing:.012em;
 }
-.h1 .say{display:block;margin-left:-.03em}
-.h1 .turn{margin-left:calc(var(--S) - .07em)}
+/* THE HALO (Vlad, 01.10) — «For people who hate spirituality.» turns as a flat oval above the word Spirit.
+   His words: small type, the oval pressed flat, a technical face "like code" — so this is the one place
+   on the sheet that is not Fixel: the system monospace, 29 letters at equal steps of 10° on a circle of
+   radius 5em, each facing out. The ring leans 10° toward the reader and turns once in 16s. The near side
+   is ink; the far side shows through in hairline grey, mirrored, as it would on a glass ring. No script:
+   the letters are data, the glyphs are drawn by ::before / ::after. The sentence itself lives in .aside
+   for readers and machines; with reduced motion the ring is replaced by that line above the heading. */
+.aside{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.spirit{position:relative;display:inline-block}
+.halo{
+  position:absolute;left:50%;top:-1.5em;width:0;height:0;   /* em of the ring's own type: the oval clears the cap line */
+  font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Roboto Mono",monospace;
+  font-weight:400;font-size:max(9.5px,.28em);line-height:1;letter-spacing:0;
+  perspective:70em;pointer-events:none;-webkit-user-select:none;user-select:none;
+}
+.ring{
+  position:absolute;left:0;top:0;width:0;height:0;
+  transform-style:preserve-3d;transform:rotateX(-10deg) rotateY(-45deg);
+  animation:halo 16s linear infinite;
+}
+@keyframes halo{
+  from{transform:rotateX(-10deg) rotateY(-45deg)}
+  to{transform:rotateX(-10deg) rotateY(-405deg)}
+}
+.ring span{
+  position:absolute;left:-.75em;top:-.5em;width:1.5em;height:1em;text-align:center;
+  transform-style:preserve-3d;transform:rotateY(var(--a)) translateZ(5em);
+}
+.ring span::before,.ring span::after{
+  content:attr(data-c);position:absolute;left:0;top:0;width:100%;
+  -webkit-backface-visibility:hidden;backface-visibility:hidden;
+}
+.ring span::before{color:var(--rule);transform:scaleZ(-1)}   /* seen only from behind */
+.ring span::after{color:var(--ink)}                          /* seen only from the front */
 .sub{
-  margin-top:var(--s3);max-width:26em;
+  margin-top:var(--s8);max-width:26em;
   font-family:var(--display);font-weight:300;font-size:var(--fs-lead);line-height:1.4;letter-spacing:.005em;
 }
-.note{margin-top:var(--s3);font-size:var(--fs-note);line-height:1.5;color:var(--quiet)}
-.index{margin-top:var(--s6)}
+.index{margin-top:var(--s8)}
 .index li + li{margin-top:var(--s1)}
 .index .name{grid-column:2;line-height:1.45}
 
@@ -275,7 +307,6 @@ br.d,br.t,br.hb{display:none}
   font-family:var(--display);font-weight:300;font-size:var(--fs-h1);line-height:1.1;letter-spacing:.012em;
   text-underline-offset:.22em;white-space:nowrap;
 }
-.addr{grid-column:2;margin-top:var(--s1);font-size:var(--fs-note);line-height:1.5;color:var(--quiet);letter-spacing:.02em}
 
 /* footer */
 .foot{
@@ -286,13 +317,7 @@ br.d,br.t,br.hb{display:none}
 .foot .cap{grid-column:2;max-width:30em}
 .foot .cap + .cap{margin-top:var(--s1)}
 .foot .cap.q{color:var(--quiet)}
-.mark{
-  grid-column:2;justify-self:start;margin-top:var(--s4);
-  display:inline-flex;align-items:center;min-height:44px;
-  font-family:var(--display);font-weight:400;font-size:16px;line-height:1;letter-spacing:-.01em;
-  text-underline-offset:.4em;
-}
-.mark-lab{font-weight:300}
+.home{display:inline-flex;align-items:center;min-height:44px;margin:-13px 0;text-decoration-thickness:1px;text-underline-offset:.5em}
 
 /* ——— desktop: the margin opens ——— */
 @media (min-width:900px){
@@ -305,12 +330,11 @@ br.d,br.t,br.hb{display:none}
     margin-right:calc(var(--gap-v) + var(--gap-m) + var(--ncol) - .18em);
     margin-top:0;
   }
-  .hero{padding-top:clamp(88px,13vh,144px)}
+  .hero{padding-top:clamp(128px,18vh,184px)}
   .eyebrow{max-width:15em;text-wrap:wrap}
   .sub{max-width:none}
   .h1{grid-row:1;margin-top:0;line-height:1.08}
-  .sub{margin-top:var(--s5)}
-  .note{margin-top:var(--s4)}
+  .sub{margin-top:clamp(64px,6.6667vw,96px)}
   .index{margin-top:clamp(64px,10vh,112px)}
 
   .h2{grid-row:1;margin-top:0}
@@ -335,9 +359,22 @@ br.d,br.t,br.hb{display:none}
   .last{margin-top:var(--s6)}
 
   .door-link{grid-row:1;margin-top:0}
-  .addr{grid-row:2;margin-top:var(--s2)}
+}
 
-  .mark{grid-column:1;grid-row:1;justify-self:end;margin-top:0;margin-right:calc(var(--gap-v) + var(--gap-m));min-height:0}
+/* reduced motion: no ring; the sentence stands as a small line above the heading, marked with an asterisk */
+@media (prefers-reduced-motion:reduce){
+  .halo{display:none}
+  .aside{
+    position:relative;width:auto;height:auto;margin:var(--s8) 0 0;overflow:visible;clip-path:none;white-space:normal;
+    grid-column:2;font-size:var(--fs-note);line-height:1.5;letter-spacing:.01em;
+  }
+  .aside::before{content:"*";position:absolute;right:100%;margin-right:.28em}
+  .h1{margin-top:var(--s2)}
+}
+@media (prefers-reduced-motion:reduce) and (min-width:900px){
+  .eyebrow{grid-row:1 / span 2}
+  .aside{grid-row:1;margin-top:0}
+  .h1{grid-row:2;margin-top:var(--s3)}
 }
 </style>
 </head>
@@ -353,10 +390,10 @@ br.d,br.t,br.hb{display:none}
   <section class="hero" aria-labelledby="h">
     <div class="hero-head">
       <p class="cap eyebrow">Cross-dimensional business upgrade&nbsp;— for&nbsp;post-labor leadership</p>
-      <h1 class="h1" id="h"><span class="say">Spirit as&nbsp;a <br class="hb">technological framework.</span> <span class="turn">For&nbsp;people who hate spirituality.</span></h1>
+      <p class="aside">For&nbsp;people who hate spirituality.</p>
+      <h1 class="h1" id="h"><span class="spirit">Spirit<span class="halo" aria-hidden="true"><span class="ring"><span style="--a:5deg" data-c="F"></span><span style="--a:15deg" data-c="o"></span><span style="--a:25deg" data-c="r"></span><span style="--a:45deg" data-c="p"></span><span style="--a:55deg" data-c="e"></span><span style="--a:65deg" data-c="o"></span><span style="--a:75deg" data-c="p"></span><span style="--a:85deg" data-c="l"></span><span style="--a:95deg" data-c="e"></span><span style="--a:115deg" data-c="w"></span><span style="--a:125deg" data-c="h"></span><span style="--a:135deg" data-c="o"></span><span style="--a:155deg" data-c="h"></span><span style="--a:165deg" data-c="a"></span><span style="--a:175deg" data-c="t"></span><span style="--a:185deg" data-c="e"></span><span style="--a:205deg" data-c="s"></span><span style="--a:215deg" data-c="p"></span><span style="--a:225deg" data-c="i"></span><span style="--a:235deg" data-c="r"></span><span style="--a:245deg" data-c="i"></span><span style="--a:255deg" data-c="t"></span><span style="--a:265deg" data-c="u"></span><span style="--a:275deg" data-c="a"></span><span style="--a:285deg" data-c="l"></span><span style="--a:295deg" data-c="i"></span><span style="--a:305deg" data-c="t"></span><span style="--a:315deg" data-c="y"></span><span style="--a:325deg" data-c="."></span></span></span></span> as&nbsp;a <br class="hb">technological framework.</h1>
     </div>
     <p class="v sub">We design custom solutions that apply metaphysics to&nbsp;your business. <br class="sb">Not esoteric. No&nbsp;meditations. <span class="nb">Woo-woo</span> free.</p>
-    <p class="v note">It starts with one meeting with the founder.</p>
     <ol class="index">
       <li class="row"><span class="n"><span class="d">0</span><span class="d">1</span></span><span class="name">Seamless consciousness transformation</span></li>
       <li class="row"><span class="n"><span class="d">0</span><span class="d">2</span></span><span class="name">AI environments</span></li>
@@ -457,14 +494,13 @@ br.d,br.t,br.hb{display:none}
     </div>
     <p class="v p">My mission is to&nbsp;wake up creative people and reconnect them with their resonance families and the ideas that guide them towards their highest purpose. I&nbsp;do this by&nbsp;directing the transformative journey of&nbsp;coming back to&nbsp;who you really are.</p>
     <p class="v p">I am looking for the badass motherfuckers&nbsp;— the craziest individuals who aim to&nbsp;get the highest maximum out of&nbsp;this game-changing entry point into the new Renaissance.</p>
-    <p class="v p">And yes&nbsp;— usually this door into multiplayer mastering of&nbsp;the quantum simulation finds you at&nbsp;your bottom.</p>
+    <p class="v p">And yes&nbsp;— usually this door finds you at&nbsp;your bottom.</p>
     <p class="last">No worries. Everything will be fixed here.</p>
   </section>
 
   <section class="door row" aria-labelledby="d">
     <h2 class="cap lab" id="d">The door</h2>
     <p class="door-link"><a class="knock" href="https://cal.com/137lab-xyz/30min" rel="noopener">Just ping me&nbsp;→</a></p>
-    <p class="addr">cuttingedgency.xyz</p>
   </section>
 
 </main>
@@ -472,8 +508,7 @@ br.d,br.t,br.hb{display:none}
 <footer class="foot">
   <p class="cap">Cutting Edgency</p>
   <p class="cap q">Cross-dimensional business upgrade for&nbsp;post-labor leadership</p>
-  <p class="cap q">cuttingedgency.xyz</p>
-  <a class="mark" href="https://137lab.xyz/"><span class="mark-137">137</span><span class="mark-lab">lab</span></a>
+  <p class="cap q"><a class="home" href="https://137lab.xyz/">137lab.xyz</a></p>
 </footer>
 
 </body>
